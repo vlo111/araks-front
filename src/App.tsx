@@ -1,9 +1,9 @@
 import React from 'react';
-import { QueryClientProvider } from 'react-query';
-import { QueryClient } from 'react-query/types/core';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { router } from './router';
 import { RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import { antTheme } from './helpers/ant-theme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,16 +17,12 @@ function App() {
 
   return (
     <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#232F6A',
-        },
-      }}
+      theme={antTheme}
     >
       <QueryClientProvider client={queryClient}>
-
-        <RouterProvider router={router} />
-
+        <React.StrictMode>
+          <RouterProvider router={router} />
+        </React.StrictMode>
       </QueryClientProvider>
     </ConfigProvider>
   );
