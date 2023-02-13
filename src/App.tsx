@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import { antTheme } from './helpers/ant-theme';
 
+import './index.css';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

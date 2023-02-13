@@ -1,6 +1,7 @@
 export const PATHS = {
     ROOT: '/',
     UI: '/ui',
+    SIGN_IN: '/sign-in',
     ERROR_403: 'no-access',
 }
 
