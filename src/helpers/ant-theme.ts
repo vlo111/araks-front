@@ -70,6 +70,7 @@ export const antTheme = {
         colorPrimaryActive: 'rgba(0, 20, 121, 0.8)',
         controlOutlineWidth: 0,
         controlHeight: 40,
+        controlHeightLG: 60,
         colorBgContainerDisabled: '#BFBFBF',
         colorTextDisabled: '#ffffff',
         fontSize: 20,

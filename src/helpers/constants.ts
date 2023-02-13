@@ -10,7 +10,9 @@ export const COLORS = {
         GRAY_DARK: '#414141',
         GRAY: '#808080',
         GRAY_LIGHT: '#DBDBDB',
-        WHITE: '#FFFFFF'
+        WHITE: '#FFFFFF',
+        SILVER: '#BFBFBF',
+        SILVER_LIGHT: '#E2E0E8'
     },
     ALERT: {
         RED: '#CF000F',
@@ -25,5 +27,6 @@ export const COLORS = {
         MAGENTA_LIGHT: '#D789D9',
         YELLOW: '#F5B452',
         YELLOW_LIGHT: '#EDE06D',
-    }
+        GRAY_LIGHT: '#8A91AE',
+    },
 }
