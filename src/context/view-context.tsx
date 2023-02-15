@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-enum ViewTypes {
+export enum ViewTypes {
     Block = 0,
     Grid = 1,
 }

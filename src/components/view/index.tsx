@@ -1,30 +1,33 @@
-import { Space } from "antd"
+import { Button, Space } from "antd"
 
 import { ReactComponent as Blocks } from '../icons/blocks.svg';
 import { ReactComponent as BlocksSelected } from '../icons/blocks-selected.svg';
 import { ReactComponent as Grid } from '../icons/grid.svg';
 import { ReactComponent as GridSelected } from '../icons/grid-selected.svg';
-import { type } from "os";
+import { useView, ViewTypes } from "../../context/view-context";
+import styled from "styled-components";
 
-enum ViewTypes {
-    Block = 0,
-    Grid = 1,
-  }
+const ViewButton = styled(Button)`
+    background-color: transparent;
+    border: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
 
-type Props = {
-    selectedType: ViewTypes
-}
+export const View = () => {
+    const {state, dispatch} = useView();
+    console.log('state', state);
+    
 
-export const View = ({ selectedType = ViewTypes.Block }: Props) => {
-
-    return <Space>
+    return <Space align="center">
         {
-            selectedType === ViewTypes.Block ? <>
-                <BlocksSelected />
-                <Grid />
+            state === ViewTypes.Block ? <>
+                <ViewButton icon={<BlocksSelected />}/>
+                <ViewButton icon={<Grid onClick={() => dispatch(ViewTypes.Grid)} />}/>
             </> : <>
-                <Blocks />
-                <GridSelected />
+                <ViewButton icon={<Blocks onClick={() => dispatch(ViewTypes.Block)} />}/>
+                <ViewButton icon={<GridSelected />}/>
             </>
         }
     </Space>
