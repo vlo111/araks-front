@@ -1,4 +1,4 @@
-import { Col, Row, Space, Typography } from 'antd';
+import { Col, MenuProps, Row, Space, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { Datepicker } from '../../components/datepicker';
@@ -9,6 +9,23 @@ import { ImageUrl } from '../../components/image-url';
 import VerticalSpace from "../../components/space/vertical-space";
 import { Url } from '../../components/url';
 import { AddFolderButton, Button, ButtonWithIcon, CreateNewProjectButton, IconButton, LikeButton, SignUpButton } from '../../components/button';
+import { Title } from '../../components/typography';
+import { Dropdown, Sort, Template } from '../../components/dropdown';
+
+const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'Item 1',
+    },
+    {
+      key: '2',
+      label: 'Item 2',
+    },
+    {
+      key: '3',
+      label: 'Item 3',
+    },
+  ];
 
 const UiComponents = () => {
     return <VerticalSpace>
@@ -61,6 +78,18 @@ const UiComponents = () => {
                     <AddFolderButton block />
                     <LikeButton block />
                     <IconButton iconType = 'settings' />
+                </VerticalSpace>
+            </Col>
+            <Col span={12}>
+                
+            </Col>
+        </Row>
+        <Title level={2}>Dropdown</Title>
+        <Row gutter={16}>
+            <Col span={12}>
+                <VerticalSpace>
+                <Sort menu={items} />
+                <Template menu={items} />
                 </VerticalSpace>
             </Col>
             <Col span={12}>

@@ -1,11 +1,8 @@
-import React from 'react';
-import { Breadcrumb, Layout as LayoutComponent, Menu, theme } from 'antd';
-import { Navigate, Outlet } from "react-router-dom";
+import { Layout as LayoutComponent } from 'antd';
+import { Outlet } from "react-router-dom";
 
 import { ReactComponent as Logo } from '../icons/araks.svg';
 import styled from 'styled-components';
-import { COLORS } from '../../helpers/constants';
-import { LayoutContext } from 'antd/es/layout/layout';
 // import { useAuth } from "../hooks/useAuth";
 
 const Layout = styled(LayoutComponent)`
