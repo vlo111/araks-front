@@ -1,10 +1,12 @@
-import { Dropdown as Component, Button, Space } from "antd"
+import { Dropdown, Button, Space, MenuProps, message, DropdownProps } from "antd"
 import styled from "styled-components"
 
 import { ReactComponent as SortIcon } from '../icons/sort.svg';
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
 import { Text } from "../typography";
 import { COLORS } from "../../helpers/constants";
+
+import './sort.css';
 
 const DropdownButton = styled(Button)`
     width: 232px;
@@ -13,17 +15,47 @@ const DropdownButton = styled(Button)`
     background-color: #EDEDF3;
 `;
 
+const items: MenuProps['items'] = [
+    {
+      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>A to Z</Text>,
+      key: '1',
+    },
+    {
+      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Z to A</Text>,
+      key: '2',
+    },
+    {
+      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Newest First</Text>,
+      key: '3',
+    },
+    {
+        label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Oldest First</Text>,
+        key: '4',
+    },
+  ];
 
-const DropdownContent = () => <DropdownButton>
-<Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <Space>
-        <SortIcon />
-        <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>Custom</Text>
-    </Space>
-    <Polygon />
-</Space>
-</DropdownButton>;
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    message.info('Click on menu item.');
+    console.log('click', e);
+  };
 
-export const Sort = styled((props) => <Component {...props} children={<DropdownContent />} />)`
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
+
+// export const Sort = styled(({customOnClick, ...props}) => <Component {...props} trigger={['click']} children={<DropdownContent />} menu={menuProps} />)`
     
-`;
+// `;
+
+export const Sort = (props: DropdownProps) => <Dropdown menu={menuProps} trigger={['click']} {...props} overlayClassName='sort-dropdown' >
+    <DropdownButton>
+        <Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Space>
+                <SortIcon />
+                <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>Custom</Text>
+            </Space>
+            <Polygon />
+        </Space>
+    </DropdownButton>
+</Dropdown>

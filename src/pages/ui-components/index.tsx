@@ -88,7 +88,7 @@ const UiComponents = () => {
         <Row gutter={16}>
             <Col span={12}>
                 <VerticalSpace>
-                <Sort menu={items} />
+                <Sort />
                 <Template menu={items} />
                 </VerticalSpace>
             </Col>

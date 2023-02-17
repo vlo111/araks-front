@@ -11,6 +11,7 @@ import { ReactComponent as Shared } from '../icons/shared.svg';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
+    height: 100vh;
 `;
 
 const Menu = styled(MenuComponent)`
