@@ -25,7 +25,7 @@ function ViewProvider({children}: ViewProviderProps) {
 function useView() {
   const context = React.useContext(ViewContext)
   if (context === undefined) {
-    throw new Error('useCount must be used within a ViewProvider')
+    throw new Error('useView must be used within a ViewProvider')
   }
   return context
 }

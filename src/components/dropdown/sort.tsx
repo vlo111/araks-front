@@ -5,6 +5,7 @@ import { ReactComponent as SortIcon } from '../icons/sort.svg';
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
 import { Text } from "../typography";
 import { COLORS } from "../../helpers/constants";
+import { useSort } from "../../context/sort-context";
 
 import './sort.css';
 
@@ -15,47 +16,41 @@ const DropdownButton = styled(Button)`
     background-color: #EDEDF3;
 `;
 
-const items: MenuProps['items'] = [
-    {
-      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>A to Z</Text>,
-      key: '1',
-    },
-    {
-      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Z to A</Text>,
-      key: '2',
-    },
-    {
-      label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Newest First</Text>,
-      key: '3',
-    },
-    {
-        label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>Oldest First</Text>,
-        key: '4',
-    },
-  ];
+export type SortItems = {
+  label: string,
+  key: string
+};
+
+const setItems = (sortItems: SortItems[]): MenuProps['items'] => sortItems.map((item) => ({
+  label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>{item.label}</Text>,
+  key: item.key,
+}));
+
+type Props = DropdownProps & {
+  sortItems: SortItems[]
+}
+
+export const Sort = ({sortItems, ...props}: Props) => {
+  const { dispatch } = useSort();
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    message.info('Click on menu item.');
     console.log('click', e);
+    dispatch(e.key);
   };
 
-  const menuProps = {
-    items,
-    onClick: handleMenuClick,
-  };
-
-// export const Sort = styled(({customOnClick, ...props}) => <Component {...props} trigger={['click']} children={<DropdownContent />} menu={menuProps} />)`
-    
-// `;
-
-export const Sort = (props: DropdownProps) => <Dropdown menu={menuProps} trigger={['click']} {...props} overlayClassName='sort-dropdown' >
-    <DropdownButton>
-        <Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Space>
-                <SortIcon />
-                <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>Custom</Text>
-            </Space>
-            <Polygon />
-        </Space>
-    </DropdownButton>
-</Dropdown>
+  return <Dropdown
+    menu={{ items: setItems(sortItems), onClick: handleMenuClick }} 
+    trigger={['click']}
+    {...props} 
+    overlayClassName='sort-dropdown'>
+      <DropdownButton>
+          <Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Space>
+                  <SortIcon />
+                  <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>Custom</Text>
+              </Space>
+              <Polygon />
+          </Space>
+      </DropdownButton>
+  </Dropdown>;
+}

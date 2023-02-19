@@ -10,7 +10,7 @@ import VerticalSpace from "../../components/space/vertical-space";
 import { Url } from '../../components/url';
 import { AddFolderButton, Button, ButtonWithIcon, CreateNewProjectButton, IconButton, LikeButton, SignUpButton } from '../../components/button';
 import { Title } from '../../components/typography';
-import { Dropdown, Sort, Template } from '../../components/dropdown';
+import { Dropdown, PROJECT_SORT, Sort, Template } from '../../components/dropdown';
 
 const items: MenuProps['items'] = [
     {
@@ -88,7 +88,7 @@ const UiComponents = () => {
         <Row gutter={16}>
             <Col span={12}>
                 <VerticalSpace>
-                <Sort />
+                <Sort sortItems={PROJECT_SORT} />
                 <Template menu={items} />
                 </VerticalSpace>
             </Col>
