@@ -1,5 +1,5 @@
 import { Col, Row, Space } from "antd"
-import { AddFolderButton, CreateNewProjectButton } from "../../components/button"
+import { AddFolderButton, CreateNewProjectButton, ProjectButton } from "../../components/button"
 import { PROJECT_SORT, Sort, Template } from "../../components/dropdown"
 import VerticalSpace from "../../components/space/vertical-space"
 import { TitleSeparator } from "../../components/typography"
@@ -35,9 +35,13 @@ export const Projects = () => {
                 </div>
                 <div>
                     <TitleSeparator name='All Projects' paginationProps={{total: 50}} />
-                    <Row>
-                        <Col span={8}>
+                    {/* set if count < 7 start otherwise space-between  */}
+                    <Row gutter={34} justify='start'>
+                        <Col span={3}>
                             <CreateNewProjectButton />
+                        </Col>
+                        <Col span={3}>
+                            <ProjectButton project={{color: 'red', name: 'Knowledge Mode', type: 'public', dateTime: '2022.09.05 18:03'}} />
                         </Col>
                     </Row>
                 </div>
