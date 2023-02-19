@@ -5,7 +5,7 @@ import { ReactComponent as AddFolder } from '../icons/add-folder.svg';
 
 export const AddFolderButton = styled((props) => <Component {...props} children='Add Folder' size="large" type="dashed" icon={<AddFolder />} />)`
     &.ant-btn-dashed {
-        background: ${COLORS.PRIMARY.WHITE};
+        background: transparent;
         border-color: #C3C3C3;
         padding: 16px 28px;
         text-align: left;
@@ -17,12 +17,7 @@ export const AddFolderButton = styled((props) => <Component {...props} children=
 
         &:not(:disabled) {
             &:hover, &:active {
-                background: ${COLORS.PRIMARY.WHITE};
                 border-color: #C3C3C3;
-
-                span {
-                    color: ${COLORS.PRIMARY.GRAY_DARK};
-                }
             }
         }
     }

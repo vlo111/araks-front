@@ -25,3 +25,4 @@ export const Title = styled(TitleComponent)`
 `;
 
 export { MenuText, Text, SecondaryText } from './text';
+export { TitleSeparator } from './title-separator';

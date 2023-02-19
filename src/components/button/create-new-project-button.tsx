@@ -12,8 +12,8 @@ const ButtonContent = () => <VerticalSpace size="small">
 
 export const CreateNewProjectButton = styled((props) => <Component {...props} children={<ButtonContent />} />)`
     &.ant-btn-default {
-        background: ${COLORS.PRIMARY.WHITE};
-        border-color: ${COLORS.PRIMARY.WHITE};
+        background: transparent;
+        border-color: transparent;
         height: 100%;
         padding: 20px 20px 10px;
 
@@ -22,7 +22,7 @@ export const CreateNewProjectButton = styled((props) => <Component {...props} ch
         } 
         
         &:hover, &:active {
-            border-color: ${COLORS.PRIMARY.WHITE};
+            border-color: transparent;
             background-color: rgba(35, 47, 106, 0.1);
         }
     }

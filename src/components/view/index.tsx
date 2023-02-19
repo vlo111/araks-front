@@ -17,8 +17,6 @@ const ViewButton = styled(Button)`
 
 export const View = () => {
     const {state, dispatch} = useView();
-    console.log('state', state);
-    
 
     return <Space align="center">
         {
