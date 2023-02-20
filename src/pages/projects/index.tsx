@@ -1,4 +1,5 @@
-import { Col, Row, Space } from "antd"
+import { Badge, Col, Row, Space } from "antd"
+import { ProjectActionPopover } from "components/popover"
 import { AddFolderButton, CreateNewProjectButton, ProjectButton } from "../../components/button"
 import { PROJECT_SORT, Sort, Template } from "../../components/dropdown"
 import VerticalSpace from "../../components/space/vertical-space"
@@ -6,6 +7,8 @@ import { TitleSeparator } from "../../components/typography"
 import { View } from "../../components/view"
 import { SortProvider } from "../../context/sort-context"
 import { ViewProvider } from "../../context/view-context"
+import { ProjectActionContent } from "./components/project-action-content"
+import { ProjectActionTitle } from "./components/project-action-title"
 
 
 export const Projects = () => {
@@ -41,7 +44,9 @@ export const Projects = () => {
                             <CreateNewProjectButton />
                         </Col>
                         <Col span={3}>
+                        <ProjectActionPopover title={<ProjectActionTitle />} content={<ProjectActionContent />}>
                             <ProjectButton project={{color: 'red', name: 'Knowledge Mode', type: 'public', dateTime: '2022.09.05 18:03'}} />
+                        </ProjectActionPopover>
                         </Col>
                     </Row>
                 </div>

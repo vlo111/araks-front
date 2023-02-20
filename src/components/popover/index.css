@@ -1,0 +1,29 @@
+.project-popover-action {
+    background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.4) 99.26%);
+    border: 1px solid #FFFFFF;
+    box-shadow: 0px 10px 10px rgba(141, 143, 166, 0.2);
+    backdrop-filter: blur(7px);
+    padding-left: 0px;
+}
+
+.project-popover-action .ant-popover-arrow {
+    display: none;
+}
+
+.project-popover-action .ant-popover-inner {
+    background-color: transparent;
+    padding: 0;
+}
+
+.project-popover-action .ant-popover-inner .ant-popover-title {
+    background-color: transparent;
+    margin-bottom: 0;
+    padding: 12px 9px 12px 4px;
+    background: linear-gradient(92.68deg, rgba(220, 223, 244, 0.7) 0%, rgba(220, 220, 244, 0.2) 98.48%);
+    box-shadow: 0px 4px 4px rgba(157, 162, 198, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.project-popover-action .ant-popover-inner {
+    background-color: transparent;
+}

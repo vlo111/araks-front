@@ -8,6 +8,7 @@ import { ReactComponent as AraksSmall } from '../icons/araks-small.svg';
 import { ReactComponent as PublicProject } from '../icons/public-project.svg';
 import { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
 import { MenuText, Text } from "../typography";
+import React from "react";
 
 type ProjectButtonDraw = ButtonProps & {
     project: {
@@ -64,22 +65,25 @@ const ButtonContent = ({ project }: Pick<ProjectButtonDraw, 'project'>) => <Vert
     <MenuText className="button-content__text">{project.dateTime}</MenuText>
 </VerticalSpace>;
 
-export const ProjectButton = styled(({ project, ...props }: ProjectButtonDraw) => 
-    <Component {...props} children={<ButtonContent project={project} />} />)`
-        &.ant-btn-default {
-            background: transparent;
-            border-color: transparent;
-            width: 200px;
-            height: 150px;
-            padding: 20px 20px 10px;
+const StyledButton = styled(Component)`
+    &.ant-btn-default {
+        background: transparent;
+        border-color: transparent;
+        width: 200px;
+        height: 150px;
+        padding: 20px 20px 10px;
 
-            .button-content__text {
-                color: ${COLORS.PRIMARY.GRAY_DARK};
-            } 
-            
-            &:hover, &:active {
-                border-color: transparent;
-                background-color: rgba(35, 47, 106, 0.1);
-            }
+        .button-content__text {
+            color: ${COLORS.PRIMARY.GRAY_DARK};
+        } 
+        
+        &:hover, &:active {
+            border-color: transparent;
+            background-color: rgba(35, 47, 106, 0.1);
         }
+    }
 `;
+
+export const ProjectButton = ({ project, ...props }: ProjectButtonDraw) => {
+  return  <StyledButton  {...props} children={<ButtonContent project={project} />} />;
+}

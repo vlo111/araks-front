@@ -9,8 +9,9 @@ import { ImageUrl } from '../../components/image-url';
 import VerticalSpace from "../../components/space/vertical-space";
 import { Url } from '../../components/url';
 import { AddFolderButton, Button, ButtonWithIcon, CreateNewProjectButton, IconButton, LikeButton, SignUpButton } from '../../components/button';
-import { Title } from '../../components/typography';
+import { Text, Title } from '../../components/typography';
 import { Dropdown, PROJECT_SORT, Sort, Template } from '../../components/dropdown';
+import { ProjectActionPopover } from '../../components/popover';
 
 const items: MenuProps['items'] = [
     {
@@ -26,6 +27,13 @@ const items: MenuProps['items'] = [
       label: 'Item 3',
     },
   ];
+
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  );
 
 const UiComponents = () => {
     return <VerticalSpace>
@@ -88,12 +96,13 @@ const UiComponents = () => {
         <Row gutter={16}>
             <Col span={12}>
                 <VerticalSpace>
-                <Sort sortItems={PROJECT_SORT} />
                 <Template menu={items} />
                 </VerticalSpace>
             </Col>
             <Col span={12}>
-                
+            <ProjectActionPopover content={content} title="Title">
+                <Text>Hover me</Text>
+            </ProjectActionPopover>
             </Col>
         </Row>
 </VerticalSpace>;
