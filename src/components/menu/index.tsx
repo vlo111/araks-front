@@ -4,44 +4,12 @@ import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
 import { ReactComponent as MoveTo } from 'components/icons/move-to.svg';
 import { ReactComponent as ArrowRight } from 'components/icons/arrow-right.svg';
-import { MenuText, Text } from "components/typography";
+import { MenuText, SecondaryText } from "components/typography";
 import styled from "styled-components";
 
 import './index.css';
-import { useCallback } from "react";
 
 type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(
-    label: React.ReactNode,
-    key?: React.Key | null,
-    icon?: React.ReactNode,
-    children?: MenuItem[],
-    popupClassName?: string,
-    type?: 'group',
-  ): MenuItem {
-    return {
-      key,
-      icon,
-      children,
-      label: <MenuText>{label}</MenuText>,
-      type,
-      popupClassName,
-      popupOffset: [-25],
-      defaultOpenKeys: 'sub11'
-    } as MenuItem;
-  }
-
-  const items: MenuItem[] = [
-    getItem('Move To', 'sub1', <MoveTo />, [
-      getItem('Item 1', 'sub11', <FolderFilled style={{ fontSize: '16px' }} />),
-      getItem('Item 2', null, null),
-    ], 'project-menu-action'),
-  
-    getItem('Edit', 'sub2', <Edit />),
-  
-    getItem(' Delete', 'sub4', <Delete />),
-  ];
 
 export enum FolderType {
     folder,
@@ -61,7 +29,7 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
         children: foldersList.map((item, index):MenuItem => ({
             key: item.key,
             icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '16px' }} />,
-            label: <><Text>{item.name}</Text>{item.count && <Text>({item.count})</Text>}</>,
+            label: <><SecondaryText>{item.name.substring(0, 19) + '...'}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
         })),
         label: <MenuText>Move To</MenuText>,
         popupClassName: 'project-menu-action',
