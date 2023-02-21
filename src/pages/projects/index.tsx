@@ -1,6 +1,6 @@
 import { Badge, Col, Row, Space } from "antd"
 import { ProjectActionPopover } from "components/popover"
-import { AddFolderButton, CreateNewProjectButton, ProjectButton } from "../../components/button"
+import { AddFolderButton, CreateNewProjectButton, FolderButton, ProjectButton } from "../../components/button"
 import { PROJECT_SORT, Sort, Template } from "../../components/dropdown"
 import VerticalSpace from "../../components/space/vertical-space"
 import { TitleSeparator } from "../../components/typography"
@@ -9,7 +9,6 @@ import { SortProvider } from "../../context/sort-context"
 import { ViewProvider } from "../../context/view-context"
 import { ProjectActionContent } from "./components/project-action-content"
 import { ProjectActionTitle } from "./components/project-action-title"
-
 
 export const Projects = () => {
     return <ViewProvider>
@@ -29,10 +28,10 @@ export const Projects = () => {
                             <AddFolderButton block />
                         </Col>
                         <Col span={8}>
-                            <AddFolderButton block />
+                            <FolderButton folderName='Scientists' countItems={20} block />
                         </Col>
                         <Col span={8}>
-                            <AddFolderButton block />
+                            <FolderButton folderName="Country Analysis" countItems={32} block />
                         </Col>
                     </Row>
                 </div>
@@ -49,7 +48,7 @@ export const Projects = () => {
                         </ProjectActionPopover>
                         </Col>
                     </Row>
-                </div>
+                </div>``
             </VerticalSpace>
         </SortProvider>
     </ViewProvider>

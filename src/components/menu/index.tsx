@@ -29,7 +29,7 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
         children: foldersList.map((item, index):MenuItem => ({
             key: item.key,
             icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '16px' }} />,
-            label: <><SecondaryText>{item.name.substring(0, 19) + '...'}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
+            label: <><SecondaryText title={item.name}>{item.name.substring(0, 19) + '...'}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
         })),
         label: <MenuText>Move To</MenuText>,
         popupClassName: 'project-menu-action',

@@ -34,5 +34,6 @@ export { CreateNewProjectButton } from './create-new-project-button';
 export { ProjectButton } from './project-button';
 export { SignUpButton } from './sign-up-button';
 export { AddFolderButton } from './add-folder-button';
+export { FolderButton } from './folder-button';
 export { LikeButton } from './like-button';
 export { IconButton } from './icon-button';
