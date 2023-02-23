@@ -21,7 +21,7 @@ export const MyProjects = () => {
                     <ProjectButton project={{color: 'red', name: 'Knowledge Mode', type: 'public', dateTime: '2022.09.05 18:03'}} />
                 </ProjectActionPopover>
             </Col>
-        </Row> : <Row>
+        </Row> : <Row gutter={[0, 16]}>
             <Col span={24}>
                 <CreateNewProjectButton fullWidth block />
             </Col>
