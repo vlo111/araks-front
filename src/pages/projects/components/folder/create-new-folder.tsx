@@ -1,4 +1,5 @@
 import { Form } from "antd";
+import { CreateFolderFormData, useCreateFolder } from "api/folders/use-create-folder";
 import { AddFolderButton, Button } from "components/button"
 import { FormItem } from "components/form/form-item";
 import { Input } from "components/input";
@@ -10,16 +11,15 @@ import { useState } from "react";
 export const CreateNewFolder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const { mutate } = useCreateFolder();
+
     const [form] = Form.useForm();
-    const onFinish = (values: FormData) => {
+    const onFinish = (values: CreateFolderFormData) => {
+        mutate(values)
     };
 
     const showModal = () => {
         setIsModalOpen(true);
-    };
-
-    const handleOk = () => {
-        setIsModalOpen(false);
     };
 
     const handleCancel = () => {

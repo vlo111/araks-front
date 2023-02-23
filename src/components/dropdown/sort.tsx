@@ -8,6 +8,7 @@ import { COLORS } from "../../helpers/constants";
 import { useSort } from "../../context/sort-context";
 
 import './sort.css';
+import { useState } from "react";
 
 const DropdownButton = styled(Button)`
     width: 232px;
@@ -23,7 +24,7 @@ export type SortItems = {
 
 const setItems = (sortItems: SortItems[]): MenuProps['items'] => sortItems.map((item) => ({
   label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>{item.label}</Text>,
-  key: item.key,
+  key: `${item.label}-${item.key}`,
 }));
 
 type Props = DropdownProps & {
@@ -32,10 +33,13 @@ type Props = DropdownProps & {
 
 export const Sort = ({sortItems, ...props}: Props) => {
   const { dispatch } = useSort();
+  const [text, setText] = useState('Custom');
 
-  const handleMenuClick: MenuProps['onClick'] = (e) => {
-    console.log('click', e);
-    dispatch(e.key);
+  const handleMenuClick: MenuProps['onClick'] = ({ key, keyPath, domEvent }) => {
+    console.log('click', key, keyPath, domEvent.target);
+    const [label, order] = key.split('-');
+    setText(label);
+    dispatch(order);
   };
 
   return <Dropdown
@@ -47,7 +51,7 @@ export const Sort = ({sortItems, ...props}: Props) => {
           <Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Space>
                   <SortIcon />
-                  <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>Custom</Text>
+                  <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>{ text }</Text>
               </Space>
               <Polygon />
           </Space>
