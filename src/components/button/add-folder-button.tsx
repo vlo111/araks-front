@@ -23,6 +23,9 @@ export const AddFolderButton = styled(({ fullWidth = false, ...props}: Props) =>
         span {
             color: ${COLORS.PRIMARY.GRAY};
             margin-left: 8px;
+            font-size: 24px;
+            line-height: 31px;
+            font-weight: 600;
         } 
 
         &:not(:disabled) {
