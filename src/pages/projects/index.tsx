@@ -4,7 +4,7 @@ import VerticalSpace from "../../components/space/vertical-space"
 import { View } from "../../components/view"
 import { SortProvider } from "../../context/sort-context"
 import { ViewProvider } from "../../context/view-context"
-import { Folders } from "./components/folders"
+import { Folders } from "./components/folder/folders"
 import { MyProjects } from "./components/my-projects"
 
 export const Projects = () => {

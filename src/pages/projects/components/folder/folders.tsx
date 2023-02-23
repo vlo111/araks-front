@@ -2,6 +2,7 @@ import { Col, Row } from "antd"
 import { AddFolderButton, FolderButton } from "components/button"
 import { TitleSeparator } from "components/typography"
 import { useView, ViewTypes } from "context/view-context"
+import { CreateNewFolder } from "./create-new-folder"
 
 export const Folders = () => {
     const { state } = useView();
@@ -9,7 +10,7 @@ export const Folders = () => {
         <TitleSeparator name='Folders' />
         {state === ViewTypes.Block ? <Row gutter={24}>
             <Col span={8}>
-                <AddFolderButton block />
+                <CreateNewFolder />
             </Col>
             <Col span={8}>
                 <FolderButton folderName='Scientists' countItems={20} block />
