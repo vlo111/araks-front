@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Badge, Layout as LayoutComponent, Menu as MenuComponent, Space } from 'antd';
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { MenuText } from '../typography';
 import { ReactComponent as Home } from '../icons/home.svg';
@@ -11,6 +11,9 @@ import { ReactComponent as Shared } from '../icons/shared.svg';
 import { ReactComponent as Bell } from '../icons/bell.svg';
 
 import { Search } from 'components/search';
+import { PATHS } from 'helpers/constants';
+import { useAuth } from 'context/auth-context';
+import { HeaderProfile } from 'components/header-profile';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
@@ -83,11 +86,11 @@ const menu = [
 ];
 
 export const ProjectHome = () => {
-//   const { user } = useAuth();
+  const { user } = useAuth();
 
-//   if (user) {
-//     return <Navigate to="/dashboard" />;
-//   }
+  if (!user) {
+    return <Navigate to={PATHS.SIGN_IN} />;
+  }
 
   return (
     <Layout>
@@ -119,11 +122,12 @@ export const ProjectHome = () => {
       <LayoutInner>
         <Header>
           <Space  style={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '32px'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '32px'}}>
               <Search />
               <Badge color="#F97070" dot offset={[-5, 10]}>
                 <Bell />
               </Badge>
+              <HeaderProfile />
             </div>
           </Space>
         </Header>

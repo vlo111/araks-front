@@ -1,4 +1,6 @@
 import { Col, Form, Row } from "antd"
+import { useSignIn } from "api/auth/use-sign-in";
+import { SignInForm } from "types/auth";
 import { Button, SignUpButton } from "../../components/button";
 import { FormItem } from "../../components/form/form-item";
 import { Input } from "../../components/input";
@@ -8,7 +10,11 @@ import { COLORS } from "../../helpers/constants";
 
 export const SignIn = () => {
     const [form] = Form.useForm();
-    const onFinish = (values: FormData) => {
+
+    const { mutate } = useSignIn();
+
+    const onFinish = (values: SignInForm) => {
+        mutate(values);
     };
 
     return <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>

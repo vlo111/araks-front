@@ -1,7 +1,6 @@
-import { createBrowserRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { ProjectHome } from './components/layouts/project-home';
 import { PublicRoutes } from './components/routes/public-route';
-import VerticalSpace from './components/space/vertical-space';
 import { PATHS } from './helpers/constants';
 import ErrorPage from './pages/error';
 import { Projects } from './pages/projects';

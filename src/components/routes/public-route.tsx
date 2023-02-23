@@ -1,9 +1,10 @@
 import { Layout as LayoutComponent } from 'antd';
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { ReactComponent as Logo } from '../icons/araks.svg';
 import styled from 'styled-components';
-// import { useAuth } from "../hooks/useAuth";
+import { PATHS } from 'helpers/constants';
+import { useAuth } from 'context/auth-context';
 
 const Layout = styled(LayoutComponent)`
     background: #FDFDFD;
@@ -26,11 +27,11 @@ const Content = styled(ContentComponent)`
 `;
 
 export const PublicRoutes = () => {
-//   const { user } = useAuth();
+  const { user } = useAuth();
 
-//   if (user) {
-//     return <Navigate to="/dashboard" />;
-//   }
+  if (user) {
+    return <Navigate to={PATHS.PROJECTS} />;
+  }
 
   return (
     <Layout>

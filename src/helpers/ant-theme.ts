@@ -14,7 +14,7 @@ export const antTheme = {
         colorTextDescription: 'rgba(0, 0, 0, 0.45)',
         colorText: '#414141',
         colorTextPlaceholder: 'rgba(35, 47, 106, 0.5)',
-        controlHeight: 40,
+        controlHeight: 43,
         colorFillAlter: '#ffffff',
         colorTextQuaternary: 'rgba(0, 0, 0, 0.25)',
         colorTextTertiary: 'rgba(0, 0, 0, 0.45)',
