@@ -1,6 +1,6 @@
 import { Button as Component, ButtonProps, Space } from "antd"
 import { Text } from "components/typography";
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import { COLORS } from "../../helpers/constants";
 import { ReactComponent as FolderFilled } from '../icons/folder-filled.svg';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
@@ -8,6 +8,7 @@ import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.s
 type Props = ButtonProps & {
     folderName: string;
     countItems: number;
+    fullWidth?: boolean;
 }
 
 const FolrderText = (props: Omit<Props, 'ButtonProps'>) => <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -19,19 +20,25 @@ const FolrderText = (props: Omit<Props, 'ButtonProps'>) => <Space style={{ displ
     <DotsVertical className="more-dots" />
 </Space>
 
-export const FolderButton = styled((props: Props) => <Component
+export const FolderButton = styled(({ folderName, countItems, fullWidth, ...props  }: Props) => <Component
  {...props}
- children={<FolrderText folderName={props.folderName} countItems={props.countItems} />}
+ children={<FolrderText folderName={folderName} countItems={countItems} />}
  size="large" 
  type="default" 
 />)`
     &.ant-btn-default {
         background: #F2F2F2;
-        border: 1px solid #FFFFFF;
-        box-shadow: 0px 4px 4px rgba(111, 111, 111, 0.1);
-        border-radius: 8px;
         padding: 16px 28px;
         text-align: left;
+        ${(props: Props) => props.fullWidth ? css`
+            border: none;
+            border-bottom: 1px solid #C3C3C3;
+            border-radius: 0;
+        ` : css`
+            border: 1px solid #FFFFFF;
+            box-shadow: 0px 4px 4px rgba(111, 111, 111, 0.1);
+            border-radius: 8px;
+        `}
 
         .folder-name {
             color: ${COLORS.PRIMARY.GRAY_DARK};
@@ -51,6 +58,11 @@ export const FolderButton = styled((props: Props) => <Component
 
         &:not(:disabled) {
             &:hover, &:active {
+                ${(props: Props) => props.fullWidth ? css`
+                    border-bottom: 1px solid #C3C3C3;
+                ` : css`
+                `}
+
                 svg path {
                     fill: ${COLORS.PRIMARY.BLUE};
                 }

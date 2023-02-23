@@ -1,23 +1,35 @@
-import { Button as Component } from "antd"
-import styled from "styled-components"
+import { Button as Component, ButtonProps } from "antd"
+import styled, { css } from "styled-components"
 
 import { COLORS } from "../../helpers/constants";
 import VerticalSpace from "../space/vertical-space";
 import { ReactComponent as PlusDashed } from '../icons/plus-dashed.svg';
 import { Text } from "../typography";
 
-const ButtonContent = () => <VerticalSpace size="small">
-    <PlusDashed style={{ fontSize: '60px' }} />
-    <Text className="button-content__text">Create New <br /> Project</Text>
+type Props = ButtonProps & {
+    fullWidth?: boolean;
+};
+
+const ButtonContent = ({ fullWidth }: Omit<Props, 'ButtonProps'>) => <VerticalSpace size={fullWidth ? 'middle' : "small"} direction={fullWidth ? 'horizontal' : 'vertical'}>
+    <PlusDashed style={{ width: fullWidth ? '30px' : '60px', height: fullWidth ? '30px' : '60px' }} />
+    <Text className="button-content__text">Create New <br hidden={fullWidth} /> Project</Text>
 </VerticalSpace>;
 
-export const CreateNewProjectButton = styled((props) => <Component {...props} children={<ButtonContent />} />)`
+export const CreateNewProjectButton = styled(({fullWidth, ...props}: Props) => <Component {...props} children={<ButtonContent fullWidth={fullWidth} />} />)`
     &.ant-btn-default {
         background: transparent;
-        border-color: transparent;
-        width: 200px;
-        height: 150px;
-        padding: 20px 20px 10px;
+        ${(props: Props) => props.fullWidth ? css`
+            border: none;
+            border-bottom: 1px solid #C3C3C3;
+            border-radius: 0;
+            padding: 5px 20px;
+        ` : css`
+            border-color: transparent;
+            width: 200px;
+            height: 150px;
+            padding: 20px 20px 10px;
+        `}
+        
 
         .button-content__text {
             color: ${COLORS.PRIMARY.GRAY_DARK};

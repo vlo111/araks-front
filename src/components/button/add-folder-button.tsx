@@ -1,12 +1,22 @@
-import { Button as Component } from "antd"
-import styled from "styled-components"
+import { Button as Component, ButtonProps } from "antd"
+import styled, { css } from "styled-components"
 import { COLORS } from "../../helpers/constants";
 import { ReactComponent as AddFolder } from '../icons/add-folder.svg';
 
-export const AddFolderButton = styled((props) => <Component {...props} children='Add Folder' size="large" type="dashed" icon={<AddFolder />} />)`
+type Props = ButtonProps & {
+    fullWidth?: boolean;
+};
+
+export const AddFolderButton = styled(({ fullWidth = false, ...props}: Props) => <Component {...props} children='Add Folder' size="large" type="dashed" icon={<AddFolder />} />)`
     &.ant-btn-dashed {
         background: transparent;
-        border-color: #C3C3C3;
+        ${(props: Props) => props.fullWidth ? css`
+            border: none;
+            border-bottom: 1px solid #C3C3C3;
+            border-radius: 0;
+        ` : css`
+            border-color: #C3C3C3;
+        `}
         padding: 16px 28px;
         text-align: left;
 
