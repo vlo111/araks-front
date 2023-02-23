@@ -1,5 +1,6 @@
 import { Col, PaginationProps, Row } from "antd"
-import useGetFolders, { GetFoldersParameters } from "api/folders/use-get-folders"
+import useGetFolders from "api/folders/use-get-folders"
+import { GetProjectsParameters } from "api/types"
 import { AddFolderButton, FolderButton } from "components/button"
 import { TitleSeparator } from "components/typography"
 import { useSort } from "context/sort-context"
@@ -7,23 +8,23 @@ import { useView, ViewTypes } from "context/view-context"
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react"
 import { CreateNewFolder } from "./create-new-folder";
 
-const initData: GetFoldersParameters = {
+export const initData: GetProjectsParameters = {
     page: 1,
     size: 10,
     sortField: 'name',
     sortOrder: 'asc'
 };
 
-enum FolderAction {
+export enum FolderAction {
     CHANGE_PAGE = 'CHANGE_PAGE',
     CHANGE_SORT = 'CHANGE_SORT',
 }
 
-type FolderActionType = GetFoldersParameters & {
+export type FolderActionType = GetProjectsParameters & {
     type: FolderAction;
 };
 
-const folderReducer = (state: GetFoldersParameters, action: FolderActionType): GetFoldersParameters => {
+export const folderReducer = (state: GetProjectsParameters, action: FolderActionType): GetProjectsParameters => {
     switch (action.type) {
       case FolderAction.CHANGE_PAGE:
         return {
@@ -53,8 +54,6 @@ export const Folders = () => {
             dispatch({ type: FolderAction.CHANGE_SORT, sortField: orderName, sortOrder: order })
         }
     }, [order, orderName]);
-
-    console.log(folderState);
 
     const { data } = useGetFolders(folderState);
 

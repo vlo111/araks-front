@@ -3,18 +3,18 @@ import { SortItems } from './sort';
 export const PROJECT_SORT: SortItems[] = [
     {
         label: 'A to Z',
-        key: 'name asc',
+        key: 'title asc',
     },
     {
         label: 'Z to A',
-        key: 'name desc',
+        key: 'title desc',
     },
     {
         label: 'Newest First',
-        key: 'date asc',
+        key: 'updated_at asc',
     },
     {
         label: 'Oldest First',
-        key: 'date desc',
+        key: 'updated_at desc',
     },
 ];
