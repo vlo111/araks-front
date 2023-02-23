@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Layout as LayoutComponent, Menu as MenuComponent } from 'antd';
+import { Badge, Layout as LayoutComponent, Menu as MenuComponent, Space } from 'antd';
 import { Outlet } from "react-router-dom";
 
 import { MenuText } from '../typography';
@@ -8,6 +8,9 @@ import { ReactComponent as Home } from '../icons/home.svg';
 import { ReactComponent as Logo } from '../icons/araks.svg';
 import { ReactComponent as Public } from '../icons/public.svg';
 import { ReactComponent as Shared } from '../icons/shared.svg';
+import { ReactComponent as Bell } from '../icons/bell.svg';
+
+import { Search } from 'components/search';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
@@ -114,7 +117,16 @@ export const ProjectHome = () => {
         />
       </Sider>
       <LayoutInner>
-        <Header />
+        <Header>
+          <Space  style={{ display: 'flex', justifyContent: 'flex-end'}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '32px'}}>
+              <Search />
+              <Badge color="#F97070" dot offset={[-5, 10]}>
+                <Bell />
+              </Badge>
+            </div>
+          </Space>
+        </Header>
         <Content>
             <Outlet />
         </Content>
