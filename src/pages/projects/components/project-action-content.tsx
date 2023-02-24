@@ -15,7 +15,12 @@ type Props = {
 }
 
 export const ProjectActionContent = ({ projectId }: Props) => {
-    const { data } = useGetFolders();
+    const { data } = useGetFolders({
+        page: 1,
+        size: 100,
+        sortField: 'title',
+        sortOrder: 'ASC'
+    });
 
     return <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
         <ProjectActionMenu 
