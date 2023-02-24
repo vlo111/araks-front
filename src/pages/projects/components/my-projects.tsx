@@ -1,4 +1,4 @@
-import { Col, ColProps, PaginationProps, Row, RowProps } from "antd";
+import { Col, ColProps, PaginationProps, Row, RowProps, Spin } from "antd";
 import dayjs from 'dayjs';
 import useGetProjects from "api/projects/use-get-projects";
 import { CreateNewProjectButton, ProjectButton } from "components/button";
@@ -42,7 +42,7 @@ export const MyProjects = () => {
     const { state: sortState } = useSort();
 
     const [orderName, order] = useMemo(() => sortState?.split(' ') || [], [sortState]);
-    const [folderState, dispatch] = useReducer(folderReducer, initData);
+    const [folderState, dispatch] = useReducer(folderReducer, { ...initData, size: 7 });
 
     useEffect(() => {
         if (orderName && order) {
@@ -50,7 +50,7 @@ export const MyProjects = () => {
         }
     }, [order, orderName]);
 
-    const { data } = useGetProjects(folderState);
+    const { data, isLoading } = useGetProjects(folderState);
 
     const onPaginationChange: PaginationProps['onChange'] = useCallback(
         (page: number) => {
@@ -62,11 +62,13 @@ export const MyProjects = () => {
       const paginationProps = useMemo(() => data.count ? ({
           onChange: onPaginationChange,
           total: data.count,
-      }) : undefined, [data.count, onPaginationChange]);
+          defaultPageSize: 7,
+          current: folderState.page,
+      }) : undefined, [data.count, folderState.page, onPaginationChange]);
 
       const dataToDraw = useMemo(() => state === ViewTypes.Block ? propsBlockView : propsGridView, [state]);
 
-    return <>
+    return <Spin spinning={isLoading}>
         <TitleSeparator name='All Projects' paginationProps={paginationProps} />
         {/* set if count < 7 start otherwise space-between  */}
         <Row {...(dataToDraw.row as RowProps)}>
@@ -82,5 +84,5 @@ export const MyProjects = () => {
             }
             
         </Row>
-    </>
+    </Spin>
 }

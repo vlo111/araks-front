@@ -6,7 +6,7 @@ import client from '../client';
 export const GET_PROJECTS_LIST = '/projects';
 
 const useGetProjects = (params: GetProjectsParameters, options = { enabled: true }) => {
-  const result = useQuery([GET_PROJECTS_LIST, params], () => client.get(GET_PROJECTS_LIST), {
+  const result = useQuery([GET_PROJECTS_LIST, params], () => client.get(GET_PROJECTS_LIST, { params }), {
     ...options,
     select: (data) => data.data,
   });

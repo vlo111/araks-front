@@ -1,4 +1,4 @@
-import { Col, PaginationProps, Row } from "antd"
+import { Col, PaginationProps, Row, Spin } from "antd"
 import useGetFolders from "api/folders/use-get-folders"
 import { GetProjectsParameters } from "api/types"
 import { AddFolderButton, FolderButton } from "components/button"
@@ -11,9 +11,9 @@ import { CreateNewFolder } from "./create-new-folder";
 
 export const initData: GetProjectsParameters = {
     page: 1,
-    size: 10,
-    sortField: 'name',
-    sortOrder: 'asc'
+    size: 5,
+    sortField: 'title',
+    sortOrder: 'ASC'
 };
 
 export enum FolderAction {
@@ -56,7 +56,7 @@ export const Folders = () => {
         }
     }, [order, orderName]);
 
-    const { data } = useGetFolders(folderState);
+    const { data, isLoading } = useGetFolders(folderState);
 
     const onPaginationChange: PaginationProps['onChange'] = useCallback(
       (page: number) => {
@@ -68,9 +68,11 @@ export const Folders = () => {
     const paginationProps = useMemo(() => data.count ? ({
         onChange: onPaginationChange,
         total: data.count,
-    }) : undefined, [data.count, onPaginationChange]);
+        defaultPageSize: 6,
+        current: folderState.page,
+    }) : undefined, [data.count, folderState.page, onPaginationChange]);
 
-    return <>
+    return <Spin spinning={isLoading}>
         <TitleSeparator name='Folders' paginationProps={paginationProps} />
         {state === ViewTypes.Block ? <Row gutter={[24, 24]}>
             <Col span={8}>
@@ -91,5 +93,5 @@ export const Folders = () => {
                 </Col>)
             }
         </Row>}
-    </>
+    </Spin>
 }
