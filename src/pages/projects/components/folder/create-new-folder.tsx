@@ -15,7 +15,8 @@ export const CreateNewFolder = () => {
 
     const [form] = Form.useForm();
     const onFinish = (values: CreateFolderFormData) => {
-        mutate(values)
+        mutate(values);
+        setIsModalOpen(false);
     };
 
     const showModal = () => {
