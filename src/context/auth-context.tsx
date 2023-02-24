@@ -1,9 +1,9 @@
 import { useLocalStorage } from 'hooks/use-local-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { User } from 'types/auth';
+import { User, UserDetails } from 'types/auth';
 
 interface AuthContextType {
-  user: User | null;
+  user: UserDetails | null;
   login: (user: User | null) => void;
   logout: () => void;
 }
@@ -20,33 +20,39 @@ export const AuthContext = createContext<AuthContextType>({
 
 
 function AuthProvider(props: AuthProviderProps) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserDetails | null>(null);
     const { setItem, getItem } = useLocalStorage();
 
-    const addUser = useCallback((user: User | null) => {
-        setUser(user);
+    const addUser = useCallback((user: UserDetails | null) => {
         setItem('user', JSON.stringify(user));
+        setUser(user);
       }, [setItem]);
-    
+
+      const addToken = useCallback((token?: string | null) => {
+        setItem('token', token || '');
+      }, [setItem]);
+
       const removeUser = useCallback(() => {
         setUser(null);
         setItem('user', '');
+        setItem('token', '');
       }, [setItem]);
 
     const login = useCallback((user: User | null) => {
-        addUser(user);
-      }, [addUser]);
+        addUser(user?.user || null);
+        addToken(user?.access_token);
+      }, [addToken, addUser]);
     
     const logout = useCallback(() => {
         removeUser();
       }, [removeUser]);
 
     useEffect(() => {
-        const user = getItem('user');
-        if (user) {
-        addUser(JSON.parse(user));
+        const savedUser = getItem('user');
+        if (savedUser && !user) {
+            addUser(JSON.parse(savedUser));
         }
-    }, [addUser, getItem]);
+    }, [addUser, getItem, user]);
     const providerValues = useMemo(() => ({user, login, logout}), [login, logout, user]);
     return <AuthContext.Provider value={providerValues} {...props} />;
 }

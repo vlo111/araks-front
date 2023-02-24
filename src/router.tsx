@@ -10,14 +10,18 @@ import UiComponents from './pages/ui-components';
 
 export const router = createBrowserRouter(
   [
-    {
-      path: PATHS.ROOT,
-      element: <UiComponents />,
-      errorElement: <ErrorPage />,
-    },
+    // {
+    //   path: PATHS.ROOT,
+    //   element: <UiComponents />,
+    //   errorElement: <ErrorPage />,
+    // },
     {
       element: <PublicRoutes />,
       children: [
+        {
+          path: PATHS.ROOT,
+          element: <SignIn />,
+        },
         {
           path: PATHS.SIGN_IN,
           element: <SignIn />,
