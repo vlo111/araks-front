@@ -1,12 +1,33 @@
 import { Space } from "antd";
+import useGetFolders from "api/folders/use-get-folders";
 import { FolderType, ProjectActionMenu } from "components/menu";
+import { FolderListResponse } from "types/folder";
 
-export const ProjectActionContent = () => {
+type MoveToFolder = {
+    type: FolderType,
+    name: string,
+    count: number,
+    key: string,
+};
+
+type Props = {
+    projectId: string;
+}
+
+export const ProjectActionContent = ({ projectId }: Props) => {
+    const { data } = useGetFolders();
 
     return <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ProjectActionMenu foldersList={[
-            {type: FolderType.all, name: 'All projects', key: 'sub1'},
-            {type: FolderType.folder, name: 'Folder name full test something', count: 20, key: 'sub2'}
-        ]} />
+        <ProjectActionMenu 
+            projectId={projectId}
+            foldersList={data?.rows?.reduce(
+                (accumulator: MoveToFolder[], currentValue: FolderListResponse): MoveToFolder[] => {
+                    return [...accumulator, {
+                        type: FolderType.folder,
+                        name: currentValue.title,
+                        count: currentValue.projectCount,
+                        key: currentValue.id,
+                    }]
+        }, [])} />
     </Space>
 }

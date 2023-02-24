@@ -1,4 +1,5 @@
 import { Col, ColProps, PaginationProps, Row, RowProps } from "antd";
+import dayjs from 'dayjs';
 import useGetProjects from "api/projects/use-get-projects";
 import { CreateNewProjectButton, ProjectButton } from "components/button";
 import { ProjectActionPopover } from "components/popover"
@@ -6,6 +7,7 @@ import { TitleSeparator } from "components/typography";
 import { useSort } from "context/sort-context";
 import { useView, ViewTypes } from "context/view-context";
 import { useCallback, useEffect, useMemo, useReducer } from "react";
+import { ProjectListResponse } from "types/project";
 import { FolderAction, folderReducer, initData } from "./folder/folders";
 import { ProjectActionContent } from "./project-action-content";
 import { ProjectActionTitle } from "./project-action-title";
@@ -57,10 +59,10 @@ export const MyProjects = () => {
         [],
       )
       
-      const paginationProps = useMemo(() => data.length ? ({
+      const paginationProps = useMemo(() => data.count ? ({
           onChange: onPaginationChange,
-          total: data.length,
-      }) : undefined, [data.length, onPaginationChange]);
+          total: data.count,
+      }) : undefined, [data.count, onPaginationChange]);
 
       const dataToDraw = useMemo(() => state === ViewTypes.Block ? propsBlockView : propsGridView, [state]);
 
@@ -71,11 +73,14 @@ export const MyProjects = () => {
             <Col {...(dataToDraw.col as ColProps)}>
                 <CreateNewProjectButton {...(dataToDraw.newProject)} />
             </Col>
-            <Col {...(dataToDraw.col as ColProps)}>
-                <ProjectActionPopover title={<ProjectActionTitle />} content={<ProjectActionContent />} {...(dataToDraw.project)}>
-                    <ProjectButton project={{color: 'red', name: 'Knowledge Mode', type: 'public', dateTime: '2022.09.05 18:03'}} {...(dataToDraw.projectButton)} />
-                </ProjectActionPopover>
-            </Col>
+            {
+                data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>
+                    <ProjectActionPopover title={<ProjectActionTitle />} content={<ProjectActionContent projectId={item.id} />} {...(dataToDraw.project)}>
+                        <ProjectButton project={{color: item.color, name: item.title, type: 'public', dateTime: dayjs(item.updated_at).format('YYYY-MM-DD HH:mm')}} {...(dataToDraw.projectButton)} />
+                    </ProjectActionPopover>
+                </Col>)
+            }
+            
         </Row>
     </>
 }

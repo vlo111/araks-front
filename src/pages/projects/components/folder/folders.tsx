@@ -6,6 +6,7 @@ import { TitleSeparator } from "components/typography"
 import { useSort } from "context/sort-context"
 import { useView, ViewTypes } from "context/view-context"
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react"
+import { FolderListResponse } from "types/folder"
 import { CreateNewFolder } from "./create-new-folder";
 
 export const initData: GetProjectsParameters = {
@@ -63,34 +64,32 @@ export const Folders = () => {
       },
       [],
     )
-    
-    const paginationProps = useMemo(() => data.length ? ({
+
+    const paginationProps = useMemo(() => data.count ? ({
         onChange: onPaginationChange,
-        total: data.length,
-    }) : undefined, [data.length, onPaginationChange]);
+        total: data.count,
+    }) : undefined, [data.count, onPaginationChange]);
 
     return <>
         <TitleSeparator name='Folders' paginationProps={paginationProps} />
-        {state === ViewTypes.Block ? <Row gutter={24}>
+        {state === ViewTypes.Block ? <Row gutter={[24, 24]}>
             <Col span={8}>
                 <CreateNewFolder />
             </Col>
-            <Col span={8}>
-                <FolderButton folderName='Scientists' countItems={20} block />
-            </Col>
-            <Col span={8}>
-                <FolderButton folderName="Country Analysis" countItems={32} block />
-            </Col>
+            {
+                data?.rows?.map((item: FolderListResponse) => <Col span={8} key={item.id}>
+                    <FolderButton folderName={item.title} countItems={item.projectCount} block />
+                </Col>)
+            }
         </Row> : <Row>
             <Col span={24}>
                 <AddFolderButton block fullWidth={true} />
             </Col>
-            <Col span={24}>
-                <FolderButton folderName='Scientists' countItems={20} block fullWidth={true} />
-            </Col>
-            <Col span={24}>
-                <FolderButton folderName="Country Analysis" countItems={32} block fullWidth={true} />
-            </Col>
+            {
+                data?.rows?.map((item: FolderListResponse) => <Col span={8} key={item.id}>
+                    <FolderButton folderName={item.title} countItems={item.projectCount} block fullWidth={true} />
+                </Col>)
+            }
         </Row>}
     </>
 }

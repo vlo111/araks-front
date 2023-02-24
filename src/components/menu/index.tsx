@@ -8,6 +8,7 @@ import { MenuText, SecondaryText } from "components/typography";
 import styled from "styled-components";
 
 import './index.css';
+import { useMoveProjectTo } from "api/projects/use-move-project-to";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -26,10 +27,10 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
     {
         key: '1',
         icon: <MoveTo />,
-        children: foldersList.map((item, index):MenuItem => ({
+        children: foldersList?.map((item, index):MenuItem => ({
             key: item.key,
             icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '16px' }} />,
-            label: <><SecondaryText title={item.name}>{item.name.substring(0, 19) + '...'}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
+            label: <><SecondaryText title={item.name}>{item.name.length > 19 ? item.name.substring(0, 19) + '...' : item.name}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
         })),
         label: <MenuText>Move To</MenuText>,
         popupClassName: 'project-menu-action',
@@ -66,12 +67,15 @@ const Menu = styled(MenuComponent)`
 
 type Props = {
     foldersList: FoldersList[];
+    projectId: string;
 };
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
-export const ProjectActionMenu = ({ foldersList }: Props) => {
+export const ProjectActionMenu = ({ foldersList, projectId }: Props) => {
+    const { mutate } = useMoveProjectTo()
     const onClick: MenuProps['onClick'] = (e) => {
-        console.log('click ', e);
+        console.log('click ', e.key, projectId);
+        mutate({ projectId, folderId: e.key })
       };
 
     return <Menu
