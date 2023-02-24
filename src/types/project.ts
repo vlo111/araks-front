@@ -3,4 +3,5 @@ export type ProjectListResponse = {
     title: string;
     color: string;
     updated_at: string;
+    privacy: string;
 }

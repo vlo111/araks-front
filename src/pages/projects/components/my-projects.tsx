@@ -14,11 +14,12 @@ import { ProjectActionTitle } from "./project-action-title";
 
 let propsBlockView = {
     row: {
-        gutter: 34,
+        gutter: [42, 24],
         justify: 'start'
     },
     col: {
-        span: 3
+       // span: 3,
+        //offset: 1
     },
     newProject: {},
     project: {}, 
@@ -37,12 +38,16 @@ let propsGridView = {
     projectButton: { fullWidth: true, block: true }, 
 };
 
+const colStyles = {
+    flexBasis: "13%",
+  };
+
 export const MyProjects = () => {
     const { state } = useView();
     const { state: sortState } = useSort();
 
     const [orderName, order] = useMemo(() => sortState?.split(' ') || [], [sortState]);
-    const [folderState, dispatch] = useReducer(folderReducer, { ...initData, size: 7 });
+    const [folderState, dispatch] = useReducer(folderReducer, { ...initData, size: 13 });
 
     useEffect(() => {
         if (orderName && order) {
@@ -62,7 +67,7 @@ export const MyProjects = () => {
       const paginationProps = useMemo(() => data.count ? ({
           onChange: onPaginationChange,
           total: data.count,
-          defaultPageSize: 7,
+          defaultPageSize: 13,
           current: folderState.page,
       }) : undefined, [data.count, folderState.page, onPaginationChange]);
 
@@ -70,15 +75,14 @@ export const MyProjects = () => {
 
     return <Spin spinning={isLoading}>
         <TitleSeparator name='All Projects' paginationProps={paginationProps} />
-        {/* set if count < 7 start otherwise space-between  */}
-        <Row {...(dataToDraw.row as RowProps)}>
-            <Col {...(dataToDraw.col as ColProps)}>
+        <Row {...(dataToDraw.row as RowProps)} justify={state === ViewTypes.Block && data.count >= 6 ? 'start' : 'start'} >
+            <Col {...(dataToDraw.col as ColProps)} style={{ ...colStyles }}>
                 <CreateNewProjectButton {...(dataToDraw.newProject)} />
             </Col>
             {
-                data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>
+                data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)} style={{ ...colStyles }}>
                     <ProjectActionPopover title={<ProjectActionTitle />} content={<ProjectActionContent projectId={item.id} />} {...(dataToDraw.project)}>
-                        <ProjectButton project={{color: item.color, name: item.title, type: 'public', dateTime: dayjs(item.updated_at).format('YYYY-MM-DD HH:mm')}} {...(dataToDraw.projectButton)} />
+                        <ProjectButton project={{color: item.color, name: item.title, type: item.privacy, dateTime: dayjs(item.updated_at).format('YYYY-MM-DD HH:mm')}} {...(dataToDraw.projectButton)} />
                     </ProjectActionPopover>
                 </Col>)
             }

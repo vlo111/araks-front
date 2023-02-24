@@ -74,7 +74,6 @@ type Props = {
 export const ProjectActionMenu = ({ foldersList, projectId }: Props) => {
     const { mutate } = useMoveProjectTo()
     const onClick: MenuProps['onClick'] = (e) => {
-        console.log('click ', e.key, projectId);
         mutate({ projectId, folderId: e.key })
       };
 

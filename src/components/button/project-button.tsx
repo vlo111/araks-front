@@ -19,7 +19,7 @@ type ProjectButtonDraw = ButtonProps & FullWidth & {
         dateTime: string;
         // icon: string;
         name: string;
-        type: 'public' | 'shared';
+        type: string;
     };
 }
 
@@ -34,6 +34,7 @@ const HeartIcon = (props: Partial<CustomIconComponentProps>) => (
 const Wrapper = styled.div<WrapperProps>`
     border-radius: 8px;
     background-color: ${props => props.bgColor || "transparent"};
+    border: 0.3px solid #414141;
     ${(props) => props.fullWidth ? css`
         width: 30px;
         height: 30px;
@@ -76,10 +77,10 @@ const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonPr
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Wrapper bgColor={project.color} fullWidth={fullWidth}>
                 <HeartIcon style={{ fontSize: fullWidth ? '15px' : '26px' }} />
-                <TypeIcon fullWidth={fullWidth}>{project.type === 'public'? <PublicProject /> : <PublicProject />}</TypeIcon>
+                {project.type === 'public' && <TypeIcon fullWidth={fullWidth}>{project.type === 'public' ? <PublicProject /> : undefined}</TypeIcon>}
             </Wrapper>
         </div>
-        <Text className="button-content__text">{project.name}</Text>
+        <Text className="button-content__text">{project.name.length > 19 ? project.name.substring(0, 19) + '...' : project.name}</Text>
     </VerticalSpace>
     <MenuText className="button-content__text">{project.dateTime}</MenuText>
 </Space>;
