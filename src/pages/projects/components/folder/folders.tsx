@@ -1,12 +1,13 @@
-import { Col, PaginationProps, Row, Spin } from "antd"
+import { Col, ColProps, PaginationProps, Row, RowProps, Spin } from "antd"
 import useGetFolders from "api/folders/use-get-folders"
 import { GetProjectsParameters } from "api/types"
 import { AddFolderButton, FolderButton } from "components/button"
 import { TitleSeparator } from "components/typography"
 import { useSort } from "context/sort-context"
 import { useView, ViewTypes } from "context/view-context"
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react"
+import { useCallback, useEffect, useMemo, useReducer } from "react"
 import { FolderListResponse } from "types/folder"
+import { propsFolderBlockView, propsFolderGridView } from "../constants"
 import { CreateNewFolder } from "./create-new-folder";
 
 export const initData: GetProjectsParameters = {
@@ -72,26 +73,19 @@ export const Folders = () => {
         current: folderState.page,
     }) : undefined, [data.count, folderState.page, onPaginationChange]);
 
+    const dataToDraw = useMemo(() => state === ViewTypes.Block ? propsFolderBlockView : propsFolderGridView, [state]);
+
     return <Spin spinning={isLoading}>
         <TitleSeparator name='Folders' paginationProps={paginationProps} />
-        {state === ViewTypes.Block ? <Row gutter={[24, 24]}>
-            <Col span={8}>
+        <Row {...(dataToDraw.row as RowProps)}>
+            <Col {...(dataToDraw.col as ColProps)}>
                 <CreateNewFolder />
             </Col>
             {
-                data?.rows?.map((item: FolderListResponse) => <Col span={8} key={item.id}>
-                    <FolderButton folderName={item.title} countItems={item.projectCount} block />
+                data?.rows?.map((item: FolderListResponse) => <Col {...(dataToDraw.col as ColProps)} key={item.id}>
+                    <FolderButton {...(dataToDraw.folderButton)} folderName={item.title} countItems={item.projectCount} />
                 </Col>)
             }
-        </Row> : <Row>
-            <Col span={24}>
-                <AddFolderButton block fullWidth={true} />
-            </Col>
-            {
-                data?.rows?.map((item: FolderListResponse) => <Col span={8} key={item.id}>
-                    <FolderButton folderName={item.title} countItems={item.projectCount} block fullWidth={true} />
-                </Col>)
-            }
-        </Row>}
+        </Row>
     </Spin>
 }

@@ -17,7 +17,8 @@ import { HeaderProfile } from 'components/header-profile';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
-    height: 100vh;
+    height: 100%;
+    min-height: 100vh;
 `;
 
 const Menu = styled(MenuComponent)`

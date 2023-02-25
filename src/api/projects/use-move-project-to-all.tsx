@@ -1,3 +1,4 @@
+import { GET_FOLDERS_LIST } from 'api/folders/use-get-folders';
 import { useMutation, useQueryClient } from 'react-query';
 
 import client from '../client';
@@ -18,6 +19,7 @@ export const useMoveProjectToAll = () => {
     {
       onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries(GET_PROJECTS_LIST);
+        queryClient.invalidateQueries(GET_FOLDERS_LIST);
       },
     }
   );

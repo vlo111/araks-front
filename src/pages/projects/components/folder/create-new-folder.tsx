@@ -6,10 +6,12 @@ import { Input } from "components/input";
 import { Modal } from "components/modal";
 import VerticalSpace from "components/space/vertical-space";
 import { Text } from "components/typography";
+import { useView, ViewTypes } from "context/view-context";
 import { useState } from "react";
 
 export const CreateNewFolder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { state } = useView();
 
     const { mutate } = useCreateFolder();
 
@@ -31,7 +33,7 @@ export const CreateNewFolder = () => {
         form.resetFields();
     };
     return <>
-        <AddFolderButton block onClick={showModal} />
+        <AddFolderButton block onClick={showModal} fullWidth={state === ViewTypes.Grid} />
         <Modal 
             title={<Text style={{ textAlign: 'center' }}>New Folder</Text>} 
             open={isModalOpen} 

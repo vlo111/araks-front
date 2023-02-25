@@ -6,8 +6,13 @@ import { COLORS } from "../../helpers/constants";
 import VerticalSpace from "../space/vertical-space";
 import { ReactComponent as AraksSmall } from '../icons/araks-small.svg';
 import { ReactComponent as PublicProject } from '../icons/public-project.svg';
+import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
+
 import { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
-import { MenuText, Text } from "../typography";
+import { LongTitle, MenuText, Text } from "../typography";
+import { ProjectActionPopover } from "components/popover";
+import { ProjectActionTitle } from "pages/projects/components/project-action-title";
+import { ProjectActionContent } from "pages/projects/components/project-action-content";
 
 export type FullWidth = {
     fullWidth?: boolean;
@@ -20,6 +25,7 @@ type ProjectButtonDraw = ButtonProps & FullWidth & {
         // icon: string;
         name: string;
         type: string;
+        id: string;
     };
 }
 
@@ -38,7 +44,7 @@ const Wrapper = styled.div<WrapperProps>`
     ${(props) => props.fullWidth ? css`
         width: 30px;
         height: 30px;
-        padding: 5px 0;
+        padding: 3px 0;
     ` : css`
         width: 60px;
         height: 60px;
@@ -53,22 +59,52 @@ const TypeIcon = styled.div<FullWidth>`
     box-shadow: 0px 10px 10px rgba(111, 111, 111, 0.2);
     border-radius: 4px;
     position: relative;
+
     ${(props) => props.fullWidth ? css`
-        left: 20px;
-        bottom: 25px;
-        width: 6px;
-        height: 6px;
+        left: 23px;
+        bottom: 26px;
+        width: 10px;
+        height: 10px;
     ` : css`
         left: 40px;
         bottom: 40px;
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         padding: 3px;
     `}
+    
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+`;
+
+const DotsWrapper = styled.div<FullWidth>`
+    & {
+        position: relative;
+
+        ${(props) => props.fullWidth ? css`
+            
+        ` : css`
+            
+            right: 10px;
+            bottom: 120px;
+            height: 30px;
+            width: 15px;
+            padding: 5px;
+            border-radius: 8px;
+        `}
+
+        &:hover, &:active {
+            border-color: transparent;
+            background-color: rgba(35, 47, 106, 0.1);
+        }
+
+        circle {
+            fill: #F2F2F2;
+            font-size: 20px;
+        }
+    }
 `;
 
 const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonProps'>) => 
@@ -80,9 +116,14 @@ const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonPr
                 {project.type === 'public' && <TypeIcon fullWidth={fullWidth}>{project.type === 'public' ? <PublicProject /> : undefined}</TypeIcon>}
             </Wrapper>
         </div>
-        <Text className="button-content__text">{project.name.length > 19 ? project.name.substring(0, 19) + '...' : project.name}</Text>
+        {project.name.length > 19 && !fullWidth ? <LongTitle className="button-content__text" name={project.name} /> : <Text className="button-content__text">{project.name}</Text>}
     </VerticalSpace>
-    <MenuText className="button-content__text">{project.dateTime}</MenuText>
+    <Space>
+        <MenuText className="button-content__text">{project.dateTime}</MenuText>
+        <ProjectActionPopover align={{ offset: [-20, -5] }} title={<ProjectActionTitle />} content={<ProjectActionContent projectId={project.id} />}>
+            <DotsWrapper fullWidth={fullWidth}><DotsVertical className="more-dots" /></DotsWrapper>
+        </ProjectActionPopover>
+    </Space>
 </Space>;
 
 const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} />)`
@@ -105,10 +146,16 @@ const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} /
         .button-content__text {
             color: ${COLORS.PRIMARY.GRAY_DARK};
         } 
+
+        
         
         &:hover, &:active {
             border-color: transparent;
             background-color: rgba(35, 47, 106, 0.1);
+
+            .more-dots circle {
+                fill: ${COLORS.PRIMARY.BLUE};
+            }
         }
     }
 `;
