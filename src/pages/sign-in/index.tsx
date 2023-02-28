@@ -51,7 +51,7 @@ export const SignIn = () => {
                         <Button htmlType="submit" block type="primary">
                             Sign In
                         </Button>
-                        <SignUpButton iconType='azure' />
+                        <SignUpButton block iconType='azure' />
                     </VerticalSpace>
                 </VerticalSpace>
             </Form>

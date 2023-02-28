@@ -1,9 +1,9 @@
-import { Layout as LayoutComponent } from 'antd';
+import { Col, Layout as LayoutComponent, Row } from 'antd';
 import { Navigate, Outlet } from "react-router-dom";
 
 import { ReactComponent as Logo } from '../icons/araks.svg';
 import styled from 'styled-components';
-import { PATHS } from 'helpers/constants';
+import { COLORS, PATHS } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
 
 const Layout = styled(LayoutComponent)`
@@ -24,6 +24,7 @@ const Content = styled(ContentComponent)`
     padding: 0 50px;
     margin-left: auto;
     margin-right: auto;
+    width: 448px;
 `;
 
 export const PublicRoutes = () => {
@@ -35,12 +36,18 @@ export const PublicRoutes = () => {
 
   return (
     <Layout>
-      <Header>
-        <Logo />
-      </Header>
-      <Content>
-        <Outlet />
-      </Content>
+      <Row>
+        <Col span={12}>
+        <Header>
+          <Logo />
+        </Header>
+        <Content>
+          <Outlet />
+        </Content>
+        </Col>
+        <Col span={12} style={{ backgroundColor: COLORS.PRIMARY.GRAY_LIGHT }}></Col>
+      </Row>
+      
     </Layout>
   )
 };
