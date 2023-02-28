@@ -12,9 +12,10 @@ type MoveToFolder = {
 
 type Props = {
     projectId: string;
+    folderId: string;
 }
 
-export const ProjectActionContent = ({ projectId }: Props) => {
+export const ProjectActionContent = ({ projectId, folderId }: Props) => {
     const { data } = useGetFolders({
         page: 1,
         size: 100,
@@ -22,9 +23,16 @@ export const ProjectActionContent = ({ projectId }: Props) => {
         sortOrder: 'ASC'
     });
 
+    const initialReduce = folderId ? [{
+        type: FolderType.all,
+        name: 'All projects',
+        key: 'all',
+    }] : [];
+
     return <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
         <ProjectActionMenu 
             projectId={projectId}
+            folderId={folderId}
             foldersList={data?.rows?.reduce(
                 (accumulator: MoveToFolder[], currentValue: FolderListResponse): MoveToFolder[] => {
                     return [...accumulator, {
@@ -33,6 +41,6 @@ export const ProjectActionContent = ({ projectId }: Props) => {
                         count: currentValue.projectCount,
                         key: currentValue.id,
                     }]
-        }, [])} />
+        }, initialReduce)} />
     </Space>
 }

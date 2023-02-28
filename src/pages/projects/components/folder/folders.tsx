@@ -5,7 +5,9 @@ import { AddFolderButton, FolderButton } from "components/button"
 import { TitleSeparator } from "components/typography"
 import { useSort } from "context/sort-context"
 import { useView, ViewTypes } from "context/view-context"
+import { PATHS } from "helpers/constants"
 import { useCallback, useEffect, useMemo, useReducer } from "react"
+import { useNavigate } from "react-router-dom"
 import { FolderListResponse } from "types/folder"
 import { propsFolderBlockView, propsFolderGridView } from "../constants"
 import { CreateNewFolder } from "./create-new-folder";
@@ -47,6 +49,7 @@ export const folderReducer = (state: GetProjectsParameters, action: FolderAction
 export const Folders = () => {
     const { state } = useView();
     const { state: sortState } = useSort();
+    const navigate = useNavigate()
 
     const [orderName, order] = useMemo(() => sortState?.split(' ') || [], [sortState]);
     const [folderState, dispatch] = useReducer(folderReducer, initData);
@@ -83,7 +86,7 @@ export const Folders = () => {
             </Col>
             {
                 data?.rows?.map((item: FolderListResponse) => <Col {...(dataToDraw.col as ColProps)} key={item.id}>
-                    <FolderButton {...(dataToDraw.folderButton)} folderName={item.title} countItems={item.projectCount} />
+                    <FolderButton onClick={() => navigate(PATHS.FOLDER.replace(':id', item.id))} {...(dataToDraw.folderButton)} folderName={item.title} countItems={item.projectCount} />
                 </Col>)
             }
         </Row>

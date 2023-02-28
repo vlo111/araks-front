@@ -1,4 +1,4 @@
-import { Menu as MenuComponent, MenuProps } from "antd";
+import { Divider, Menu as MenuComponent, MenuProps } from "antd";
 import { FolderFilled } from '@ant-design/icons';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
@@ -9,6 +9,9 @@ import styled from "styled-components";
 
 import './index.css';
 import { useMoveProjectTo } from "api/projects/use-move-project-to";
+import VerticalSpace from "components/space/vertical-space";
+import { COLORS } from "helpers/constants";
+import { useMoveProjectToAll } from "api/projects/use-move-project-to-all";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -23,14 +26,24 @@ type FoldersList = {
     type: FolderType
 };
 
+const menuItemStyle = { borderBottom: `1px solid ${COLORS.PRIMARY.GRAY_LIGHT}`, borderRadius: '0' };
+
 const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
     {
         key: '1',
         icon: <MoveTo />,
         children: foldersList?.map((item, index):MenuItem => ({
             key: item.key,
-            icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '16px' }} />,
-            label: <><SecondaryText title={item.name}>{item.name.length > 19 ? item.name.substring(0, 19) + '...' : item.name}</SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>,
+            style: item.type === FolderType.all ? menuItemStyle : {},
+            icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '14px' }} />,
+            label: item.type === FolderType.folder ? <><SecondaryText title={item.name}>
+                {item.name.length > 19 ? item.name.substring(0, 19) + '...' : item.name}
+            </SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>
+            : <>
+                <SecondaryText>
+                    {item.name}
+                </SecondaryText>
+            </>,
         })),
         label: <MenuText>Move To</MenuText>,
         popupClassName: 'project-menu-action',
@@ -68,13 +81,19 @@ const Menu = styled(MenuComponent)`
 type Props = {
     foldersList: FoldersList[];
     projectId: string;
+    folderId?: string;
 };
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
-export const ProjectActionMenu = ({ foldersList, projectId }: Props) => {
-    const { mutate } = useMoveProjectTo()
+export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) => {
+    const { mutate } = useMoveProjectTo(folderId);
+    const { mutate: mutateAll } = useMoveProjectToAll(folderId);
     const onClick: MenuProps['onClick'] = (e) => {
-        mutate({ projectId, folderId: e.key })
+        if (e.key === 'all') {
+            mutateAll({ projectId });
+            return;
+        }
+        mutate({ projectId, folderId: e.key });
       };
 
     return <Menu

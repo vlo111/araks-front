@@ -26,6 +26,7 @@ type ProjectButtonDraw = ButtonProps & FullWidth & {
         name: string;
         type: string;
         id: string;
+        folderId: string;
     };
 }
 
@@ -108,7 +109,10 @@ const DotsWrapper = styled.div<FullWidth>`
 `;
 
 const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonProps'>) => 
-<Space size={fullWidth ? 'middle' : 4} direction={fullWidth ? 'horizontal' : 'vertical'} style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
+<Space 
+    size={fullWidth ? 'middle' : 4} 
+    direction={fullWidth ? 'horizontal' : 'vertical'} 
+    style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
     <VerticalSpace size={fullWidth ? 'middle' : 12} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Wrapper bgColor={project.color} fullWidth={fullWidth}>
@@ -120,7 +124,7 @@ const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonPr
     </VerticalSpace>
     <Space>
         <MenuText className="button-content__text">{project.dateTime}</MenuText>
-        <ProjectActionPopover align={{ offset: [-20, -5] }} title={<ProjectActionTitle />} content={<ProjectActionContent projectId={project.id} />}>
+        <ProjectActionPopover align={{ offset: [-20, -5] }} title={<ProjectActionTitle />} content={<ProjectActionContent projectId={project.id} folderId={project.folderId} />}>
             <DotsWrapper fullWidth={fullWidth}><DotsVertical className="more-dots" /></DotsWrapper>
         </ProjectActionPopover>
     </Space>
@@ -146,8 +150,6 @@ const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} /
         .button-content__text {
             color: ${COLORS.PRIMARY.GRAY_DARK};
         } 
-
-        
         
         &:hover, &:active {
             border-color: transparent;
@@ -161,5 +163,8 @@ const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} /
 `;
 
 export const ProjectButton = ({ project, fullWidth, ...props }: ProjectButtonDraw) => {
-  return  <StyledButton  {...props} fullWidth={ fullWidth } children={<ButtonContent project={project} fullWidth={fullWidth} />} />;
+  return  <StyledButton
+    {...props}
+    fullWidth={ fullWidth }
+    children={<ButtonContent project={project} fullWidth={fullWidth} />} />;
 }

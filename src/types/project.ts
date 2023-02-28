@@ -4,4 +4,5 @@ export type ProjectListResponse = {
     color: string;
     updated_at: string;
     privacy: string;
+    folder_id: string;
 }

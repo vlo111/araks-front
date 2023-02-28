@@ -2,18 +2,19 @@ import { Col, ColProps, PaginationProps, Row, RowProps, Spin } from "antd";
 import dayjs from 'dayjs';
 import useGetProjects from "api/projects/use-get-projects";
 import { CreateNewProjectButton, ProjectButton } from "components/button";
-import { ProjectActionPopover } from "components/popover"
 import { TitleSeparator } from "components/typography";
 import { useSort } from "context/sort-context";
 import { useView, ViewTypes } from "context/view-context";
 import { useCallback, useEffect, useMemo, useReducer } from "react";
 import { ProjectListResponse } from "types/project";
 import { FolderAction, folderReducer, initData } from "./folder/folders";
-import { ProjectActionContent } from "./project-action-content";
-import { ProjectActionTitle } from "./project-action-title";
 import { propsProjectBlockView, propsProjectGridView } from "./constants";
 
-export const MyProjects = () => {
+type Props = {
+    projectsUrl?: string;
+}
+
+export const MyProjects = ({ projectsUrl }: Props) => {
     const { state } = useView();
     const { state: sortState } = useSort();
 
@@ -26,7 +27,7 @@ export const MyProjects = () => {
         }
     }, [order, orderName]);
 
-    const { data, isLoading } = useGetProjects(folderState);
+    const { data, isLoading } = useGetProjects(folderState, projectsUrl);
 
     const onPaginationChange: PaginationProps['onChange'] = useCallback(
         (page: number) => {
@@ -52,7 +53,15 @@ export const MyProjects = () => {
             </Col>
             {
                 data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>
-                    <ProjectButton project={{id: item.id, color: item.color, name: item.title, type: item.privacy, dateTime: dayjs(item.updated_at).format('YYYY-MM-DD HH:mm')}} {...(dataToDraw.projectButton)} />
+                    <ProjectButton 
+                        project={{
+                            id: item.id,
+                            color: item.color, 
+                            name: item.title, 
+                            folderId: item.folder_id,
+                            type: item.privacy, 
+                            dateTime: dayjs(item.updated_at).format('YYYY-MM-DD HH:mm')
+                        }} {...(dataToDraw.projectButton)} />
                 </Col>)
             }
             
