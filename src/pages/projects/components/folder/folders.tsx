@@ -1,7 +1,7 @@
 import { Col, ColProps, PaginationProps, Row, RowProps, Spin } from "antd"
 import useGetFolders from "api/folders/use-get-folders"
 import { GetProjectsParameters } from "api/types"
-import { AddFolderButton, FolderButton } from "components/button"
+import { FolderButton } from "components/button"
 import { TitleSeparator } from "components/typography"
 import { useSort } from "context/sort-context"
 import { useView, ViewTypes } from "context/view-context"
@@ -72,7 +72,7 @@ export const Folders = () => {
     const paginationProps = useMemo(() => data.count ? ({
         onChange: onPaginationChange,
         total: data.count,
-        defaultPageSize: 6,
+        defaultPageSize: 5,
         current: folderState.page,
     }) : undefined, [data.count, folderState.page, onPaginationChange]);
 
@@ -86,7 +86,7 @@ export const Folders = () => {
             </Col>
             {
                 data?.rows?.map((item: FolderListResponse) => <Col {...(dataToDraw.col as ColProps)} key={item.id}>
-                    <FolderButton onClick={() => navigate(PATHS.FOLDER.replace(':id', item.id))} {...(dataToDraw.folderButton)} folderName={item.title} countItems={item.projectCount} />
+                    <FolderButton onDoubleClick={() => navigate(PATHS.FOLDER.replace(':id', item.id))} {...(dataToDraw.folderButton)} folderName={item.title} folderId={item.id} countItems={item.projectCount} />
                 </Col>)
             }
         </Row>

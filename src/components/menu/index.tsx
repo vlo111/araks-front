@@ -12,6 +12,10 @@ import { useMoveProjectTo } from "api/projects/use-move-project-to";
 import VerticalSpace from "components/space/vertical-space";
 import { COLORS } from "helpers/constants";
 import { useMoveProjectToAll } from "api/projects/use-move-project-to-all";
+import { FolderModal } from "pages/projects/components/folder/folder-modal";
+import { useState } from "react";
+import { RequestTypes } from "api/types";
+import { FOLDER_UPDATE_URL } from "api/folders/use-create-folder";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -61,6 +65,19 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
     }
 ];
 
+const menuItemsFolder: MenuItem[] = [
+    {
+        key: 'edit',
+        icon: <Edit />,
+        label: <MenuText>Edit</MenuText>,
+    },
+    {
+        key: 'delete',
+        icon: <Delete />,
+        label: <MenuText>Delete</MenuText>,
+    }
+];
+
 
 const Menu = styled(MenuComponent)`
     background-color: transparent;
@@ -103,4 +120,36 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
         forceSubMenuRender={false}
         onClick={onClick}
     />
+};
+
+type PropsFolder = {
+    folderName: string;
+    folderId: string;
+};
+
+export const FolderActionMenu = ({ folderName, folderId }: PropsFolder) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const onClick: MenuProps['onClick'] = (e) => {
+        if (e.key === 'edit') {
+            setIsModalOpen(true);
+        }
+        e.domEvent.stopPropagation();
+      };
+
+    return <>
+        <Menu
+            style={{ width: 256 }}
+            mode="vertical"
+            items={menuItemsFolder} 
+            forceSubMenuRender={false}
+            onClick={onClick}
+        />
+        <FolderModal 
+            isModalOpen={isModalOpen} 
+            setIsModalOpen={setIsModalOpen} 
+            initialValue={folderName}
+            type={RequestTypes.Put}
+            url={FOLDER_UPDATE_URL.replace(':id', folderId)}
+        />
+    </>
 };

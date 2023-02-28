@@ -1,3 +1,4 @@
+import { RequestType, RequestTypes } from 'api/types';
 import { useMutation, useQueryClient } from 'react-query';
 
 import client from '../client';
@@ -7,12 +8,14 @@ export type CreateFolderFormData = {
   folderName: string;
 }
 
-export const useCreateFolder = () => {
+const FOLDER_CREATE_URL = 'folders/create';
+export const FOLDER_UPDATE_URL = 'folders/update/:id';
+
+export const useCreateFolder = (url = FOLDER_CREATE_URL, type: RequestType = RequestTypes.Post) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     ({ folderName }: CreateFolderFormData) => {
-      const url = 'folders/create';
-      return client.post(url, {
+      return client[type](url, {
         title: folderName
       });
     },

@@ -4,9 +4,12 @@ import styled, { css } from "styled-components"
 import { COLORS } from "../../helpers/constants";
 import { ReactComponent as FolderFilled } from '../icons/folder-filled.svg';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
+import { ProjectActionPopover } from "components/popover";
+import { FolderActionMenu } from "components/menu";
 
 type Props = ButtonProps & {
     folderName: string;
+    folderId: string;
     countItems: number;
     fullWidth?: boolean;
 }
@@ -17,12 +20,14 @@ const FolrderText = (props: Omit<Props, 'ButtonProps'>) => <Space style={{ displ
         <Text className="folder-name">{props.folderName}</Text>
         <Text className="folder-count">({props.countItems})</Text>
     </Space>
-    <DotsVertical className="more-dots" />
+    <ProjectActionPopover align={{ offset: [-20, -5] }} content={<FolderActionMenu folderName={props.folderName} folderId={props.folderId} />}>
+        <DotsVertical className="more-dots" />
+    </ProjectActionPopover>
 </Space>
 
-export const FolderButton = styled(({ folderName, countItems, fullWidth, ...props  }: Props) => <Component
+export const FolderButton = styled(({ folderName, folderId, countItems, fullWidth, ...props  }: Props) => <Component
  {...props}
- children={<FolrderText folderName={folderName} countItems={countItems} />}
+ children={<FolrderText folderName={folderName} folderId={folderId} countItems={countItems} />}
  size="large" 
  type="default" 
 />)`
