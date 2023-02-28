@@ -88,8 +88,8 @@ const DotsWrapper = styled.div<FullWidth>`
             
         ` : css`
             
-            right: 10px;
-            bottom: 120px;
+            left: 90px;
+            bottom: 145px;
             height: 30px;
             width: 15px;
             padding: 5px;
@@ -110,10 +110,10 @@ const DotsWrapper = styled.div<FullWidth>`
 
 const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonProps'>) => 
 <Space 
-    size={fullWidth ? 'middle' : 4} 
+    size={fullWidth ? 'middle' : 0} 
     direction={fullWidth ? 'horizontal' : 'vertical'} 
     style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
-    <VerticalSpace size={fullWidth ? 'middle' : 12} direction={fullWidth ? 'horizontal' : 'vertical'}>
+    <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Wrapper bgColor={project.color} fullWidth={fullWidth}>
                 <HeartIcon style={{ fontSize: fullWidth ? '15px' : '26px' }} />
@@ -122,7 +122,7 @@ const ButtonContent = ({ project, fullWidth }: Omit<ProjectButtonDraw, 'ButtonPr
         </div>
         {project.name.length > 19 && !fullWidth ? <LongTitle className="button-content__text" name={project.name} /> : <Text className="button-content__text">{project.name}</Text>}
     </VerticalSpace>
-    <Space>
+    <Space style={{ width: '100%', display: 'flex', alignItems: 'center' }} direction='vertical'>
         <MenuText className="button-content__text">{project.dateTime}</MenuText>
         <ProjectActionPopover align={{ offset: [-20, -5] }} title={<ProjectActionTitle />} content={<ProjectActionContent projectId={project.id} folderId={project.folderId} />}>
             <DotsWrapper fullWidth={fullWidth}><DotsVertical className="more-dots" /></DotsWrapper>
@@ -142,9 +142,11 @@ const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} /
             padding: 5px 20px;
         ` : css`
             border-color: transparent;
-            width: 200px;
+            width: 202px;
             height: 150px;
-            padding: 20px 20px 10px;
+            padding: 20px 20px 9px;
+            display: flex;
+            justify-content: center;
         `}
 
         .button-content__text {

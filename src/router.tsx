@@ -1,4 +1,5 @@
 import { Folder } from 'pages/folder';
+import { Public } from 'pages/public';
 import { createBrowserRouter } from 'react-router-dom';
 import { ProjectHome } from './components/layouts/project-home';
 import { PublicRoutes } from './components/routes/public-route';
@@ -32,6 +33,10 @@ export const router = createBrowserRouter(
         {
           path: PATHS.FOLDER,
           element: <Folder />,
+        },
+        {
+          path: PATHS.PUBLIC,
+          element: <Public />,
         },
       ],
     },

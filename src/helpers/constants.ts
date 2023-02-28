@@ -3,6 +3,7 @@ export const PATHS = {
     UI: '/ui',
     SIGN_IN: '/sign-in',
     PROJECTS: '/projects',
+    PUBLIC: '/public',
     FOLDER: '/folder/:id',
     ERROR_403: 'no-access',
 }

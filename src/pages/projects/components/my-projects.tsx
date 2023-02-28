@@ -12,9 +12,11 @@ import { propsProjectBlockView, propsProjectGridView } from "./constants";
 
 type Props = {
     projectsUrl?: string;
+    title?: string;
+    showCreate?: boolean;
 }
 
-export const MyProjects = ({ projectsUrl }: Props) => {
+export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
     const { state } = useView();
     const { state: sortState } = useSort();
 
@@ -27,7 +29,7 @@ export const MyProjects = ({ projectsUrl }: Props) => {
         }
     }, [order, orderName]);
 
-    const { data, isLoading } = useGetProjects(folderState, projectsUrl);
+    const { data: { data, folder }, isLoading } = useGetProjects(folderState, projectsUrl);
 
     const onPaginationChange: PaginationProps['onChange'] = useCallback(
         (page: number) => {
@@ -36,21 +38,23 @@ export const MyProjects = ({ projectsUrl }: Props) => {
         [],
       )
       
-      const paginationProps = useMemo(() => data.count ? ({
+      const paginationProps = useMemo(() => data?.count ? ({
           onChange: onPaginationChange,
           total: data.count,
           defaultPageSize: 13,
           current: folderState.page,
-      }) : undefined, [data.count, folderState.page, onPaginationChange]);
+      }) : undefined, [data?.count, folderState.page, onPaginationChange]);
 
       const dataToDraw = useMemo(() => state === ViewTypes.Block ? propsProjectBlockView : propsProjectGridView, [state]);
 
+      const listTitle = title || (folder ? folder.title : null) || 'All Projects';
+
     return <Spin spinning={isLoading}>
-        <TitleSeparator name='All Projects' paginationProps={paginationProps} />
-        <Row {...(dataToDraw.row as RowProps)} justify={state === ViewTypes.Block && data.count >= 6 ? 'start' : 'start'} >
-            <Col {...(dataToDraw.col as ColProps)}>
+        <TitleSeparator name={listTitle} paginationProps={paginationProps} />
+        <Row {...(dataToDraw.row as RowProps)} justify='start' >
+            {showCreate && <Col {...(dataToDraw.col as ColProps)}>
                 <CreateNewProjectButton {...(dataToDraw.newProject)} />
-            </Col>
+            </Col>}
             {
                 data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>
                     <ProjectButton 

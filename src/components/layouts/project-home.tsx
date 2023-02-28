@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Badge, Layout as LayoutComponent, Menu as MenuComponent, Space } from 'antd';
-import { Navigate, Outlet } from "react-router-dom";
+import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space } from 'antd';
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { MenuText } from '../typography';
 import { ReactComponent as Home } from '../icons/home.svg';
@@ -74,24 +74,36 @@ const Sider = styled(SiderComponent)`
 const menu = [
     {
         icon: <Home />,
-        label: 'Home'
+        label: 'Home',
+        key: PATHS.PROJECTS
     },
     {
         icon: <Public />,
-        label: 'Public'
+        label: 'Public',
+        key: PATHS.PUBLIC
     },
     {
         icon: <Shared />,
-        label: 'Shared'
+        label: 'Shared',
+        key: 'shared'
     }
 ];
 
 export const ProjectHome = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  console.log('useeer', user);
   if (!user) {
-    return <Navigate to={PATHS.SIGN_IN} />;
+    //return <Navigate to={PATHS.SIGN_IN} />;
   }
+
+  const onClick: MenuProps['onClick'] = (e) => {
+    navigate(e.key);
+  };
+
+  const defaultSelected = location.pathname === PATHS.PUBLIC ? PATHS.PUBLIC : PATHS.PROJECTS; 
 
   return (
     <Layout>
@@ -110,10 +122,11 @@ export const ProjectHome = () => {
         <Menu
           mode="inline"
           inlineIndent={63}
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[defaultSelected]}
+          onClick={onClick}
           items={menu.map(
             (item, index) => ({
-              key: String(index + 1),
+              key: item.key,
               icon: item.icon,
               label: <MenuText>{item.label}</MenuText>,
             }),
