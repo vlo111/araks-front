@@ -51,9 +51,11 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) =>
     style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
     <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <ProjectLogo project={project} fullWidth={fullWidth} />
-        {project.name.length > 19 && !fullWidth ? <LongTitle className="button-content__text" name={project.name} /> : <Text className="button-content__text">{project.name}</Text>}
+        {project.name.length > 19 && !fullWidth 
+            ? <LongTitle className="button-content__text" name={project.name} /> 
+            : <Text className="button-content__text">{project.name}</Text>}
     </VerticalSpace>
-    <Space style={{ width: '100%', display: 'flex', alignItems: 'center' }} direction='vertical'>
+    <Space style={{ width: '100%', display: 'flex', alignItems: 'center' }} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <MenuText className="button-content__text">{project.dateTime}</MenuText>
         <ProjectActionPopover align={{ offset: [-20, -5] }} title={<ProjectActionTitle />} content={<ProjectActionContent projectId={project.id} folderId={project.folderId} />}>
             <DotsWrapper fullWidth={fullWidth}><DotsVertical className="more-dots" /></DotsWrapper>

@@ -44,7 +44,7 @@ const Wrapper = styled.div<WrapperProps>`
         padding: 3px 0;
     ` : css`
         width: 60px;
-        /* height: 60px; */
+        height: 60px;
         padding: 17px 0;
     `}
     vertical-align: middle;
