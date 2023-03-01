@@ -17,3 +17,6 @@ export const Modal = styled(ModalComponent)`
     }
     
 `;
+
+export { CreateEditFolderModal } from './create-edit-folder-modal';
+export { DeleteFolderModal } from './delete-folder-modal';

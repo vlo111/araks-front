@@ -10,8 +10,9 @@ export type CreateFolderFormData = {
 
 const FOLDER_CREATE_URL = 'folders/create';
 export const FOLDER_UPDATE_URL = 'folders/update/:id';
+export const FOLDER_DELETE_URL = 'folders/delete/:id';
 
-export const useCreateFolder = (url = FOLDER_CREATE_URL, type: RequestType = RequestTypes.Post) => {
+export const useManageFolder = (url = FOLDER_CREATE_URL, type: RequestType = RequestTypes.Post) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     ({ folderName }: CreateFolderFormData) => {

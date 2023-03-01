@@ -1,4 +1,4 @@
-import { Divider, Menu as MenuComponent, MenuProps } from "antd";
+import { Menu as MenuComponent, MenuProps } from "antd";
 import { FolderFilled } from '@ant-design/icons';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
@@ -9,13 +9,12 @@ import styled from "styled-components";
 
 import './index.css';
 import { useMoveProjectTo } from "api/projects/use-move-project-to";
-import VerticalSpace from "components/space/vertical-space";
 import { COLORS } from "helpers/constants";
 import { useMoveProjectToAll } from "api/projects/use-move-project-to-all";
-import { FolderModal } from "pages/projects/components/folder/folder-modal";
 import { useState } from "react";
 import { RequestTypes } from "api/types";
-import { FOLDER_UPDATE_URL } from "api/folders/use-create-folder";
+import { FOLDER_UPDATE_URL } from "api/folders/use-manage-folder";
+import { CreateEditFolderModal, DeleteFolderModal } from "components/modal";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -123,15 +122,21 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
 };
 
 type PropsFolder = {
+    countItems: number;
     folderName: string;
     folderId: string;
 };
 
-export const FolderActionMenu = ({ folderName, folderId }: PropsFolder) => {
+export const FolderActionMenu = ({ folderName, folderId, countItems }: PropsFolder) => {
+    console.log('countItems', countItems);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const onClick: MenuProps['onClick'] = (e) => {
+        console.log(e.key);
         if (e.key === 'edit') {
             setIsModalOpen(true);
+        } else if (e.key === 'delete') {
+            setIsDeleteModalOpen(true);
         }
         e.domEvent.stopPropagation();
       };
@@ -144,7 +149,13 @@ export const FolderActionMenu = ({ folderName, folderId }: PropsFolder) => {
             forceSubMenuRender={false}
             onClick={onClick}
         />
-        <FolderModal 
+        <DeleteFolderModal
+            isModalOpen={isDeleteModalOpen} 
+            setIsModalOpen={setIsDeleteModalOpen} 
+            folderId={folderId}
+            countItems={countItems}
+        />
+        <CreateEditFolderModal
             isModalOpen={isModalOpen} 
             setIsModalOpen={setIsModalOpen} 
             initialValue={folderName}

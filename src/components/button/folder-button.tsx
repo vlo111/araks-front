@@ -14,14 +14,33 @@ type Props = ButtonProps & {
     fullWidth?: boolean;
 }
 
+const DotsWrapper = styled.div`
+    & {
+        height: 30px;
+        width: 15px;
+        padding: 5px;
+        border-radius: 8px;
+
+        &:hover, &:active {
+            border-color: transparent;
+            background-color: rgba(35, 47, 106, 0.1);
+        }
+
+        circle {
+            fill: #F2F2F2;
+            font-size: 20px;
+        }
+    }
+`;
+
 const FolrderText = (props: Omit<Props, 'ButtonProps'>) => <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
     <Space>
         <FolderFilled />
         <Text className="folder-name">{props.folderName}</Text>
         <Text className="folder-count">({props.countItems})</Text>
     </Space>
-    <ProjectActionPopover align={{ offset: [-20, -5] }} content={<FolderActionMenu folderName={props.folderName} folderId={props.folderId} />}>
-        <DotsVertical className="more-dots" />
+    <ProjectActionPopover align={{ offset: [-20, -5] }} content={<FolderActionMenu countItems={props.countItems} folderName={props.folderName} folderId={props.folderId} />}>
+        <DotsWrapper><DotsVertical className="more-dots" /></DotsWrapper>
     </ProjectActionPopover>
 </Space>
 

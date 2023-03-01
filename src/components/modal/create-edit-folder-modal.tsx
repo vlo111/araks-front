@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Form } from "antd";
 import { CreateFolderFormData, useManageFolder } from "api/folders/use-manage-folder";
 import { RequestType } from "api/types";
@@ -7,7 +8,6 @@ import { Input } from "components/input";
 import { Modal } from "components/modal";
 import VerticalSpace from "components/space/vertical-space";
 import { Text } from "components/typography";
-import { useEffect } from "react";
 
 type Props = {
     initialValue?: string;
@@ -17,7 +17,7 @@ type Props = {
     type?: RequestType,
 };
 
-export const FolderModal = ({ isModalOpen, setIsModalOpen, initialValue, url, type }: Props) => {
+export const CreateEditFolderModal = ({ isModalOpen, setIsModalOpen, initialValue, url, type }: Props) => {
 
     const { mutate } = useManageFolder(url, type);
 
@@ -49,6 +49,7 @@ export const FolderModal = ({ isModalOpen, setIsModalOpen, initialValue, url, ty
             footer={false} 
             closable={false}
             afterClose={afterClose}
+            forceRender
         >
             <Form
                 name="create-new-folder"

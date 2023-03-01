@@ -86,7 +86,7 @@ export const Folders = () => {
             </Col>
             {
                 data?.rows?.map((item: FolderListResponse) => <Col {...(dataToDraw.col as ColProps)} key={item.id}>
-                    <FolderButton onDoubleClick={() => navigate(PATHS.FOLDER.replace(':id', item.id))} {...(dataToDraw.folderButton)} folderName={item.title} folderId={item.id} countItems={item.projectCount} />
+                    <FolderButton onDoubleClick={() => navigate(PATHS.FOLDER.replace(':id', item.id))} {...(dataToDraw.folderButton)} folderName={item.title} folderId={item.id} countItems={+item.projectCount} />
                 </Col>)
             }
         </Row>

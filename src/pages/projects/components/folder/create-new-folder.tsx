@@ -1,7 +1,7 @@
 import { AddFolderButton } from "components/button"
+import { CreateEditFolderModal } from "components/modal/create-edit-folder-modal";
 import { useView, ViewTypes } from "context/view-context";
 import { useState } from "react";
-import { FolderModal } from "./folder-modal";
 
 export const CreateNewFolder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +13,6 @@ export const CreateNewFolder = () => {
 
     return <>
         <AddFolderButton block onClick={showModal} fullWidth={state === ViewTypes.Grid} />
-        <FolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        <CreateEditFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
 }

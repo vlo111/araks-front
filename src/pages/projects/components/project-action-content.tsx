@@ -38,7 +38,7 @@ export const ProjectActionContent = ({ projectId, folderId }: Props) => {
                     return [...accumulator, {
                         type: FolderType.folder,
                         name: currentValue.title,
-                        count: currentValue.projectCount,
+                        count: +currentValue.projectCount,
                         key: currentValue.id,
                     }]
         }, initialReduce)} />
