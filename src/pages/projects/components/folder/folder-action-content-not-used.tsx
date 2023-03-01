@@ -15,7 +15,7 @@ type Props = {
     folderId: string;
 }
 
-export const ProjectActionContent = ({ projectId, folderId }: Props) => {
+export const FolderActionContent = ({ projectId, folderId }: Props) => {
     const { data } = useGetFolders({
         page: 1,
         size: 100,

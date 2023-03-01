@@ -5,10 +5,11 @@ import { CreateNewProjectButton, ProjectButton } from "components/button";
 import { TitleSeparator } from "components/typography";
 import { useSort } from "context/sort-context";
 import { useView, ViewTypes } from "context/view-context";
-import { useCallback, useEffect, useMemo, useReducer } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { ProjectListResponse } from "types/project";
 import { FolderAction, folderReducer, initData } from "./folder/folders";
 import { propsProjectBlockView, propsProjectGridView } from "./constants";
+import { ProjectViewModal } from "components/modal/project-view-modal";
 
 type Props = {
     projectsUrl?: string;
@@ -16,7 +17,9 @@ type Props = {
     showCreate?: boolean;
 }
 
+
 export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
+    const [projectData, setProjectData] = useState<string | undefined>();
     const { state } = useView();
     const { state: sortState } = useSort();
 
@@ -58,6 +61,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
             {
                 data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>
                     <ProjectButton 
+                        onOpenProject={() => { setProjectData(item.id) }}
                         project={{
                             id: item.id,
                             color: item.color, 
@@ -70,5 +74,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
             }
             
         </Row>
+        {projectData && <ProjectViewModal isModalOpen={!!projectData} setIsModalOpen={setProjectData} projectId={projectData}  />}
     </Spin>
 }

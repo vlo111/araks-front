@@ -15,6 +15,7 @@ import { useState } from "react";
 import { RequestTypes } from "api/types";
 import { FOLDER_UPDATE_URL } from "api/folders/use-manage-folder";
 import { CreateEditFolderModal, DeleteFolderModal } from "components/modal";
+import { DeleteProjectModal } from "components/modal/delete-project-modal";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -35,13 +36,13 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
     {
         key: '1',
         icon: <MoveTo />,
-        children: foldersList?.map((item, index):MenuItem => ({
+        children: foldersList?.map((item):MenuItem => ({
             key: item.key,
             style: item.type === FolderType.all ? menuItemStyle : {},
             icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '14px' }} />,
             label: item.type === FolderType.folder ? <><SecondaryText title={item.name}>
                 {item.name.length > 19 ? item.name.substring(0, 19) + '...' : item.name}
-            </SecondaryText>{item.count && <SecondaryText>({item.count})</SecondaryText>}</>
+            </SecondaryText>{<SecondaryText> ({item.count})</SecondaryText>}</>
             : <>
                 <SecondaryText>
                     {item.name}
@@ -53,12 +54,12 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
         popupOffset: [-25],
     },
     {
-        key: '2',
+        key: 'edit',
         icon: <Edit />,
         label: <MenuText>Edit</MenuText>,
     },
     {
-        key: '3',
+        key: 'delete',
         icon: <Delete />,
         label: <MenuText>Delete</MenuText>,
     }
@@ -102,9 +103,17 @@ type Props = {
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
 export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const { mutate } = useMoveProjectTo(folderId);
     const { mutate: mutateAll } = useMoveProjectToAll(folderId);
     const onClick: MenuProps['onClick'] = (e) => {
+        if (e.key === 'edit') {
+            return;
+        }
+        if (e.key === 'delete') {
+            setIsDeleteModalOpen(true);
+            return;
+        }
         if (e.key === 'all') {
             mutateAll({ projectId });
             return;
@@ -112,13 +121,21 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
         mutate({ projectId, folderId: e.key });
       };
 
-    return <Menu
-        style={{ width: 256 }}
-        mode="vertical"
-        items={menuItems(foldersList)} 
-        forceSubMenuRender={false}
-        onClick={onClick}
-    />
+    return <>
+        <Menu
+            style={{ width: 256 }}
+            mode="vertical"
+            items={menuItems(foldersList)} 
+            forceSubMenuRender={false}
+            onClick={onClick}
+        />
+        <DeleteProjectModal
+            isModalOpen={isDeleteModalOpen} 
+            setIsModalOpen={setIsDeleteModalOpen} 
+            folderId={folderId}
+            projectId={projectId}
+        />
+    </>
 };
 
 type PropsFolder = {
@@ -128,7 +145,6 @@ type PropsFolder = {
 };
 
 export const FolderActionMenu = ({ folderName, folderId, countItems }: PropsFolder) => {
-    console.log('countItems', countItems);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const onClick: MenuProps['onClick'] = (e) => {

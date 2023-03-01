@@ -15,6 +15,13 @@ export const Modal = styled(ModalComponent)`
             }
         }
     }
+
+    &.project-modal {
+        .ant-modal-content {
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+    }
     
 `;
 

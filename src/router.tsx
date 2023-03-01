@@ -1,4 +1,5 @@
 import { Folder } from 'pages/folder';
+import { ProjectOverview } from 'pages/project-overview';
 import { Public } from 'pages/public';
 import { createBrowserRouter } from 'react-router-dom';
 import { ProjectHome } from './components/layouts/project-home';
@@ -37,6 +38,10 @@ export const router = createBrowserRouter(
         {
           path: PATHS.PUBLIC,
           element: <Public />,
+        },
+        {
+          path: PATHS.PROJECT_OVERVIEW,
+          element: <ProjectOverview />,
         },
       ],
     },

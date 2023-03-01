@@ -46,6 +46,7 @@ export const DeleteFolderModal = ({ isModalOpen, setIsModalOpen, folderId, count
             open={isModalOpen} 
             footer={false} 
             closable={false}
+            className='project-modal'
         >
             <VerticalSpace>
                 <SecondaryText as='div' style={{ textAlign: 'center' }}>{deleteText(countItems)}</SecondaryText>

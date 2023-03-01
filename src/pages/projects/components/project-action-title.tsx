@@ -6,6 +6,7 @@ import { ReactComponent as Public } from 'components/icons/public.svg';
 import { Text } from "../../../components/typography";
 import { COLORS } from "helpers/constants";
 import styled from "styled-components";
+import { ProjectStatistics } from "components/project/project-statistics";
 
 const TitleWrapper = styled(Space)`
     display: flex;
@@ -18,9 +19,7 @@ export const ProjectActionTitle = () => {
 
     return <TitleWrapper>
         <DotsVertical />
-        <Space size={6}><HeartOutlined style={{ height: '12px', color: COLORS.PRIMARY.BLUE }} /><Text>999</Text></Space>
-        <Space size={6}><MessageOutlined /><Text>999</Text></Space>
-        <Space size={6}><EyeOutlined style={{ height: '12px', color: COLORS.PRIMARY.BLUE }} /><Text>999</Text></Space>
+        <ProjectStatistics comments={999} likes={999} views={999} size={12} />
         <Public width='16px' style={{ marginTop: '4px' }} />
     </TitleWrapper>
 }

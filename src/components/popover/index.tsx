@@ -1,5 +1,5 @@
 import { Popover as PopoverComponent, PopoverProps } from "antd";
-import { FullWidth } from "components/button/project-button";
+import { FullWidth } from "types/project";
 
 import './index.css';
 
