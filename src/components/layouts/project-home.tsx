@@ -94,9 +94,8 @@ export const ProjectHome = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log('useeer', user);
   if (!user) {
-    //return <Navigate to={PATHS.SIGN_IN} />;
+    return <Navigate to={PATHS.SIGN_IN} />;
   }
 
   const onClick: MenuProps['onClick'] = (e) => {
@@ -109,8 +108,8 @@ export const ProjectHome = () => {
     <Layout>
       <Sider
         width={240}
-        // breakpoint="lg"
-        // collapsedWidth="0"
+        breakpoint="lg"
+        collapsedWidth="0"
         // onBreakpoint={(broken) => {
         //   console.log(broken);
         // }}

@@ -1,5 +1,6 @@
+import { AUTH_KEYS } from 'helpers/constants';
 import { useLocalStorage } from 'hooks/use-local-storage';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { User, UserDetails } from 'types/auth';
 
 interface AuthContextType {
@@ -18,41 +19,36 @@ export const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
+const localStorageUser = localStorage.getItem(AUTH_KEYS.USER);
 
 function AuthProvider(props: AuthProviderProps) {
-    const [user, setUser] = useState<UserDetails | null>(null);
-    const { setItem, getItem } = useLocalStorage();
-
+    const [user, setUser] = useState<UserDetails | null>(() => localStorageUser ? JSON.parse(localStorageUser) : null);
+    const { setItem, removeItem } = useLocalStorage();
+    
     const addUser = useCallback((user: UserDetails | null) => {
-        setItem('user', JSON.stringify(user));
+        setItem(AUTH_KEYS.USER, JSON.stringify(user));
         setUser(user);
       }, [setItem]);
 
       const addToken = useCallback((token?: string | null) => {
-        setItem('token', token || '');
+        setItem(AUTH_KEYS.TOKEN, token || '');
       }, [setItem]);
 
       const removeUser = useCallback(() => {
         setUser(null);
-        setItem('user', '');
-        setItem('token', '');
-      }, [setItem]);
+        removeItem(AUTH_KEYS.USER);
+        removeItem(AUTH_KEYS.TOKEN);
+      }, [removeItem]);
 
     const login = useCallback((user: User | null) => {
         addUser(user?.user || null);
         addToken(user?.access_token);
-      }, [addToken, addUser]);
+    }, [addToken, addUser]);
     
     const logout = useCallback(() => {
         removeUser();
-      }, [removeUser]);
+    }, [removeUser]);
 
-    useEffect(() => {
-        const savedUser = getItem('user');
-        if (savedUser && !user) {
-            addUser(JSON.parse(savedUser));
-        }
-    }, [addUser, getItem, user]);
     const providerValues = useMemo(() => ({user, login, logout}), [login, logout, user]);
     return <AuthContext.Provider value={providerValues} {...props} />;
 }

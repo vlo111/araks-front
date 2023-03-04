@@ -28,12 +28,6 @@ const Content = styled(ContentComponent)`
 `;
 
 export const PublicRoutes = () => {
-  const { user } = useAuth();
-
-  if (user) {
-    return <Navigate to={PATHS.PROJECTS} />;
-  }
-
   return (
     <Layout>
       <Row>

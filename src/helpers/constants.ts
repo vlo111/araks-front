@@ -35,3 +35,12 @@ export const COLORS = {
         GRAY_LIGHT: '#8A91AE',
     },
 }
+
+export const AUTH_KEYS = {
+    USER: 'araks-user',
+    TOKEN: 'araks-token'
+}
+
+export const VARIABLES = {
+    MAX_PROJECT_TITLE_LENGTH: 15,
+};

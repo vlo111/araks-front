@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 import './index.css';
 import { useMoveProjectTo } from "api/projects/use-move-project-to";
-import { COLORS } from "helpers/constants";
+import { COLORS, VARIABLES } from "helpers/constants";
 import { useMoveProjectToAll } from "api/projects/use-move-project-to-all";
 import { useState } from "react";
 import { RequestTypes } from "api/types";
@@ -41,7 +41,7 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
             style: item.type === FolderType.all ? menuItemStyle : {},
             icon: item.type === FolderType.folder ? <FolderFilled style={{ fontSize: '16px' }} /> : <ArrowRight style={{ fontSize: '14px' }} />,
             label: item.type === FolderType.folder ? <><SecondaryText title={item.name}>
-                {item.name.length > 19 ? item.name.substring(0, 19) + '...' : item.name}
+                {item.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? item.name.substring(0, VARIABLES.MAX_PROJECT_TITLE_LENGTH) + '...' : item.name}
             </SecondaryText>{<SecondaryText> ({item.count})</SecondaryText>}</>
             : <>
                 <SecondaryText>

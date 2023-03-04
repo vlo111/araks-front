@@ -1,21 +1,28 @@
 import { Col, Form, Row } from "antd"
 import { useSignIn } from "api/auth/use-sign-in";
+import { useAuth } from "context/auth-context";
+import { Navigate } from "react-router-dom";
 import { SignInForm } from "types/auth";
 import { Button, SignUpButton } from "../../components/button";
 import { FormItem } from "../../components/form/form-item";
 import { Input } from "../../components/input";
 import VerticalSpace from "../../components/space/vertical-space";
 import { MenuText, SecondaryText, Title } from "../../components/typography";
-import { COLORS } from "../../helpers/constants";
+import { COLORS, PATHS } from "../../helpers/constants";
 
 export const SignIn = () => {
     const [form] = Form.useForm();
+    const { user } = useAuth();
 
     const { mutate } = useSignIn();
 
     const onFinish = (values: SignInForm) => {
         mutate(values);
     };
+
+    if (user) {
+        return <Navigate to={PATHS.PROJECTS} replace />
+    }
 
     return <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
         <Col span={24}>

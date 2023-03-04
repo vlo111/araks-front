@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps, Space } from "antd"
 import styled, { css } from "styled-components"
 
-import { COLORS } from "../../helpers/constants";
+import { COLORS, VARIABLES } from "../../helpers/constants";
 import VerticalSpace from "../space/vertical-space";
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 
@@ -51,7 +51,7 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) =>
     style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
     <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <ProjectLogo project={project} fullWidth={fullWidth} />
-        {project.name.length > 19 && !fullWidth 
+        {project.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH && !fullWidth 
             ? <LongTitle className="button-content__text" name={project.name} /> 
             : <Text className="button-content__text">{project.name}</Text>}
     </VerticalSpace>
