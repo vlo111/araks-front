@@ -1,3 +1,4 @@
+import { Overview } from 'components/layouts/overview';
 import { Folder } from 'pages/folder';
 import { ProjectOverview } from 'pages/project-overview';
 import { Public } from 'pages/public';
@@ -39,6 +40,11 @@ export const router = createBrowserRouter(
           path: PATHS.PUBLIC,
           element: <Public />,
         },
+      ],
+    },
+    {
+      element: <Overview />,
+      children: [
         {
           path: PATHS.PROJECT_OVERVIEW,
           element: <ProjectOverview />,

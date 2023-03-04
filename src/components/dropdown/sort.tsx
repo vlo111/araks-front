@@ -32,11 +32,10 @@ type Props = DropdownProps & {
 }
 
 export const Sort = ({sortItems, ...props}: Props) => {
-  const { dispatch } = useSort();
-  const [text, setText] = useState('Custom');
+  const { dispatch, state } = useSort();
+  const [text, setText] = useState(() => sortItems.find(item => item.key === state)?.label || 'Custom');
 
   const handleMenuClick: MenuProps['onClick'] = ({ key, keyPath, domEvent }) => {
-    console.log('click', key, keyPath, domEvent.target);
     const [label, order] = key.split('-');
     setText(label);
     dispatch(order);

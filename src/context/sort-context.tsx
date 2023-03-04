@@ -1,14 +1,17 @@
 import * as React from 'react'
 
 type Dispatch = React.Dispatch<React.SetStateAction<string | undefined>>
-type ViewProviderProps = {children: React.ReactNode}
+type ViewProviderProps = {children: React.ReactNode, defaultValue?: string}
 
 const SortContext = React.createContext<
   {state: string | undefined; dispatch: Dispatch} | undefined
 >(undefined)
 
-function SortProvider({children}: ViewProviderProps) {
-  const [selectedSort, setSlectedSort] = React.useState<string>();
+function SortProvider({ children, defaultValue }: ViewProviderProps) {
+  console.log('defaultValue', defaultValue);
+  
+  const [selectedSort, setSlectedSort] = React.useState<string | undefined>(defaultValue);
+  console.log('selectedSort', selectedSort);
   const value = React.useMemo(() => ({state: selectedSort, dispatch: setSlectedSort}), [selectedSort])
   return (
     <SortContext.Provider value={value}>

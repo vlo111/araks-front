@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space } from 'antd';
+import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space, Tabs } from 'antd';
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { MenuText } from '../typography';
@@ -55,9 +55,10 @@ const { Header: HeaderComponent, Content: ContentComponent, Sider: SiderComponen
 const Header = styled(HeaderComponent)`
     && {
         background: transparent;
-        padding: 32px 50px;
-        height: 104px;
-        box-shadow: 10px 6px 10px rgba(111, 111, 111, 0.1);
+        padding: 32px 32px 15px;
+        height: 88px;
+        display: flex;
+        justify-content: space-between;
     }
 `;
 
@@ -90,7 +91,7 @@ const menu = [
     }
 ];
 
-export const ProjectHome = () => {
+export const Overview = () => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -106,42 +107,33 @@ export const ProjectHome = () => {
   const defaultSelected = location.pathname === PATHS.PUBLIC ? PATHS.PUBLIC : PATHS.PROJECTS; 
 
   return (
-    <Layout>
-      <Sider
-        width={240}
-        breakpoint="lg"
-        // onBreakpoint={(broken) => {
-        //   console.log(broken);
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
-      >
-        <Logo style={{margin: '31px 63px'}} />
-        <Menu
-          mode="inline"
-          inlineIndent={63}
-          defaultSelectedKeys={[defaultSelected]}
-          onClick={onClick}
-          items={menu.map(
-            (item, index) => ({
-              key: item.key,
-              icon: item.icon,
-              label: <MenuText>{item.label}</MenuText>,
-            }),
-          )}
-        />
-      </Sider>
-      <LayoutInner>
-        <Header>
-          <Space  style={{ display: 'flex', justifyContent: 'flex-end'}}>
-            <HeaderSearch />
-          </Space>
-        </Header>
-        <Content>
-            <Outlet />
-        </Content>
-      </LayoutInner>
+    <Layout className="layout">
+      <Header>
+        <Logo />
+        <HeaderSearch />
+      </Header>
+      <Content>
+        {/* <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb> */}
+        <Tabs
+        defaultActiveKey="1"
+        type="card"
+        items={new Array(3).fill(null).map((_, i) => {
+          const id = String(i + 1);
+          return {
+            label: `Card Tab ${id}`,
+            key: id,
+            children: `Content of card tab ${id}`,
+          };
+        })}
+      />
+        <div className="site-layout-content" style={{ background: 'red' }}>
+          Content
+        </div>
+      </Content>
     </Layout>
   )
 };
