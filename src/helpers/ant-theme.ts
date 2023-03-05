@@ -78,6 +78,16 @@ export const antTheme = {
         colorBorder: '#414141',
         lineWidth: 2,
       },
+      Tabs: {
+        controlHeight: 64,
+        colorBgContainer: "#F2F2F2",
+        colorPrimary: "#414141",
+        colorPrimaryActive: "#131a45",
+        colorTextHeading: "rgba(0, 0, 0, 0.88)",
+        fontSize: 20,
+        lineHeight: 1.3,
+        padding: 16
+      }
     },
     token: {
       colorError: '#cf000f',

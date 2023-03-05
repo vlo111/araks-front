@@ -4,6 +4,7 @@ export const PATHS = {
     SIGN_IN: '/sign-in',
     PROJECTS: '/projects',
     PROJECT_OVERVIEW: '/projects/:id',
+    PROJECT_SCHEME: '/projects/scheme/:id',
     PUBLIC: '/public',
     FOLDER: '/folder/:id',
     ERROR_403: 'no-access',

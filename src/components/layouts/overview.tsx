@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space, Tabs } from 'antd';
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space, Tabs as TabsComponent } from 'antd';
+import { Navigate, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { MenuText } from '../typography';
 import { ReactComponent as Home } from '../icons/home.svg';
@@ -63,49 +63,81 @@ const Header = styled(HeaderComponent)`
 `;
 
 const Content = styled(ContentComponent)`
-    padding: 34px 40px;
+    padding: 0;
+
 `;
 
-const Sider = styled(SiderComponent)`
-    && {
+const Tabs = styled(TabsComponent)`
+  .ant-tabs-nav-wrap {
+    justify-content: center;
+  }
+
+  .ant-tabs-nav {
+    box-shadow: 0px 10px 10px rgba(111, 111, 111, 0.16);
+    margin-bottom: 0;
+
+    &::before {
+      border-color: transparent;;
+    }
+
+    .ant-tabs-tab {
+      height: 64px;
+      
+      &:not(.ant-tabs-tab-active) {
+        border: none;
+        background-color: transparent;
         background: transparent;
+      }
+      
+      &.ant-tabs-tab-active {
+        background: #F2F2F2;
+        box-shadow: inset 3px 3px 9px rgba(111, 111, 111, 0.3);
+        border-radius: 4px 4px 0px 0px;
+      }
     }
+  }
 `;
 
-
-const menu = [
-    {
-        icon: <Home />,
-        label: 'Home',
-        key: PATHS.PROJECTS
-    },
-    {
-        icon: <Public />,
-        label: 'Public',
-        key: PATHS.PUBLIC
-    },
-    {
-        icon: <Shared />,
-        label: 'Shared',
-        key: 'shared'
-    }
+const items = [
+  {
+    key: PATHS.PROJECT_OVERVIEW,
+    label: 'Overview',
+  },
+  {
+    key: PATHS.PROJECT_SCHEME,
+    label: 'Scheme',
+    disabled: true,
+  },
+  {
+    key: '3',
+    label: 'Data sheet',
+    disabled: true,
+  },
+  {
+    key: '4',
+    label: 'Visualisation',
+    disabled: true,
+  },
 ];
 
 export const Overview = () => {
   const { user } = useAuth();
   const location = useLocation();
+  const params = useParams();
   const navigate = useNavigate();
+
+  const handleTabClick = useCallback((key: string) => {
+    console.log(key, 'eeeee');
+    navigate(key.replace(':id', params.id || ''));
+  },[navigate, params.id]);
+
+  const activeItem = useMemo(() => items.find(item => item.key.replace(':id', params.id || '') === location.pathname), []);
+
 
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;
   }
-
-  const onClick: MenuProps['onClick'] = (e) => {
-    navigate(e.key);
-  };
-
-  const defaultSelected = location.pathname === PATHS.PUBLIC ? PATHS.PUBLIC : PATHS.PROJECTS; 
-
+  
   return (
     <Layout className="layout">
       <Header>
@@ -113,25 +145,14 @@ export const Overview = () => {
         <HeaderSearch />
       </Header>
       <Content>
-        {/* <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb> */}
-        <Tabs
-        defaultActiveKey="1"
-        type="card"
-        items={new Array(3).fill(null).map((_, i) => {
-          const id = String(i + 1);
-          return {
-            label: `Card Tab ${id}`,
-            key: id,
-            children: `Content of card tab ${id}`,
-          };
-        })}
-      />
-        <div className="site-layout-content" style={{ background: 'red' }}>
-          Content
+        <div className='overview-tabs'>
+          <Tabs
+            defaultActiveKey={activeItem?.key}
+            type="card"
+            tabBarGutter={32}
+            onTabClick={handleTabClick}
+            items={items.map(item => ({...item, children: <div className='site-layout-content'><Outlet /></div>}))}
+          />
         </div>
       </Content>
     </Layout>
