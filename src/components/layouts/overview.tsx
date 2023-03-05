@@ -1,19 +1,13 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space, Tabs as TabsComponent } from 'antd';
+import { Layout as LayoutComponent, Tabs as TabsComponent } from 'antd';
 import { Navigate, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { MenuText } from '../typography';
-import { ReactComponent as Home } from '../icons/home.svg';
-import { ReactComponent as Logo } from '../icons/araks.svg';
-import { ReactComponent as Public } from '../icons/public.svg';
-import { ReactComponent as Shared } from '../icons/shared.svg';
-import { ReactComponent as Bell } from '../icons/bell.svg';
 
-import { Search } from 'components/search';
+import { ReactComponent as Logo } from '../icons/araks.svg';
+
 import { PATHS } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
-import { HeaderProfile } from 'components/header-profile';
 import { HeaderSearch } from './components/header-search';
 
 const Layout = styled(LayoutComponent)`
@@ -22,35 +16,7 @@ const Layout = styled(LayoutComponent)`
     min-height: 100vh;
 `;
 
-const Menu = styled(MenuComponent)`
-    background: transparent;
-
-    .ant-menu-item {
-        margin: 0;
-        width: 100%;
-        height: 56px;
-
-        &.ant-menu-item-selected {
-            background: #414141;
-
-            .ant-typography {
-                color: #ffffff;
-            }
-
-            svg {
-                fill: #ffffff;
-            }
-        }
-    }
-`;
-
-const LayoutInner = styled(LayoutComponent)`
-    background: #F2F2F2;
-    box-shadow: -10px 0px 10px rgba(111, 111, 111, 0.1);
-    border-radius: 4px;
-`;
-
-const { Header: HeaderComponent, Content: ContentComponent, Sider: SiderComponent } = LayoutComponent;
+const { Header: HeaderComponent, Content: ContentComponent } = LayoutComponent;
 
 const Header = styled(HeaderComponent)`
     && {
