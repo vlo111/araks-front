@@ -6,6 +6,6 @@ import { SecondaryText } from "../typography";
 const { Item } = Form;
 
 
-export const FormItem = styled(({label, ...props}) => <Item {...props} label={<SecondaryText style={{color: COLORS.PRIMARY.BLUE}}>{label}</SecondaryText>} />)`
+export const FormItem = styled(({label, ...props}) => <Item {...props} label={label && <SecondaryText color={COLORS.PRIMARY.BLUE}>{label}</SecondaryText>} />)`
     
 `;

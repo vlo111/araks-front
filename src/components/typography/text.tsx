@@ -1,4 +1,4 @@
-import { Typography } from "antd";
+import { Typography, TypographyProps } from "antd";
 import styled, { css } from "styled-components";
 import { COLORS } from "../../helpers/constants";
 
@@ -27,10 +27,10 @@ export const MenuText = styled(Text)`
     }
 `;
 
-export const SecondaryText = styled(Text)`
+export const SecondaryText = styled(({ color, ...props }) => <Text {...props} />)`
     && {
         font-size: 16px;
         line-height: 20px;
-        color: #424242;
+        color: ${props=> props.color || '#424242'};
     }
 `;

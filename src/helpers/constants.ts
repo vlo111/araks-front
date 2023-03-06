@@ -34,6 +34,17 @@ export const COLORS = {
         YELLOW: '#F5B452',
         YELLOW_LIGHT: '#EDE06D',
         GRAY_LIGHT: '#8A91AE',
+        MAXIMUM_BLUE: '#4DAAC7',
+        GREEN_LIGHT: '#4DC78C',
+        BLUE_MEDIUM: '#7F6DED',
+        LAVANDER: '#AC89D9',
+        PURPLE_MIDDLE: '#D989AF',
+        PEARL_AQUA: '#89D9C6',
+        PASTEL_BLUE: '#B8D4D6',
+        PURPLE_BLUE: '#A2ACDE',
+        AERO_BLUE: '#BBDACB',
+        LAVANDER_DARKL: '#C7BDD4',
+        PINK: '#DBAFA1',
     },
 }
 
