@@ -103,59 +103,46 @@ export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.
         }
     );
 
-    // const { data: userData, isLoading: userIsLoading } = useGetUser(
-    //     { id: data?.project.user_id },
-    //     { 
-    //         enabled: !!data?.project.user_id, 
-    //     }
-    // );
-
     return <Spin spinning={isLoading}>
-        <Row className="overview">
-            <Col span={8} className='overview__section project-save'>
-                <Form
-                    name="overview-create"
-                    form={form}
-                    onFinish={onFinish}
-                    autoComplete="off"
-                    layout="vertical"
-                    requiredMark={false}
-                >
-                    <VerticalSpace size={17} className='overview-form-items'>
-                        <VerticalSpace size={42}>
-                            <div style={{ width: '100%', display: 'flex', gap: '22px' }}>
-                                <AddColorIcon />
-                                <VerticalSpace size={14}>
-                                    <FormItem
-                                        name="title" 
-                                        rules={[{ required: true, message: 'Title is required' }, { min: 3, message: 'The minimum length for this field is 3 characters'}]}
-                                        style={{ marginBottom: '0' }}
-                                        >
-                                        <Input placeholder='Untitled' /> 
-                                    </FormItem>
-                                    <ProjectUserInfo createdAt={data?.project?.created_at} updatedAt={data?.project?.updated_at} />
-                                </VerticalSpace>
-                            </div>
-                            <FormItem name="description" label='Description' >
-                                <TextArea rows={4} />
+        <Form
+            name="overview-create"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+            requiredMark={false}
+        >
+            <VerticalSpace size={17} className='overview-form-items'>
+                <VerticalSpace size={42}>
+                    <div style={{ width: '100%', display: 'flex', gap: '22px' }}>
+                        <AddColorIcon />
+                        <VerticalSpace size={14}>
+                            <FormItem
+                                name="title" 
+                                rules={[{ required: true, message: 'Title is required' }, { min: 3, message: 'The minimum length for this field is 3 characters'}]}
+                                style={{ marginBottom: '0' }}
+                                >
+                                <Input placeholder='Untitled' /> 
                             </FormItem>
+                            <ProjectUserInfo createdAt={data?.project?.created_at} updatedAt={data?.project?.updated_at} />
                         </VerticalSpace>
-                        <Divider style={{ margin: '0' }} />
-                        <Text>Privacy</Text>
-                        <ProjectType />
-                    </VerticalSpace>
-                    <Row align='bottom' justify='end' gutter={[32, 32]} style={{ alignSelf: 'end' }}>
-                        <Col span={3}>
-                            <Button type="text" onClick={handleCancel}>Cancel</Button>
-                        </Col>
-                        <Col span={10}>
-                            <Button block htmlType="submit" type="primary">Save</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </Col>
-            <Col span={8} className='overview__section project-share'></Col>
-            <Col span={8} className='overview__section project-comments'></Col>
-        </Row>
+                    </div>
+                    <FormItem name="description" label='Description' >
+                        <TextArea rows={4} />
+                    </FormItem>
+                </VerticalSpace>
+                <Divider style={{ margin: '0' }} />
+                <Text>Privacy</Text>
+                <ProjectType />
+            </VerticalSpace>
+            <Row align='bottom' justify='end' gutter={[32, 32]} style={{ alignSelf: 'end' }}>
+                <Col span={3}>
+                    <Button type="text" onClick={handleCancel}>Cancel</Button>
+                </Col>
+                <Col span={10}>
+                    <Button block htmlType="submit" type="primary">Save</Button>
+                </Col>
+            </Row>
+        </Form>
     </Spin>
 }
