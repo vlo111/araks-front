@@ -48,7 +48,7 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) =>
 <Space 
     size={fullWidth ? 'middle' : 0} 
     direction={fullWidth ? 'horizontal' : 'vertical'} 
-    style={fullWidth ? { justifyContent: 'space-between', width: '100%' } : {}}>
+    style={fullWidth ? { display: 'flex', justifyContent: 'space-between', width: '100%' } : {}}>
     <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
         <ProjectLogo project={project} fullWidth={fullWidth} />
         {project.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH && !fullWidth 

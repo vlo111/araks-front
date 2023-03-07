@@ -5,8 +5,9 @@ import { DEFAULT_ICON } from 'helpers/constants';
 
 type Props = Partial<CustomIconComponentProps> & {
   icon?: string;
+  size?: number;
 } 
 
-export const ProjectIcon = ({ icon, ...props}: Props) => (
-    <Icon color='#353432' icon={icon || DEFAULT_ICON} size={25} />
-  )
+export const ProjectIcon = ({ icon, size= 25, ...props}: Props) =>(
+    <Icon color='#353432' icon={icon || DEFAULT_ICON} size={size} {...props} />
+)

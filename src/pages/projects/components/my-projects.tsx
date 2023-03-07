@@ -67,6 +67,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
                         onOpenProject={() => { setProjectData(item.id) }}
                         project={{
                             id: item.id,
+                            icon: item.icon,
                             color: item.color, 
                             name: item.title, 
                             folderId: item.folder_id,

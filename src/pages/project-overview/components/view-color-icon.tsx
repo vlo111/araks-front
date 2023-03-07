@@ -31,7 +31,6 @@ const Wrapper = styled.div<WrapperProp>`
         height: 144px;
         gap: 10px;
         position: absolute;
-        border: 1px solid black;
         top: 0;
         left: 0;
     }
