@@ -4,14 +4,14 @@ import { COLORS } from "../../helpers/constants";
 
 const { Text: TextComponent } = Typography;
 
-export const Text = styled(TextComponent)`
+export const Text = styled(({ color, ...props }) => <TextComponent {...props} />)`
     && {
         font-family: 'Rajdhani';
         font-weight: 600;
         font-size: 20px;
         line-height: 26px;
         letter-spacing: 0.07em;
-        color: ${COLORS.PRIMARY.GRAY_DARK};
+        color: ${props=> props.color || COLORS.PRIMARY.GRAY_DARK};
     }
 `;
 

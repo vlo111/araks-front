@@ -10,6 +10,8 @@ import { ProjectListResponse } from "types/project";
 import { FolderAction, folderReducer, initData } from "./folder/folders";
 import { propsProjectBlockView, propsProjectGridView } from "./constants";
 import { ProjectViewModal } from "components/modal/project-view-modal";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "helpers/constants";
 
 type Props = {
     projectsUrl?: string;
@@ -19,6 +21,7 @@ type Props = {
 
 
 export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
+    const navigate = useNavigate()
     const [projectData, setProjectData] = useState<string | undefined>();
     const { state } = useView();
     const { state: sortState } = useSort();
@@ -56,7 +59,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
         <TitleSeparator name={listTitle} paginationProps={paginationProps} />
         <Row {...(dataToDraw.row as RowProps)} justify='start' >
             {showCreate && <Col {...(dataToDraw.col as ColProps)}>
-                <CreateNewProjectButton {...(dataToDraw.newProject)} />
+                <CreateNewProjectButton {...(dataToDraw.newProject)} onClick={() => navigate(PATHS.PROJECT_CREATE)}  />
             </Col>}
             {
                 data?.rows?.map((item: ProjectListResponse) => <Col key={item.id} {...(dataToDraw.col as ColProps)}>

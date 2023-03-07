@@ -148,7 +148,6 @@ export const FolderActionMenu = ({ folderName, folderId, countItems }: PropsFold
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const onClick: MenuProps['onClick'] = (e) => {
-        console.log(e.key);
         if (e.key === 'edit') {
             setIsModalOpen(true);
         } else if (e.key === 'delete') {

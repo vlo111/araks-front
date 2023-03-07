@@ -8,10 +8,7 @@ const SortContext = React.createContext<
 >(undefined)
 
 function SortProvider({ children, defaultValue }: ViewProviderProps) {
-  console.log('defaultValue', defaultValue);
-  
   const [selectedSort, setSlectedSort] = React.useState<string | undefined>(defaultValue);
-  console.log('selectedSort', selectedSort);
   const value = React.useMemo(() => ({state: selectedSort, dispatch: setSlectedSort}), [selectedSort])
   return (
     <SortContext.Provider value={value}>

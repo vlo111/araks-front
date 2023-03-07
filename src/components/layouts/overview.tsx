@@ -93,7 +93,6 @@ export const Overview = () => {
   const navigate = useNavigate();
 
   const handleTabClick = useCallback((key: string) => {
-    console.log(key, 'eeeee');
     navigate(key.replace(':id', params.id || ''));
   },[navigate, params.id]);
 

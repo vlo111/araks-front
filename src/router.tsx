@@ -1,6 +1,8 @@
 import { Overview } from 'components/layouts/overview';
 import { Folder } from 'pages/folder';
 import { ProjectOverview } from 'pages/project-overview';
+import { ProjectCreate } from 'pages/project-overview/create';
+import { ProjectUpdate } from 'pages/project-overview/update';
 import { ProjectScheme } from 'pages/project-scheme';
 import { Public } from 'pages/public';
 import { createBrowserRouter } from 'react-router-dom';
@@ -49,6 +51,14 @@ export const router = createBrowserRouter(
         {
           path: PATHS.PROJECT_OVERVIEW,
           element: <ProjectOverview />,
+        },
+        {
+          path: PATHS.PROJECT_UPDATE,
+          element: <ProjectUpdate />,
+        },
+        {
+          path: PATHS.PROJECT_CREATE,
+          element: <ProjectCreate />,
         },
         {
           path: PATHS.PROJECT_SCHEME,

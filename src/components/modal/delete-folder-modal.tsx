@@ -14,7 +14,6 @@ type Props = {
 };
 
 const deleteText = (count: number) => {
-    console.log('count', +count === 0)
     switch(true) {
         case count === 0:
             return 'There are no Projects for this folder';

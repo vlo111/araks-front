@@ -110,12 +110,6 @@ export const ProjectHome = () => {
       <Sider
         width={240}
         breakpoint="lg"
-        // onBreakpoint={(broken) => {
-        //   console.log(broken);
-        // }}
-        // onCollapse={(collapsed, type) => {
-        //   console.log(collapsed, type);
-        // }}
       >
         <Logo style={{margin: '31px 63px'}} />
         <Menu

@@ -98,12 +98,11 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
     const navigate = useNavigate();
 
     const { data } = useGetProject({ id: projectId }, {enabled: !!projectId});
-
     const handleCancel = () => {
         setIsModalOpen(undefined);
     };
 
-    const project: ProjectList = data.project ? {
+    const project: ProjectList = data && data.project ? {
         id: data.project.id,
         color: data.project.color, 
         name: data.project.title, 
@@ -115,7 +114,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
     return <>
         <ProjectWrapModal 
             open={isModalOpen} 
-            title={project.id ? <Title handleCancel={handleCancel} project={project} size={20} comments={data.comments} likes={data.likes} views={data.views} /> : ''}
+            title={project.id ? <Title handleCancel={handleCancel} project={project} size={20} comments={data?.comments || 0} likes={data?.likes || 0} views={data?.views || 0} /> : ''}
             footer={false} 
             closable={false}
             width='50vw'

@@ -15,32 +15,40 @@ const RadioGroup = styled(RadioComponent.Group)`
     }
 `;
 const RadioButton = styled(RadioComponent.Button)`
-    height: 52px;
-    border: 1px solid rgba(200, 203, 218, 0.5);
-    box-shadow: 0px 4px 6px rgba(111, 111, 111, 0.1);
-    border-radius: 4px;
-    padding: 13px 18px;
-    
-    .ant-typography {
-        color: #808080;
-    }
-
-    .icon path {
-        fill: #808080;
-    }
-
-    &.ant-radio-button-wrapper-checked {
-        .ant-radio-button-checked {
-            background: #D5D7DF;
-            border: 1px solid rgba(200, 203, 218, 0.5);
+    &&.ant-radio-button-wrapper {
+        height: 52px;
+        box-shadow: 0px 4px 6px rgba(111, 111, 111, 0.1);
+        border: 1px solid #DDDDDD;
+        border-radius: 4px;
+        padding: 13px 18px;
+        
+        .ant-typography {
+            color: #808080;
         }
 
         .icon path {
-            fill: #414141;
+            fill: #808080;
         }
-        
-        .ant-typography {
-            color: #414141;
+
+        &.ant-radio-button-wrapper-checked {
+            border: 1px solid rgba(200, 203, 218, 0.5);
+            background: #D5D7DF;
+            .ant-radio-button-checked {
+                
+                
+            }
+
+            .icon path {
+                fill: #414141;
+            }
+            
+            .ant-typography {
+                color: #414141;
+            }
+        }
+
+        &::before {
+            background-color: transparent;
         }
     }
 `;
