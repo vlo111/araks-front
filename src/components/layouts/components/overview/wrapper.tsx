@@ -1,15 +1,16 @@
 import { Col, Row as RowComponent } from "antd"
-import { Outlet } from "react-router-dom";
+import { Share } from "pages/project-overview/share";
+import { Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const Row = styled(RowComponent)`
+const Row = styled(({hasProject, ...props}) => <RowComponent {...props} />)`
     &.overview {
         height: calc(100vh - 152px);
 
         .ant-col.overview__section {
             background: #F7F7F7;
 
-            opacity: 0.2;
+            opacity: ${props => props.hasProject ? 1 : 0.2};
             box-shadow: -10px 0px 10px rgba(111, 111, 111, 0.1);
 
             &:first-child {
@@ -30,9 +31,11 @@ const Row = styled(RowComponent)`
 `;
 
 export const OverviewWrapper = () => {
-    return <Row className="overview">
+    const params = useParams();
+
+    return <Row className="overview" hasProject={!!params.id}>
     <Col span={8} className='overview__section project-save'><Outlet /></Col>
-    <Col span={8} className='overview__section project-share'></Col>
+    <Col span={8} className='overview__section project-share'><Share /></Col>
     <Col span={8} className='overview__section project-comments'></Col>
   </Row>
 }

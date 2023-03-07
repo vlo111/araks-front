@@ -3,9 +3,9 @@ import styled, { css } from "styled-components";
 
 const { Title: TitleComponent } = Typography;
 
-export const Title = styled(TitleComponent)`
+export const Title = styled(({color, ...props}) => <TitleComponent {...props} />)`
     && {
-        color: #424242;
+        color: ${props => props.color || '#424242'};
         margin: 0px;
 
         ${props => props.level === 1 ? css`
@@ -20,6 +20,13 @@ export const Title = styled(TitleComponent)`
             font-weight: 700;
             font-size: 30px;
             line-height: 38px;
+        ` : ''}
+
+        ${props => props.level === 3 ? css`
+            font-family: 'Rajdhani';
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 31px;
         ` : ''}
     }
 `;
