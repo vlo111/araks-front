@@ -40,7 +40,7 @@ let selected = shuffled.slice(0, 11);
 export const SelectIcon = () => {
     const [ icons, setIcons ] = useState<string[]>(selected);
 
-    const onSearch = (value: string) => setIcons(iconsList.filter(item => item.includes(value)));
+    const onSearch = (value: string) => value.length >= 3 ? setIcons(iconsList.filter(item => item.includes(value))) : [];
 
     return <VerticalSpace>
             <Search placeholder="search for icon" onSearch={onSearch} enterButton />

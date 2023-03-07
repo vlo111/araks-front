@@ -16,10 +16,8 @@ const TypeIcon = styled.div<FullWidth>`
     position: absolute;
 
     ${(props) => props.fullWidth ? css`
-        left: 23px;
-        bottom: 26px;
-        width: 10px;
-        height: 10px;
+        left: 20px;
+        bottom: 18px;
     ` : css`
         left: 38px;
         top: 5px;

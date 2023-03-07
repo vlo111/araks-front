@@ -34,7 +34,7 @@ const DotsWrapper = styled.div`
 `;
 
 const FolrderText = (props: Omit<Props, 'ButtonProps'>) => <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <Space>
+    <Space style={{ lineHeight: '1' }}>
         <FolderFilled />
         <Text className="folder-name">{props.folderName}</Text>
         <Text className="folder-count">({props.countItems})</Text>
@@ -52,16 +52,17 @@ export const FolderButton = styled(({ folderName, folderId, countItems, fullWidt
 />)`
     &.ant-btn-default {
         background: #F2F2F2;
-        padding: 16px 28px;
         text-align: left;
         ${(props: Props) => props.fullWidth ? css`
             border: none;
             border-bottom: 1px solid #C3C3C3;
             border-radius: 0;
+            padding: 5px 20px;
         ` : css`
             border: 1px solid #FFFFFF;
             box-shadow: 0px 4px 4px rgba(111, 111, 111, 0.1);
             border-radius: 8px;
+            padding: 16px 28px;
         `}
 
         .folder-name {
