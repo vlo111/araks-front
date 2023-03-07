@@ -65,7 +65,7 @@ export const CreateEditFolderModal = ({ isModalOpen, setIsModalOpen, initialValu
                         label="Folder name" 
                         rules={[
                             { required: true, message: 'Folder name is required' }, 
-                            { min: 3, message: 'The minimum length for this field is 3 characters'},dav
+                            { min: 3, message: 'The minimum length for this field is 3 characters'},
                             { max: 30, message: 'The maximum length for this field is 30 characters'}
                         ]}>
                         <Input placeholder='Folder name' />
