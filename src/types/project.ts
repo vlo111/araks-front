@@ -1,6 +1,6 @@
-import { ProjectStatistics } from './../components/project/project-statistics';
 export type ProjectListResponse = {
     id: string;
+    icon: string;
     title: string;
     color: string;
     updated_at: string;
@@ -15,7 +15,7 @@ export type FullWidth = {
 export type ProjectList = {
     color: string;
     dateTime: string;
-    // icon: string;
+    icon?: string;
     name: string;
     type: string;
     id: string;

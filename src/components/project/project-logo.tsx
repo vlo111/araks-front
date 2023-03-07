@@ -52,7 +52,7 @@ const Wrapper = styled.div<WrapperProps>`
 
 export const ProjectLogo = ({ project, fullWidth }: ProjectButtonContent) => <div style={{ display: 'flex', justifyContent: 'center' }}>
 <Wrapper bgColor={project.color} fullWidth={fullWidth}>
-    <ProjectIcon style={{ fontSize: fullWidth ? '15px' : '26px' }} />
+    <ProjectIcon style={{ fontSize: fullWidth ? '15px' : '26px' }} icon={project.icon} />
     {project.type === 'public' && <TypeIcon fullWidth={fullWidth}>{project.type === 'public' ? <PublicProject /> : undefined}</TypeIcon>}
 </Wrapper>
 </div>

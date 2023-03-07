@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Badge, Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space } from 'antd';
+import { Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space } from 'antd';
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { MenuText } from '../typography';
 import { ReactComponent as Home } from '../icons/home.svg';
-import { ReactComponent as Logo } from '../icons/araks.svg';
 import { ReactComponent as Public } from '../icons/public.svg';
 import { ReactComponent as Shared } from '../icons/shared.svg';
-import { ReactComponent as Bell } from '../icons/bell.svg';
 
-import { Search } from 'components/search';
 import { PATHS } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
-import { HeaderProfile } from 'components/header-profile';
 import { HeaderSearch } from './components/header-search';
+import { Logo } from 'components/logo';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
@@ -111,7 +108,7 @@ export const ProjectHome = () => {
         width={240}
         breakpoint="lg"
       >
-        <Logo style={{margin: '31px 63px'}} />
+        <Logo margin='31px 63px' />
         <Menu
           mode="inline"
           inlineIndent={63}

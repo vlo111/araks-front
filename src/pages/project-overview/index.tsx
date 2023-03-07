@@ -1,17 +1,13 @@
-import { Col, Divider, Row as RowComponent, Space, Spin } from "antd";
+import { Divider, Space, Spin } from "antd";
 import useGetProject from "api/projects/use-get-project"
 import VerticalSpace from "components/space/vertical-space";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { MenuText, SecondaryText, Text } from "components/typography";
-import { ManageProjectUrlProp, URL_CREAT_PROJECT } from "api/projects/use-manage-project";
-import { RequestType, RequestTypes } from "api/types";
 import { ProjectUserInfo } from "./components/project-user-info";
 import { ViewColorIcon } from "./components/view-color-icon";
 import { COLORS, PATHS } from "helpers/constants";
 import Icon from "components/icon";
-
-
 
 const ProjectInfo = styled.div`
     display: flex;
@@ -25,12 +21,7 @@ const ProjectInfo = styled.div`
     padding: 2px 21px;
 `;
 
-type Props = {
-    manageUrl?: ManageProjectUrlProp;
-    type?: RequestType;
-}
-
-export const ProjectOverview = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
+export const ProjectOverview = () => {
     const navigate = useNavigate();
     const params = useParams();
     const { data, isLoading } = useGetProject(
@@ -44,7 +35,7 @@ export const ProjectOverview = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTy
         <VerticalSpace size={17} className='overview-form-items'>
             <VerticalSpace size={42}>
                 <div style={{ width: '100%', display: 'flex', gap: '22px' }}>
-                    <ViewColorIcon icon={data?.project?.icon || ''} color={data?.project?.color || ''} />
+                    <ViewColorIcon project={data?.project} />
                     <VerticalSpace size={14}>
                         <Space style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                             <MenuText strong color="">{data?.project?.title}</MenuText>

@@ -1,10 +1,9 @@
 import { Col, Layout as LayoutComponent, Row } from 'antd';
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-import { ReactComponent as Logo } from '../icons/araks.svg';
 import styled from 'styled-components';
-import { COLORS, PATHS } from 'helpers/constants';
-import { useAuth } from 'context/auth-context';
+import { COLORS } from 'helpers/constants';
+import { Logo } from 'components/logo';
 
 const Layout = styled(LayoutComponent)`
     background: #FDFDFD;

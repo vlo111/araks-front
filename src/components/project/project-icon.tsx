@@ -1,8 +1,12 @@
-import Icon from '@ant-design/icons';
+// import Icon from '@ant-design/icons';
 import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
-import { ReactComponent as AraksSmall } from '../icons/araks-small.svg';
+import Icon from 'components/icon';
+import { DEFAULT_ICON } from 'helpers/constants';
 
+type Props = Partial<CustomIconComponentProps> & {
+  icon?: string;
+} 
 
-export const ProjectIcon = (props: Partial<CustomIconComponentProps>) => (
-    <Icon component={AraksSmall} {...props} />
+export const ProjectIcon = ({ icon, ...props}: Props) => (
+    <Icon color='#353432' icon={icon || DEFAULT_ICON} size={25} />
   )

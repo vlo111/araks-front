@@ -6,6 +6,7 @@ import client from '../client';
 import { CreateOverviewFormData, ProjectFullInfo, RequestType, RequestTypes } from 'api/types';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from 'helpers/constants';
+import { GET_PROJECT_DATA } from './use-get-project';
 
 export const URL_CREAT_PROJECT = '/projects/create'
 export const URL_UPDATE_PROJECT = '/projects/update/:id'
@@ -24,8 +25,8 @@ export const useManageProject = (url: ManageProjectUrlProp, type: RequestType = 
     (values: CreateOverviewFormData) => client[type](url, values),
     {
       onSuccess: (data: Response, variables, context) => {
-        console.log('onSuccess', data);
         queryClient.invalidateQueries(GET_PROJECTS_LIST);
+        queryClient.invalidateQueries(GET_PROJECT_DATA.replace(':id', data?.data?.data?.id || ''));
         navigate(PATHS.PROJECT_OVERVIEW.replace(':id', data?.data?.data?.id || ''));
       },
     }

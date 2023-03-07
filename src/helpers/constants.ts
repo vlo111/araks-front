@@ -58,3 +58,6 @@ export const AUTH_KEYS = {
 export const VARIABLES = {
     MAX_PROJECT_TITLE_LENGTH: 15,
 };
+
+export const DEFAULT_ICON = 'araks-small';
+export const DEFAULT_COLOR = COLORS.PRIMARY.GRAY_LIGHT;
