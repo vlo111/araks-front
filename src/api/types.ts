@@ -39,9 +39,21 @@ export type ProjectFullInfo = {
     user_id: string;
 }
 
-export type ProjectReturnData = {
+export type ProjectInfoReturnData = {
     comments: number;
     likes: number;
     project: ProjectFullInfo;
     views: number;
+};
+
+export type UserData = {
+    email: string;
+    first_name: string;
+    id: string;
+    last_name: string;
+    username: string;
+};
+
+export type ProjectReturnData = ProjectFullInfo & {
+    user: UserData
 };

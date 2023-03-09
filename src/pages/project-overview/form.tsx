@@ -6,14 +6,13 @@ import { FormItem } from "components/form/form-item";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AddColorIcon } from "./components/add-color-icon";
-import { SecondaryText, Text } from "components/typography";
-import { COLORS } from "helpers/constants";
 import { ProjectType } from "./components/project-type";
 import { Button } from "components/button";
 import { ManageProjectUrlProp, URL_CREAT_PROJECT, useManageProject } from "api/projects/use-manage-project";
 import { CreateOverviewFormData, RequestType, RequestTypes } from "api/types";
-import dayjs from "dayjs";
 import { ProjectUserInfo } from "./components/project-user-info";
+import { Text } from "components/typography";
+import { AUTH_KEYS } from "helpers/constants";
 
 const { TextArea: TextAreaComponent } = InputComponent;
 
@@ -63,20 +62,12 @@ const Input = styled(InputComponent)`
     letter-spacing: 0.07em;
 `;
 
-type OwnerInfoProps = {
-    title: string;
-    value: string;
-}
-
-const OwnerInfo = ({ title, value }: OwnerInfoProps) => <Row>
-    <Col span={8}><SecondaryText color={COLORS.PRIMARY.BLUE}>{ title }</SecondaryText></Col>
-    <Col span={16}><SecondaryText>{ value }</SecondaryText></Col>
-</Row>
-
 type Props = {
     manageUrl?: ManageProjectUrlProp;
     type?: RequestType;
 }
+
+const logedInUser = JSON.parse(localStorage.getItem(AUTH_KEYS.USER) || '');
 
 export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
     const params = useParams();
@@ -96,12 +87,16 @@ export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.
         { 
             enabled: !!params.id, 
             onSuccess: (data) => {
-                if (data.data?.project){
-                    form.setFieldsValue(data.data.project);
+                if (data.data){
+                    form.setFieldsValue(data.data);
                 }
             } 
         }
     );
+
+    console.log('data', data);
+
+    const fullName = data && data.user ? `${data?.user.first_name} ${data?.user.last_name}` : `${logedInUser?.first_name} ${logedInUser?.last_name}`;
 
     return <Spin spinning={isLoading}>
         <Form
@@ -124,7 +119,7 @@ export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.
                                 >
                                 <Input placeholder='Untitled' /> 
                             </FormItem>
-                            <ProjectUserInfo createdAt={data?.project?.created_at} updatedAt={data?.project?.updated_at} />
+                            <ProjectUserInfo createdAt={data?.created_at} updatedAt={data?.updated_at} userFullName={fullName} />
                         </VerticalSpace>
                     </div>
                     <FormItem name="description" label='Description' >
@@ -139,7 +134,7 @@ export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.
                 <Col span={3}>
                     <Button type="text" onClick={handleCancel}>Cancel</Button>
                 </Col>
-                <Col span={10}>
+                <Col span={10} offset={2}>
                     <Button block htmlType="submit" type="primary">Save</Button>
                 </Col>
             </Row>

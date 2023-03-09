@@ -19,11 +19,12 @@ const OwnerInfo = ({ title, value }: OwnerInfoProps) => <Row>
 type Props = {
     createdAt?: string;
     updatedAt?: string;
+    userFullName: string;
 }
 
-export const ProjectUserInfo = ({ createdAt, updatedAt }: Props) => {
+export const ProjectUserInfo = ({ createdAt, updatedAt, userFullName }: Props) => {
     return <VerticalSpace size={14}>
-        <OwnerInfo title='Owner' value='Karen Davtyan' />
+        <OwnerInfo title='Owner' value={userFullName} />
         <OwnerInfo title='Created' value={createdAt ? dayjs(createdAt).format('DD-MM-YYYY') : ''} />
         <OwnerInfo title='Last modified' value={updatedAt ? dayjs(updatedAt).format('DD-MM-YYYY HH:mm') : ''} />
     </VerticalSpace>

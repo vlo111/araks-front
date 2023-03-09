@@ -1,8 +1,8 @@
-import { ProjectReturnData } from 'api/types';
+import { ProjectInfoReturnData } from 'api/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import client from '../client';
 
-export const GET_PROJECT_DATA = '/projects/:id';
+export const GET_PROJECT_INFO_DATA = '/projects/info/:id';
 
 type GetProjectParam = {
   id?: string;
@@ -11,7 +11,7 @@ type GetProjectParam = {
 type QueryKey = GetProjectParam | string;
 
 type ReturnData = {
-  data: ProjectReturnData;
+  data: ProjectInfoReturnData;
 }
 
 type QueryResponse = {
@@ -19,10 +19,10 @@ type QueryResponse = {
 }
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
-type Result = UseQueryResult<ProjectReturnData>;
+type Result = UseQueryResult<ProjectInfoReturnData>;
 
-const useGetProject = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
-  const url = GET_PROJECT_DATA.replace(':id', params?.id || '');
+const useGetProjectInfo = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
+  const url = GET_PROJECT_INFO_DATA.replace(':id', params?.id || '');
   const result = useQuery([url, params], () => client.get(url, { params }), {
     ...options,
     select: (data): ReturnData => data.data
@@ -30,8 +30,8 @@ const useGetProject = (params: GetProjectParam, options: Options = { enabled: tr
   const { data, isSuccess } = result;
   return {
     ...result,
-    data: isSuccess ? data.data : {} as ProjectReturnData,
+    data: isSuccess ? data.data : {} as ProjectInfoReturnData,
   } as Result;
 };
 
-export default useGetProject;
+export default useGetProjectInfo;

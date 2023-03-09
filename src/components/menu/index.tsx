@@ -9,13 +9,14 @@ import styled from "styled-components";
 
 import './index.css';
 import { useMoveProjectTo } from "api/projects/use-move-project-to";
-import { COLORS, VARIABLES } from "helpers/constants";
+import { COLORS, PATHS, VARIABLES } from "helpers/constants";
 import { useMoveProjectToAll } from "api/projects/use-move-project-to-all";
 import { useState } from "react";
 import { RequestTypes } from "api/types";
 import { FOLDER_UPDATE_URL } from "api/folders/use-manage-folder";
 import { CreateEditFolderModal, DeleteFolderModal } from "components/modal";
 import { DeleteProjectModal } from "components/modal/delete-project-modal";
+import { useNavigate } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -103,11 +104,14 @@ type Props = {
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
 export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) => {
+    const navigate = useNavigate();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const { mutate } = useMoveProjectTo(folderId);
     const { mutate: mutateAll } = useMoveProjectToAll(folderId);
     const onClick: MenuProps['onClick'] = (e) => {
         if (e.key === 'edit') {
+            console.log('key', e.key);
+            navigate(PATHS.PROJECT_UPDATE.replace(':id', projectId));
             return;
         }
         if (e.key === 'delete') {

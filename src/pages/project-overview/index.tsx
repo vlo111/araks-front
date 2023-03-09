@@ -35,10 +35,10 @@ export const ProjectOverview = () => {
         <VerticalSpace size={17} className='overview-form-items'>
             <VerticalSpace size={42}>
                 <div style={{ width: '100%', display: 'flex', gap: '22px' }}>
-                    <ViewColorIcon project={data?.project} />
+                    <ViewColorIcon project={data} />
                     <VerticalSpace size={14}>
                         <Space style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                            <MenuText strong color="">{data?.project?.title}</MenuText>
+                            <MenuText strong color="">{data?.title}</MenuText>
                             <Icon 
                                 color='#3D487C' 
                                 icon='edit-pencil' 
@@ -48,12 +48,12 @@ export const ProjectOverview = () => {
                             />
                         </Space>
                         <Divider style={{ margin: '0', backgroundColor: '#95A2E1' }} />
-                        <ProjectUserInfo createdAt={data?.project?.created_at} updatedAt={data?.project?.updated_at} />
+                        <ProjectUserInfo createdAt={data?.created_at} updatedAt={data?.updated_at} userFullName={`${data?.user?.first_name} ${data?.user?.last_name}`} />
                     </VerticalSpace>
                 </div>
                 <VerticalSpace size='small'>
                     <SecondaryText color="#C5C5C5">Description</SecondaryText>
-                    {data?.project?.description}
+                    {data?.description}
                 </VerticalSpace>
             </VerticalSpace>
             <Divider style={{ margin: '0' }} />
@@ -80,8 +80,8 @@ export const ProjectOverview = () => {
             </VerticalSpace>
             <Divider style={{ margin: '0' }} />
             <Space size={30}>
-                <Icon color='#353432' icon={data?.project?.privacy === 'public' ? 'globe1' : 'users1'} size={25} />
-                <Text style={{ textTransform: 'capitalize' }}>{data?.project?.privacy}</Text>
+                <Icon color='#353432' icon={data?.privacy === 'public' ? 'globe1' : 'users1'} size={25} />
+                <Text style={{ textTransform: 'capitalize' }}>{data?.privacy}</Text>
             </Space>
         </VerticalSpace>
     </Spin>

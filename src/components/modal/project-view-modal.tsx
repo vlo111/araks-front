@@ -1,4 +1,3 @@
-import useGetProject from "api/projects/use-get-project";
 import { ReactComponent as LeftCircle } from 'components/icons/right-button.svg';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 import { ReactComponent as Public } from 'components/icons/public.svg';
@@ -14,6 +13,7 @@ import { ProjectButtonContent, ProjectList, ProjectStatisticsType } from "types/
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { ProjectStatistics } from "components/project/project-statistics";
+import useGetProjectInfo from "api/projects/use-get-project-info";
 
 type Props = {
     isModalOpen: boolean;
@@ -97,7 +97,7 @@ const Title = ({ project, comments, likes, views, size, handleCancel } : TitlePr
 export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Props) => {
     const navigate = useNavigate();
 
-    const { data } = useGetProject({ id: projectId }, {enabled: !!projectId});
+    const { data } = useGetProjectInfo({ id: projectId }, {enabled: !!projectId});
     const handleCancel = () => {
         setIsModalOpen(undefined);
     };
