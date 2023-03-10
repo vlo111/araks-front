@@ -3,7 +3,6 @@ import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.s
 import { ReactComponent as Public } from 'components/icons/public.svg';
 
 import { Button } from "components/button"
-import { Modal } from "components/modal";
 import { MenuText, Text } from "components/typography";
 import styled from "styled-components";
 import { Col, Drawer, Row, Space } from "antd";

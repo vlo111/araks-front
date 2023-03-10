@@ -12,7 +12,7 @@ import { ManageProjectUrlProp, URL_CREAT_PROJECT, useManageProject } from "api/p
 import { CreateOverviewFormData, RequestType, RequestTypes } from "api/types";
 import { ProjectUserInfo } from "./components/project-user-info";
 import { Text } from "components/typography";
-import { AUTH_KEYS } from "helpers/constants";
+import { logedInUser } from "helpers/utils";
 
 const { TextArea: TextAreaComponent } = InputComponent;
 
@@ -66,8 +66,6 @@ type Props = {
     manageUrl?: ManageProjectUrlProp;
     type?: RequestType;
 }
-
-const logedInUser = JSON.parse(localStorage.getItem(AUTH_KEYS.USER) || '');
 
 export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
     const params = useParams();

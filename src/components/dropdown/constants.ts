@@ -18,3 +18,15 @@ export const PROJECT_SORT: SortItems[] = [
         key: 'updated_at DESC',
     },
 ];
+
+export const SHARE_OPTIONS = [
+    {
+        label: 'Can Edit',
+        value: 'edit',
+    },
+    {
+        label: 'Can View',
+        value: 'view',
+    },
+];
+

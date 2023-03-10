@@ -6,6 +6,8 @@ import { Input } from "components/input";
 import VerticalSpace from "components/space/vertical-space"
 import { Text, Title } from "components/typography"
 import { COLORS } from "helpers/constants"
+import { Comments } from "./components/comments";
+import { SharedWith } from "./components/share/shared-with";
 
 export const Share = () => {
     const [form] = Form.useForm();
@@ -16,7 +18,10 @@ export const Share = () => {
 
     return <div style={{ padding: '32px' }}>
         <VerticalSpace>
-            <Title level={3} color={COLORS.PRIMARY.GRAY_DARK}>Share</Title>
+            <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Title level={3} color={COLORS.PRIMARY.GRAY_DARK}>Share</Title>
+                <Comments />
+            </Space>
             <Form
                 name="share"
                 form={form}
@@ -60,8 +65,10 @@ export const Share = () => {
                             <Text>Anyone with the link</Text>
                         </Space>
                         <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
+                        <SharedWith />
                     </VerticalSpace>
                 </VerticalSpace>
+
             </Form>
         </VerticalSpace>
     </div>
