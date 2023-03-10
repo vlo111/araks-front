@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Layout as LayoutComponent, Tabs as TabsComponent } from 'antd';
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { PATHS } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
@@ -74,9 +74,8 @@ const items = [
     disabled: true,
   },
   {
-    key: '3',
+    key: PATHS.DATA_SHEET,
     label: 'Data sheet',
-    disabled: true,
   },
   {
     key: '4',
@@ -118,7 +117,10 @@ export const Overview = () => {
             items={items.map(
               item => ({
                 ...item,  
-                children: <div className='site-layout-content'><OverviewWrapper /></div>
+                children: <div className='site-layout-content'>
+                  {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
+                  {item.key === PATHS.DATA_SHEET && <Outlet />}
+                </div>
               })
             )}
           />

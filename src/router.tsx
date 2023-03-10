@@ -1,4 +1,6 @@
+import { DataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { Overview } from 'components/layouts/overview';
+import { DataSheet } from 'pages/data-sheet';
 import { Folder } from 'pages/folder';
 import { ProjectOverview } from 'pages/project-overview';
 import { ProjectCreate } from 'pages/project-overview/create';
@@ -63,6 +65,10 @@ export const router = createBrowserRouter(
         {
           path: PATHS.PROJECT_SCHEME,
           element: <ProjectScheme />,
+        },
+        {
+          path: PATHS.DATA_SHEET,
+          element: <DataSheetWrapper />,
         },
       ],
     },
