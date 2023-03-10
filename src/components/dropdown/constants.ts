@@ -28,5 +28,9 @@ export const SHARE_OPTIONS = [
         label: 'Can View',
         value: 'view',
     },
+    {
+        label: 'Owner',
+        value: 'owner',
+    },
 ];
 

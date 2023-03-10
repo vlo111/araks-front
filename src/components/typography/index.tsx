@@ -31,6 +31,6 @@ export const Title = styled(({color, ...props}) => <TitleComponent {...props} />
     }
 `;
 
-export { MenuText, Text, SecondaryText } from './text';
+export { MenuText, Text, SecondaryText, textStyles } from './text';
 export { TitleSeparator } from './title-separator';
 export { LongTitle } from './long-title';

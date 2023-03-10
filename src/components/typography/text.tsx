@@ -1,16 +1,20 @@
-import { Typography, TypographyProps } from "antd";
+import { Typography } from "antd";
 import styled, { css } from "styled-components";
 import { COLORS } from "../../helpers/constants";
 
 const { Text: TextComponent } = Typography;
 
+export const textStyles = css`
+    font-family: 'Rajdhani';
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: 0.07em;
+`;
+
 export const Text = styled(({ color, ...props }) => <TextComponent {...props} />)`
     && {
-        font-family: 'Rajdhani';
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 26px;
-        letter-spacing: 0.07em;
+        ${ textStyles }
         color: ${props=> props.color || COLORS.PRIMARY.GRAY_DARK};
     }
 `;

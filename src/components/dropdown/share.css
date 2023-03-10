@@ -1,0 +1,17 @@
+.share-dropdown {
+    background: linear-gradient(127.79deg, rgba(255, 255, 255, 0.8) 2.11%, rgba(243, 244, 248, 0.2) 98.3%, rgba(255, 255, 255, 0.2) 98.3%);
+    border: 1px solid #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(195, 195, 195, 0.2);
+    backdrop-filter: blur(7px);
+    border-radius: 4px;
+    padding: 0;
+}
+
+
+.share-dropdown .ant-select-item-option-content {
+    text-align: center;
+}
+
+.share-dropdown .ant-select-item-option-selected {
+    background-color: transparent !important;
+}

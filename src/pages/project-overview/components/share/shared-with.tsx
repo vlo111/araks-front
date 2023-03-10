@@ -14,15 +14,11 @@ export const SharedWith = () => {
     itemLayout="horizontal"
     dataSource={data}
     renderItem={(item, index) => (
-      <List.Item>
+      <List.Item actions={[<Share isOwner />]}>
         <List.Item.Meta
           avatar={<Avatar src={`https://joesch.moe/api/v1/random?key=${index}`} />}
-          title={
-            <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Text>{item.title}</Text>
-                <Share />
-            </Space>
-          }
+          title={<Text>{item.title}</Text>}
+          description=" "
         />
       </List.Item>
     )}
