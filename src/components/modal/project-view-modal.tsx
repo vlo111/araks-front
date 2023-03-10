@@ -6,7 +6,7 @@ import { Button } from "components/button"
 import { Modal } from "components/modal";
 import { MenuText, Text } from "components/typography";
 import styled from "styled-components";
-import { Col, Row, Space } from "antd";
+import { Col, Drawer, Row, Space } from "antd";
 import { COLORS, PATHS } from "helpers/constants";
 import { ProjectLogo } from "components/project/project-logo";
 import { ProjectButtonContent, ProjectList, ProjectStatisticsType } from "types/project";
@@ -25,7 +25,7 @@ type TitleProps = ProjectButtonContent & ProjectStatisticsType & {
     handleCancel: () => void
 };
 
-const ProjectWrapModal = styled(Modal)`
+const ProjectWrapModal = styled(Drawer)`
     & {
         margin: 0;
         margin-left: auto;
@@ -33,13 +33,13 @@ const ProjectWrapModal = styled(Modal)`
         min-height: 100vh;
         height: 100%;
 
-        .ant-modal-content {
+        &.ant-drawer-content {
             background: #FDFDFD;
             box-shadow: -10px 0px 10px rgba(111, 111, 111, 0.1);
             border-radius: 4px; 
             padding: 0;
 
-            .ant-modal-header {
+            .ant-drawer-header {
                 padding: 0 16px 0 72px;
                 margin: 0;
 
@@ -52,8 +52,9 @@ const ProjectWrapModal = styled(Modal)`
                 }
             }
 
-            .ant-modal-body {
+            .ant-drawer-body {
                 background-color: ${COLORS.PRIMARY.GRAY_LIGHT};
+                padding: 0;
 
                 .project-content {
                     height: calc(100vh - 228px);
@@ -117,6 +118,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
             title={project.id ? <Title handleCancel={handleCancel} project={project} size={20} comments={data?.comments || 0} likes={data?.likes || 0} views={data?.views || 0} /> : ''}
             footer={false} 
             closable={false}
+            placement='right'
             width='50vw'
         >
             <div className="project-content"></div>

@@ -115,7 +115,12 @@ export const Overview = () => {
             type="card"
             tabBarGutter={32}
             onTabClick={handleTabClick}
-            items={items.map(item => ({...item, children: <div className='site-layout-content'><OverviewWrapper /></div>}))}
+            items={items.map(
+              item => ({
+                ...item,  
+                children: <div className='site-layout-content'><OverviewWrapper /></div>
+              })
+            )}
           />
         </div>
       </Content>

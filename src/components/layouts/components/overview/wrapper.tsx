@@ -36,6 +36,5 @@ export const OverviewWrapper = () => {
     return <Row className="overview" hasProject={!!params.id}>
     <Col span={8} className='overview__section project-save'><Outlet /></Col>
     <Col span={8} className='overview__section project-share'><Share /></Col>
-    <Col span={8} className='overview__section project-comments'></Col>
   </Row>
 }
