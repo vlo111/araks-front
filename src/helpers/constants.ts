@@ -62,3 +62,12 @@ export const VARIABLES = {
 
 export const DEFAULT_ICON = 'araks-small';
 export const DEFAULT_COLOR = COLORS.PRIMARY.GRAY_LIGHT;
+
+export const screenSize = {
+    xs: '480px',
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
+    xxl: '1600px',
+};

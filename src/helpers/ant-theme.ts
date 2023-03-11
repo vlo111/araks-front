@@ -95,6 +95,17 @@ export const antTheme = {
       colorSuccess: '#5aca75',
       colorPrimary: '#232f6a',
       borderRadius: 4,
+      fontFamily: 'Rajdhani',
+      fontSize: 20,
+      fontSizeLG: 20,
+      fontSizeSM: 15,
+      lineHeight: 1.3,
+      lineHeightHeading1: 1.3,
+      fontSizeHeading1: 32,
+      fontSizeHeading2: 30,
+      fontSizeHeading3: 24,
+      lineHeightHeading3: 1.3,
+      
     },
   };
   

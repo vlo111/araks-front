@@ -6,8 +6,9 @@ import styled from "styled-components";
 import { MenuText, SecondaryText, Text } from "components/typography";
 import { ProjectUserInfo } from "./components/project-user-info";
 import { ViewColorIcon } from "./components/view-color-icon";
-import { COLORS, PATHS } from "helpers/constants";
+import { COLORS, PATHS, screenSize } from "helpers/constants";
 import Icon from "components/icon";
+import { useIsXXlScreen } from "hooks/use-breakpoint";
 
 const ProjectInfo = styled.div`
     display: flex;
@@ -19,9 +20,13 @@ const ProjectInfo = styled.div`
     backdrop-filter: blur(2px);
     border-radius: 4px;
     padding: 2px 21px;
+    @media (max-width: ${screenSize.xxl}) { 
+        padding: 1.5px 16px;
+    }
 `;
 
 export const ProjectOverview = () => {
+    const isXXl = useIsXXlScreen();
     const navigate = useNavigate();
     const params = useParams();
     const { data, isLoading } = useGetProject(
@@ -38,11 +43,11 @@ export const ProjectOverview = () => {
                     <ViewColorIcon project={data} />
                     <VerticalSpace size={14}>
                         <Space style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                            <MenuText strong color="">{data?.title}</MenuText>
+                            <MenuText ellipsis strong>{data?.title}</MenuText>
                             <Icon 
                                 color='#3D487C' 
                                 icon='edit-pencil' 
-                                size={25} 
+                                size={isXXl ? 25 : 18} 
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))} 
                             />
@@ -53,7 +58,7 @@ export const ProjectOverview = () => {
                 </div>
                 <VerticalSpace size='small'>
                     <SecondaryText color="#C5C5C5">Description</SecondaryText>
-                    {data?.description}
+                    <Text>{data?.description}</Text>
                 </VerticalSpace>
             </VerticalSpace>
             <Divider style={{ margin: '0' }} />
@@ -61,19 +66,19 @@ export const ProjectOverview = () => {
                 <SecondaryText color="#C5C5C5">Project Info</SecondaryText>
                 <Space size={7}>
                     <ProjectInfo>
-                        <SecondaryText color={COLORS.PRIMARY.WHITE}>Node Types</SecondaryText>
+                        <SecondaryText as='div' color={COLORS.PRIMARY.WHITE}>Node Types</SecondaryText>
                         <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
                     </ProjectInfo>
                     <ProjectInfo>
-                        <SecondaryText color={COLORS.PRIMARY.WHITE}>Connection Types</SecondaryText>
+                        <SecondaryText as='div' color={COLORS.PRIMARY.WHITE}>Connection Types</SecondaryText>
                         <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
                     </ProjectInfo>
                     <ProjectInfo>
-                        <SecondaryText color={COLORS.PRIMARY.WHITE}>Nodes</SecondaryText>
+                        <SecondaryText as='div' color={COLORS.PRIMARY.WHITE}>Nodes</SecondaryText>
                         <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
                     </ProjectInfo>
                     <ProjectInfo>
-                        <SecondaryText color={COLORS.PRIMARY.WHITE}>Connections</SecondaryText>
+                        <SecondaryText as='div' color={COLORS.PRIMARY.WHITE}>Connections</SecondaryText>
                         <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
                     </ProjectInfo>
                 </Space>

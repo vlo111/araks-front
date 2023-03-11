@@ -34,8 +34,8 @@ export const OverviewWrapper = () => {
     const params = useParams();
 
     return <Row className="overview" hasProject={!!params.id}>
-    <Col xs={12} xxl={8} className='overview__section project-save'><Outlet /></Col>
-    <Col xs={12} xxl={8} className='overview__section project-share'><Share /></Col>
-    <Col xs={0} xxl={8} className='overview__section project-comments'></Col>
+    <Col span={8} className='overview__section project-save'><Outlet /></Col>
+    <Col span={8} className='overview__section project-share'><Share /></Col>
+    <Col span={8} className='overview__section project-comments'></Col>
   </Row>
 }

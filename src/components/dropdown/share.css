@@ -15,3 +15,10 @@
 .share-dropdown .ant-select-item-option-selected {
     background-color: transparent !important;
 }
+
+.share-dropdown .ant-select-item-option-content {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 600;
+    font-family: Rajdhani, 'Helvetica Neue', sans-serif;
+}

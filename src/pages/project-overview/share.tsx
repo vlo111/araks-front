@@ -6,7 +6,6 @@ import { Input } from "components/input";
 import VerticalSpace from "components/space/vertical-space"
 import { Text, Title } from "components/typography"
 import { COLORS } from "helpers/constants"
-import { Comments } from "./components/comments";
 import { SharedWith } from "./components/share/shared-with";
 
 export const Share = () => {
@@ -18,10 +17,7 @@ export const Share = () => {
 
     return <div style={{ padding: '32px' }}>
         <VerticalSpace>
-            <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Title level={3} color={COLORS.PRIMARY.GRAY_DARK}>Share</Title>
-                <Comments />
-            </Space>
+            <Title level={3} color={COLORS.PRIMARY.GRAY_DARK}>Share</Title>
             <Form
                 name="share"
                 form={form}
@@ -44,17 +40,17 @@ export const Share = () => {
                                 </FormItem>
                             </Col>
                         </Row>
-                        <Row gutter={37}>
-                            <Col span={16}>
-                            <FormItem
-                                name="email" 
-                                rules={[{ required: true, message: 'Perspectives is required' }]}
-                                style={{ marginBottom: '0' }}
-                            >
-                                <Input placeholder='Email' /> 
-                            </FormItem>
+                        <Row gutter={[37, 19]}>
+                            <Col xs={24} xxl={16}>
+                                <FormItem
+                                    name="email" 
+                                    rules={[{ required: true, message: 'Perspectives is required' }]}
+                                    style={{ marginBottom: '0' }}
+                                >
+                                    <Input placeholder='Email' /> 
+                                </FormItem>
                             </Col>
-                            <Col span={8}>
+                            <Col xs={24} xxl={8}>
                                 <Button block type="primary">Send Invite</Button>
                             </Col>
                         </Row>

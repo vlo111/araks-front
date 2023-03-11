@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Button as ButtonComponent } from "antd";
 
 import { COLORS, DEFAULT_COLOR, DEFAULT_ICON, PATHS } from "helpers/constants";
@@ -6,6 +6,7 @@ import Icon from "components/icon";
 import { useNavigate, useParams } from "react-router-dom";
 import { useManageProject, URL_UPDATE_PROJECT } from "api/projects/use-manage-project";
 import { CreateOverviewFormData, ProjectFullInfo, RequestTypes } from "api/types";
+import { useIsXXlScreen } from "hooks/use-breakpoint";
 
 const Button = styled(ButtonComponent)`
     background: rgba(255, 255, 255, 0.2);
@@ -15,21 +16,36 @@ const Button = styled(ButtonComponent)`
 
 type WrapperProp = {
     color?: string;
+    isXXl?: boolean;
 };
 
 const Wrapper = styled.div<WrapperProp>`
-    padding: 0;
-    width: 160px;
-    height: 144px;
+    ${props => props.isXXl ? css`
+        width: 160px;
+        height: 144px;
+        padding: 0;
+    ` : css`
+        width: 120px;
+        height: 108px;
+        padding: 10px;
+    `}
     background: ${props => props.color || '#EFEFEF'};
     border-radius: 8px;
 
     .manage {
-        padding: 39px 12px;
         display: none;
-        width: 160px;
-        height: 144px;
-        gap: 10px;
+        ${props => props.isXXl ? css`
+            width: 160px;
+            height: 144px;
+            padding: 39px 12px;
+            gap: 10px;
+        ` : css`
+            width: 120px;
+            height: 108px;
+            padding: 10px;
+            gap: 5px;
+        `}
+        
         position: absolute;
         top: 0;
         left: 0;
@@ -49,10 +65,11 @@ const Wrapper = styled.div<WrapperProp>`
 
 type InnerProp = {
     iconToShow?: string;
+    isXXl?: boolean;
 };
 
 const Inner = styled.div<InnerProp>`
-    margin: ${props => props.iconToShow ? '43px 49px' : '43px 19px'};
+    margin: ${props => props.iconToShow ? (props.isXXl ? '43px 49px' : '18px 28px') : '43px 19px'};
 `;
 
 type Props = {
@@ -61,6 +78,7 @@ type Props = {
 
 export const ViewColorIcon = ({ project }: Props) => {
     const navigate = useNavigate();
+    const isXXl = useIsXXlScreen();
     const params = useParams();
 
     const { mutate } = useManageProject(URL_UPDATE_PROJECT.replace(':id', params.id || ''), RequestTypes.Put);
@@ -75,9 +93,9 @@ export const ViewColorIcon = ({ project }: Props) => {
         } as CreateOverviewFormData);
     }
 
-    return <Wrapper color={project?.color}>
-        <Inner iconToShow={project?.icon}>
-            <Icon color={COLORS.PRIMARY.GRAY} icon={project?.icon || 'araks'} size={62} />
+    return <Wrapper color={project?.color} isXXl={isXXl}>
+        <Inner iconToShow={project?.icon} isXXl={isXXl}>
+            <Icon color={COLORS.PRIMARY.GRAY} icon={project?.icon || 'araks'} size={isXXl ? 62 : 46} />
             <div className="manage">
                 <Button block onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))}>Edit</Button>
                 <Button block onClick={resetIconAndColor}>Reset</Button>

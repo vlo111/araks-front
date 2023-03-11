@@ -36,21 +36,17 @@ const ShareSelect = styled(Select)`
 
 type Props = {
   handleOnChange?: () => void,
-  isOwner?: boolean,
+  defaultValue?: string
 }
-export const Share = ({ handleOnChange, isOwner = false }: Props) => {
-
-  const list = isOwner ? SHARE_OPTIONS : SHARE_OPTIONS.slice(0, -1);
+export const Share = ({ handleOnChange, defaultValue }: Props) => {
+  const list = defaultValue === SHARE_OPTIONS[2].value ? SHARE_OPTIONS : SHARE_OPTIONS.slice(0, -1);
   return <ShareSelect
-    defaultValue={list[0]}
-    disabled={isOwner}
+    value={defaultValue || list[0]}
+    disabled={defaultValue === SHARE_OPTIONS[2].value}
     popupClassName='share-dropdown'
     style={{ width: 156 }}
     onChange={handleOnChange}
-    options={list.map(item => ({
-      ...item,
-      label: <Text color={COLORS.PRIMARY.GRAY}>{ item.label }</Text>
-    }))}
+    options={list}
     suffixIcon={<CaretDownFilled />}
   />;
 }

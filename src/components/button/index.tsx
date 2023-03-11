@@ -1,8 +1,10 @@
 import { Button as Component } from "antd"
+import { textSizeMedia } from "components/typography/text";
 import styled from "styled-components"
 import { COLORS } from "../../helpers/constants";
 
 export const Button = styled(Component)`
+    ${textSizeMedia}
     &.ant-btn-default {
        span {
         color: ${COLORS.PRIMARY.GRAY_DARK};

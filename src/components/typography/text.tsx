@@ -1,15 +1,20 @@
 import { Typography } from "antd";
 import styled, { css } from "styled-components";
-import { COLORS } from "../../helpers/constants";
+import { COLORS, screenSize } from "../../helpers/constants";
 
 const { Text: TextComponent } = Typography;
 
+export const textSizeMedia = css`
+    @media (max-width: ${screenSize.xxl}) { 
+        font-size: 15px;
+        line-height: 1.3;
+    }
+`;
+
 export const textStyles = css`
-    font-family: 'Rajdhani';
     font-weight: 600;
-    font-size: 20px;
-    line-height: 26px;
     letter-spacing: 0.07em;
+    ${textSizeMedia}
 `;
 
 export const Text = styled(({ color, ...props }) => <TextComponent {...props} />)`
@@ -31,10 +36,16 @@ export const MenuText = styled(Text)`
     }
 `;
 
-export const SecondaryText = styled(({ color, ...props }) => <Text {...props} />)`
+export const SecondaryText = styled(({ color, ...props }) => <Text type='secondary' {...props} />)`
     && {
         font-size: 16px;
         line-height: 20px;
         color: ${props=> props.color || '#424242'};
+
+        @media (max-width: ${screenSize.xxl}) { 
+            font-size: 12px;
+            line-height: 1.3;
+            font-weight: 400;
+        }
     }
 `;
