@@ -8,6 +8,7 @@ import { useAuth } from 'context/auth-context';
 import { HeaderSearch } from './components/header-search';
 import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
+import { DataSheetWrapper } from './components/data-sheet/wrapper';
 
 const Layout = styled(LayoutComponent)`
     background: #F2F2F2;
@@ -119,7 +120,7 @@ export const Overview = () => {
                 ...item,  
                 children: <div className='site-layout-content'>
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-                  {item.key === PATHS.DATA_SHEET && <Outlet />}
+                  {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
                 </div>
               })
             )}

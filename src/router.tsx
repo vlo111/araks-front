@@ -68,7 +68,7 @@ export const router = createBrowserRouter(
         },
         {
           path: PATHS.DATA_SHEET,
-          element: <DataSheetWrapper />,
+          element: <DataSheet />,
         },
       ],
     },
