@@ -1,0 +1,19 @@
+import { useState } from "react";
+import { Button, Space } from "antd";
+import { CaretUpFilled, CaretDownFilled } from '@ant-design/icons';
+import { Text } from "components/typography";
+import { Search } from "./search";
+import { PlusOutlined } from '@ant-design/icons';
+
+export const NodesHeader = () => {
+    const [visible, setVisible] = useState(false);
+
+
+    return <Space size={8} style={{ width: '100%' }} align='center' >
+        <Button type="text" icon={visible ? <CaretUpFilled /> : <CaretDownFilled />} onClick={() => setVisible(prev => !prev)}>
+            <Text>Node Type</Text>
+        </Button>
+        <Search />
+        <PlusOutlined  style={{ cursor: 'pointer' }} />
+    </Space>
+}

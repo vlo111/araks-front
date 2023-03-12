@@ -1,4 +1,4 @@
-import { Avatar, List, Space } from "antd";
+import { Avatar, List } from "antd";
 import { Share } from "components/dropdown";
 import { SHARE_OPTIONS } from "components/dropdown/constants";
 import { Text } from "components/typography";
@@ -10,7 +10,7 @@ export const SharedWith = () => {
   const isXll = useIsXXlScreen();
     const data = [
         {
-            title: logedInUser.email,
+            title: logedInUser?.email,
             value: SHARE_OPTIONS[2].value
         }
     ];

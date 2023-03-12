@@ -3,6 +3,7 @@ import { useIsXXlScreen } from "hooks/use-breakpoint";
 import { Share } from "pages/project-overview/share";
 import styled from "styled-components";
 import { LeftSection } from "./components/left-section";
+import { RightSection } from "./components/right-section";
 
 
 const Row = styled((props) => <RowComponent {...props} />)`
@@ -35,6 +36,6 @@ export const DataSheet = () => {
     const isXXL = useIsXXlScreen();
     return <Row className="overview">
     <Col span={isXXL ? 4 : 6} className='overview__section project-save'><LeftSection /></Col>
-    <Col span={isXXL ? 20 : 18} className='overview__section project-share'><></></Col>
+    <Col span={isXXL ? 20 : 18} className='overview__section project-share'><RightSection /></Col>
   </Row>
 }
