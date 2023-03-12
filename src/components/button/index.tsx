@@ -39,3 +39,4 @@ export { AddFolderButton } from './add-folder-button';
 export { FolderButton } from './folder-button';
 export { LikeButton } from './like-button';
 export { IconButton } from './icon-button';
+export { AddType } from './add-type';

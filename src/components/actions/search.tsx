@@ -3,9 +3,18 @@ import { AutoComplete } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
 import { Input } from 'components/input';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-const Wrapper = styled.div`
+export enum SearchPostionTypes {
+    left = 'left',
+    right = 'right'
+}
+
+type Props = {
+    position?: SearchPostionTypes;
+}
+
+const Wrapper = styled.div<Props>`
     position:relative;
     width:0px;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55 );
@@ -19,13 +28,18 @@ const Wrapper = styled.div`
         transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55 );
     }
 
-    .search-btn{
+    .search-btn {
         cursor: pointer;
         font-size: 18px;
         color: #C3C3C3;
         position: absolute;
         top: 5px;
-        left: 0px;
+        ${props => props.position === SearchPostionTypes.left ? css`
+            left: 0px;
+        ` : css`
+            right: 0;
+        `}
+        
         transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55 );
         z-index:2;
     }
@@ -50,16 +64,13 @@ const Wrapper = styled.div`
         }
 
         .cancel-btn{
-            /* right: -135px; */
             opacity:1;
-            /* color:#fff; */
             transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55 );
         }
     }
 `;
 
-
-export const Search = () => {
+export const SearchAction = ({ position = SearchPostionTypes.left }: Props) => {
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
     const [isActive, setIsActive] = useState(false);
 
@@ -71,17 +82,17 @@ export const Search = () => {
       console.log('onSelect', value);
     };
 
-    return <Wrapper className={`search-box ${isActive ? 'active' : ''}`} style={{ width: '100%' }}>
-    <AutoComplete
-      dropdownMatchSelectWidth={252}
-      style={{ width: '70%' }}
-      options={options}
-      onSelect={onSelect}
-      onSearch={handleSearch}
-    >
-      <Input placeholder="input here" />
-    </AutoComplete>
-    <SearchOutlined className="search-btn" onClick={() => setIsActive(true)}  />
-    <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)}  />
+    return <Wrapper className={`search-box ${isActive ? 'active' : ''}`} style={{ width: '100%' }} position={position}>
+        <AutoComplete
+            dropdownMatchSelectWidth={252}
+            style={{ width: '70%' }}
+            options={options}
+            onSelect={onSelect}
+            onSearch={handleSearch}
+        >
+            <Input placeholder="input here" />
+        </AutoComplete>
+        <SearchOutlined className="search-btn" onClick={() => setIsActive(true)}  />
+        <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)}  />
   </Wrapper>
 }

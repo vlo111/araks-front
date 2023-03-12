@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button, Space } from "antd";
 import { CaretUpFilled, CaretDownFilled } from '@ant-design/icons';
 import { Text } from "components/typography";
-import { Search } from "./search";
 import { PlusOutlined } from '@ant-design/icons';
+import { SearchAction } from "components/actions";
 
 export const NodesHeader = () => {
     const [visible, setVisible] = useState(false);
@@ -13,7 +13,7 @@ export const NodesHeader = () => {
         <Button type="text" icon={visible ? <CaretUpFilled /> : <CaretDownFilled />} onClick={() => setVisible(prev => !prev)}>
             <Text>Node Type</Text>
         </Button>
-        <Search />
+        <SearchAction />
         <PlusOutlined  style={{ cursor: 'pointer' }} />
     </Space>
 }
