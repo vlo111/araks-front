@@ -1,4 +1,6 @@
-import { Button, ButtonProps } from "antd";
+import { Button, PopoverProps } from "antd";
+import { AddTypeForm } from "components/form/add-type-form";
+import { AddNodeTypePopover } from "components/popover";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -29,7 +31,14 @@ const AddTypeButton = styled(Button)`
     }
 `;
 
-export const AddType = ({ children, ...props }: ButtonProps) => <Wrapper>
-    <AddTypeButton type="link" {...props}>+ Add Type</AddTypeButton>
+type Props = PopoverProps & {
+    showButton: boolean;
+    onClick: () => void
+};
+
+export const AddType = ({ children, showButton, onClick, ...props }: Props) => <Wrapper>
+    <AddNodeTypePopover content={<AddTypeForm />} trigger="click" {...props}>
+        {showButton && <AddTypeButton type="link" onClick={onClick}>+ Add Type</AddTypeButton>}
+    </AddNodeTypePopover>
     {children}
 </Wrapper>;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AutoComplete } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
-import { Input } from 'components/input';
+import { FormInput, Input } from 'components/input';
 import styled, { css } from 'styled-components';
 
 export enum SearchPostionTypes {
@@ -90,7 +90,7 @@ export const SearchAction = ({ position = SearchPostionTypes.left }: Props) => {
             onSelect={onSelect}
             onSearch={handleSearch}
         >
-            <Input placeholder="input here" />
+            <FormInput placeholder="input here" />
         </AutoComplete>
         <SearchOutlined className="search-btn" onClick={() => setIsActive(true)}  />
         <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)}  />

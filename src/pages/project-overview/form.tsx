@@ -1,6 +1,6 @@
 import { Col, Divider, Form, Row as RowComponent, Spin } from "antd";
 import useGetProject from "api/projects/use-get-project"
-import { Input as InputComponent } from "components/input";
+import { Input as InputComponent, TextArea } from "components/input";
 import VerticalSpace from "components/space/vertical-space";
 import { FormItem } from "components/form/form-item";
 import { useParams } from "react-router-dom";
@@ -13,14 +13,6 @@ import { CreateOverviewFormData, RequestType, RequestTypes } from "api/types";
 import { ProjectUserInfo } from "./components/project-user-info";
 import { Text } from "components/typography";
 import { logedInUser } from "helpers/utils";
-
-const { TextArea: TextAreaComponent } = InputComponent;
-
-const TextArea = styled(TextAreaComponent)`
-    background: linear-gradient(91.78deg, rgba(255, 255, 255, 0.64) 6.81%, rgba(255, 255, 255, 0.16) 100%);
-    border: 1px solid #808080;
-    border-radius: 4px;
-`;
 
 const Row = styled(RowComponent)`
     &.overview {
@@ -91,8 +83,6 @@ export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.
             } 
         }
     );
-
-    console.log('data', data);
 
     const fullName = data && data.user ? `${data?.user.first_name} ${data?.user.last_name}` : `${logedInUser?.first_name} ${logedInUser?.last_name}`;
 

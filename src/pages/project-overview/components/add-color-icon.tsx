@@ -62,7 +62,7 @@ const colorsList = Object.values(COLORS.SECONDARY);
 
 export const AddColorIcon = () => {
     const [open, setIsModalOpen] = useState(false);
-    const form = Form.useFormInstance();
+        const form = Form.useFormInstance();
 
     const handleCancel = () => {
         form.resetFields(['color', 'icon']);

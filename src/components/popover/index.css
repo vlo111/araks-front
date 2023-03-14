@@ -6,7 +6,9 @@
     padding: 0px;
 }
 
-.project-popover-action .ant-popover-arrow, .long-text .ant-popover-arrow {
+.project-popover-action .ant-popover-arrow,
+.project-popover-node-type .ant-popover-arrow,
+.long-text .ant-popover-arrow {
     display: none;
 }
 
@@ -34,7 +36,7 @@
     border: 1px solid #FFFFFF;
 }
 
-.long-text .ant-popover-inner  {
+.long-text .ant-popover-inner, .project-popover-node-type .ant-popover-inner  {
     background: transparent;
     padding: 5px 10px;
     
@@ -42,4 +44,11 @@
 
 .long-text .ant-popover-inner .ant-popover-title  {
     margin-bottom: 0;
+}
+
+.project-popover-node-type {
+    background: #F2F2F2;
+    box-shadow: 0px 20px 20px rgba(111, 111, 111, 0.3);
+    border-radius: 4px;
+    padding: 0;
 }
