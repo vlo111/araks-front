@@ -9,7 +9,7 @@ import { NodesHeader } from "./nodes-header";
 import { Tables } from "./tables";
 
 const Tabs = styled(TabsComponent)`
-    &&{
+    &&&{
         .ant-tabs-nav {
             box-shadow: none;
             border-bottom: 1px solid ${COLORS.PRIMARY.GRAY};

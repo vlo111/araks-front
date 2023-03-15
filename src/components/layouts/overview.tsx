@@ -95,8 +95,8 @@ export const Overview = () => {
     navigate(key.replace(':id', params.id || ''));
   },[navigate, params.id]);
 
-  const activeItem = useMemo(() => items.find(item => item.key.replace(':id', params.id || '') === location.pathname), []);
-
+  const activeItem = useMemo(() => items.find(item => item.key.replace(':id', params.id || '') === location.pathname), [location.pathname, params.id]);
+console.log('hello', activeItem);
 
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;
@@ -112,6 +112,7 @@ export const Overview = () => {
         <div className='overview-tabs'>
           <Tabs
             defaultActiveKey={activeItem?.key}
+            activeKey={activeItem?.key}
             type="card"
             tabBarGutter={32}
             onTabClick={handleTabClick}
