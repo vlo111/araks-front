@@ -10,6 +10,8 @@ import { TreeSelect } from "components/select";
 import { ColorSelect } from "components/select/color-select";
 import { useCreateProjectNodeType } from "api/project-node-types/use-create-project-node-type";
 import { ProjectNodeTypeSubmit } from "types/project-node-types";
+import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper";
+import VerticalSpace from "components/space/vertical-space";
 
 const Wrapper = styled.div`
     padding: 24px 24px 8px;
@@ -17,14 +19,19 @@ const Wrapper = styled.div`
 `;
 
 export const AddTypeForm = () => {
+    const { nodesListLabel, setAddType } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType();
     const [form] = Form.useForm();
 
     const onFinish = (values: ProjectNodeTypeSubmit) => {
         mutate(values);
+        setAddType(false);
     };
 
-    const onHandleCancel = () => form.resetFields();
+    const onHandleCancel = () => {
+        setAddType(false);
+        form.resetFields();
+    }
 
     return <Wrapper>
         <Form
@@ -52,7 +59,7 @@ export const AddTypeForm = () => {
                 <FormInput placeholder='Node type' />
             </FormItem>
             <FormItem name="parent_id">
-                <TreeSelect />
+                <TreeSelect treeData={nodesListLabel} />
             </FormItem>
 
             <Form.Item
@@ -75,9 +82,11 @@ export const AddTypeForm = () => {
                 <ColorSelect />
             </FormItem>
             <FormItem>
-            <Button block type="primary" htmlType="submit">Save</Button>
-            <Button block type="text" onClick={onHandleCancel}>Cancel</Button>
-        </FormItem>
+                <VerticalSpace>
+                    <Button block type="primary" htmlType="submit">Save</Button>
+                    <Button block type="text" onClick={onHandleCancel}>Cancel</Button>
+                </VerticalSpace>
+            </FormItem>
         </Form>
     </Wrapper>
 }

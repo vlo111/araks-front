@@ -57,3 +57,10 @@ export type UserData = {
 export type ProjectReturnData = ProjectFullInfo & {
     user: UserData
 };
+
+export type ProjectTreeReturnData = {
+    color: string;
+    id: string;
+    name: string;
+    parent_id: string;
+}

@@ -1,5 +1,7 @@
-import { ProjectInfoReturnData } from 'api/types';
+import { ProjectTreeReturnData } from 'api/types';
+import { createNodesTree, createNodesTreeLabel } from 'components/layouts/components/data-sheet/utils';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { TreeStructure, TreeStructureLabel } from 'types/project';
 import client from '../client';
 
 export const GET_PROJECT_NODE_TYPES_PARENT = '/projects-node-types/get-parent/:id/:project_id';
@@ -14,7 +16,7 @@ type GetProjectParam = {
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
 
 type ReturnData = {
-  data: ProjectInfoReturnData;
+  data: ProjectTreeReturnData[];
 }
 
 type QueryResponse = {
@@ -22,7 +24,7 @@ type QueryResponse = {
 }
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
-type Result = UseQueryResult<ProjectInfoReturnData>;
+type Result = UseQueryResult<ProjectTreeReturnData[]> & { formatted: TreeStructure[], formattedSelect: TreeStructureLabel[] };
 
 const useGetProjectNoteTypes = ({url, ...params}: GetProjectParam, options: Options = { enabled: true }): Result => {
   const urlNodes = url.replace(':id', params?.id || '').replace(':project_id', params?.projectId || '');
@@ -31,9 +33,13 @@ const useGetProjectNoteTypes = ({url, ...params}: GetProjectParam, options: Opti
     select: (data): ReturnData => data.data
   });
   const { data, isSuccess } = result;
+  const formatted = isSuccess ? createNodesTree(data.data) : [];
+  const formattedSelect = isSuccess ? createNodesTreeLabel(data.data) : [];
   return {
     ...result,
-    data: isSuccess ? data.data : {} as ProjectInfoReturnData,
+    data: isSuccess ? data.data : [] as ProjectTreeReturnData[],
+    formatted,
+    formattedSelect,
   } as Result;
 };
 

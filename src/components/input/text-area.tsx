@@ -13,5 +13,5 @@ const TextAreaStyled = styled(TextAreaComponent)`
 
 export const TextArea = (props: TextAreaProps) => {
     const size = useInputSize();
-    return <TextAreaStyled size={size} {...props} />
+    return <TextAreaStyled {...props} />
 }

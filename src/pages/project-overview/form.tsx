@@ -12,7 +12,8 @@ import { ManageProjectUrlProp, URL_CREAT_PROJECT, useManageProject } from "api/p
 import { CreateOverviewFormData, RequestType, RequestTypes } from "api/types";
 import { ProjectUserInfo } from "./components/project-user-info";
 import { Text } from "components/typography";
-import { logedInUser } from "helpers/utils";
+// import { logedInUser } from "helpers/utils";
+import { useAuth } from "context/auth-context";
 
 const Row = styled(RowComponent)`
     &.overview {
@@ -61,6 +62,7 @@ type Props = {
 
 export const ProjectForm = ({ manageUrl= URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
     const params = useParams();
+    const { user: logedInUser } = useAuth();
     const [form] = Form.useForm();
 
     const { mutate } = useManageProject(manageUrl, type);

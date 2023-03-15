@@ -16,7 +16,7 @@ export const Input = styled(InputComponent)`
 
 export const FormInput = (props: InputProps) => {
     const size = useInputSize();
-    return <Input size={size} {...props} />
+    return <Input  {...props} />
 }
 
 export { TextArea } from './text-area';

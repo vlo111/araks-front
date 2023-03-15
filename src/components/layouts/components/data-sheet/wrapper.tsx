@@ -1,63 +1,39 @@
-import { FastForwardFilled } from "@ant-design/icons";
-import { Col, Row as RowComponent } from "antd"
-import { Share } from "pages/project-overview/share";
-import { useMemo, useReducer, useState } from "react";
+import { useMemo, useState } from "react";
+import useGetProjectNoteTypes, { GET_PROJECT_NODE_TYPES_LIST } from "api/project-node-types/use-get-project-note-types";
 import { Outlet, useOutletContext, useParams } from "react-router-dom";
-import styled from "styled-components";
-
-enum ProjectNodeActionTypes {
-    NEW_TYPE = 'NEW_TYPE',
-    CLOSE_TYPE = 'CLOSE_TYPE',
-}
-
-const initProjectNodes = {
-    addTypeOpen: false,
-};
-  
-interface ProjectNodeAction {
-    type: ProjectNodeActionTypes;
-    payload: number;
-}
-
-interface ProjectNodeState {
-    count: number;
-}
-
-
-
-// const projectNodesReducer = (state: ProjectNodeState, action:ProjectNodeAction) => {
-//     switch (action.type) {
-//       case ProjectNodeActionTypes.NEW_TYPE:
-//         return {
-//             ...state,
-//             addTypeOpen: true,
-//         };
-//       default:
-//         return state;
-//     }
-// };
+import { TreeStructure, TreeStructureLabel } from "types/project";
 
 export type DataSheetContextType = {
     color: string,
     setAddType: (value: boolean | ((prevVar: boolean) => boolean)) => void,
+    setColor: (value: string | undefined | ((prevVar: string) => string)) => void,
     addTypeisOpened: boolean,
     hasNodeTypes: boolean,
+    nodesList?: TreeStructure[],
+    nodesListLabel?: TreeStructureLabel[],
 };
 
 export const DataSheetWrapper = () => {
     const params = useParams();
     const [addTypeisOpened, setAddType] = useState(false);
+    const [color, setColor] = useState('#232F6A');
 
-    // const [projectNodesState, dispatch] = useReducer(projectNodesReducer, initProjectNodes);
-
+    const { formatted: nodesList, formattedSelect: nodesListLabel } = useGetProjectNoteTypes({
+        url: GET_PROJECT_NODE_TYPES_LIST,
+        projectId: params.id || ''
+    }, { 
+        enabled: !!params.id,
+     });
 
     const context = useMemo(() => ({
-        color: '#232F6A',
+        color: color,
         setAddType,
         addTypeisOpened,
-        hasNodeTypes: true,
-    }), [addTypeisOpened]);
-    console.log('context', context);
+        hasNodeTypes: !nodesList,
+        nodesList,
+        nodesListLabel,
+        setColor,
+    }), [addTypeisOpened, color, nodesList, nodesListLabel]);
 
     return <Outlet context={context} /> 
 }

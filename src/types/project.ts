@@ -1,3 +1,4 @@
+import { DataNode } from 'antd/es/tree';
 export type ProjectListResponse = {
     id: string;
     icon: string;
@@ -32,3 +33,15 @@ export type ProjectStatisticsType = {
     views: number;
     size: number | 'small' | 'middle' | 'large';
 }
+
+export type TreeStructure = {
+    title: React.ReactNode | ((data: DataNode) => React.ReactNode),
+    key: string,
+    children?: TreeStructure[],
+};
+
+export type TreeStructureLabel = {
+    value: string,
+    children?: TreeStructureLabel[],
+    label?: string
+};

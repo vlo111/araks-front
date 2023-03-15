@@ -2,12 +2,13 @@ import { Avatar, List } from "antd";
 import { Share } from "components/dropdown";
 import { SHARE_OPTIONS } from "components/dropdown/constants";
 import { Text } from "components/typography";
-import { logedInUser } from "helpers/utils";
+import { useAuth } from "context/auth-context";
 import { useIsXXlScreen } from "hooks/use-breakpoint";
 
 
 export const SharedWith = () => {
   const isXXl = useIsXXlScreen();
+  const { user: logedInUser } = useAuth();
     const data = [
         {
             title: logedInUser?.email,

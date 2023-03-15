@@ -15,12 +15,13 @@ const TreeSelectStyled = styled(TreeSelectComponent)`
 export const TreeSelect = (props: TreeSelectProps) => {
     const size = useInputSize();
     return <TreeSelectStyled
-        size={size}
+        // size={size}
         showSearch
         style={{ width: '100%' }}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         placeholder="Please select"
         allowClear
         treeDefaultExpandAll
+        {...props}
     />
 }

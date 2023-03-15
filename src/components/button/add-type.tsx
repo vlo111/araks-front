@@ -1,11 +1,23 @@
 import { Button, PopoverProps } from "antd";
 import { AddTypeForm } from "components/form/add-type-form";
 import { AddNodeTypePopover } from "components/popover";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Wrapper = styled.div`
-    background: linear-gradient(179.75deg, rgba(35, 47, 106, 0.8) 0%, rgba(35, 47, 106, 0.6) 99.91%);
-    box-shadow: 0px 4px 4px rgba(47, 57, 107, 0.49);
+type WrapperProps = {
+    showButton: boolean;
+};
+
+const Wrapper = styled.div<WrapperProps>`
+    ${props => props.showButton 
+        ? css` 
+            background: linear-gradient(179.75deg, rgba(35, 47, 106, 0.8) 0%, rgba(35, 47, 106, 0.6) 99.91%);
+            box-shadow: 0px 4px 4px rgba(47, 57, 107, 0.49);
+        ` 
+        : css` 
+            background: transparent;
+            box-shadow: none;
+        `}
+    
     backdrop-filter: blur(2px);
     border: none;
     border-radius: 0;
@@ -16,7 +28,9 @@ const Wrapper = styled.div`
     justify-content: space-between;
 
     &:hover {
-        background: linear-gradient(179.75deg, rgba(0, 20, 121, 0.8) 0%, rgba(35, 47, 106, 0.6) 99.91%);
+        ${props => props.showButton 
+        ? css` background: linear-gradient(179.75deg, rgba(35, 47, 106, 0.8) 0%, rgba(35, 47, 106, 0.6) 99.91%);` 
+        : css` background: transparent;`}
     }
 `;
 
@@ -36,7 +50,7 @@ type Props = PopoverProps & {
     onClick: () => void
 };
 
-export const AddType = ({ children, showButton, onClick, ...props }: Props) => <Wrapper>
+export const AddType = ({ children, showButton, onClick, ...props }: Props) => <Wrapper showButton={showButton}>
     <AddNodeTypePopover content={<AddTypeForm />} trigger="click" {...props}>
         {showButton && <AddTypeButton type="link" onClick={onClick}>+ Add Type</AddTypeButton>}
     </AddNodeTypePopover>
