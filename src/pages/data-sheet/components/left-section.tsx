@@ -15,12 +15,9 @@ const Tabs = styled(TabsComponent)`
             border-bottom: 1px solid ${COLORS.PRIMARY.GRAY};
 
             .ant-tabs-tab {
-                padding: 0 40px;
                 color: ${COLORS.PRIMARY.GRAY};
 
-                @media (max-width: ${screenSize.xxl}) { 
-                    padding: 0 30px;
-                }
+              
 
                 .ant-tabs-tab-btn {
                     ${textSizeMedia}
@@ -61,7 +58,7 @@ export const LeftSection = () => {
     const onChange = (key: string) => {
         console.log(key);
     };
-    return <Tabs tabBarGutter={isXXL? 20 : 30} defaultActiveKey="1" items={items.map(
+    return <Tabs tabBarGutter={isXXL? 50 : 30} defaultActiveKey="1" items={items.map(
         item => ({
           ...item,  
           children: <div className='site-layout-content'>
