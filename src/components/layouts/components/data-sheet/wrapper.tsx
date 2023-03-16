@@ -4,13 +4,14 @@ import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import { TreeStructure, TreeStructureLabel } from "types/project";
 
 export type DataSheetContextType = {
-    color: string,
-    setAddType: (value: boolean | ((prevVar: boolean) => boolean)) => void,
-    setColor: (value: string | undefined | ((prevVar: string) => string)) => void,
     addTypeisOpened: boolean,
+    color: string,
     hasNodeTypes: boolean,
     nodesList?: TreeStructure[],
     nodesListLabel?: TreeStructureLabel[],
+    setAddType: (value: boolean | ((prevVar: boolean) => boolean)) => void,
+    setColor: (value: string | undefined | ((prevVar: string) => string)) => void,
+    titleText: string;
 };
 
 export const DataSheetWrapper = () => {

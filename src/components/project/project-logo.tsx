@@ -19,7 +19,7 @@ const TypeIcon = styled.div<FullWidth>`
         left: 20px;
         bottom: 18px;
     ` : css`
-        left: 38px;
+        left: 45px;
         top: 5px;
     `}
     
@@ -42,7 +42,7 @@ const Inner = styled.div<FullWidth >`
     ${(props) => props.fullWidth ? css`
         padding: 5px 6px;
     ` : css`
-        padding: 17px 14px;
+        padding: 16px 18px;
     `}
 `;
 

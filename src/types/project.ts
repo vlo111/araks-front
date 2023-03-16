@@ -16,7 +16,7 @@ export type FullWidth = {
 export type ProjectList = {
     color: string;
     dateTime: string;
-    icon?: string;
+    icon: string;
     name: string;
     type: string;
     id: string;

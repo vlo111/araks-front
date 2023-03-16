@@ -108,7 +108,8 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
         name: data.project.title, 
         folderId: data.project.folder_id,
         type: data.project.privacy, 
-        dateTime: dayjs(data.project.updated_at).format('YYYY-MM-DD HH:mm')
+        dateTime: dayjs(data.project.updated_at).format('YYYY-MM-DD HH:mm'),
+        icon: data.project.icon,
     } : {} as ProjectList;
 
     return <>
