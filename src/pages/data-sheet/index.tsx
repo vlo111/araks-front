@@ -1,6 +1,5 @@
 import { Col, Row as RowComponent } from "antd"
 import { useIsXXlScreen } from "hooks/use-breakpoint";
-import { Share } from "pages/project-overview/share";
 import styled from "styled-components";
 import { LeftSection } from "./components/left-section";
 import { RightSection } from "./components/right-section";
@@ -18,10 +17,6 @@ const Row = styled((props) => <RowComponent {...props} />)`
             &:first-child {
                 opacity: 1;
                 box-shadow: inset -10px 10px 10px rgba(111, 111, 111, 0.1);
-            }
-
-            &.project-save {
-                padding: 32px 32px 40px;
             }
         }
 

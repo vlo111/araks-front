@@ -1,11 +1,8 @@
 import { Tabs as TabsComponent, TabsProps } from "antd";
-import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper";
 import { textSizeMedia } from "components/typography/text";
-import { COLORS, screenSize } from "helpers/constants";
+import { COLORS } from "helpers/constants";
 import { useIsXXlScreen } from "hooks/use-breakpoint";
 import styled from "styled-components";
-import { NodeTypes } from "./node-types";
-import { NodesHeader } from "./nodes-header";
 import { Tables } from "./tables";
 
 const Tabs = styled(TabsComponent)`
@@ -13,6 +10,7 @@ const Tabs = styled(TabsComponent)`
         .ant-tabs-nav {
             box-shadow: none;
             border-bottom: 1px solid ${COLORS.PRIMARY.GRAY};
+            margin: 24px;
 
             .ant-tabs-tab {
                 color: ${COLORS.PRIMARY.GRAY};
