@@ -12,6 +12,14 @@ const StyledTree = styled(props => <Tree {...props} />)`
     .ant-tree-list-holder {
       padding: 0 16px;
     }
+
+    .ant-tree-node-selected {
+      background-color: transparent;
+
+      .ant-badge-status-text {
+        font-weight: 700;
+      }
+    }
   }
 `;
 

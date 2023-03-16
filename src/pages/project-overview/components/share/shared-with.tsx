@@ -4,7 +4,9 @@ import { SHARE_OPTIONS } from "components/dropdown/constants";
 import { Text } from "components/typography";
 import { useAuth } from "context/auth-context";
 import { useIsXXlScreen } from "hooks/use-breakpoint";
+import styled from "styled-components";
 
+const StyledList = styled(List)``;
 
 export const SharedWith = () => {
   const isXXl = useIsXXlScreen();
@@ -23,8 +25,7 @@ export const SharedWith = () => {
       <List.Item actions={[<Share defaultValue={item.value} />]}>
         <List.Item.Meta
           avatar={<Avatar src={item.avatar} />}
-          title={<Text>{item.title}</Text>}
-          description=" "
+          description={<Text>{item.title}</Text>}
         />
       </List.Item>
     )}
