@@ -6,7 +6,6 @@ import { HeaderActions } from "./header-actions"
 
 export const RightSection = () => {
     const { startAddType, finishAddType, addTypeisOpened, color, titleText } = useDataSheetWrapper();
-    console.log('addTypeisOpened', addTypeisOpened);
 
     return <>
         <ColorFill color={color} />
@@ -18,7 +17,7 @@ export const RightSection = () => {
                 return open;
             }}>
                 <HeaderActions />
-            </AddType>
+        </AddType>
         <EmptyList />
     </>
 }

@@ -9,6 +9,8 @@ export type DataSheetContextType = DataSheetState & {
     nodesListLabel?: TreeStructureLabel[],
     startAddType: () => void,
     finishAddType: () => void,
+    startEditType: () => void,
+    finishEditType: () => void,
     selectNodeType: (value: DataSheetState) => void,
 };
 
@@ -26,10 +28,14 @@ export const DataSheetWrapper = () => {
      const selectNodeType = useCallback((payload: DataSheetState) => dispatch({ type: DataSheetActionKind.TYPE_SELECTED, payload }), []);
      const startAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_START, payload: {} }), []);
      const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
+     const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
+     const finishEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_FINISH, payload: {} }), []);
 
     const context = useMemo(() => ({
         startAddType,
         finishAddType,
+        startEditType,
+        finishEditType,
         nodesList,
         nodesListLabel,
         selectNodeType,

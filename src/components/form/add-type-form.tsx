@@ -18,7 +18,11 @@ const Wrapper = styled.div`
     width: 422px;
 `;
 
-export const AddTypeForm = () => {
+type Props = {
+    isEdit?: boolean;
+}
+
+export const AddTypeForm = ({ isEdit = false }: Props) => {
     const { nodesListLabel, finishAddType } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType();
     const [form] = Form.useForm();
@@ -34,6 +38,10 @@ export const AddTypeForm = () => {
         form.resetFields();
     }
 
+    const onHandleDelete = () => {
+        
+    }
+
     return <Wrapper>
         <Form
             name="project-node-type"
@@ -44,7 +52,7 @@ export const AddTypeForm = () => {
             requiredMark={false}
         >
             <Space size={8}>
-                <Text>Write new type data</Text>
+                <Text>{isEdit ? 'Edit type' : 'Write new type data'}</Text>
                 <Tooltip title="Useful information" placement='right'>
                     <InfoCircleFilled style={{ fontSize: 16, color:'#C3C3C3' }} />
                 </Tooltip>
@@ -63,7 +71,7 @@ export const AddTypeForm = () => {
                 <TreeSelect treeData={nodesListLabel} />
             </FormItem>
 
-            <Form.Item
+            {!isEdit && <Form.Item
                 noStyle
                 shouldUpdate={(prevValues, currentValues) => prevValues.parent_id !== currentValues.parent_id}
             >
@@ -78,14 +86,15 @@ export const AddTypeForm = () => {
                     </Tooltip>
                 </Space>
                 }
-            </Form.Item>
+            </Form.Item>}
             <FormItem name="color">
                 <ColorSelect />
             </FormItem>
             <FormItem>
                 <VerticalSpace>
                     <Button block type="primary" htmlType="submit">Save</Button>
-                    <Button block type="text" onClick={onHandleCancel}>Cancel</Button>
+                    {isEdit ? <Button block type="text" onClick={onHandleDelete}>Delete</Button>
+                     : <Button block type="text" onClick={onHandleCancel}>Cancel</Button>}
                 </VerticalSpace>
             </FormItem>
         </Form>

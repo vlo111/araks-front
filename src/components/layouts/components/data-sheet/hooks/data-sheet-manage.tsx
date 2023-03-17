@@ -4,11 +4,13 @@ export enum DataSheetActionKind {
   ADD_TYPE_START = 'ADD_TYPE_START',
   ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
   TYPE_SELECTED = 'TYPE_SELECTED',
-  EDIT_TYPE = 'EDIT_TYPE'
+  EDIT_TYPE_START = 'EDIT_TYPE_START',
+  EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
 }
 
 export type DataSheetState = {
   addTypeisOpened?: boolean,
+  editTypeisOpened?: boolean,
   color?: string,
   nodesList?: TreeStructure[],
   nodesListLabel?: TreeStructureLabel[],
@@ -25,6 +27,7 @@ export const dataSheetInitialState: DataSheetState = {
   color: '#232F6A',
   titleText: '',
   addTypeisOpened: false,
+  editTypeisOpened: false,
 }
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
@@ -50,6 +53,16 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         ...state,
         color: '#DDDDDD',
         ...payload,
+      };
+    case DataSheetActionKind.EDIT_TYPE_START:
+      return {
+        ...state,
+        editTypeisOpened: true,
+      };
+    case DataSheetActionKind.EDIT_TYPE_FINISH:
+      return {
+        ...state,
+        editTypeisOpened: false,
       };
     default:
       return state;
