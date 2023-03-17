@@ -5,15 +5,18 @@ import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wr
 import { HeaderActions } from "./header-actions"
 
 export const RightSection = () => {
-    const { setAddType, addTypeisOpened, hasNodeTypes, color, titleText } = useDataSheetWrapper();
+    const { startAddType, finishAddType, addTypeisOpened, color, titleText } = useDataSheetWrapper();
+    console.log('addTypeisOpened', addTypeisOpened);
 
     return <>
         <ColorFill color={color} />
         <AddType 
-            showButton={hasNodeTypes} 
             titleText={titleText} 
-            onClick={() => setAddType(true)} 
-            open={addTypeisOpened} onOpenChange={(open) => setAddType(open)}>
+            onClick={startAddType} 
+            open={addTypeisOpened} onOpenChange={(open) => {
+                !open && finishAddType();
+                return open;
+            }}>
                 <HeaderActions />
             </AddType>
         <EmptyList />

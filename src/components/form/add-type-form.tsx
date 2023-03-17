@@ -19,17 +19,18 @@ const Wrapper = styled.div`
 `;
 
 export const AddTypeForm = () => {
-    const { nodesListLabel, setAddType } = useDataSheetWrapper();
+    const { nodesListLabel, finishAddType } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType();
     const [form] = Form.useForm();
 
     const onFinish = (values: ProjectNodeTypeSubmit) => {
         mutate(values);
-        setAddType(false);
+        finishAddType();
+        form.resetFields();
     };
 
     const onHandleCancel = () => {
-        setAddType(false);
+        finishAddType();
         form.resetFields();
     }
 

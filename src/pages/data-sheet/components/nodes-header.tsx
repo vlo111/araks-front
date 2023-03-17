@@ -9,13 +9,13 @@ import { COLORS } from "helpers/constants";
 
 export const NodesHeader = ({ visible, setVisible }: PropsSetState) => {
     
-    const { setAddType } = useDataSheetWrapper();
+    const { startAddType } = useDataSheetWrapper();
 
     return <Space size={8} style={{ width: '100%', padding: '24px' }} align='center' >
         <Button type="text" icon={visible ? <CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY}} /> : <CaretUpFilled style={{ color: COLORS.PRIMARY.GRAY}} /> } onClick={() => setVisible(prev => !prev)}>
             <Text>Node Type</Text>
         </Button>
         <SearchAction />
-        <PlusOutlined  style={{ cursor: 'pointer' }} onClick={() => setAddType(true)} />
+        <PlusOutlined  style={{ cursor: 'pointer' }} onClick={startAddType} />
     </Space>
 }

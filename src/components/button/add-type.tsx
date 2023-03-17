@@ -47,14 +47,13 @@ const AddTypeButton = styled(Button)`
 `;
 
 type Props = PopoverProps & {
-    showButton: boolean;
     titleText?: string;
     onClick: () => void
 };
 
-export const AddType = ({ children, showButton, titleText, onClick, ...props }: Props) => <Wrapper showButton={showButton}>
+export const AddType = ({ children, titleText, onClick, ...props }: Props) => <Wrapper showButton={!titleText}>
     <AddNodeTypePopover content={<AddTypeForm />} trigger="click" {...props}>
-        {showButton && <AddTypeButton type="link" onClick={onClick}>+ Add Type</AddTypeButton>}
+        {!titleText && <AddTypeButton type="link" onClick={onClick}>+ Add Type</AddTypeButton>}
         {titleText &&  <Title level={3}>{titleText}</Title> }
     </AddNodeTypePopover>
     {children}

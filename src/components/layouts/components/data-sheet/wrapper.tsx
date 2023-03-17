@@ -1,23 +1,20 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useReducer } from "react";
 import useGetProjectNoteTypes, { GET_PROJECT_NODE_TYPES_LIST } from "api/project-node-types/use-get-project-note-types";
 import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import { TreeStructure, TreeStructureLabel } from "types/project";
+import { DataSheetActionKind, dataSheetInitialState, dataSheetReducer, DataSheetState } from "./hooks/data-sheet-manage";
 
-export type DataSheetContextType = {
-    addTypeisOpened: boolean,
-    color: string,
-    hasNodeTypes: boolean,
+export type DataSheetContextType = DataSheetState & {
     nodesList?: TreeStructure[],
     nodesListLabel?: TreeStructureLabel[],
-    setAddType: (value: boolean | ((prevVar: boolean) => boolean)) => void,
-    setColor: (value: string | undefined | ((prevVar: string) => string)) => void,
-    titleText: string;
+    startAddType: () => void,
+    finishAddType: () => void,
+    selectNodeType: (value: DataSheetState) => void,
 };
 
 export const DataSheetWrapper = () => {
     const params = useParams();
-    const [addTypeisOpened, setAddType] = useState(false);
-    const [color, setColor] = useState('#232F6A');
+    const [state, dispatch] = useReducer(dataSheetReducer, dataSheetInitialState);
 
     const { formatted: nodesList, formattedSelect: nodesListLabel } = useGetProjectNoteTypes({
         url: GET_PROJECT_NODE_TYPES_LIST,
@@ -26,15 +23,18 @@ export const DataSheetWrapper = () => {
         enabled: !!params.id,
      });
 
+     const selectNodeType = useCallback((payload: DataSheetState) => dispatch({ type: DataSheetActionKind.TYPE_SELECTED, payload }), []);
+     const startAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_START, payload: {} }), []);
+     const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
+
     const context = useMemo(() => ({
-        color: color,
-        setAddType,
-        addTypeisOpened,
-        hasNodeTypes: !nodesList,
+        startAddType,
+        finishAddType,
         nodesList,
         nodesListLabel,
-        setColor,
-    }), [addTypeisOpened, color, nodesList, nodesListLabel]);
+        selectNodeType,
+        ...state,
+    }), [finishAddType, nodesList, nodesListLabel, selectNodeType, startAddType, state]);
 
     return <Outlet context={context} /> 
 }

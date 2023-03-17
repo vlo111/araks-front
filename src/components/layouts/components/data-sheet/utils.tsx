@@ -1,5 +1,6 @@
 import { Badge } from "antd";
 import { ProjectTreeReturnData } from "api/types";
+import { TreeNodeType } from "pages/data-sheet/types";
 import styled from "styled-components";
 import { TreeStructure, TreeStructureLabel } from "types/project";
 
@@ -12,17 +13,17 @@ const StyledBadge = styled(Badge)`
     }
 `;
 
-
 export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: string) => {
     const list = [];
     for (let i = 0; i < nodesList.length; i += 1) {
         if ((nodesList[i].parent_id && parentId && nodesList[i].parent_id !== parentId) || (!parentId && nodesList[i].parent_id) || (parentId && !nodesList[i].parent_id)) {
             continue;
         }
-        const key = `${nodesList[i].id}_${nodesList[i].color}`;
-        const treeNode: TreeStructure = {
+        const key = nodesList[i].id;
+        const treeNode: TreeNodeType = {
             title: <StyledBadge color={nodesList[i].color} text={nodesList[i].name} />,
             key,
+            ...nodesList[i],
         };
 
         for (let j = 0; j < nodesList.length; j += 1) {
