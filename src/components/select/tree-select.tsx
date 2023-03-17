@@ -1,13 +1,29 @@
 import { TreeSelect as TreeSelectComponent } from 'antd';
-import { COLORS } from 'helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
+import { changeHeight, placeholderSize } from 'helpers/styles';
 import { useInputSize } from 'hooks/use-breakpoint';
 import { TreeSelectProps } from 'rc-tree-select';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const TreeSelectStyled = styled(TreeSelectComponent)`
     &&{
         .ant-select-selector {
             background: linear-gradient(91.78deg, rgba(255, 255, 255, 0.64) 6.81%, rgba(255, 255, 255, 0.16) 100%);            border: 1px solid ${COLORS.PRIMARY.GRAY};
+            padding: 3px 11px;
+            
+            ${props => !props.size ? css` 
+                ${changeHeight} 
+            ` : ''}
+
+            input.ant-select-selection-search-input {
+                ${props => !props.size ? css`
+                    ${changeHeight}
+                ` : ''}
+            }
+
+            .ant-select-selection-placeholder {
+                ${placeholderSize}
+            }
         }
     }
 `;

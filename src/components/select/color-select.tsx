@@ -1,12 +1,15 @@
-import { Button, Col, Form, Radio as RadioComponent, Row } from "antd"
-import { useBreakpoint } from "hooks/use-breakpoint";
+import { Button, ButtonProps, Form} from "antd"
 import styled from "styled-components"
 import { COLORS } from "helpers/constants";
 import { SelectColorPopover } from "components/popover";
 import { ColorList } from "components/color-list";
-import { useCallback, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 
-const ButtonColor = styled(({ color, ...props }) => <Button {...props} />)`
+type ButtonStyleProps = ButtonProps & {
+    color?: string;
+}
+
+const ButtonColor = styled(forwardRef<HTMLButtonElement, ButtonStyleProps>(({ color, ...props }, ref) => <Button {...props} ref={ref} />))`
     background-color: ${props => props.color};
     padding: 7px 16px;
     text-align: start;

@@ -96,7 +96,6 @@ export const Overview = () => {
   },[navigate, params.id]);
 
   const activeItem = useMemo(() => items.find(item => item.key.replace(':id', params.id || '') === location.pathname), [location.pathname, params.id]);
-console.log('hello', activeItem);
 
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;

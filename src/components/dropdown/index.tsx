@@ -1,7 +1,7 @@
-import { Dropdown as Component } from "antd"
+import { Dropdown as DropdownComponent } from "antd"
 import styled from "styled-components"
 
-export const Dropdown = styled(Component)``;
+export const Dropdown = styled(DropdownComponent)``;
 
 export { Sort } from './sort';
 export { Share } from './share';

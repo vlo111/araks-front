@@ -90,7 +90,7 @@ export const SearchAction = ({ position = SearchPostionTypes.left }: Props) => {
             onSelect={onSelect}
             onSearch={handleSearch}
         >
-            <FormInput placeholder="input here" />
+            <Input placeholder="input here" />
         </AutoComplete>
         <SearchOutlined className="search-btn" onClick={() => setIsActive(true)}  />
         <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)}  />

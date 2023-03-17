@@ -1,9 +1,9 @@
-import { Button as Component } from "antd"
+import { Button as ButtonComponent } from "antd"
 import { textSizeMedia } from "components/typography/text";
 import styled from "styled-components"
 import { COLORS } from "../../helpers/constants";
 
-export const Button = styled(Component)`
+export const Button = styled(ButtonComponent)`
     ${textSizeMedia}
     &.ant-btn-default {
        span {

@@ -1,4 +1,7 @@
 import { Typography } from "antd";
+import { TextProps } from "antd/es/typography/Text";
+import { TypographyProps } from "antd/es/typography/Typography";
+import { createRef, forwardRef } from "react";
 import styled, { css } from "styled-components";
 import { COLORS, screenSize } from "../../helpers/constants";
 
@@ -17,7 +20,11 @@ export const textStyles = css`
     ${textSizeMedia}
 `;
 
-export const Text = styled(({ color, ...props }) => <TextComponent {...props} />)`
+type TextStyleProps = TextProps & {
+    color?: string;
+}
+
+export const Text = styled(forwardRef<HTMLSpanElement, TextStyleProps>(({ color, ...props }, ref) => <TextComponent {...props} ref={ref} />))`
     && {
         ${ textStyles }
         color: ${props=> props.color || COLORS.PRIMARY.GRAY_DARK};
