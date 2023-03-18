@@ -1,6 +1,7 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { RequestTypes } from 'api/types';
+import { useMutation, useQueryClient, UseQueryOptions } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { ProjectNodeTypeSubmit } from 'types/project-node-types';
+import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-node-types';
 
 import client from '../client';
 import { GET_PROJECT_NODE_TYPES_LIST } from './use-get-project-note-types';
@@ -10,21 +11,37 @@ export type MoveProjectToAllFormData = {
 }
 
 const URL_PROJECT_NODE_TYPES_CREATE = '/projects-node-types/create';
-const URL_PROJECT_NODE_TYPES_UPDATE = '/projects-node-types/update/:id'
+const URL_PROJECT_NODE_TYPES_UPDATE = '/projects-node-types/update/:id';
 
-export const useCreateProjectNodeType = (isEdit: boolean) => {
+type ReturnData = {
+  data: {
+    data: ProjectNodeTypeResponse
+  };
+}
+
+type QueryResponse = {
+  data: ReturnData
+}
+
+type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
+
+export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string,) => {
   const params = useParams()
-  const url = isEdit ? URL_PROJECT_NODE_TYPES_UPDATE.replace(':id', params.id || '') : URL_PROJECT_NODE_TYPES_CREATE;
+  const url = nodeTypeId ? URL_PROJECT_NODE_TYPES_UPDATE.replace(':id', nodeTypeId || '') : URL_PROJECT_NODE_TYPES_CREATE;
   const queryClient = useQueryClient();
   const mutation = useMutation(
     (values: ProjectNodeTypeSubmit) => {
-      return client.post(url, { ...values, project_id: params.id });
+      const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
+      const body = nodeTypeId ? values : { ...values, project_id: params.id };
+      return client[type](url, body);
     },
     {
       onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries(GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || ''));
+        options?.onSuccess?.(data);
       },
     }
   );
   return mutation;
 };
+

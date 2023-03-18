@@ -4,9 +4,9 @@ import { EditType, EditTypeProps } from "components/button/edit-type";
 import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper";
 
 export const HeaderActions = () => {
-    const { startEditType, finishEditType, editTypeisOpened, projectId } = useDataSheetWrapper();
+    const { startEditType, finishEditType, editTypeisOpened, nodeTypeId } = useDataSheetWrapper();
 
-    const editTypeProps: EditTypeProps = projectId ? {
+    const editTypeProps: EditTypeProps = nodeTypeId ? {
         onClick: startEditType,
         open: editTypeisOpened,
         onOpenChange: (open: boolean) => {

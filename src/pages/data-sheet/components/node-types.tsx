@@ -33,18 +33,19 @@ const StyledTree = styled(({color, ...props}) => <Tree {...props} />)`
 `;
 
 export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
-  const { nodesList, selectNodeType, color, projectId } = useDataSheetWrapper();
+  const { nodesList, selectNodeType, color, nodeTypeId } = useDataSheetWrapper();
     const onSelect = (selectedKeys: string[], e: {selected: boolean, node: EventDataNode<TreeNodeType>}) => {
         selectNodeType({
           titleText: e.node.name, 
           color: e.node.color, 
-          projectId: e.node.id,
+          nodeTypeId: e.node.id,
           parentId: e.node.parent_id,
         });
     };
+    console.log('nodeTypeId', nodeTypeId)
     return <StyledTree
         onSelect={onSelect}
-        selectedKeys={[projectId]}
+        selectedKeys={[nodeTypeId]}
         treeData={nodesList}
         blockNode
         style={!visible ? { display: 'none' } : {}}

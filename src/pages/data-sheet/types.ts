@@ -14,6 +14,6 @@ export type DataSheetState = {
     color?: string,
     nodesList?: TreeNodeType[],
     titleText?: string;
-    projectId?: string;
+    nodeTypeId?: string;
     parentId?: string;
   };

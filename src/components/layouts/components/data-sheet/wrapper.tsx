@@ -9,6 +9,7 @@ export type DataSheetContextType = DataSheetState & {
     finishAddType: () => void,
     startEditType: () => void,
     finishEditType: () => void,
+    deleteEditType: () => void,
     selectNodeType: (value: DataSheetState) => void,
 };
 
@@ -21,6 +22,7 @@ export const DataSheetWrapper = () => {
     const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
     const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
     const finishEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_FINISH, payload: {} }), []);
+    const deleteEditType = useCallback(() => dispatch({ type: DataSheetActionKind.DELETE_TYPE, payload: {} }), []);
 
 
     const { formatted: nodesList } = useGetProjectNoteTypes({
@@ -29,11 +31,12 @@ export const DataSheetWrapper = () => {
     }, { 
         enabled: !!params.id,
         onSuccess: (data) => {
-            if (data.data.length) {
+            /** This condition sets selected fisr node type when first time enter to this page */
+            if (data.data.length && !state.nodeTypeId) {
                 selectNodeType({
                     titleText: data.data[0].name, 
                     color: data.data[0].color, 
-                    projectId: data.data[0].id,
+                    nodeTypeId: data.data[0].id,
                     parentId: data.data[0].parent_id,
                 });
             }
@@ -45,6 +48,7 @@ export const DataSheetWrapper = () => {
         finishAddType,
         startEditType,
         finishEditType,
+        deleteEditType,
         nodesList,
         selectNodeType,
         ...state,
@@ -55,6 +59,7 @@ export const DataSheetWrapper = () => {
         selectNodeType, 
         startAddType, 
         startEditType, 
+        deleteEditType,
         state
     ]);
 

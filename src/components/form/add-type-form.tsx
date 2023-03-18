@@ -25,10 +25,22 @@ type Props = {
 }
 
 export const AddTypeForm = ({ isEdit = false }: Props) => {
-    const { nodesList, finishAddType, color, titleText, parentId } = useDataSheetWrapper();
-    console.log('first', parentId)
-    const { mutate } = useCreateProjectNodeType(isEdit);
-    const { mutate: mutateDelete } = useDeleteProjectNodeType();
+    const { nodesList, finishAddType, color, titleText, parentId, selectNodeType, nodeTypeId, deleteEditType } = useDataSheetWrapper();
+    const { mutate } = useCreateProjectNodeType({
+        onSuccess: ({data}) => {
+            selectNodeType({
+                titleText: data.data.name, 
+                color: data.data.color, 
+                nodeTypeId: data.data.id,
+                parentId: data.data.parent_id,
+              });
+        }
+    }, nodeTypeId);
+    const { mutate: mutateDelete } = useDeleteProjectNodeType(nodeTypeId, {
+        onSuccess: () => {
+            deleteEditType();
+        }
+    });
     const [form] = Form.useForm();
     useEffect(() => {
         if (isEdit) {
@@ -41,8 +53,12 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
     }, [color, form, isEdit, parentId, titleText]);
 
     const onFinish = (values: ProjectNodeTypeSubmit) => {
-        mutate(values);
-        finishAddType();
+        mutate(isEdit ? {
+            parent_id: values.parent_id,
+            name: values.name,
+            color: values.color
+        } as ProjectNodeTypeSubmit : values);
+        
         form.resetFields();
     };
 

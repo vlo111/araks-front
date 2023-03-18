@@ -6,6 +6,7 @@ export enum DataSheetActionKind {
   TYPE_SELECTED = 'TYPE_SELECTED',
   EDIT_TYPE_START = 'EDIT_TYPE_START',
   EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
+  DELETE_TYPE = 'DELETE_TYPE',
 }
 
 interface DataSheetAction {
@@ -22,6 +23,8 @@ export const dataSheetInitialState: DataSheetState = {
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
+  console.log('type->', type);
+  console.log('payload->', payload);
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {
@@ -33,14 +36,15 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
     case DataSheetActionKind.ADD_TYPE_FINISH:
       return {
         ...state,
-        titleText: dataSheetInitialState.titleText,
-        color: dataSheetInitialState.color,
+        // titleText: dataSheetInitialState.titleText,
+        // color: dataSheetInitialState.color,
         addTypeisOpened: false,
       };
     case DataSheetActionKind.TYPE_SELECTED:
       return {
         ...state,
-        color: '#DDDDDD',
+        // color: '#DDDDDD',
+        addTypeisOpened: false,
         ...payload,
       };
     case DataSheetActionKind.EDIT_TYPE_START:
@@ -52,6 +56,12 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
       return {
         ...state,
         editTypeisOpened: false,
+      };
+    case DataSheetActionKind.DELETE_TYPE:
+      return {
+        ...state,
+        editTypeisOpened: false,
+        nodeTypeId: undefined,
       };
     default:
       return state;
