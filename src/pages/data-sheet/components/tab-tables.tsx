@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NodeTypes } from "./node-types"
 import { NodesHeader } from "./nodes-header"
 
-export const Tables = () => {
+export const TabTables = () => {
     const [visible, setVisible] = useState(true);
     return <>
         <NodesHeader visible={visible} setVisible={setVisible} />

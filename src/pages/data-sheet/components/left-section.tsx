@@ -3,7 +3,7 @@ import { textSizeMedia } from "components/typography/text";
 import { COLORS } from "helpers/constants";
 import { useIsXXlScreen } from "hooks/use-breakpoint";
 import styled from "styled-components";
-import { Tables } from "./tables";
+import { TabTables } from "./tab-tables";
 
 const Tabs = styled(TabsComponent)`
     &&&{
@@ -61,7 +61,7 @@ export const LeftSection = () => {
           ...item,  
           children: <div className='site-layout-content'>
             {item.key === '1' && <>
-              <Tables />
+              <TabTables />
             </>}
           </div>
         })

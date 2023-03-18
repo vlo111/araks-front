@@ -5,7 +5,7 @@ import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wr
 import { HeaderActions } from "./header-actions"
 
 export const RightSection = () => {
-    const { startAddType, finishAddType, addTypeisOpened, color, titleText } = useDataSheetWrapper();
+    const { startAddType, finishAddType, addTypeisOpened, color, titleText, nodeTypeId } = useDataSheetWrapper();
 
     return <>
         <ColorFill color={color} />
@@ -18,6 +18,7 @@ export const RightSection = () => {
             }}>
                 <HeaderActions />
         </AddType>
-        <EmptyList />
+        {!nodeTypeId && <EmptyList />}
+        {nodeTypeId && <EmptyList />}
     </>
 }
