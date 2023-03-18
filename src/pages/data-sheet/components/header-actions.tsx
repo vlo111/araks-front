@@ -2,9 +2,12 @@ import { Space } from "antd"
 import { DownloadAction, SearchAction, SearchPostionTypes, UploadAction } from "components/actions"
 import { EditType, EditTypeProps } from "components/button/edit-type";
 import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper";
+import { COLORS } from "helpers/constants";
 
 export const HeaderActions = () => {
     const { startEditType, finishEditType, editTypeisOpened, nodeTypeId } = useDataSheetWrapper();
+    const iconProps = nodeTypeId ? { style: { color: COLORS.PRIMARY.GRAY_DARK } } : {};
+    console.log('icon style', iconProps);
 
     const editTypeProps: EditTypeProps = nodeTypeId ? {
         onClick: startEditType,
@@ -16,9 +19,9 @@ export const HeaderActions = () => {
     } : {} as EditTypeProps;
 
     return <Space size={8}>
-        <SearchAction position={SearchPostionTypes.right} />
-        <UploadAction />
-        <DownloadAction />
-        <EditType {...editTypeProps} />
+        <SearchAction icon={iconProps} position={SearchPostionTypes.right} />
+        <UploadAction icon={iconProps} />
+        <DownloadAction icon={iconProps} />
+        <EditType icon={iconProps} {...editTypeProps} />
     </Space>
 }

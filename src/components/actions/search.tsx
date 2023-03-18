@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { AutoComplete } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
-import { FormInput, Input } from 'components/input';
+import { Input } from 'components/input';
 import styled, { css } from 'styled-components';
+import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
 
 export enum SearchPostionTypes {
     left = 'left',
@@ -12,6 +13,7 @@ export enum SearchPostionTypes {
 
 type Props = {
     position?: SearchPostionTypes;
+    icon?: Partial<CustomIconComponentProps>;
 }
 
 const Wrapper = styled.div<Props>`
@@ -70,7 +72,7 @@ const Wrapper = styled.div<Props>`
     }
 `;
 
-export const SearchAction = ({ position = SearchPostionTypes.left }: Props) => {
+export const SearchAction = ({ position = SearchPostionTypes.left, icon }: Props) => {
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
     const [isActive, setIsActive] = useState(false);
 
@@ -92,7 +94,7 @@ export const SearchAction = ({ position = SearchPostionTypes.left }: Props) => {
         >
             <Input placeholder="input here" />
         </AutoComplete>
-        <SearchOutlined className="search-btn" onClick={() => setIsActive(true)}  />
-        <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)}  />
+        <SearchOutlined className="search-btn" onClick={() => setIsActive(true)} style={icon?.style}  />
+        <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)} style={icon?.style} />
   </Wrapper>
 }
