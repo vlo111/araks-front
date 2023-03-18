@@ -1,5 +1,5 @@
 import { Checkbox, Form, Space, Tooltip } from "antd"
-import { FormInput, Input } from "components/input"
+import { FormInput } from "components/input"
 import { Text } from "components/typography"
 import { FormItem } from "./form-item"
 
@@ -12,6 +12,8 @@ import { useCreateProjectNodeType } from "api/project-node-types/use-create-proj
 import { ProjectNodeTypeSubmit } from "types/project-node-types";
 import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper";
 import VerticalSpace from "components/space/vertical-space";
+import { useDeleteProjectNodeType } from "api/project-node-types/use-delete-project-node-type";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
     padding: 24px 24px 8px;
@@ -23,9 +25,20 @@ type Props = {
 }
 
 export const AddTypeForm = ({ isEdit = false }: Props) => {
-    const { nodesListLabel, finishAddType } = useDataSheetWrapper();
-    const { mutate } = useCreateProjectNodeType();
+    const { nodesList, finishAddType, color, titleText, parentId } = useDataSheetWrapper();
+    console.log('first', parentId)
+    const { mutate } = useCreateProjectNodeType(isEdit);
+    const { mutate: mutateDelete } = useDeleteProjectNodeType();
     const [form] = Form.useForm();
+    useEffect(() => {
+        if (isEdit) {
+            form.setFieldsValue({
+                'name': titleText,
+                'color': color,
+                'parent_id': parentId,
+            });
+        }
+    }, [color, form, isEdit, parentId, titleText]);
 
     const onFinish = (values: ProjectNodeTypeSubmit) => {
         mutate(values);
@@ -39,7 +52,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
     }
 
     const onHandleDelete = () => {
-        
+        mutateDelete();
     }
 
     return <Wrapper>
@@ -68,7 +81,17 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
                 <FormInput placeholder='Node type' />
             </FormItem>
             <FormItem name="parent_id">
-                <TreeSelect treeData={nodesListLabel} />
+                <TreeSelect
+                    treeData={nodesList}
+                    showSearch
+                    style={{ width: '100%' }}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    placeholder="Please select"
+                    allowClear
+                    treeDefaultExpandAll
+                    fieldNames={{value: 'key'}}
+                    value={parentId}
+                />
             </FormItem>
 
             {!isEdit && <Form.Item
@@ -88,7 +111,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
                 }
             </Form.Item>}
             <FormItem name="color">
-                <ColorSelect />
+                <ColorSelect initialColor={isEdit ? color : undefined} />
             </FormItem>
             <FormItem>
                 <VerticalSpace>

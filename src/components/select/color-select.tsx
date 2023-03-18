@@ -23,8 +23,12 @@ const ButtonColor = styled(forwardRef<HTMLButtonElement, ButtonStyleProps>(({ co
     }
 `;
 
-export const ColorSelect = () => {
-    const [color, setColor] = useState('#DDDDDD');
+type Props = {
+    initialColor?: string;
+}
+
+export const ColorSelect = ({ initialColor }: Props) => {
+    const [color, setColor] = useState(initialColor || '#DDDDDD');
     const form = Form.useFormInstance();
     const setValue = useCallback((color: string) => {
         form.setFieldValue('color', color);

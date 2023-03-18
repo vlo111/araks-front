@@ -1,9 +1,19 @@
+import { DefaultOptionType } from "antd/es/cascader";
 import { ProjectTreeReturnData } from "api/types";
-import { TreeStructure } from "types/project";
 
 export type PropsSetState = {
     visible: boolean;
     setVisible: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }
 
-export type TreeNodeType = TreeStructure & ProjectTreeReturnData;
+export type TreeNodeType = ProjectTreeReturnData & DefaultOptionType;
+
+export type DataSheetState = {
+    addTypeisOpened?: boolean,
+    editTypeisOpened?: boolean,
+    color?: string,
+    nodesList?: TreeNodeType[],
+    titleText?: string;
+    projectId?: string;
+    parentId?: string;
+  };

@@ -1,4 +1,4 @@
-import { TreeStructure, TreeStructureLabel } from "types/project";
+import { DataSheetState } from "pages/data-sheet/types";
 
 export enum DataSheetActionKind {
   ADD_TYPE_START = 'ADD_TYPE_START',
@@ -7,16 +7,6 @@ export enum DataSheetActionKind {
   EDIT_TYPE_START = 'EDIT_TYPE_START',
   EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
 }
-
-export type DataSheetState = {
-  addTypeisOpened?: boolean,
-  editTypeisOpened?: boolean,
-  color?: string,
-  nodesList?: TreeStructure[],
-  nodesListLabel?: TreeStructureLabel[],
-  titleText?: string;
-  projectId?: string;
-};
 
 interface DataSheetAction {
   type: DataSheetActionKind;
@@ -32,7 +22,6 @@ export const dataSheetInitialState: DataSheetState = {
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
-  console.log('first',payload, type)
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {

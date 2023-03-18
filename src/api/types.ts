@@ -42,7 +42,7 @@ export type ProjectFullInfo = {
 export type ProjectInfoReturnData = {
     comments: number;
     likes: number;
-    project: ProjectFullInfo;
+    result: ProjectFullInfo;
     views: number;
 };
 

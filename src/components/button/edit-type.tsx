@@ -8,7 +8,7 @@ export type EditTypeProps = PopoverProps & {
 };
 
 export const EditType = ({ onClick, ...props }: EditTypeProps) => <AddNodeTypePopover
-     content={<AddTypeForm />}
+     content={<AddTypeForm isEdit />}
     trigger="click" {...props}>
         <SettingsAction button={{ onClick }} />
     </AddNodeTypePopover>;

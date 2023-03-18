@@ -33,15 +33,3 @@ export type ProjectStatisticsType = {
     views: number;
     size: number | 'small' | 'middle' | 'large';
 }
-
-export type TreeStructure = {
-    title: React.ReactNode | ((data: DataNode) => React.ReactNode),
-    key: string,
-    children?: TreeStructure[],
-};
-
-export type TreeStructureLabel = {
-    value: string,
-    children?: TreeStructureLabel[],
-    label?: string
-};

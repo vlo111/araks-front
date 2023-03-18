@@ -9,14 +9,16 @@ export type MoveProjectToAllFormData = {
   projectId: string;
 }
 
-const URL = '/projects-node-types/create';
+const URL_PROJECT_NODE_TYPES_CREATE = '/projects-node-types/create';
+const URL_PROJECT_NODE_TYPES_UPDATE = '/projects-node-types/update/:id'
 
-export const useCreateProjectNodeType = () => {
+export const useCreateProjectNodeType = (isEdit: boolean) => {
   const params = useParams()
+  const url = isEdit ? URL_PROJECT_NODE_TYPES_UPDATE.replace(':id', params.id || '') : URL_PROJECT_NODE_TYPES_CREATE;
   const queryClient = useQueryClient();
   const mutation = useMutation(
     (values: ProjectNodeTypeSubmit) => {
-      return client.post(URL, { ...values, project_id: params.id });
+      return client.post(url, { ...values, project_id: params.id });
     },
     {
       onSuccess: (data, variables, context) => {

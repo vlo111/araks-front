@@ -102,14 +102,14 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
         setIsModalOpen(undefined);
     };
 
-    const project: ProjectList = data && data.project ? {
-        id: data.project.id,
-        color: data.project.color, 
-        name: data.project.title, 
-        folderId: data.project.folder_id,
-        type: data.project.privacy, 
-        dateTime: dayjs(data.project.updated_at).format('YYYY-MM-DD HH:mm'),
-        icon: data.project.icon,
+    const project: ProjectList = data && data.result ? {
+        id: data.result.id,
+        color: data.result.color, 
+        name: data.result.title, 
+        folderId: data.result.folder_id,
+        type: data.result.privacy, 
+        dateTime: dayjs(data.result.updated_at).format('YYYY-MM-DD HH:mm'),
+        icon: data.result.icon,
     } : {} as ProjectList;
 
     return <>
