@@ -25,7 +25,7 @@ type Props = {
 }
 
 export const AddTypeForm = ({ isEdit = false }: Props) => {
-    const { nodesList, finishAddType, color, titleText, parentId, selectNodeType, nodeTypeId, deleteEditType, finishEditType } = useDataSheetWrapper();
+    const { nodesList, finishAddType, color, titleText, parentId, selectNodeType, nodeTypeId, deleteEditType, finishEditType, cancelAddType } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType({
         onSuccess: ({data}) => {
             selectNodeType({
@@ -69,7 +69,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
 
     /** this action works only for create */
     const onHandleCancel = () => {
-        finishAddType();
+        cancelAddType();
         form.resetFields();
     }
 

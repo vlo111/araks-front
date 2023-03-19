@@ -8,6 +8,7 @@ import { PATHS } from "helpers/constants";
 export type DataSheetContextType = DataSheetState & {
     startAddType: () => void,
     finishAddType: () => void,
+    cancelAddType: () => void,
     startEditType: () => void,
     finishEditType: () => void,
     deleteEditType: () => void,
@@ -16,13 +17,16 @@ export type DataSheetContextType = DataSheetState & {
 
 export const DataSheetWrapper = () => {
     const params = useParams();
+    const navigate = useNavigate();
     const [state, dispatch] = useReducer(dataSheetReducer, dataSheetInitialState);
 
     const selectNodeType = useCallback((payload: DataSheetState) => {
+        navigate(PATHS.DATA_SHEET_NODE_TYPE.replace(':id', params.id || '').replace(':node_type_id', payload.nodeTypeId || ''));
         dispatch({ type: DataSheetActionKind.TYPE_SELECTED, payload });
-    }, []);
+    }, [navigate, params.id]);
     const startAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_START, payload: {} }), []);
     const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
+    
     const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
     const finishEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_FINISH, payload: {} }), []);
     const deleteEditType = useCallback(() => dispatch({ type: DataSheetActionKind.DELETE_TYPE, payload: {} }), []);
@@ -35,7 +39,7 @@ export const DataSheetWrapper = () => {
         enabled: !!params.id,
         onSuccess: (data) => {
             /** This condition sets selected fisr node type when first time enter to this page */
-            if (data.data.length && !state.nodeTypeId) {                
+            if (data.data.length && !state.nodeTypeId) {               
                 selectNodeType({
                     titleText: data.data[0].name, 
                     color: data.data[0].color, 
@@ -46,9 +50,20 @@ export const DataSheetWrapper = () => {
         }
      });
 
+     const cancelAddType = useCallback(
+        () => {
+            if (params.node_type_id) {
+                const hasSelectedNode = nodesList.find(item => item.id === params.node_type_id);
+                dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: hasSelectedNode?.name } });
+                return;
+            }
+            dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: dataSheetInitialState.titleText } });
+        }, [nodesList, params.node_type_id]);
+
     const context = useMemo(() => ({
         startAddType,
         finishAddType,
+        cancelAddType,
         startEditType,
         finishEditType,
         deleteEditType,
@@ -58,6 +73,7 @@ export const DataSheetWrapper = () => {
     }), [
         finishAddType, 
         finishEditType, 
+        cancelAddType,
         nodesList, 
         selectNodeType, 
         startAddType, 

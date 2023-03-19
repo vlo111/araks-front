@@ -70,6 +70,10 @@ export const router = createBrowserRouter(
           path: PATHS.DATA_SHEET,
           element: <DataSheet />,
         },
+        {
+          path: PATHS.DATA_SHEET_NODE_TYPE,
+          element: <DataSheet />,
+        },
       ],
     },
   ]

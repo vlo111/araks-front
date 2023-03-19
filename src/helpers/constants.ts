@@ -8,6 +8,7 @@ export const PATHS = {
     PROJECT_CREATE: '/projects/create',
     PROJECT_SCHEME: '/projects/scheme/:id',
     DATA_SHEET: '/projects/data-sheet/:id',
+    DATA_SHEET_NODE_TYPE: '/projects/data-sheet/:id/:node_type_id',
     PUBLIC: '/public',
     FOLDER: '/folder/:id',
     ERROR_403: 'no-access',

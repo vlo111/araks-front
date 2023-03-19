@@ -3,6 +3,7 @@ import { DataSheetState } from "pages/data-sheet/types";
 export enum DataSheetActionKind {
   ADD_TYPE_START = 'ADD_TYPE_START',
   ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
+  ADD_TYPE_CANCEL = 'ADD_TYPE_CANCEL',
   TYPE_SELECTED = 'TYPE_SELECTED',
   EDIT_TYPE_START = 'EDIT_TYPE_START',
   EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
@@ -38,6 +39,12 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         ...state,
         // titleText: dataSheetInitialState.titleText,
         // color: dataSheetInitialState.color,
+        addTypeisOpened: false,
+      };
+    case DataSheetActionKind.ADD_TYPE_CANCEL:
+      return {
+        ...state,
+        titleText: payload.titleText,
         addTypeisOpened: false,
       };
     case DataSheetActionKind.TYPE_SELECTED:

@@ -64,39 +64,43 @@ const Tabs = styled(TabsComponent)`
   }
 `;
 
-const items = [
-  {
-    key: PATHS.PROJECT_OVERVIEW,
-    label: 'Overview',
-  },
-  {
-    key: PATHS.PROJECT_SCHEME,
-    label: 'Scheme',
-    disabled: true,
-  },
-  {
-    key: PATHS.DATA_SHEET,
-    label: 'Data sheet',
-  },
-  {
-    key: '4',
-    label: 'Visualisation',
-    disabled: true,
-  },
-];
-
 export const Overview = () => {
   const { user } = useAuth();
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
 
+  const dataSheetKey = params.node_type_id ? PATHS.DATA_SHEET_NODE_TYPE : PATHS.DATA_SHEET;
+
+  const items = useMemo(() => [
+    {
+      key: PATHS.PROJECT_OVERVIEW,
+      label: 'Overview',
+    },
+    {
+      key: PATHS.PROJECT_SCHEME,
+      label: 'Scheme',
+      disabled: true,
+    },
+    {
+      key: dataSheetKey,
+      label: 'Data sheet',
+    },
+    {
+      key: '4',
+      label: 'Visualisation',
+      disabled: true,
+    },
+  ], [dataSheetKey]);
+
   const handleTabClick = useCallback((key: string) => {
     navigate(key.replace(':id', params.id || ''));
   },[navigate, params.id]);
 
-  const activeItem = useMemo(() => items.find(item => item.key.replace(':id', params.id || '') === location.pathname), [location.pathname, params.id]);
-
+  const activeItem = useMemo(
+    () => items.find(
+      item => item.key.replace(':id', params.id || '').replace(':node_type_id', params.node_type_id || '') === location.pathname
+    ),[items, location.pathname, params.id, params.node_type_id]);
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;
   }
@@ -120,7 +124,7 @@ export const Overview = () => {
                 ...item,  
                 children: <div className='site-layout-content'>
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-                  {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
+                  {item.key === dataSheetKey && <DataSheetWrapper />}
                 </div>
               })
             )}
