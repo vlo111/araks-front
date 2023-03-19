@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useReducer } from "react";
 import useGetProjectNoteTypes, { GET_PROJECT_NODE_TYPES_LIST } from "api/project-node-types/use-get-project-note-types";
-import { Outlet, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { DataSheetActionKind, dataSheetInitialState, dataSheetReducer } from "./hooks/data-sheet-manage";
 import { DataSheetState } from "pages/data-sheet/types";
+import { PATHS } from "helpers/constants";
 
 export type DataSheetContextType = DataSheetState & {
     startAddType: () => void,
@@ -17,7 +18,9 @@ export const DataSheetWrapper = () => {
     const params = useParams();
     const [state, dispatch] = useReducer(dataSheetReducer, dataSheetInitialState);
 
-    const selectNodeType = useCallback((payload: DataSheetState) => dispatch({ type: DataSheetActionKind.TYPE_SELECTED, payload }), []);
+    const selectNodeType = useCallback((payload: DataSheetState) => {
+        dispatch({ type: DataSheetActionKind.TYPE_SELECTED, payload });
+    }, []);
     const startAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_START, payload: {} }), []);
     const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
     const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
@@ -32,7 +35,7 @@ export const DataSheetWrapper = () => {
         enabled: !!params.id,
         onSuccess: (data) => {
             /** This condition sets selected fisr node type when first time enter to this page */
-            if (data.data.length && !state.nodeTypeId) {
+            if (data.data.length && !state.nodeTypeId) {                
                 selectNodeType({
                     titleText: data.data[0].name, 
                     color: data.data[0].color, 

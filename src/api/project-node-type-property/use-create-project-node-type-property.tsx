@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom';
 import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-node-types';
 
 import client from '../client';
-import { GET_PROJECT_NODE_TYPES_LIST } from './use-get-project-note-types';
+import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-note-type-properties';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
 }
 
-const URL_PROJECT_NODE_TYPES_CREATE = '/projects-node-types/create';
-const URL_PROJECT_NODE_TYPES_UPDATE = '/projects-node-types/update/:id';
+const URL_PROJECT_NODE_TYPE_PROPERTY_CREATE = '/node-type-property/create';
+const URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE = '/node-type-property/update/:id';
 
 type ReturnData = {
   data: {
@@ -25,20 +25,19 @@ type QueryResponse = {
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
 
-export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string,) => {
+export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePropertyId?: string,) => {
   const params = useParams()
-  const url = nodeTypeId ? URL_PROJECT_NODE_TYPES_UPDATE.replace(':id', nodeTypeId || '') : URL_PROJECT_NODE_TYPES_CREATE;
+  const url = nodeTypePropertyId ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', nodeTypePropertyId || '') : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
   const queryClient = useQueryClient();
   const mutation = useMutation(
     ({parent_id, ...values}: ProjectNodeTypeSubmit) => {
-      const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
-      const body = nodeTypeId ? {...values, ...(parent_id ? { parent_id } : {})} : { ...values, project_id: params.id, parent_id };
-      console.log(body, parent_id, 'parent')
+      const type = nodeTypePropertyId ? RequestTypes.Put : RequestTypes.Post;
+      const body = nodeTypePropertyId ? values : { ...values, project_id: params.id, ...(parent_id ? { parent_id } : {}) };
       return client[type](url, body);
     },
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || ''));
+        queryClient.invalidateQueries(GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.id || ''));
         options?.onSuccess?.(data);
       },
     }
