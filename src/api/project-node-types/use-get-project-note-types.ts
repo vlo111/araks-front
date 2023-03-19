@@ -33,6 +33,7 @@ const useGetProjectNoteTypes = ({url, ...params}: GetProjectParam, options: Opti
     select: (data): ReturnData => data.data
   });
   const { data, isSuccess } = result;
+ 
   const formatted = isSuccess ? createNodesTree(data.data) : [];
   return {
     ...result,

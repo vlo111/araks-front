@@ -42,7 +42,6 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
           parentId: e.node.parent_id,
         });
     };
-    console.log('nodeTypeId', nodeTypeId)
     return <StyledTree
         onSelect={onSelect}
         selectedKeys={[nodeTypeId]}

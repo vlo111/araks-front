@@ -15,8 +15,6 @@ const Tabs = styled(TabsComponent)`
             .ant-tabs-tab {
                 color: ${COLORS.PRIMARY.GRAY};
 
-              
-
                 .ant-tabs-tab-btn {
                     ${textSizeMedia}
                 }

@@ -25,7 +25,7 @@ type Props = {
 }
 
 export const AddTypeForm = ({ isEdit = false }: Props) => {
-    const { nodesList, finishAddType, color, titleText, parentId, selectNodeType, nodeTypeId, deleteEditType } = useDataSheetWrapper();
+    const { nodesList, finishAddType, color, titleText, parentId, selectNodeType, nodeTypeId, deleteEditType, finishEditType } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType({
         onSuccess: ({data}) => {
             selectNodeType({
@@ -33,9 +33,9 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
                 color: data.data.color, 
                 nodeTypeId: data.data.id,
                 parentId: data.data.parent_id,
-              });
+            });
         }
-    }, nodeTypeId);
+    }, isEdit ? nodeTypeId: undefined);
     const { mutate: mutateDelete } = useDeleteProjectNodeType(nodeTypeId, {
         onSuccess: () => {
             deleteEditType();
@@ -60,13 +60,20 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
         } as ProjectNodeTypeSubmit : values);
         
         form.resetFields();
+        if (isEdit) {
+            finishEditType();
+        } else {
+            finishAddType();
+        }
     };
 
+    /** this action works only for create */
     const onHandleCancel = () => {
         finishAddType();
         form.resetFields();
     }
 
+    /** this action works only for edit */
     const onHandleDelete = () => {
         mutateDelete();
     }

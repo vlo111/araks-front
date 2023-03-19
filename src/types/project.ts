@@ -1,4 +1,3 @@
-import { DataNode } from 'antd/es/tree';
 export type ProjectListResponse = {
     id: string;
     icon: string;
