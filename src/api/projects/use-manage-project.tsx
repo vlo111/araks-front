@@ -1,4 +1,4 @@
-import { useMutation, UseMutationResult, useQueryClient } from 'react-query';
+import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
 import { GET_PROJECTS_LIST } from 'api/projects/use-get-projects';
 
@@ -26,9 +26,9 @@ export const useManageProject = (url: ManageProjectUrlProp, type: RequestType = 
     (values: CreateOverviewFormData) => client[type](url, values),
     {
       onSuccess: (data: Response, variables, context) => {
-        queryClient.invalidateQueries(GET_PROJECTS_LIST);
-        queryClient.invalidateQueries(GET_PROJECT_DATA.replace(':id', data?.data?.data?.id || ''));
-        queryClient.invalidateQueries(GET_PROJECT_INFO_DATA.replace(':id', data?.data?.data?.id || ''));
+        queryClient.invalidateQueries([GET_PROJECTS_LIST]);
+        queryClient.invalidateQueries([GET_PROJECT_DATA.replace(':id', data?.data?.data?.id || '')]);
+        queryClient.invalidateQueries([GET_PROJECT_INFO_DATA.replace(':id', data?.data?.data?.id || '')]);
         navigate(PATHS.PROJECT_OVERVIEW.replace(':id', data?.data?.data?.id || ''));
       },
     }

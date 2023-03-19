@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { ProjectTreeReturnData } from 'api/types';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeNodeType } from 'pages/data-sheet/types';
-import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/api/node-type-property/:node_type_id';

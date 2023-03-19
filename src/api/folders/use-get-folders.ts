@@ -1,6 +1,6 @@
 
 import { GetProjectsParameters } from 'api/types';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_FOLDERS_LIST = '/folders';

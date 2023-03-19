@@ -1,5 +1,5 @@
 import { RequestType, RequestTypes } from 'api/types';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import client from '../client';
 import { GET_FOLDERS_LIST } from './use-get-folders';
@@ -22,7 +22,7 @@ export const useManageFolder = (url = FOLDER_CREATE_URL, type: RequestType = Req
     },
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_FOLDERS_LIST);
+        queryClient.invalidateQueries([GET_FOLDERS_LIST]);
       },
     }
   );

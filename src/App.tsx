@@ -1,7 +1,7 @@
 import React from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
 import { router } from './router';
 import { RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConfigProvider } from 'antd';
 import { antTheme } from './helpers/ant-theme';
 

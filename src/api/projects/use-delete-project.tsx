@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useMatch, useParams } from 'react-router-dom';
 
 import { GET_FOLDERS_LIST } from 'api/folders/use-get-folders';
@@ -25,16 +25,16 @@ export const useDeleteProject = ({ projectId, folderId }: Props) => {
     () => client.delete(FOLDER_DELETE_URL.replace(':id', projectId)),
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_FOLDERS_LIST);
+        queryClient.invalidateQueries([GET_FOLDERS_LIST]);
         if (folderId) {
-          queryClient.invalidateQueries(GET_FOLDER_PROJECTS_LIST.replace(':id', folderId));
+          queryClient.invalidateQueries([GET_FOLDER_PROJECTS_LIST.replace(':id', folderId)]);
         } else {
-          queryClient.invalidateQueries(GET_FOLDERS_LIST);
+          queryClient.invalidateQueries([GET_FOLDERS_LIST]);
         }
         if (location.pathname === PATHS.PUBLIC) {
-          queryClient.invalidateQueries(GET_PROJECTS_PUBLIC_LIST);
+          queryClient.invalidateQueries([GET_PROJECTS_PUBLIC_LIST]);
         }
-        queryClient.invalidateQueries(GET_PROJECTS_LIST);
+        queryClient.invalidateQueries([GET_PROJECTS_LIST]);
       },
     }
   );

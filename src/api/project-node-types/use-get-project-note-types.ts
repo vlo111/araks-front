@@ -1,7 +1,7 @@
 import { ProjectTreeReturnData } from 'api/types';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeNodeType } from 'pages/data-sheet/types';
-import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_PROJECT_NODE_TYPES_PARENT = '/projects-node-types/get-parent/:id/:project_id';

@@ -1,5 +1,5 @@
 import { GET_FOLDERS_LIST } from 'api/folders/use-get-folders';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import client from '../client';
 import { GET_FOLDER_PROJECTS_LIST, GET_PROJECTS_LIST } from './use-get-projects';
@@ -18,9 +18,9 @@ export const useMoveProjectToAll = (folderId?: string) => {
     },
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_FOLDER_PROJECTS_LIST.replace(':id', folderId || ''));
-        queryClient.invalidateQueries(GET_PROJECTS_LIST);
-        queryClient.invalidateQueries(GET_FOLDERS_LIST);
+        queryClient.invalidateQueries([GET_FOLDER_PROJECTS_LIST.replace(':id', folderId || '')]);
+        queryClient.invalidateQueries([GET_PROJECTS_LIST]);
+        queryClient.invalidateQueries([GET_FOLDERS_LIST]);
       },
     }
   );

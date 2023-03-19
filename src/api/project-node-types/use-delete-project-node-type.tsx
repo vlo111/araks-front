@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient, UseQueryOptions } from 'react-query';
+import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
 import client from '../client';
@@ -13,7 +13,7 @@ export const useDeleteProjectNodeType = (nodeTypeId: string = '', options: UseQu
     () => client.delete(URL_PROJECT_NODE_TYPES_DELETE.replace(':id', nodeTypeId)),
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || ''));
+        queryClient.invalidateQueries([GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || '')]);
         options?.onSuccess?.(data);
       },
     }

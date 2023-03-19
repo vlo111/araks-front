@@ -1,5 +1,5 @@
 import { ProjectReturnData } from 'api/types';
-import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_PROJECT_DATA = '/projects/:id';

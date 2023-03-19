@@ -1,5 +1,5 @@
 import { RequestTypes } from 'api/types';
-import { useMutation, useQueryClient, UseQueryOptions } from 'react-query';
+import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-node-types';
 
@@ -37,7 +37,7 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
     },
     {
       onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries(GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.id || ''));
+        queryClient.invalidateQueries([GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.id || '')]);
         options?.onSuccess?.(data);
       },
     }
