@@ -32,7 +32,7 @@ export const DataSheetWrapper = () => {
     const deleteEditType = useCallback(() => dispatch({ type: DataSheetActionKind.DELETE_TYPE, payload: {} }), []);
 
 
-    const { formatted: nodesList } = useGetProjectNoteTypes({
+    const { formatted: nodesList, data } = useGetProjectNoteTypes({
         url: GET_PROJECT_NODE_TYPES_LIST,
         projectId: params.id || ''
     }, { 
@@ -53,12 +53,12 @@ export const DataSheetWrapper = () => {
      const cancelAddType = useCallback(
         () => {
             if (params.node_type_id) {
-                const hasSelectedNode = nodesList.find(item => item.id === params.node_type_id);
-                dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: hasSelectedNode?.name } });
+                const hasSelectedNode = data?.find(item => item.id === params.node_type_id);
+                dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: hasSelectedNode?.name, color: hasSelectedNode?.color } });
                 return;
             }
             dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: dataSheetInitialState.titleText } });
-        }, [nodesList, params.node_type_id]);
+        }, [data, params.node_type_id]);
 
     const context = useMemo(() => ({
         startAddType,

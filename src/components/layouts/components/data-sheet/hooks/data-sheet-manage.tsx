@@ -44,7 +44,7 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
     case DataSheetActionKind.ADD_TYPE_CANCEL:
       return {
         ...state,
-        titleText: payload.titleText,
+        ...payload,
         addTypeisOpened: false,
       };
     case DataSheetActionKind.TYPE_SELECTED:

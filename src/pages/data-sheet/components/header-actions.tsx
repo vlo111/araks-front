@@ -7,7 +7,6 @@ import { COLORS } from "helpers/constants";
 export const HeaderActions = () => {
     const { startEditType, finishEditType, editTypeisOpened, nodeTypeId } = useDataSheetWrapper();
     const iconProps = nodeTypeId ? { style: { color: COLORS.PRIMARY.GRAY_DARK } } : {};
-    console.log('icon style', iconProps);
 
     const editTypeProps: EditTypeProps = nodeTypeId ? {
         onClick: startEditType,
