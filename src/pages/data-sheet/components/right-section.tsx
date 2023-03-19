@@ -3,6 +3,7 @@ import { ColorFill } from "components/color-fill"
 import { EmptyList } from "components/empty"
 import { useDataSheetWrapper } from "components/layouts/components/data-sheet/wrapper"
 import { HeaderActions } from "./header-actions"
+import { TableSection } from "./table-section"
 
 export const RightSection = () => {
     const { startAddType, finishAddType, addTypeisOpened, color, titleText, nodeTypeId } = useDataSheetWrapper();
@@ -19,6 +20,6 @@ export const RightSection = () => {
                 <HeaderActions />
         </AddType>
         {!nodeTypeId && <EmptyList />}
-        {nodeTypeId && <EmptyList />}
+        {nodeTypeId && <TableSection />}
     </>
 }
