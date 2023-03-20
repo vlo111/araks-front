@@ -52,7 +52,6 @@ const items: TabsProps['items'] = [
 export const LeftSection = () => {
     const isXXL = useIsXXlScreen();
     const onChange = (key: string) => {
-        console.log(key);
     };
     return <Tabs tabBarGutter={isXXL? 50 : 30} defaultActiveKey="1" items={items.map(
         item => ({

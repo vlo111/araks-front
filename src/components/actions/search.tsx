@@ -81,7 +81,6 @@ export const SearchAction = ({ position = SearchPostionTypes.left, icon }: Props
     };
   
     const onSelect = (value: string) => {
-      console.log('onSelect', value);
     };
 
     return <Wrapper className={`search-box ${isActive ? 'active' : ''}`} style={{ width: '100%' }} position={position}>

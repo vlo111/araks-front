@@ -110,7 +110,6 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
     const { mutate: mutateAll } = useMoveProjectToAll(folderId);
     const onClick: MenuProps['onClick'] = (e) => {
         if (e.key === 'edit') {
-            console.log('key', e.key);
             navigate(PATHS.PROJECT_UPDATE.replace(':id', projectId));
             return;
         }

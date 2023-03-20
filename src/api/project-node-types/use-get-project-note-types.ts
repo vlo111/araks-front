@@ -5,7 +5,7 @@ import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query
 import client from '../client';
 
 export const GET_PROJECT_NODE_TYPES_PARENT = '/projects-node-types/get-parent/:id/:project_id';
-export const GET_PROJECT_NODE_TYPES_LIST = '/projects-node-types/get-list/:project_id';
+export const GET_PROJECT_NODE_TYPES_LIST = '/projects-node-types/:project_id';
 
 type GetProjectParam = {
   id?: string;

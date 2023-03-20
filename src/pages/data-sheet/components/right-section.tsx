@@ -13,8 +13,10 @@ export const RightSection = () => {
         <AddType 
             titleText={titleText} 
             onClick={startAddType} 
-            open={addTypeisOpened} onOpenChange={(open) => {
-                !open && finishAddType();
+            open={addTypeisOpened} 
+            onOpenChange={(open) => {
+                console.log('open', open)
+                // addTypeisOpened && !open && finishAddType();
                 return open;
             }}>
                 <HeaderActions />

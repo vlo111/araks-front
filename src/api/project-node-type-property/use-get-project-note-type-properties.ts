@@ -5,7 +5,7 @@ import { TreeNodeType } from 'pages/data-sheet/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
-export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/api/node-type-property/:node_type_id';
+export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/projects-node-types/:node_type_id/property';
 
 type ReturnData = {
   data: ProjectTreeReturnData[];

@@ -33,7 +33,6 @@ export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string,)
     ({parent_id, ...values}: ProjectNodeTypeSubmit) => {
       const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
       const body = nodeTypeId ? {...values, ...(parent_id ? { parent_id } : {})} : { ...values, project_id: params.id, parent_id };
-      console.log(body, parent_id, 'parent')
       return client[type](url, body);
     },
     {

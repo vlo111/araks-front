@@ -1,0 +1,81 @@
+import { Table, TableColumnProps, TableProps } from "antd"
+import { useColumns } from "./use-columns";
+import { actions } from "./table-actions";
+import { DataType } from "./types";
+import styled from "styled-components";
+
+
+interface EditableRowProps {
+    index: number;
+    className: string;
+  }
+
+const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
+    return (
+          <tr {...props} className={`${props.className} editable-row`} />
+    );
+};
+
+interface EditableCellProps {
+    children: React.ReactNode;
+    className: string;
+}
+
+
+const EditableCell: React.FC<EditableCellProps> = ({
+    className,
+    children,
+    ...restProps
+  }) => {
+    return <td  {...restProps} className={`${className} editable-col`}>{children}</td>;
+};
+
+
+const HeaderCell: React.FC<EditableCellProps> = ({
+    className,
+    children,
+    ...restProps
+  }) => {
+    return <td  {...restProps} className={`${className} header-col`}>{children}</td>;
+  };
+
+
+const dataSource: DataType[] = [...Array(10)].map((_, i) => ({
+    key: i,
+    column: 'operation',
+}));
+
+const TableStyled = styled((props) => <Table {...props} />)`
+    &&{
+        .action-class {
+            background-color: #fafafa;
+            border-bottom: none;
+        }
+    }
+`;
+
+
+export const TableSection = () => {
+    const columns = useColumns();
+
+    const columnsAndAction = [...columns, ...actions]; 
+
+    const components = {
+        header: {
+            cell: HeaderCell,
+        },
+        body: {
+          row: EditableRow,
+          cell: EditableCell,
+        },
+    };
+
+    return <TableStyled 
+        components={components} 
+        rowClassName={() => 'editable-row'} 
+        dataSource={dataSource}
+        // style={{ width: '10%' }} 
+        columns={columnsAndAction}
+        pagination={false}
+    />
+}
