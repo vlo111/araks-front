@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { ProjectTreeReturnData } from 'api/types';
+import { ProjectTreeReturnData, ProjectTypePropertyReturnData } from 'api/types';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeNodeType } from 'pages/data-sheet/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ import client from '../client';
 export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/projects-node-types/:node_type_id/property';
 
 type ReturnData = {
-  data: ProjectTreeReturnData[];
+  data: ProjectTypePropertyReturnData[];
 }
 
 type QueryResponse = {
@@ -16,7 +16,7 @@ type QueryResponse = {
 }
 
 // type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
-type Result = UseQueryResult<ProjectTreeReturnData[]> & { formatted: TreeNodeType[] };
+type Result = UseQueryResult<ProjectTypePropertyReturnData[]> & { formatted: TreeNodeType[] };
 
 export const useGetProjectNoteTypeProperties = (options = { enabled: true }): Result => {
   const params = useParams()
@@ -29,6 +29,6 @@ export const useGetProjectNoteTypeProperties = (options = { enabled: true }): Re
  
   return {
     ...result,
-    data: isSuccess ? data.data : [] as ProjectTreeReturnData[],
+    data: isSuccess ? data.data : [] as ProjectTypePropertyReturnData[],
   } as Result;
 };

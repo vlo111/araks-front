@@ -64,3 +64,18 @@ export type ProjectTreeReturnData = {
     name: string;
     parent_id: string;
 }
+
+export type ProjectTypePropertyReturnData = {
+    created_at: string;
+    default_proprty: boolean;
+    id: string;
+    multiple_type: string;
+    name: string;
+    project_id: string;
+    project_type_id: string;
+    ref_property_type_id: string;
+    required_type: boolean;
+    unique_type: boolean;
+    updated_at: string;
+    user_id: string;
+}

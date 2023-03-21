@@ -1,22 +1,23 @@
 import { ColumnsType } from "antd/es/table";
 
-import { DataType } from "./types";
+import { DataType, TypePropertyActionKind } from "./types";
 
 import { PlusAction } from "components/actions/plus";
 import { useTypeProperty } from "./table-context";
 import { AddTypeProprty } from "components/button/add-type-property";
+import { useCallback, useMemo } from "react";
 
 
 export const useActions = () => {
-    const {state, dispatch} = useTypeProperty();
+    const {state: { actionColWidth }} = useTypeProperty();
 
-    return [
+    return useMemo(() => [
         {
             title: <AddTypeProprty />,
             key: 'operation',
             fixed: 'right',
             dataIndex: 'key',
-            width: '64px',
+            width: actionColWidth || '64px',
             className: 'action-class',
             render: () => '',
             align: 'center',
@@ -26,5 +27,5 @@ export const useActions = () => {
             fixed: 'right',
             dataIndex: 'space',
         }
-    ] as ColumnsType<DataType>;
+    ] as ColumnsType<DataType>, [actionColWidth]);
 }

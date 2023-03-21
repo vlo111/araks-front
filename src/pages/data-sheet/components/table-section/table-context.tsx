@@ -1,112 +1,100 @@
-import { createContext, useContext, useReducer } from "react";
-
-export enum TypePropertyActionKind {
-    ADD_TYPE_START = 'ADD_TYPE_START',
-    ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
-    ADD_TYPE_CANCEL = 'ADD_TYPE_CANCEL',
-    TYPE_SELECTED = 'TYPE_SELECTED',
-    EDIT_TYPE_START = 'EDIT_TYPE_START',
-    EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
-    DELETE_TYPE = 'DELETE_TYPE',
-  }
-
-export type TypePropertyState = {
-    addTypeisOpened?: boolean,
-    editTypeisOpened?: boolean,
-    titleText?: string;
-    nodeTypeId?: string;
-};
+import { createContext, useCallback, useContext, useMemo, useReducer } from 'react';
+import { TypePropertyActionKind, TypePropertyState } from './types';
 
 interface TypePropertyAction {
-    type: TypePropertyActionKind;
-    payload: TypePropertyState;
+  type: TypePropertyActionKind;
+  payload: TypePropertyState;
 }
 
-type TypePropertyProviderProps = {children: React.ReactNode}
+type TypePropertyProviderProps = { children: React.ReactNode };
 
-type TypePropertyDispatch = (action: TypePropertyAction) => void
+type TypePropertyDispatch = (action: TypePropertyAction) => void;
 
-
-const TypePropertyContext = createContext<
-  {state: TypePropertyState; dispatch: TypePropertyDispatch} | undefined
->(undefined)
-
+const TypePropertyContext = createContext<{ state: TypePropertyState; dispatch: TypePropertyDispatch } | undefined>(
+  undefined
+);
 
 export function typePropertyReducer(state: TypePropertyState, action: TypePropertyAction) {
-    const { type, payload } = action;
-    console.log('type->', type);
-    console.log('payload->', payload);
-    switch (type) {
-      case TypePropertyActionKind.ADD_TYPE_START:
-        return {
-          ...state,
-          titleText: 'New Property ()',
-          addTypeisOpened: true,
-        };
-      case TypePropertyActionKind.ADD_TYPE_FINISH:
-        return {
-          ...state,
-          // titleText: typePropertyInitialState.titleText,
-          // color: typePropertyInitialState.color,
-          addTypeisOpened: false,
-        };
-      case TypePropertyActionKind.ADD_TYPE_CANCEL:
-        return {
-          ...state,
-          ...payload,
-          addTypeisOpened: false,
-        };
-      case TypePropertyActionKind.TYPE_SELECTED:
-        return {
-          ...state,
-          // color: '#DDDDDD',
-          addTypeisOpened: false,
-          ...payload,
-        };
-      case TypePropertyActionKind.EDIT_TYPE_START:
-        return {
-          ...state,
-          editTypeisOpened: true,
-        };
-      case TypePropertyActionKind.EDIT_TYPE_FINISH:
-        return {
-          ...state,
-          editTypeisOpened: false,
-        };
-      case TypePropertyActionKind.DELETE_TYPE:
-        return {
-          ...state,
-          editTypeisOpened: false,
-          nodeTypeId: undefined,
-        };
-      default:
-        return state;
-    }
-}
-  
-export const initialState: TypePropertyState = {
-    titleText: '',
-    addTypeisOpened: false,
-    editTypeisOpened: false,
+  const { type, payload } = action;
+  console.log('type->', type);
+  console.log('payload->', payload);
+  switch (type) {
+    case TypePropertyActionKind.ADD_TYPE_START:
+      return {
+        ...state,
+        titleText: 'New Property ()',
+        addTypeisOpened: true,
+        actionColWidth: '200px',
+      };
+    case TypePropertyActionKind.ADD_TYPE_FINISH:
+      return {
+        ...state,
+        addTypeisOpened: false,
+        actionColWidth: undefined,
+        titleText: undefined,
+      };
+    case TypePropertyActionKind.ADD_TYPE_CANCEL:
+      return {
+        ...state,
+        ...payload,
+        addTypeisOpened: false,
+        actionColWidth: undefined,
+      };
+    case TypePropertyActionKind.TYPE_SELECTED:
+      return {
+        ...state,
+        // color: '#DDDDDD',
+        addTypeisOpened: false,
+        ...payload,
+      };
+    case TypePropertyActionKind.EDIT_TYPE_START:
+      return {
+        ...state,
+        propertyId: payload.propertyId,
+        editTypeisOpened: true,
+      };
+    case TypePropertyActionKind.EDIT_TYPE_FINISH:
+      return {
+        ...state,
+        propertyId: undefined,
+        editTypeisOpened: false,
+      };
+    case TypePropertyActionKind.DELETE_TYPE:
+      return {
+        ...state,
+        editTypeisOpened: false,
+        propertyId: undefined,
+      };
+    default:
+      return state;
+  }
 }
 
-function TypePropertyProvider({children}: TypePropertyProviderProps) {
-    const [state, dispatch] = useReducer(typePropertyReducer, initialState)
- 
-    const value = {state, dispatch}
-    return (
-      <TypePropertyContext.Provider value={value}>
-        {children}
-      </TypePropertyContext.Provider>
-    )
+export const initialState: TypePropertyState = {
+  titleText: '',
+  addTypeisOpened: false,
+  editTypeisOpened: false,
+};
+
+function TypePropertyProvider({ children }: TypePropertyProviderProps) {
+  const [state, dispatch] = useReducer(typePropertyReducer, initialState);
+
+  const value = useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state]
+  );
+  return <TypePropertyContext.Provider value={value}>{children}</TypePropertyContext.Provider>;
 }
 
 function useTypeProperty() {
-    const context = useContext(TypePropertyContext)
-    if (context === undefined) {
-      throw new Error('useTypeProperty must be used within a TypePropertyProvider')
-    }
-    return context
+  const context = useContext(TypePropertyContext);
+  if (context === undefined) {
+    throw new Error('useTypeProperty must be used within a TypePropertyProvider');
+  }
+  return context;
 }
-  
-export {TypePropertyProvider, useTypeProperty}
+
+export { TypePropertyProvider, useTypeProperty };
