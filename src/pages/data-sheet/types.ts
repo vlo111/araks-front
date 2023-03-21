@@ -16,4 +16,4 @@ export type DataSheetState = {
     titleText?: string;
     nodeTypeId?: string;
     parentId?: string;
-  };
+};

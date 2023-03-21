@@ -1,22 +1,30 @@
 import { ColumnsType } from "antd/es/table";
+
 import { DataType } from "./types";
 
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusAction } from "components/actions/plus";
+import { useTypeProperty } from "./table-context";
+import { AddTypeProprty } from "components/button/add-type-property";
 
 
-export const actions = [
-    {
-        title: <PlusOutlined />,
-        key: 'operation',
-        fixed: 'right',
-        dataIndex: 'key',
-        width: '64px',
-        className: 'action-class',
-        render: () => ''
-    },
-    {
-        key: 'space',
-        fixed: 'right',
-        dataIndex: 'space',
-    }
-] as ColumnsType<DataType>;
+export const useActions = () => {
+    const {state, dispatch} = useTypeProperty();
+
+    return [
+        {
+            title: <AddTypeProprty />,
+            key: 'operation',
+            fixed: 'right',
+            dataIndex: 'key',
+            width: '64px',
+            className: 'action-class',
+            render: () => '',
+            align: 'center',
+        },
+        {
+            key: 'space',
+            fixed: 'right',
+            dataIndex: 'space',
+        }
+    ] as ColumnsType<DataType>;
+}

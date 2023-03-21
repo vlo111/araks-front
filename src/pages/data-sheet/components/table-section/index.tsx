@@ -1,8 +1,9 @@
 import { Table, TableColumnProps, TableProps } from "antd"
 import { useColumns } from "./use-columns";
-import { actions } from "./table-actions";
 import { DataType } from "./types";
 import styled from "styled-components";
+import { TypePropertyProvider } from "./table-context";
+import { useActions } from "./table-actions";
 
 
 interface EditableRowProps {
@@ -36,7 +37,7 @@ const HeaderCell: React.FC<EditableCellProps> = ({
     children,
     ...restProps
   }) => {
-    return <td  {...restProps} className={`${className} header-col`}>{children}</td>;
+    return <td  {...restProps} >{children}</td>;
   };
 
 
@@ -57,13 +58,14 @@ const TableStyled = styled((props) => <Table {...props} />)`
 
 export const TableSection = () => {
     const columns = useColumns();
+    const actions = useActions();
 
     const columnsAndAction = [...columns, ...actions]; 
 
     const components = {
-        header: {
-            cell: HeaderCell,
-        },
+        // header: {
+        //     cell: HeaderCell,
+        // },
         body: {
           row: EditableRow,
           cell: EditableCell,
@@ -71,11 +73,12 @@ export const TableSection = () => {
     };
 
     return <TableStyled 
-        components={components} 
-        rowClassName={() => 'editable-row'} 
-        dataSource={dataSource}
-        // style={{ width: '10%' }} 
-        columns={columnsAndAction}
-        pagination={false}
-    />
+            components={components} 
+            sticky
+            rowClassName={() => 'editable-row'} 
+            dataSource={dataSource}
+            // style={{ width: '10%' }} 
+            columns={columnsAndAction}
+            pagination={false}
+        />
 }

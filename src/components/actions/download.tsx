@@ -1,5 +1,4 @@
 import { DownloadOutlined } from '@ant-design/icons';
-import { COLORS } from 'helpers/constants';
 import { ActionProps } from './type';
 import { Wrapper } from './wrapper';
 
