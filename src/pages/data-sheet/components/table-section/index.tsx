@@ -1,8 +1,7 @@
-import { Table, TableColumnProps, TableProps } from 'antd';
+import { Table } from 'antd';
 import { useColumns } from './use-columns';
 import { DataType } from './types';
 import styled from 'styled-components';
-import { TypePropertyProvider } from './table-context';
 import { useActions } from './table-actions';
 
 interface EditableRowProps {
@@ -10,7 +9,7 @@ interface EditableRowProps {
   className: string;
 }
 
-const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
+const EditableRow: React.FC<EditableRowProps> = (props) => {
   return <tr {...props} className={`${props.className} editable-row`} />;
 };
 
@@ -25,10 +24,6 @@ const EditableCell: React.FC<EditableCellProps> = ({ className, children, ...res
       {children}
     </td>
   );
-};
-
-const HeaderCell: React.FC<EditableCellProps> = ({ className, children, ...restProps }) => {
-  return <td {...restProps}>{children}</td>;
 };
 
 const dataSource: DataType[] = [...Array(10)].map((_, i) => ({

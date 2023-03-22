@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useReducer } from 'react';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 import { TypePropertyActionKind, TypePropertyState } from './types';
 
 interface TypePropertyAction {

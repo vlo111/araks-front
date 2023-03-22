@@ -1,19 +1,13 @@
-import React from 'react';
 import { UserOutlined, SearchOutlined } from '@ant-design/icons';
 import { AutoComplete as AutoCompleteComponent, Input } from 'antd';
 
-import './index.css'
+import './index.css';
 import styled from 'styled-components';
 
 const renderTitle = (title: string) => (
   <span>
     {title}
-    <a
-      style={{ float: 'right' }}
-      href="https://www.google.com/search?q=antd"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a style={{ float: 'right' }} href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
       more
     </a>
   </span>
@@ -52,24 +46,24 @@ const options = [
 ];
 
 const AutoComplete = styled(AutoCompleteComponent)`
-    .ant-input-affix-wrapper  {
-        border-color: #C3C3C3;
+  .ant-input-affix-wrapper {
+    border-color: #c3c3c3;
 
-        .ant-input-prefix {
-            svg {
-                color: #C3C3C3;
-            }
-        }
-
-        .ant-input::placeholder {
-            font-family: 'Rajdhani';
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 23px;
-            letter-spacing: 0.07em;
-            color: #808080;
-        }
+    .ant-input-prefix {
+      svg {
+        color: #c3c3c3;
+      }
     }
+
+    .ant-input::placeholder {
+      font-family: 'Rajdhani';
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 23px;
+      letter-spacing: 0.07em;
+      color: #808080;
+    }
+  }
 `;
 
 export const Search = () => (

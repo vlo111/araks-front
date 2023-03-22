@@ -1,7 +1,7 @@
 import { RequestTypes } from 'api/types';
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-node-types';
+import { ProjectNodeTypeResponse } from 'types/project-node-types';
 
 import client from '../client';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-note-type-properties';

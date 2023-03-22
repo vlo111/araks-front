@@ -6,7 +6,7 @@ import { ConfigProvider } from 'antd';
 import { antTheme } from './helpers/ant-theme';
 
 import './index.css';
-import {  AuthProvider } from 'context/auth-context';
+import { AuthProvider } from 'context/auth-context';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,11 +16,9 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+export function App() {
   return (
-    <ConfigProvider
-      theme={antTheme}
-    >
+    <ConfigProvider theme={antTheme}>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <React.StrictMode>
@@ -31,5 +29,3 @@ function App() {
     </ConfigProvider>
   );
 }
-
-export default App;

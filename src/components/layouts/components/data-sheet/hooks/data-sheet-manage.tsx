@@ -1,4 +1,4 @@
-import { DataSheetState } from "pages/data-sheet/types";
+import { DataSheetState } from 'pages/data-sheet/types';
 
 export enum DataSheetActionKind {
   ADD_TYPE_START = 'ADD_TYPE_START',
@@ -20,7 +20,7 @@ export const dataSheetInitialState: DataSheetState = {
   titleText: '',
   addTypeisOpened: false,
   editTypeisOpened: false,
-}
+};
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;

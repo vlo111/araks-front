@@ -1,16 +1,15 @@
-import { Button, PopoverProps } from 'antd';
+import { PopoverProps } from 'antd';
 import { PlusAction } from 'components/actions/plus';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
 import { Title } from 'components/typography';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
-import React, { useCallback } from 'react';
-import styled, { css } from 'styled-components';
+import { useCallback } from 'react';
 
 type Props = PopoverProps & {};
 
-export const AddTypeProprty = React.memo(({ children, ...props }: Props) => {
+export const AddTypeProprty = ({ children, ...props }: Props) => {
   const {
     state: { titleText, addTypeisOpened },
     dispatch,
@@ -29,4 +28,4 @@ export const AddTypeProprty = React.memo(({ children, ...props }: Props) => {
       {children}
     </>
   );
-});
+};

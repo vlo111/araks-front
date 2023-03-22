@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from 'context/auth-context';
-import { SignInForm, User } from 'types/auth';
+import { SignInForm } from 'types/auth';
 
 import client from '../client';
 
@@ -16,9 +16,9 @@ export const useSignIn = () => {
       onSuccess: ({ data }) => {
         login({
           user: data.user,
-          access_token: data.access_token
+          access_token: data.access_token,
         });
-      }
+      },
     }
   );
   return mutation;

@@ -1,13 +1,11 @@
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import client from '../client';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-note-type-properties';
 
-const URL_PROJECT_NODE_TYPE_PROPERTY_DELETE = '/node-type-property/delete/:id'
+const URL_PROJECT_NODE_TYPE_PROPERTY_DELETE = '/node-type-property/delete/:id';
 
-export const useDeleteProjectNodeTypeProperty = (nodeTypePropertyId: string = '', options: UseQueryOptions) => {
-  const params = useParams()
+export const useDeleteProjectNodeTypeProperty = (nodeTypePropertyId = '', options: UseQueryOptions) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     () => client.delete(URL_PROJECT_NODE_TYPE_PROPERTY_DELETE.replace(':id', nodeTypePropertyId)),

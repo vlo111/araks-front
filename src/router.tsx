@@ -1,4 +1,3 @@
-import { DataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { Overview } from 'components/layouts/overview';
 import { DataSheet } from 'pages/data-sheet';
 import { Folder } from 'pages/folder';
@@ -14,67 +13,64 @@ import { PATHS } from './helpers/constants';
 import { Projects } from './pages/projects';
 import { SignIn } from './pages/sign-in';
 
-
-export const router = createBrowserRouter(
-  [
-    {
-      element: <PublicRoutes />,
-      children: [
-        {
-          path: PATHS.ROOT,
-          element: <SignIn />,
-        },
-        {
-          path: PATHS.SIGN_IN,
-          element: <SignIn />,
-        },
-      ],
-    },
-    {
-      element: <ProjectHome />,
-      children: [
-        {
-          path: PATHS.PROJECTS,
-          element: <Projects />,
-        },
-        {
-          path: PATHS.FOLDER,
-          element: <Folder />,
-        },
-        {
-          path: PATHS.PUBLIC,
-          element: <Public />,
-        },
-      ],
-    },
-    {
-      element: <Overview />,
-      children: [
-        {
-          path: PATHS.PROJECT_OVERVIEW,
-          element: <ProjectOverview />,
-        },
-        {
-          path: PATHS.PROJECT_UPDATE,
-          element: <ProjectUpdate />,
-        },
-        {
-          path: PATHS.PROJECT_CREATE,
-          element: <ProjectCreate />,
-        },
-        {
-          path: PATHS.PROJECT_SCHEME,
-          element: <ProjectScheme />,
-        },
-        {
-          path: PATHS.DATA_SHEET,
-          element: <DataSheet />,
-        },
-        {
-          path: PATHS.DATA_SHEET_NODE_TYPE,
-          element: <DataSheet />,
-        },
-      ],
-    },
-  ]
-);
+export const router = createBrowserRouter([
+  {
+    element: <PublicRoutes />,
+    children: [
+      {
+        path: PATHS.ROOT,
+        element: <SignIn />,
+      },
+      {
+        path: PATHS.SIGN_IN,
+        element: <SignIn />,
+      },
+    ],
+  },
+  {
+    element: <ProjectHome />,
+    children: [
+      {
+        path: PATHS.PROJECTS,
+        element: <Projects />,
+      },
+      {
+        path: PATHS.FOLDER,
+        element: <Folder />,
+      },
+      {
+        path: PATHS.PUBLIC,
+        element: <Public />,
+      },
+    ],
+  },
+  {
+    element: <Overview />,
+    children: [
+      {
+        path: PATHS.PROJECT_OVERVIEW,
+        element: <ProjectOverview />,
+      },
+      {
+        path: PATHS.PROJECT_UPDATE,
+        element: <ProjectUpdate />,
+      },
+      {
+        path: PATHS.PROJECT_CREATE,
+        element: <ProjectCreate />,
+      },
+      {
+        path: PATHS.PROJECT_SCHEME,
+        element: <ProjectScheme />,
+      },
+      {
+        path: PATHS.DATA_SHEET,
+        element: <DataSheet />,
+      },
+      {
+        path: PATHS.DATA_SHEET_NODE_TYPE,
+        element: <DataSheet />,
+      },
+    ],
+  },
+]);

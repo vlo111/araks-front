@@ -1,9 +1,7 @@
-import { Button, PopoverProps } from 'antd';
+import { PopoverProps } from 'antd';
 import { ActionDots } from 'components/actions/dots';
-import { PlusAction } from 'components/actions/plus';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
-import { Title } from 'components/typography';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import React, { useCallback, useMemo } from 'react';

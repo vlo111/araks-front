@@ -1,34 +1,29 @@
 import { useParams } from 'react-router-dom';
-import { ProjectTreeReturnData, ProjectTypePropertyReturnData } from 'api/types';
-import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { TreeNodeType } from 'pages/data-sheet/types';
-import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/projects-node-types/:node_type_id/property';
 
 type ReturnData = {
   data: ProjectTypePropertyReturnData[];
-}
-
-type QueryResponse = {
-  data: ReturnData
-}
+};
 
 // type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
 type Result = UseQueryResult<ProjectTypePropertyReturnData[]> & { formatted: TreeNodeType[] };
 
 export const useGetProjectNoteTypeProperties = (options = { enabled: true }): Result => {
-  const params = useParams()
+  const params = useParams();
   const urlNodes = GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', params?.node_type_id || '');
   const result = useQuery([urlNodes], () => client.get(urlNodes), {
     ...options,
-    select: (data): ReturnData => data.data
+    select: (data): ReturnData => data.data,
   });
   const { data, isSuccess } = result;
- 
+
   return {
     ...result,
-    data: isSuccess ? data.data : [] as ProjectTypePropertyReturnData[],
+    data: isSuccess ? data.data : ([] as ProjectTypePropertyReturnData[]),
   } as Result;
 };
