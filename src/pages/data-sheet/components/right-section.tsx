@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd';
 import { AddType } from 'components/button';
 import { ColorFill } from 'components/color-fill';
 import { EmptyList } from 'components/empty';
@@ -7,7 +8,13 @@ import { TableSection } from './table-section';
 import { TypePropertyProvider } from './table-section/table-context';
 
 export const RightSection = () => {
-  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId } = useDataSheetWrapper();
+  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, isLoading, selectNodeTypeFinished } =
+    useDataSheetWrapper();
+  // eslint-disable-next-line no-console
+  console.log(nodeTypeId, isLoading, selectNodeTypeFinished);
+  if (!selectNodeTypeFinished) {
+    <Skeleton />;
+  }
 
   return (
     <>
@@ -17,7 +24,6 @@ export const RightSection = () => {
         onClick={startAddType}
         open={addTypeisOpened}
         onOpenChange={(open) => {
-          console.log('open', open);
           // addTypeisOpened && !open && finishAddType();
           return open;
         }}

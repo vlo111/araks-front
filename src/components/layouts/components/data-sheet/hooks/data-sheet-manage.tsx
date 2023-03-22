@@ -20,11 +20,11 @@ export const dataSheetInitialState: DataSheetState = {
   titleText: '',
   addTypeisOpened: false,
   editTypeisOpened: false,
+  selectNodeTypeFinished: false,
 };
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
-  console.log('type->', type);
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {
