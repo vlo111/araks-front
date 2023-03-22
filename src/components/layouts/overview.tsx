@@ -9,6 +9,7 @@ import { HeaderSearch } from './components/header-search';
 import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
 import { DataSheetWrapper } from './components/data-sheet/wrapper';
+import { stripTrailingSlash } from 'helpers/utils';
 
 const Layout = styled(LayoutComponent)`
   background: #f2f2f2;
@@ -104,13 +105,15 @@ export const Overview = () => {
 
   const activeItem = useMemo(
     () =>
-      items.find(
-        (item) =>
+      items.find((item) => {
+        return (
           item.key.replace(':id', params.id || '').replace(':node_type_id', params.node_type_id || '') ===
-          location.pathname
-      ),
+          stripTrailingSlash(location.pathname)
+        );
+      }),
     [items, location.pathname, params.id, params.node_type_id]
   );
+
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;
   }

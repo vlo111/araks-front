@@ -14,3 +14,7 @@ export const getIconName = (iconName: string) => (checkIconInList(iconName) ? ic
 export const logedInUser = localStorage.getItem(AUTH_KEYS.USER)
   ? JSON.parse(localStorage.getItem(AUTH_KEYS.USER) || '')
   : null;
+
+export const stripTrailingSlash = (str: string) => {
+  return str.endsWith('/') ? str.slice(0, -1) : str;
+};

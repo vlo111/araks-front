@@ -58,12 +58,12 @@ export const DataSheetWrapper = () => {
             parentId: data.data[0].parent_id,
             selectNodeTypeFinished: true,
           });
-          //   return;
+          return;
         }
 
-        // selectNodeType({
-        //   selectNodeTypeFinished: true,
-        // });
+        selectNodeType({
+          selectNodeTypeFinished: true,
+        });
       },
     }
   );

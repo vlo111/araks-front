@@ -13,7 +13,7 @@ export const RightSection = () => {
   // eslint-disable-next-line no-console
   console.log(nodeTypeId, isLoading, selectNodeTypeFinished);
   if (!selectNodeTypeFinished) {
-    <Skeleton />;
+    return <Skeleton />;
   }
 
   return (
