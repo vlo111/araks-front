@@ -1,11 +1,10 @@
-
 import { GetProjectsParameters } from 'api/types';
 import { useQuery } from '@tanstack/react-query';
 import client from '../client';
 
 export const GET_FOLDERS_LIST = '/folders';
 
-const useGetFolders = (params?: GetProjectsParameters, options = { enabled: true }) => {
+export const useGetFolders = (params?: GetProjectsParameters, options = { enabled: true }) => {
   const result = useQuery([GET_FOLDERS_LIST, params], () => client.get(GET_FOLDERS_LIST, { params }), {
     ...options,
     select: (data) => data.data,
@@ -16,5 +15,3 @@ const useGetFolders = (params?: GetProjectsParameters, options = { enabled: true
     data: isSuccess ? data.data : [],
   };
 };
-
-export default useGetFolders;

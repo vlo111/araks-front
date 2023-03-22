@@ -6,7 +6,7 @@ import { GET_PROJECT_NODE_TYPES_LIST } from './use-get-project-note-types';
 
 const URL_PROJECT_NODE_TYPES_DELETE = '/projects-node-types/delete/:id'
 
-export const useDeleteProjectNodeType = (nodeTypeId: string = '', options: UseQueryOptions) => {
+export const useDeleteProjectNodeType = (nodeTypeId = '', options: UseQueryOptions) => {
   const params = useParams()
   const queryClient = useQueryClient();
   const mutation = useMutation(

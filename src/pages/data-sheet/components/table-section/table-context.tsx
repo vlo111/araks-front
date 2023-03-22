@@ -16,8 +16,6 @@ const TypePropertyContext = createContext<{ state: TypePropertyState; dispatch: 
 
 export function typePropertyReducer(state: TypePropertyState, action: TypePropertyAction) {
   const { type, payload } = action;
-  console.log('type->', type);
-  console.log('payload->', payload);
   switch (type) {
     case TypePropertyActionKind.ADD_TYPE_START:
       return {

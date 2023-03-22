@@ -33,12 +33,9 @@ const FolrderText = (props: Omit<Props, 'ButtonProps'>) => (
 );
 
 export const FolderButton = styled(({ folderName, folderId, countItems, fullWidth, ...props }: Props) => (
-  <Component
-    {...props}
-    children={<FolrderText folderName={folderName} folderId={folderId} countItems={countItems} />}
-    size="large"
-    type="default"
-  />
+  <Component {...props} size="large" type="default">
+    <FolrderText folderName={folderName} folderId={folderId} countItems={countItems} />
+  </Component>
 ))`
   &.ant-btn-default {
     background: #f2f2f2;

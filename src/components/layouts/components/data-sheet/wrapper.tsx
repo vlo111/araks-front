@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useReducer } from 'react';
-import useGetProjectNoteTypes, { GET_PROJECT_NODE_TYPES_LIST } from 'api/project-node-types/use-get-project-note-types';
+import { useGetProjectNoteTypes, GET_PROJECT_NODE_TYPES_LIST } from 'api/project-node-types/use-get-project-note-types';
 import { Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { DataSheetActionKind, dataSheetInitialState, dataSheetReducer } from './hooks/data-sheet-manage';
 import { DataSheetState } from 'pages/data-sheet/types';

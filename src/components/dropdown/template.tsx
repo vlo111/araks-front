@@ -21,4 +21,8 @@ const DropdownContent = () => (
   </DropdownButton>
 );
 
-export const Template = styled((props) => <Component {...props} children={<DropdownContent />} />)``;
+export const Template = styled((props) => (
+  <Component {...props}>
+    <DropdownContent />
+  </Component>
+))``;

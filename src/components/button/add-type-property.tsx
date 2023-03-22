@@ -7,7 +7,7 @@ import { useTypeProperty } from 'pages/data-sheet/components/table-section/table
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { useCallback } from 'react';
 
-type Props = PopoverProps & {};
+type Props = PopoverProps;
 
 export const AddTypeProprty = ({ children, ...props }: Props) => {
   const {

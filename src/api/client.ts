@@ -20,7 +20,6 @@ client.interceptors.request.use(
 // Add a response interceptor
 client.interceptors.response.use(
   async function (response) {
-    
     return response;
   },
   async function (error) {
@@ -29,9 +28,10 @@ client.interceptors.response.use(
       localStorage.removeItem(AUTH_KEYS.TOKEN);
       window.location.href = PATHS.SIGN_IN;
     }
-    
+
     return Promise.reject(error);
   }
 );
 
+// eslint-disable-next-line import/no-default-export
 export default client;

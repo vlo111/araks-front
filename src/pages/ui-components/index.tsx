@@ -6,7 +6,7 @@ import { Document } from '../../components/document';
 import { Input } from '../../components/input';
 import { Location } from '../../components/location';
 import { ImageUrl } from '../../components/image-url';
-import VerticalSpace from '../../components/space/vertical-space';
+import { VerticalSpace } from '../../components/space/vertical-space';
 import { Url } from '../../components/url';
 import {
   AddFolderButton,
@@ -43,7 +43,7 @@ const content = (
   </div>
 );
 
-const UiComponents = () => {
+export const UiComponents = () => {
   return (
     <VerticalSpace>
       <Typography.Title>Inputs</Typography.Title>
@@ -115,5 +115,3 @@ const UiComponents = () => {
     </VerticalSpace>
   );
 };
-
-export default UiComponents;

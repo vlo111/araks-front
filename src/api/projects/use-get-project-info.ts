@@ -6,32 +6,30 @@ export const GET_PROJECT_INFO_DATA = '/projects/info/:id';
 
 type GetProjectParam = {
   id?: string;
-}
+};
 
 type QueryKey = GetProjectParam | string;
 
 type ReturnData = {
   data: ProjectInfoReturnData;
-}
+};
 
 type QueryResponse = {
-  data: ReturnData
-}
+  data: ReturnData;
+};
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
 type Result = UseQueryResult<ProjectInfoReturnData>;
 
-const useGetProjectInfo = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
+export const useGetProjectInfo = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
   const url = GET_PROJECT_INFO_DATA.replace(':id', params?.id || '');
   const result = useQuery([url, params], () => client.get(url, { params }), {
     ...options,
-    select: (data): ReturnData => data.data
+    select: (data): ReturnData => data.data,
   });
   const { data, isSuccess } = result;
   return {
     ...result,
-    data: isSuccess ? data.data : {} as ProjectInfoReturnData,
+    data: isSuccess ? data.data : ({} as ProjectInfoReturnData),
   } as Result;
 };
-
-export default useGetProjectInfo;

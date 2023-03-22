@@ -6,7 +6,6 @@ import { FormItem } from './form-item';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
-import VerticalSpace from 'components/space/vertical-space';
 import { useEffect } from 'react';
 import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
 import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
@@ -15,6 +14,7 @@ import { useTypeProperty } from 'pages/data-sheet/components/table-section/table
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { Checkbox } from 'components/checkbox';
+import { VerticalSpace } from 'components/space/vertical-space';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -29,7 +29,9 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   const { state, dispatch } = useTypeProperty();
   const { mutate } = useCreateProjectNodeTypeProperty(
     {
-      onSuccess: ({ data }) => {},
+      onSuccess: ({ data }) => {
+        return;
+      },
     },
     isEdit ? state.typePropertyId : undefined
   );
@@ -49,7 +51,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
       //     'parent_id': parentId,
       // });
     }
-  }, []);
+  }, [isEdit]);
 
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
     mutate(values);

@@ -1,7 +1,7 @@
 import { useDeleteFolder } from 'api/folders/use-delete-folder';
 import { Button } from 'components/button';
 import { Modal } from 'components/modal';
-import VerticalSpace from 'components/space/vertical-space';
+import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 
 type Props = {

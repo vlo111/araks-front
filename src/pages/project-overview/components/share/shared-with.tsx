@@ -20,7 +20,7 @@ export const SharedWith = () => {
       itemLayout={isXXl ? 'horizontal' : 'vertical'}
       dataSource={data}
       renderItem={(item, index) => (
-        <List.Item actions={[<Share defaultValue={item.value} />]}>
+        <List.Item actions={[<Share defaultValue={item.value} key={item.title} />]}>
           <List.Item.Meta avatar={<Avatar src={item.avatar} />} description={<Text>{item.title}</Text>} />
         </List.Item>
       )}

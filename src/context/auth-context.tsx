@@ -10,55 +10,68 @@ interface AuthContextType {
 }
 
 type AuthProviderProps = {
-    children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
-  logout: () => {},
+  login: () => {
+    return;
+  },
+  logout: () => {
+    return;
+  },
 });
 
 const localStorageUser = localStorage.getItem(AUTH_KEYS.USER);
 
 function AuthProvider(props: AuthProviderProps) {
-    const [user, setUser] = useState<UserDetails | null>(() => localStorageUser ? JSON.parse(localStorageUser) : null);
-    const { setItem, removeItem } = useLocalStorage();
-    
-    const addUser = useCallback((user: UserDetails | null) => {
-        setItem(AUTH_KEYS.USER, JSON.stringify(user));
-        setUser(user);
-      }, [setItem]);
+  const [user, setUser] = useState<UserDetails | null>(() => (localStorageUser ? JSON.parse(localStorageUser) : null));
+  const { setItem, removeItem } = useLocalStorage();
 
-      const addToken = useCallback((token?: string | null) => {
-        setItem(AUTH_KEYS.TOKEN, token || '');
-      }, [setItem]);
+  const addUser = useCallback(
+    (user: UserDetails | null) => {
+      setItem(AUTH_KEYS.USER, JSON.stringify(user));
+      setUser(user);
+    },
+    [setItem]
+  );
 
-      const removeUser = useCallback(() => {
-        setUser(null);
-        removeItem(AUTH_KEYS.USER);
-        removeItem(AUTH_KEYS.TOKEN);
-      }, [removeItem]);
+  const addToken = useCallback(
+    (token?: string | null) => {
+      setItem(AUTH_KEYS.TOKEN, token || '');
+    },
+    [setItem]
+  );
 
-    const login = useCallback((user: User | null) => {
-        addUser(user?.user || null);
-        addToken(user?.access_token);
-    }, [addToken, addUser]);
-    
-    const logout = useCallback(() => {
-        removeUser();
-    }, [removeUser]);
+  const removeUser = useCallback(() => {
+    setUser(null);
+    removeItem(AUTH_KEYS.USER);
+    removeItem(AUTH_KEYS.TOKEN);
+  }, [removeItem]);
 
-    const providerValues = useMemo(() => ({user, login, logout}), [login, logout, user]);
-    return <AuthContext.Provider value={providerValues} {...props} />;
+  const login = useCallback(
+    (user: User | null) => {
+      addUser(user?.user || null);
+      addToken(user?.access_token);
+    },
+    [addToken, addUser]
+  );
+
+  const logout = useCallback(() => {
+    removeUser();
+  }, [removeUser]);
+
+  const providerValues = useMemo(() => ({ user, login, logout }), [login, logout, user]);
+  return <AuthContext.Provider value={providerValues} {...props} />;
 }
 
 function useAuth() {
-    const context = useContext(AuthContext)
-    if (context === undefined) {
-      throw new Error(`useAuth must be used within a AuthProvider`)
-    }
-    return context
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error(`useAuth must be used within a AuthProvider`);
   }
+  return context;
+}
 
-  export {AuthProvider, useAuth}
+export { AuthProvider, useAuth };

@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import useGetProject from 'api/projects/use-get-project';
+import { useGetProject } from 'api/projects/use-get-project';
 import { useParams } from 'react-router-dom';
 
 export const ProjectScheme = () => {
