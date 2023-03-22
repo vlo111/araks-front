@@ -25,7 +25,6 @@ export const dataSheetInitialState: DataSheetState = {
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
   console.log('type->', type);
-  console.log('payload->', payload);
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {

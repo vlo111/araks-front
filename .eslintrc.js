@@ -132,7 +132,6 @@ module.exports = {
     'jsx-a11y/role-supports-aria-props': 'warn',
     'jsx-a11y/scope': 'warn',
     'jsx-a11y/tabindex-no-positive': 'warn',
-    'no-only-tests/no-only-tests': 'error',
     'no-restricted-imports': ['error'],
     '@typescript-eslint/no-non-null-assertion': 'off',
     eqeqeq: ['error', 'always'],
