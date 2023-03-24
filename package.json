@@ -63,7 +63,6 @@
     ]
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.27.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",

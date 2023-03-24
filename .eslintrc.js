@@ -50,7 +50,7 @@ module.exports = {
     sourceType: 'module',
     project: ['./tsconfig.json'],
   },
-  plugins: ['@tanstack/query', '@typescript-eslint', 'import', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'import', 'jsx-a11y'],
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -85,7 +85,6 @@ module.exports = {
     },
   ],
   rules: {
-    '@tanstack/query/prefer-query-object-syntax': 'error',
     'react/react-in-jsx-scope': 'off',
     'react/display-name': 'off',
     'no-console': 'error',
