@@ -23,7 +23,12 @@ type Result = UseQueryResult<ProjectInfoReturnData>;
 
 export const useGetProjectInfo = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
   const url = GET_PROJECT_INFO_DATA.replace(':id', params?.id || '');
-  const result = useQuery({ queryKey: [url, params], queryFn: () => client.get(url, { params }), ...options, select: (data): ReturnData => data.data });
+  const result = useQuery({
+    queryKey: [url, params],
+    queryFn: () => client.get(url, { params }),
+    ...options,
+    // select: (data): ReturnData => data.data,
+  });
   const { data, isSuccess } = result;
   return {
     ...result,

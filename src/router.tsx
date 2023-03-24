@@ -1,4 +1,5 @@
 import { Overview } from 'components/layouts/overview';
+import { PrivateRoute } from 'components/routes/private-route';
 import { DataSheet } from 'pages/data-sheet';
 import { Folder } from 'pages/folder';
 import { ProjectOverview } from 'pages/project-overview';
@@ -28,48 +29,53 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <ProjectHome />,
+    element: <PrivateRoute />,
     children: [
       {
-        path: PATHS.PROJECTS,
-        element: <Projects />,
+        element: <ProjectHome />,
+        children: [
+          {
+            path: PATHS.PROJECTS,
+            element: <Projects />,
+          },
+          {
+            path: PATHS.FOLDER,
+            element: <Folder />,
+          },
+          {
+            path: PATHS.PUBLIC,
+            element: <Public />,
+          },
+        ],
       },
       {
-        path: PATHS.FOLDER,
-        element: <Folder />,
-      },
-      {
-        path: PATHS.PUBLIC,
-        element: <Public />,
-      },
-    ],
-  },
-  {
-    element: <Overview />,
-    children: [
-      {
-        path: PATHS.PROJECT_OVERVIEW,
-        element: <ProjectOverview />,
-      },
-      {
-        path: PATHS.PROJECT_UPDATE,
-        element: <ProjectUpdate />,
-      },
-      {
-        path: PATHS.PROJECT_CREATE,
-        element: <ProjectCreate />,
-      },
-      {
-        path: PATHS.PROJECT_SCHEME,
-        element: <ProjectScheme />,
-      },
-      {
-        path: PATHS.DATA_SHEET,
-        element: <DataSheet />,
-      },
-      {
-        path: PATHS.DATA_SHEET_NODE_TYPE,
-        element: <DataSheet />,
+        element: <Overview />,
+        children: [
+          {
+            path: PATHS.PROJECT_OVERVIEW,
+            element: <ProjectOverview />,
+          },
+          {
+            path: PATHS.PROJECT_UPDATE,
+            element: <ProjectUpdate />,
+          },
+          {
+            path: PATHS.PROJECT_CREATE,
+            element: <ProjectCreate />,
+          },
+          {
+            path: PATHS.PROJECT_SCHEME,
+            element: <ProjectScheme />,
+          },
+          {
+            path: PATHS.DATA_SHEET,
+            element: <DataSheet />,
+          },
+          {
+            path: PATHS.DATA_SHEET_NODE_TYPE,
+            element: <DataSheet />,
+          },
+        ],
       },
     ],
   },

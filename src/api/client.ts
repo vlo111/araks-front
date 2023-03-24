@@ -20,7 +20,7 @@ client.interceptors.request.use(
 // Add a response interceptor
 client.interceptors.response.use(
   async function (response) {
-    return response;
+    return response.data;
   },
   async function (error) {
     if (error.response.status === 401) {

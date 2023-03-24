@@ -6,7 +6,6 @@ import { FormItem } from './form-item';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
 import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
@@ -14,7 +13,6 @@ import { TypePropertyActionKind } from 'pages/data-sheet/components/table-sectio
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { Checkbox } from 'components/checkbox';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 
 const Wrapper = styled.div`
@@ -37,19 +35,18 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
     isEdit ? state.typePropertyId : undefined
   );
 
-  useGetProjectNodeTypeProperty(state.propertyId, { enabled: !!state.propertyId });
+  useGetProjectNodeTypeProperty(state.propertyId, {
+    enabled: !!state.propertyId,
+    onSuccess: (data) => {
+      // eslint-disable-next-line no-console
+      console.log('dataa', data);
+      form.setFieldsValue({
+        ...data,
+      });
+    },
+  });
 
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (isEdit) {
-      // form.setFieldsValue({
-      //     'name': titleText,
-      //     'color': color,
-      //     'parent_id': parentId,
-      // });
-    }
-  }, [isEdit]);
 
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
     mutate(values);
@@ -103,28 +100,34 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
           <PropertyDataTypeSelect />
         </FormItem>
         <FormItem name="required_type" valuePropName="checked" initialValue={false}>
-          <Space align="start">
-            <Checkbox>Required</Checkbox>
-            <Tooltip title="Useful information" placement="right">
-              <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-            </Tooltip>
-          </Space>
+          <Checkbox>
+            <Space>
+              Required
+              <Tooltip title="Useful information" placement="right">
+                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+              </Tooltip>
+            </Space>
+          </Checkbox>
         </FormItem>
         <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
-          <Space align="start">
-            <Checkbox>Multiple</Checkbox>
-            <Tooltip title="Useful information" placement="right">
-              <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-            </Tooltip>
-          </Space>
+          <Checkbox>
+            <Space>
+              Multiple
+              <Tooltip title="Useful information" placement="right">
+                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+              </Tooltip>
+            </Space>
+          </Checkbox>
         </FormItem>
         <FormItem name="unique_type" valuePropName="checked" initialValue={false}>
-          <Space align="start">
-            <Checkbox>Set field as unique</Checkbox>
-            <Tooltip title="Useful information" placement="right">
-              <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-            </Tooltip>
-          </Space>
+          <Checkbox>
+            <Space>
+              Set field as unique
+              <Tooltip title="Useful information" placement="right">
+                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+              </Tooltip>
+            </Space>
+          </Checkbox>
         </FormItem>
         <FormItem>
           <VerticalSpace>

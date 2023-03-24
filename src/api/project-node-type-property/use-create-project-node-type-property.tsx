@@ -15,24 +15,19 @@ const URL_PROJECT_NODE_TYPE_PROPERTY_CREATE = '/node-type-property/create';
 const URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE = '/node-type-property/update/:id';
 
 type ReturnData = {
-  data: {
-    data: ProjectNodeTypeResponse;
-  };
+  data: ProjectNodeTypeResponse;
 };
 
-type QueryResponse = {
-  data: ReturnData;
-};
-
-type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
-
+type Options = UseQueryOptions<ProjectNodeTypePropertySubmit, Error, ReturnData>;
+// type Response = UseMutationResult<ReturnData, ProjectNodeTypePropertySubmit>;
 export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePropertyId?: string) => {
   const params = useParams();
+  const queryClient = useQueryClient();
   const url = nodeTypePropertyId
     ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', nodeTypePropertyId || '')
     : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
-  const queryClient = useQueryClient();
-  const mutation = useMutation({ mutationFn: (values: ProjectNodeTypePropertySubmit) => {
+  const mutation = useMutation<ReturnData, unknown, ProjectNodeTypePropertySubmit>({
+    mutationFn: (values: ProjectNodeTypePropertySubmit) => {
       const type = nodeTypePropertyId ? RequestTypes.Put : RequestTypes.Post;
       const body = {
         ...values,
@@ -40,11 +35,13 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
         project_type_id: params.node_type_id,
       };
       return client[type](url, body);
-    }, onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries([
-          GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.id || ''),
-        ]);
-        options?.onSuccess?.(data);
-      } });
+    },
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries([
+        GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', params.node_type_id || ''),
+      ]);
+      options?.onSuccess?.(data);
+    },
+  });
   return mutation;
 };

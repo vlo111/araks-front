@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Layout as LayoutComponent, Menu as MenuComponent, MenuProps, Space } from 'antd';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { MenuText } from '../typography';
 import { ReactComponent as Home } from '../icons/home.svg';
@@ -8,7 +8,6 @@ import { ReactComponent as Public } from '../icons/public.svg';
 import { ReactComponent as Shared } from '../icons/shared.svg';
 
 import { PATHS } from 'helpers/constants';
-import { useAuth } from 'context/auth-context';
 import { HeaderSearch } from './components/header-search';
 import { Logo } from 'components/logo';
 
@@ -67,32 +66,27 @@ const Sider = styled(SiderComponent)`
   }
 `;
 
-const menu = [
+const menu: MenuProps['items'] = [
   {
     icon: <Home />,
-    label: 'Home',
+    label: <MenuText>Home</MenuText>,
     key: PATHS.PROJECTS,
   },
   {
     icon: <Public />,
-    label: 'Public',
+    label: <MenuText>Public</MenuText>,
     key: PATHS.PUBLIC,
   },
   {
     icon: <Shared />,
-    label: 'Shared',
+    label: <MenuText>Shared</MenuText>,
     key: 'shared',
   },
 ];
 
 export const ProjectHome = () => {
-  const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-
-  if (!user) {
-    return <Navigate to={PATHS.SIGN_IN} />;
-  }
 
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key);
@@ -104,17 +98,7 @@ export const ProjectHome = () => {
     <Layout>
       <Sider width={240} breakpoint="lg">
         <Logo margin="31px 63px" />
-        <Menu
-          mode="inline"
-          inlineIndent={63}
-          defaultSelectedKeys={[defaultSelected]}
-          onClick={onClick}
-          items={menu.map((item, index) => ({
-            key: item.key,
-            icon: item.icon,
-            label: <MenuText>{item.label}</MenuText>,
-          }))}
-        />
+        <Menu mode="inline" inlineIndent={63} defaultSelectedKeys={[defaultSelected]} onClick={onClick} items={menu} />
       </Sider>
       <LayoutInner>
         <Header>
