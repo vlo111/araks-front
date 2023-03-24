@@ -3,6 +3,8 @@ import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import styled from 'styled-components';
 import { PropsSetState, TreeNodeType } from '../types';
+import { CaretDownFilled } from '@ant-design/icons';
+import { COLORS } from 'helpers/constants';
 
 const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
   && {
@@ -46,6 +48,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   ) : (
     <StyledTree
       onSelect={onSelect}
+      switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
       selectedKeys={[nodeTypeId]}
       defaultExpandedKeys={[nodeTypeId]}
       treeData={nodesList}
