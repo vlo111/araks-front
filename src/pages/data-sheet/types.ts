@@ -14,7 +14,10 @@ export type DataSheetState = {
   color?: string;
   nodesList?: TreeNodeType[];
   titleText?: string;
+  prevState?: PrevDataSheetState;
   nodeTypeId?: string;
   parentId?: string;
   selectNodeTypeFinished?: boolean; //Runs onece , on page load
 };
+
+export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;

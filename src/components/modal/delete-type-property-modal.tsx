@@ -1,5 +1,6 @@
 import { useDeleteProjectNodeTypeProperty } from 'api/project-node-type-property/use-delete-project-node-type-property';
 import { Button } from 'components/button';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
@@ -11,11 +12,12 @@ type Props = {
 };
 
 export const DeleteTypePropertyModal = ({ id }: Props) => {
+  const { nodeTypeId } = useDataSheetWrapper();
   const {
     state: { deleteTypeisOpened },
     dispatch,
   } = useTypeProperty();
-  const { mutate } = useDeleteProjectNodeTypeProperty(id);
+  const { mutate } = useDeleteProjectNodeTypeProperty(id, nodeTypeId || '');
 
   const handleCancel = () => {
     dispatch({ type: TypePropertyActionKind.DELETE_TYPE_FINISH, payload: {} });

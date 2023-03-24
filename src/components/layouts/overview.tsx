@@ -70,8 +70,6 @@ export const Overview = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const dataSheetKey = params.node_type_id ? PATHS.DATA_SHEET_NODE_TYPE : PATHS.DATA_SHEET;
-
   const items = useMemo(
     () => [
       {
@@ -84,7 +82,7 @@ export const Overview = () => {
         disabled: true,
       },
       {
-        key: dataSheetKey,
+        key: PATHS.DATA_SHEET,
         label: 'Data sheet',
       },
       {
@@ -93,7 +91,7 @@ export const Overview = () => {
         disabled: true,
       },
     ],
-    [dataSheetKey]
+    []
   );
 
   const handleTabClick = useCallback(
@@ -137,7 +135,7 @@ export const Overview = () => {
               children: (
                 <div className="site-layout-content">
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-                  {item.key === dataSheetKey && <DataSheetWrapper />}
+                  {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
                 </div>
               ),
             }))}

@@ -40,14 +40,12 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
   const { mutate } = useCreateProjectNodeType(
     {
       onSuccess: ({ data }) => {
-        if (!nodeTypeId) {
-          selectNodeType({
-            titleText: data.data.name,
-            color: data.data.color,
-            nodeTypeId: data.data.id,
-            parentId: data.data.parent_id,
-          });
-        }
+        selectNodeType({
+          titleText: data.name,
+          color: data.color,
+          nodeTypeId: data.id,
+          parentId: data.parent_id,
+        });
       },
     },
     isEdit ? nodeTypeId : undefined
@@ -156,7 +154,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
             )}
           </Form.Item>
         )}
-        <FormItem name="color">
+        <FormItem name="color" rules={[{ required: true, message: 'Node type color is required' }]}>
           <ColorSelect initialColor={isEdit ? color : undefined} />
         </FormItem>
         <FormItem>

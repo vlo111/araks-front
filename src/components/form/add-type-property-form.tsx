@@ -14,6 +14,7 @@ import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property
 import { Checkbox } from 'components/checkbox';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -25,6 +26,7 @@ type Props = {
 };
 
 export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
+  const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
   const { mutate } = useCreateProjectNodeTypeProperty(
     {
@@ -47,7 +49,10 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
-    mutate(values);
+    mutate({
+      ...values,
+      project_type_id: nodeTypeId,
+    });
     form.resetFields();
     if (isEdit) {
       dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
@@ -94,7 +99,11 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
         >
           <FormInput placeholder="Property name" />
         </FormItem>
-        <FormItem name="ref_property_type_id" label="Data type">
+        <FormItem
+          name="ref_property_type_id"
+          label="Data type"
+          rules={[{ required: true, message: 'Node property data type is required' }]}
+        >
           <PropertyDataTypeSelect />
         </FormItem>
         <FormItem name="required_type" valuePropName="checked" initialValue={false}>

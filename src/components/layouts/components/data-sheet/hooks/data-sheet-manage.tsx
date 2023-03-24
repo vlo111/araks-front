@@ -25,12 +25,16 @@ export const dataSheetInitialState: DataSheetState = {
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
-  // eslint-disable-next-line no-console
-  console.log(type, payload);
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {
         ...state,
+        prevState: {
+          color: state.color,
+          titleText: state.titleText,
+          nodeTypeId: state.nodeTypeId,
+          parentId: state.parentId,
+        },
         titleText: 'New Type',
         color: '#DDDDDD',
         addTypeisOpened: true,
@@ -38,14 +42,17 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
     case DataSheetActionKind.ADD_TYPE_FINISH:
       return {
         ...state,
-        // titleText: dataSheetInitialState.titleText,
-        // color: dataSheetInitialState.color,
         addTypeisOpened: false,
       };
     case DataSheetActionKind.ADD_TYPE_CANCEL:
       return {
         ...state,
         ...payload,
+        color: state.prevState?.color,
+        titleText: state.prevState?.titleText,
+        nodeTypeId: state.prevState?.nodeTypeId,
+        parentId: state.prevState?.parentId,
+        prevState: {},
         addTypeisOpened: false,
       };
     case DataSheetActionKind.TYPE_SELECTED:

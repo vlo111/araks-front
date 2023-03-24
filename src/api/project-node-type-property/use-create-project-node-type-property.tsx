@@ -1,7 +1,6 @@
-import { RequestTypes } from 'api/types';
+import { ProjectTypePropertyReturnData, RequestTypes } from 'api/types';
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { ProjectNodeTypeResponse } from 'types/project-node-types';
 
 import client from '../client';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-node-type-properties';
@@ -15,7 +14,7 @@ const URL_PROJECT_NODE_TYPE_PROPERTY_CREATE = '/node-type-property/create';
 const URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE = '/node-type-property/update/:id';
 
 type ReturnData = {
-  data: ProjectNodeTypeResponse;
+  data: ProjectTypePropertyReturnData;
 };
 
 type Options = UseQueryOptions<ProjectNodeTypePropertySubmit, Error, ReturnData>;
@@ -32,13 +31,12 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
       const body = {
         ...values,
         project_id: params.id,
-        project_type_id: params.node_type_id,
       };
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([
-        GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', params.node_type_id || ''),
+        GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.project_type_id || ''),
       ]);
       options?.onSuccess?.(data);
     },
