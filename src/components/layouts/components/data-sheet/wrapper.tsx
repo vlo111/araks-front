@@ -32,7 +32,6 @@ export const DataSheetWrapper = () => {
   );
   const startAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_START, payload: {} }), []);
   const finishAddType = useCallback(() => dispatch({ type: DataSheetActionKind.ADD_TYPE_FINISH, payload: {} }), []);
-
   const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
   const finishEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_FINISH, payload: {} }), []);
   const deleteEditType = useCallback(() => dispatch({ type: DataSheetActionKind.DELETE_TYPE, payload: {} }), []);
@@ -50,6 +49,8 @@ export const DataSheetWrapper = () => {
       enabled: !!params.id,
       onSuccess: (data) => {
         /** This condition sets selected fisr node type when first time enter to this page */
+        // eslint-disable-next-line no-console
+        console.log(state);
         if (data.data.length && !state.nodeTypeId) {
           selectNodeType({
             titleText: data.data[0].name,

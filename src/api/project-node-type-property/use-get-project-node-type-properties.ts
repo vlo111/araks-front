@@ -22,8 +22,6 @@ export const useGetProjectNodeTypeProperties = (options = { enabled: true }): Re
     ...options,
   });
   const { data, isSuccess } = result;
-  // eslint-disable-next-line no-console
-  console.log('dataasssssss', data);
 
   return {
     ...result,

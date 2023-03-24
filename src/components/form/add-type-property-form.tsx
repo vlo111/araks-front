@@ -38,8 +38,6 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   useGetProjectNodeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,
     onSuccess: (data) => {
-      // eslint-disable-next-line no-console
-      console.log('dataa', data);
       form.setFieldsValue({
         ...data,
       });

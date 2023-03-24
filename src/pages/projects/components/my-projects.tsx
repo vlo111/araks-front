@@ -38,8 +38,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
     data: { data, folder },
     isLoading,
   } = useGetProjects(folderState, projectsUrl);
-  // eslint-disable-next-line no-console
-  console.log(data, folder);
 
   const onPaginationChange: PaginationProps['onChange'] = useCallback((page: number) => {
     dispatch({ type: FolderAction.CHANGE_PAGE, page });

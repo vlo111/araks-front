@@ -40,12 +40,14 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
   const { mutate } = useCreateProjectNodeType(
     {
       onSuccess: ({ data }) => {
-        selectNodeType({
-          titleText: data.data.name,
-          color: data.data.color,
-          nodeTypeId: data.data.id,
-          parentId: data.data.parent_id,
-        });
+        if (!nodeTypeId) {
+          selectNodeType({
+            titleText: data.data.name,
+            color: data.data.color,
+            nodeTypeId: data.data.id,
+            parentId: data.data.parent_id,
+          });
+        }
       },
     },
     isEdit ? nodeTypeId : undefined

@@ -25,6 +25,8 @@ export const dataSheetInitialState: DataSheetState = {
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
   const { type, payload } = action;
+  // eslint-disable-next-line no-console
+  console.log(type, payload);
   switch (type) {
     case DataSheetActionKind.ADD_TYPE_START:
       return {
