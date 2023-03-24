@@ -5,7 +5,7 @@ import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-note-ty
 
 const URL_PROJECT_NODE_TYPE_PROPERTY_DELETE = '/node-type-property/delete/:id';
 
-export const useDeleteProjectNodeTypeProperty = (nodeTypePropertyId = '', options: UseQueryOptions) => {
+export const useDeleteProjectNodeTypeProperty = (nodeTypePropertyId = '', options?: UseQueryOptions) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     () => client.delete(URL_PROJECT_NODE_TYPE_PROPERTY_DELETE.replace(':id', nodeTypePropertyId)),

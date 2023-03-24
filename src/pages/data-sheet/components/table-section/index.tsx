@@ -26,7 +26,7 @@ const EditableCell: React.FC<EditableCellProps> = ({ className, children, ...res
   );
 };
 
-const dataSource: DataType[] = [...Array(10)].map((_, i) => ({
+const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
   key: i,
   column: 'operation',
 }));

@@ -38,7 +38,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
 
   const { mutate: mutateDelete } = useDeleteProjectNodeTypeProperty(state.typePropertyId, {
     onSuccess: () => {
-      dispatch({ type: TypePropertyActionKind.DELETE_TYPE, payload: {} });
+      dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
     },
   });
   const [form] = Form.useForm();

@@ -8,10 +8,7 @@ import { TableSection } from './table-section';
 import { TypePropertyProvider } from './table-section/table-context';
 
 export const RightSection = () => {
-  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, isLoading, selectNodeTypeFinished } =
-    useDataSheetWrapper();
-  // eslint-disable-next-line no-console
-  console.log(nodeTypeId, isLoading, selectNodeTypeFinished);
+  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
   if (!selectNodeTypeFinished) {
     return <Skeleton />;
   }

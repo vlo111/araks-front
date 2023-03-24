@@ -1,7 +1,8 @@
 import { PopoverProps } from 'antd';
 import { ActionDots } from 'components/actions/dots';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
-import { AddNodeTypePopover } from 'components/popover';
+import { TypePropertyMenu } from 'components/menu/type-property-menu';
+import { AddNodeTypePopover, ManageNodeTypePopover } from 'components/popover';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import React, { useCallback, useMemo } from 'react';
@@ -10,26 +11,43 @@ type Props = PopoverProps & {
   propertyId: string;
 };
 
-export const EditTypeProprty = React.memo(({ children, propertyId, ...props }: Props) => {
+export const ManageTypeProperty = React.memo(({ children, propertyId, ...props }: Props) => {
   const {
-    state: { editTypeisOpened, propertyId: editPropertyId },
+    state: { manageTypeisOpened, propertyId: editPropertyId, editTypeisOpened },
     dispatch,
   } = useTypeProperty();
 
   const handlePropertyEditClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.EDIT_TYPE_START, payload: { propertyId } });
+    dispatch({ type: TypePropertyActionKind.MANAGE_TYPE_START, payload: { propertyId } });
   }, [dispatch, propertyId]);
 
   const isOpened = useMemo(
+    () => editPropertyId === propertyId && manageTypeisOpened,
+    [editPropertyId, manageTypeisOpened, propertyId]
+  );
+
+  const isEditOpened = useMemo(
     () => editPropertyId === propertyId && editTypeisOpened,
     [editPropertyId, editTypeisOpened, propertyId]
   );
 
   return (
     <>
+      <ManageNodeTypePopover
+        content={<TypePropertyMenu propertyId={propertyId} />}
+        open={isOpened}
+        trigger="click"
+        onOpenChange={(open: boolean) => {
+          !open && dispatch({ type: TypePropertyActionKind.MANAGE_TYPE_FINISH, payload: {} });
+          return open;
+        }}
+        {...props}
+      >
+        <ActionDots style={{ position: 'absolute', right: '5px' }} onClick={handlePropertyEditClick} />
+      </ManageNodeTypePopover>
       <AddNodeTypePopover
         content={<AddTypePropertyForm isEdit />}
-        open={isOpened}
+        open={isEditOpened}
         trigger="click"
         onOpenChange={(open: boolean) => {
           !open && dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
@@ -37,9 +55,8 @@ export const EditTypeProprty = React.memo(({ children, propertyId, ...props }: P
         }}
         {...props}
       >
-        <ActionDots style={{ position: 'absolute', right: '5px' }} onClick={handlePropertyEditClick} />
+        {children}
       </AddNodeTypePopover>
-      {children}
     </>
   );
 });

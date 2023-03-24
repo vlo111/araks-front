@@ -50,6 +50,7 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         propertyId: payload.propertyId,
         editTypeisOpened: true,
+        manageTypeisOpened: false,
       };
     case TypePropertyActionKind.EDIT_TYPE_FINISH:
       return {
@@ -57,10 +58,29 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         propertyId: undefined,
         editTypeisOpened: false,
       };
-    case TypePropertyActionKind.DELETE_TYPE:
+    case TypePropertyActionKind.MANAGE_TYPE_START:
       return {
         ...state,
-        editTypeisOpened: false,
+        propertyId: payload.propertyId,
+        manageTypeisOpened: true,
+      };
+    case TypePropertyActionKind.MANAGE_TYPE_FINISH:
+      return {
+        ...state,
+        propertyId: undefined,
+        manageTypeisOpened: false,
+      };
+    case TypePropertyActionKind.DELETE_TYPE_START:
+      return {
+        ...state,
+        deleteTypeisOpened: true,
+        manageTypeisOpened: false,
+        propertyId: undefined,
+      };
+    case TypePropertyActionKind.DELETE_TYPE_FINISH:
+      return {
+        ...state,
+        deleteTypeisOpened: false,
         propertyId: undefined,
       };
     default:
