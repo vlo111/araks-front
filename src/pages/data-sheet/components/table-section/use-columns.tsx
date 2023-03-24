@@ -1,10 +1,10 @@
 import { ColumnsType } from 'antd/es/table';
-import { useGetProjectNoteTypeProperties } from 'api/project-node-type-property/use-get-project-note-type-properties';
+import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { DataType } from './types';
 import { ManageTypeProperty } from 'pages/data-sheet/components/table-section/type-property/manage-type-property';
 
 export const useColumns = () => {
-  const { data } = useGetProjectNoteTypeProperties();
+  const { data } = useGetProjectNodeTypeProperties();
 
   const columns: ColumnsType<DataType> =
     data?.map((item) => ({

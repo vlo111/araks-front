@@ -31,10 +31,7 @@ export const useGetProjectNoteTypes = (
   options: Options = { enabled: true }
 ): Result => {
   const urlNodes = url.replace(':id', params?.id || '').replace(':project_id', params?.projectId || '');
-  const result = useQuery([urlNodes, params], () => client.get(urlNodes, { params }), {
-    ...options,
-    select: (data): ReturnData => data.data,
-  });
+  const result = useQuery({ queryKey: [urlNodes, params], queryFn: () => client.get(urlNodes, { params }), ...options, select: (data): ReturnData => data.data });
   const { data, isSuccess } = result;
 
   const formatted = isSuccess ? createNodesTree(data.data) : [];

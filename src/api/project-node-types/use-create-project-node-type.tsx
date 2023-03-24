@@ -29,19 +29,14 @@ export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string,)
   const params = useParams()
   const url = nodeTypeId ? URL_PROJECT_NODE_TYPES_UPDATE.replace(':id', nodeTypeId || '') : URL_PROJECT_NODE_TYPES_CREATE;
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    ({parent_id, ...values}: ProjectNodeTypeSubmit) => {
+  const mutation = useMutation({ mutationFn: ({parent_id, ...values}: ProjectNodeTypeSubmit) => {
       const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
       const body = nodeTypeId ? {...values, ...(parent_id ? { parent_id } : {})} : { ...values, project_id: params.id, parent_id };
       return client[type](url, body);
-    },
-    {
-      onSuccess: (data, variables, context) => {
+    }, onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries([GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || '')]);
         options?.onSuccess?.(data);
-      },
-    }
-  );
+      } });
   return mutation;
 };
 

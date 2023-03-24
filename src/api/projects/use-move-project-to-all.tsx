@@ -12,17 +12,12 @@ const URL = '/projects/move-to-all/:projectId';
 
 export const useMoveProjectToAll = (folderId?: string) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    ({ projectId }: MoveProjectToAllFormData) => {
+  const mutation = useMutation({ mutationFn: ({ projectId }: MoveProjectToAllFormData) => {
       return client.post(URL.replace(':projectId', projectId.toString()), {});
-    },
-    {
-      onSuccess: (data, variables, context) => {
+    }, onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries([GET_FOLDER_PROJECTS_LIST.replace(':id', folderId || '')]);
         queryClient.invalidateQueries([GET_PROJECTS_LIST]);
         queryClient.invalidateQueries([GET_FOLDERS_LIST]);
-      },
-    }
-  );
+      } });
   return mutation;
 };

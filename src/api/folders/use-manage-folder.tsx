@@ -14,17 +14,12 @@ export const FOLDER_DELETE_URL = 'folders/delete/:id';
 
 export const useManageFolder = (url = FOLDER_CREATE_URL, type: RequestType = RequestTypes.Post) => {
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    ({ folderName }: CreateFolderFormData) => {
+  const mutation = useMutation({ mutationFn: ({ folderName }: CreateFolderFormData) => {
       return client[type](url, {
         title: folderName
       });
-    },
-    {
-      onSuccess: (data, variables, context) => {
+    }, onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries([GET_FOLDERS_LIST]);
-      },
-    }
-  );
+      } });
   return mutation;
 };

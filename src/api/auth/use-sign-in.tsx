@@ -8,18 +8,13 @@ const url = 'auth/sign-in';
 
 export const useSignIn = () => {
   const { login } = useAuth();
-  const mutation = useMutation(
-    (values: SignInForm) => {
+  const mutation = useMutation({ mutationFn: (values: SignInForm) => {
       return client.post(url, values);
-    },
-    {
-      onSuccess: ({ data }) => {
+    }, onSuccess: ({ data }) => {
         login({
           user: data.user,
           access_token: data.access_token,
         });
-      },
-    }
-  );
+      } });
   return mutation;
 };

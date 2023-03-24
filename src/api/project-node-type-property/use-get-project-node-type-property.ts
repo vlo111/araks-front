@@ -1,10 +1,9 @@
-import { useParams } from 'react-router-dom';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { TreeNodeType } from 'pages/data-sheet/types';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
-export const GET_PROJECT_NODE_TYPE_PROPERTIES_LIST = '/projects-node-types/:node_type_id/property';
+export const GET_PROJECT_NODE_TYPE_PROPERTY = '/node-type-property/:type_property_id';
 
 type ReturnData = {
   data: ProjectTypePropertyReturnData[];
@@ -13,10 +12,11 @@ type ReturnData = {
 // type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
 type Result = UseQueryResult<ProjectTypePropertyReturnData[]> & { formatted: TreeNodeType[] };
 
-export const useGetProjectNoteTypeProperties = (options = { enabled: true }): Result => {
-  const params = useParams();
-  const urlNodes = GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', params?.node_type_id || '');
-  const result = useQuery([urlNodes], () => client.get(urlNodes), {
+export const useGetProjectNodeTypeProperty = (propertyId?: string, options = { enabled: true }): Result => {
+  const urlNodes = GET_PROJECT_NODE_TYPE_PROPERTY.replace(':node_type_id', propertyId || '');
+  const result = useQuery({
+    queryKey: [urlNodes],
+    queryFn: () => client.get(urlNodes),
     ...options,
     select: (data): ReturnData => data.data,
   });

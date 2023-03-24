@@ -75,7 +75,7 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         deleteTypeisOpened: true,
         manageTypeisOpened: false,
-        propertyId: undefined,
+        editTypeisOpened: false,
       };
     case TypePropertyActionKind.DELETE_TYPE_FINISH:
       return {

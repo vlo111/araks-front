@@ -9,12 +9,13 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
 import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
-import { useDeleteProjectNodeTypeProperty } from 'api/project-node-type-property/use-delete-project-node-type-property';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { Checkbox } from 'components/checkbox';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -36,11 +37,8 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
     isEdit ? state.typePropertyId : undefined
   );
 
-  const { mutate: mutateDelete } = useDeleteProjectNodeTypeProperty(state.typePropertyId, {
-    onSuccess: () => {
-      dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
-    },
-  });
+  useGetProjectNodeTypeProperty(state.propertyId, { enabled: !!state.propertyId });
+
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -71,7 +69,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
 
   /** this action works only for edit */
   const onHandleDelete = () => {
-    mutateDelete();
+    dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
   };
 
   return (

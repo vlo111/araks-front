@@ -22,16 +22,11 @@ type Response = UseMutationResult<ReturnData, CreateOverviewFormData>;
 export const useManageProject = (url: ManageProjectUrlProp, type: RequestType = RequestTypes.Post) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const mutation = useMutation<Response, unknown, CreateOverviewFormData>(
-    (values: CreateOverviewFormData) => client[type](url, values),
-    {
-      onSuccess: (data: Response, variables, context) => {
+  const mutation = useMutation<Response, unknown, CreateOverviewFormData>({ mutationFn: (values: CreateOverviewFormData) => client[type](url, values), onSuccess: (data: Response, variables, context) => {
         queryClient.invalidateQueries([GET_PROJECTS_LIST]);
         queryClient.invalidateQueries([GET_PROJECT_DATA.replace(':id', data?.data?.data?.id || '')]);
         queryClient.invalidateQueries([GET_PROJECT_INFO_DATA.replace(':id', data?.data?.data?.id || '')]);
         navigate(PATHS.PROJECT_OVERVIEW.replace(':id', data?.data?.data?.id || ''));
-      },
-    }
-  );
+      } });
   return mutation;
 };

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ProjectNodeTypeResponse } from 'types/project-node-types';
 
 import client from '../client';
-import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-note-type-properties';
+import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-node-type-properties';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 
 export type MoveProjectToAllFormData = {
@@ -32,8 +32,7 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
     ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', nodeTypePropertyId || '')
     : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    (values: ProjectNodeTypePropertySubmit) => {
+  const mutation = useMutation({ mutationFn: (values: ProjectNodeTypePropertySubmit) => {
       const type = nodeTypePropertyId ? RequestTypes.Put : RequestTypes.Post;
       const body = {
         ...values,
@@ -41,15 +40,11 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
         project_type_id: params.node_type_id,
       };
       return client[type](url, body);
-    },
-    {
-      onSuccess: (data, variables, context) => {
+    }, onSuccess: (data, variables, context) => {
         queryClient.invalidateQueries([
           GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.id || ''),
         ]);
         options?.onSuccess?.(data);
-      },
-    }
-  );
+      } });
   return mutation;
 };
