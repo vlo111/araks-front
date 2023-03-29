@@ -39,8 +39,6 @@ const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
 export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   const params = useParams();
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
-  // eslint-disable-next-line no-console
-  console.log('first', selectNodeType);
 
   const { formatted: nodesList, isLoading } = useGetProjectNoteTypes(
     {
@@ -52,8 +50,6 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
       onSuccess: (data) => {
         /** This condition sets selected fisr node type when first time enter to this page */
         const nodesList = createNodesTree(data.data);
-        // eslint-disable-next-line no-console
-        console.log(data.data.length && !nodeTypeId, nodesList);
         if (data.data.length && !nodeTypeId) {
           selectNodeType?.({
             titleText: data.data[0].name,

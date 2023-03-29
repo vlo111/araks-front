@@ -29,8 +29,6 @@ const Content = styled(ContentComponent)`
 
 export const PublicRoutes = () => {
   const { user } = useAuth();
-  // eslint-disable-next-line no-console
-  console.log('first', user);
 
   if (user) {
     return <Navigate to={PATHS.PROJECTS} />;
