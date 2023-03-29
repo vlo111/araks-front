@@ -27,5 +27,5 @@ export const ManageNodeTypePopover = (props: PopoverProps) => (
 );
 
 export const SelectColorPopover = (props: PopoverProps) => (
-  <PopoverComponent placement="bottom" trigger="click" {...props} overlayClassName="project-popover-node-type" />
+  <PopoverComponent placement="bottom" trigger="click" {...props} overlayClassName="project-popover-color" />
 );

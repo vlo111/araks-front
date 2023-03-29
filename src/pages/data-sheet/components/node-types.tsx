@@ -61,7 +61,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
           });
           return;
         }
-        selectNodeType({
+        selectNodeType?.({
           selectNodeTypeFinished: true,
         });
       },

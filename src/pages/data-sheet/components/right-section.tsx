@@ -5,6 +5,7 @@ import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { HeaderActions } from './header-actions';
 import { TableSection } from './table-section';
+import { ManageNode } from './table-section/node/manage-node';
 import { TypePropertyProvider } from './table-section/table-context';
 
 export const RightSection = () => {
@@ -30,6 +31,7 @@ export const RightSection = () => {
       {!nodeTypeId && <EmptyList />}
       {nodeTypeId && (
         <TypePropertyProvider>
+          <ManageNode />
           <TableSection />
         </TypePropertyProvider>
       )}

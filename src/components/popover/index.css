@@ -10,6 +10,7 @@
 .project-popover-action .ant-popover-arrow,
 .project-popover-node-type .ant-popover-arrow,
 .project-popover-manage-property .ant-popover-arrow,
+.project-popover-color .ant-popover-arrow,
 .long-text .ant-popover-arrow {
   display: none;
 }
@@ -54,4 +55,10 @@
   box-shadow: 0px 20px 20px rgba(111, 111, 111, 0.3);
   border-radius: 4px;
   padding: 0;
+}
+
+.project-popover-color .ant-popover-inner {
+  background-color: transparent;
+  padding: 0;
+  width: 220px;
 }
