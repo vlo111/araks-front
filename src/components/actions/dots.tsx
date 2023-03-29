@@ -1,9 +1,9 @@
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 import styled, { css } from 'styled-components';
 import { FullWidth } from 'types/project';
-import { Wrapper } from './wrapper';
+// import { Wrapper } from './wrapper';
 
-const DotsWrapper = styled(({ fullWidth, ...props }) => <Wrapper {...props} />)`
+const DotsWrapper = styled(({ fullWidth, ...props }) => <div {...props} />)`
   & {
     position: relative;
 
