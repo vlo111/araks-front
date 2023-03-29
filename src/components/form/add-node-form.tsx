@@ -25,9 +25,6 @@ export const AddNodeForm = () => {
       autoComplete="off"
       layout="vertical"
       requiredMark={false}
-    >
-
-      
-    </Form>
+    ></Form>
   );
 };

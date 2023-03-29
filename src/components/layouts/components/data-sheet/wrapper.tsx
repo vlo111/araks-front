@@ -11,6 +11,8 @@ export type DataSheetContextType = DataSheetState & {
   finishEditType: () => void;
   deleteEditType: () => void;
   selectNodeType: (value: DataSheetState) => void;
+  searchTextFilter: (value: string) => void;
+  searchTextClear: () => void;
   isLoading: boolean;
 };
 
@@ -25,6 +27,14 @@ export const DataSheetWrapper = () => {
   const startEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_START, payload: {} }), []);
   const finishEditType = useCallback(() => dispatch({ type: DataSheetActionKind.EDIT_TYPE_FINISH, payload: {} }), []);
   const deleteEditType = useCallback(() => dispatch({ type: DataSheetActionKind.DELETE_TYPE, payload: {} }), []);
+  const searchTextFilter = useCallback(
+    (text: string) => dispatch({ type: DataSheetActionKind.TYPE_SEARCH, payload: { searchText: text } }),
+    []
+  );
+  const searchTextClear = useCallback(
+    (text: string) => dispatch({ type: DataSheetActionKind.TYPE_SEARCH_CLEAR, payload: {} }),
+    []
+  );
 
   const cancelAddType = useCallback(() => {
     dispatch({ type: DataSheetActionKind.ADD_TYPE_CANCEL, payload: { titleText: dataSheetInitialState.titleText } });
@@ -41,6 +51,8 @@ export const DataSheetWrapper = () => {
       deleteEditType,
       // nodesList,
       selectNodeType,
+      searchTextFilter,
+      searchTextClear,
       ...state,
     }),
     [
@@ -53,6 +65,8 @@ export const DataSheetWrapper = () => {
       startAddType,
       startEditType,
       deleteEditType,
+      searchTextFilter,
+      searchTextClear,
       state,
     ]
   );

@@ -38,7 +38,8 @@ const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
 
 export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   const params = useParams();
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, filteredNodeTypes, searchText } =
+    useDataSheetWrapper();
 
   const { formatted: nodesList, isLoading } = useGetProjectNoteTypes(
     {
@@ -67,6 +68,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
       },
     }
   );
+
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     selectNodeType({
       titleText: e.node.name,
@@ -75,6 +77,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
       parentId: e.node.parent_id,
     });
   };
+
   return !selectNodeTypeFinished || isLoading ? (
     <Skeleton />
   ) : (
@@ -83,7 +86,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
       switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
       selectedKeys={[nodeTypeId]}
       defaultExpandedKeys={[nodeTypeId]}
-      treeData={nodesList}
+      treeData={searchText ? filteredNodeTypes : nodesList}
       autoExpandParent
       blockNode
       defaultExpandAll

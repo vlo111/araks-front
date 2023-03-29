@@ -13,11 +13,13 @@ export type DataSheetState = {
   editTypeisOpened?: boolean;
   color?: string;
   nodesList?: TreeNodeType[];
+  filteredNodeTypes?: TreeNodeType[];
   titleText?: string;
   prevState?: PrevDataSheetState;
   nodeTypeId?: string;
   parentId?: string;
   selectNodeTypeFinished?: boolean; //Runs onece , on page load
+  searchText?: string;
 };
 
 export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;

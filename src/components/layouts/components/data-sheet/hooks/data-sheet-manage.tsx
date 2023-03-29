@@ -1,10 +1,12 @@
-import { DataSheetState } from 'pages/data-sheet/types';
+import { DataSheetState, TreeNodeType } from 'pages/data-sheet/types';
 
 export enum DataSheetActionKind {
   ADD_TYPE_START = 'ADD_TYPE_START',
   ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
   ADD_TYPE_CANCEL = 'ADD_TYPE_CANCEL',
   TYPE_SELECTED = 'TYPE_SELECTED',
+  TYPE_SEARCH = 'TYPE_SEARCH',
+  TYPE_SEARCH_CLEAR = 'TYPE_SEARCH_CLEAR',
   EDIT_TYPE_START = 'EDIT_TYPE_START',
   EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
   DELETE_TYPE = 'DELETE_TYPE',
@@ -18,9 +20,11 @@ interface DataSheetAction {
 export const dataSheetInitialState: DataSheetState = {
   color: '#232F6A',
   titleText: '',
+  searchText: '',
   addTypeisOpened: false,
   editTypeisOpened: false,
   selectNodeTypeFinished: false,
+  filteredNodeTypes: [] as TreeNodeType[],
 };
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
@@ -61,6 +65,21 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         // color: '#DDDDDD',
         addTypeisOpened: false,
         ...payload,
+      };
+    case DataSheetActionKind.TYPE_SEARCH:
+      return {
+        ...state,
+        searchText: payload.searchText,
+        filteredNodeTypes:
+          payload.searchText?.length && state.nodesList
+            ? state.nodesList?.filter((item) => item.name.includes(payload.searchText || ''))
+            : ([] as TreeNodeType[]),
+      };
+    case DataSheetActionKind.TYPE_SEARCH_CLEAR:
+      return {
+        ...state,
+        searchText: dataSheetInitialState.searchText,
+        filteredNodeTypes: dataSheetInitialState.filteredNodeTypes,
       };
     case DataSheetActionKind.EDIT_TYPE_START:
       return {

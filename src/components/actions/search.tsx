@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import { AutoComplete } from 'antd';
-import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
-import type { SelectProps } from 'antd/es/select';
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
 import { Input } from 'components/input';
-import styled, { css } from 'styled-components';
-import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
+import styled from 'styled-components';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 
 export enum SearchPostionTypes {
   left = 'left',
@@ -12,94 +9,52 @@ export enum SearchPostionTypes {
 }
 
 type Props = {
-  position?: SearchPostionTypes;
-  icon?: Partial<CustomIconComponentProps>;
+  isSearchActive: boolean;
+  setSearchActive: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 };
 
-const Wrapper = styled.div<Props>`
-  position: relative;
-  width: 0px;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-  .ant-input {
-    height: 26px;
-  }
-
-  .ant-select-auto-complete {
-    opacity: 0;
+export const SearchIcon = styled(({ setSearchActive }: Pick<Props, 'setSearchActive'>) => (
+  <SearchOutlined className="search-btn" onClick={() => setSearchActive(true)} />
+))`
+  &.search-btn {
+    cursor: pointer;
+    font-size: 18px;
+    color: #c3c3c3;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .search-btn {
-    cursor: pointer;
-    font-size: 18px;
-    color: #c3c3c3;
-    position: absolute;
-    top: 5px;
-    ${(props) =>
-      props.position === SearchPostionTypes.left
-        ? css`
-            left: 0px;
-          `
-        : css`
-            right: 0;
-          `}
-
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55 );
     z-index: 2;
-  }
-
-  .cancel-btn {
-    cursor: pointer;
-    font-size: 18px;
-    color: #c3c3c3;
-    position: absolute;
-    top: 5px;
-    right: 15%;
-    opacity: 0;
-  }
-
-  &.active {
-    .ant-select-auto-complete {
-      opacity: 1;
-    }
-
-    .search-btn {
-      opacity: 0;
-    }
-
-    .cancel-btn {
-      opacity: 1;
-      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
   }
 `;
 
-export const SearchAction = ({ position = SearchPostionTypes.left, icon }: Props) => {
-  const [options, setOptions] = useState<SelectProps<object>['options']>([]);
-  const [isActive, setIsActive] = useState(false);
+const Wrapper = styled.div`
+  padding: 0 24px 24px;
+  display: flex;
+  justify-content: space-between;
+`;
 
-  const handleSearch = (value: string) => {
-    setOptions(value ? [] : []);
-  };
-
-  const onSelect = (value: string) => {
-    return;
-  };
+export const SearchAction = ({ isSearchActive, setSearchActive }: Props) => {
+  const { searchTextFilter, searchTextClear } = useDataSheetWrapper();
 
   return (
-    <Wrapper className={`search-box ${isActive ? 'active' : ''}`} style={{ width: '100%' }} position={position}>
-      <AutoComplete
-        dropdownMatchSelectWidth={252}
-        style={{ width: '70%' }}
-        options={options}
-        onSelect={onSelect}
-        onSearch={handleSearch}
-      >
-        <Input placeholder="input here" />
-      </AutoComplete>
-      <SearchOutlined className="search-btn" onClick={() => setIsActive(true)} style={icon?.style} />
-      <CloseOutlined className="cancel-btn" onClick={() => setIsActive(false)} style={icon?.style} />
+    <Wrapper className={`search-box ${isSearchActive ? 'active' : ''}`} style={{ width: '100%' }}>
+      <Input
+        placeholder="input here"
+        style={{ width: '90%' }}
+        size="small"
+        onChange={(e) => {
+          if (e.target.value.length > 2) {
+            searchTextFilter(e.target.value);
+            return;
+          }
+          searchTextClear();
+        }}
+      />
+      <CloseOutlined
+        className="cancel-btn"
+        onClick={() => {
+          setSearchActive(false);
+          searchTextClear();
+        }}
+      />
     </Wrapper>
   );
 };
