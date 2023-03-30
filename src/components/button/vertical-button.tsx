@@ -13,7 +13,7 @@ type WrapperProps = ButtonProps & {
   rowsCount: number;
 };
 
-const LeftSidebarSize = 300;
+const LeftSidebarSize = 350;
 
 export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button {...props} />)`
   height: 712px;
@@ -21,7 +21,7 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
   z-index: 4;
   position: absolute;
   ${(props) =>
-    props.rowsCount * 200 > screen.width - LeftSidebarSize
+    props.rowsCount * 300 > screen.width - LeftSidebarSize
       ? css`
       right 0;
     `
@@ -56,8 +56,6 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
 export const VerticalButton = () => {
   const { nodeTypeId } = useDataSheetWrapper();
   const { data } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
-  // eslint-disable-next-line no-console
-  console.log('first', data, screen.width);
   const {
     dispatch,
     state: { addTypeisOpened },
