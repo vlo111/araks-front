@@ -1,9 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { ActionProps } from './type';
-import { Wrapper } from './wrapper';
 import { COLORS } from 'helpers/constants';
+import { CustomIconComponentProps } from '@ant-design/icons/lib/components/Icon';
 
-export const PlusAction = ({ icon, button }: ActionProps) => <Wrapper
-    {...button}
-    icon={<PlusOutlined style={{ cursor: 'pointer', fontSize: '16px', color: COLORS.PRIMARY.BLUE, ...icon?.style }} {...icon} />}
-/>
+export const PlusAction = ({ style, ...props }: Partial<CustomIconComponentProps>) => (
+  <PlusOutlined style={{ cursor: 'pointer', fontSize: '16px', color: COLORS.PRIMARY.BLUE, ...style }} {...props} />
+);

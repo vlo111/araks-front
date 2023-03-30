@@ -23,6 +23,5 @@ export type TypePropertyState = {
   manageTypeisOpened?: boolean;
   titleText?: string;
   typePropertyId?: string;
-  actionColWidth?: string;
   propertyId?: string;
 };

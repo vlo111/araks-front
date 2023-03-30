@@ -3,6 +3,7 @@ import { useColumns } from './use-columns';
 import { DataType } from './types';
 import styled from 'styled-components';
 import { useActions } from './table-actions';
+import { VerticalButton } from 'components/button/vertical-button';
 
 interface EditableRowProps {
   index: number;
@@ -31,14 +32,7 @@ const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
   column: 'operation',
 }));
 
-const TableStyled = styled((props) => <Table {...props} />)`
-  && {
-    .action-class {
-      background-color: #fafafa;
-      border-bottom: none;
-    }
-  }
-`;
+const TableStyled = styled((props) => <Table {...props} />)``;
 
 export const TableSection = () => {
   const columns = useColumns();
@@ -57,14 +51,17 @@ export const TableSection = () => {
   };
 
   return (
-    <TableStyled
-      components={components}
-      sticky
-      rowClassName={() => 'editable-row'}
-      dataSource={dataSource}
-      // style={{ width: '10%' }}
-      columns={columnsAndAction}
-      pagination={false}
-    />
+    <>
+      <VerticalButton />
+      <TableStyled
+        components={components}
+        sticky
+        rowClassName={() => 'editable-row'}
+        dataSource={dataSource}
+        // style={{ width: '10%' }}
+        columns={columnsAndAction}
+        pagination={false}
+      />
+    </>
   );
 };

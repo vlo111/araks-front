@@ -22,13 +22,11 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         titleText: 'New Property ()',
         addTypeisOpened: true,
-        actionColWidth: '200px',
       };
     case TypePropertyActionKind.ADD_TYPE_FINISH:
       return {
         ...state,
         addTypeisOpened: false,
-        actionColWidth: undefined,
         titleText: undefined,
       };
     case TypePropertyActionKind.ADD_TYPE_CANCEL:
@@ -36,7 +34,6 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         ...payload,
         addTypeisOpened: false,
-        actionColWidth: undefined,
       };
     case TypePropertyActionKind.TYPE_SELECTED:
       return {

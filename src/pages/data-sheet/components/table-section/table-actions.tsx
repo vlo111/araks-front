@@ -8,28 +8,32 @@ import { useMemo } from 'react';
 
 export const useActions = () => {
   const {
-    state: { actionColWidth },
+    state: { addTypeisOpened },
   } = useTypeProperty();
 
   return useMemo(
     () =>
       [
-        {
-          title: <AddTypeProprty />,
-          key: 'operation',
-          fixed: 'right',
-          dataIndex: 'key',
-          width: actionColWidth || '64px',
-          className: 'action-class',
-          render: () => '',
-          align: 'center',
-        },
-        {
-          key: 'space',
-          fixed: 'right',
-          dataIndex: 'space',
-        },
+        ...(addTypeisOpened
+          ? [
+              {
+                title: <AddTypeProprty />,
+                key: 'operation',
+                fixed: 'right',
+                dataIndex: 'key',
+                width: 200,
+                className: 'action-class',
+                render: () => '',
+                align: 'center',
+              },
+              {
+                key: 'space',
+                fixed: 'right',
+                dataIndex: 'space',
+              },
+            ]
+          : []),
       ] as ColumnsType<DataType>,
-    [actionColWidth]
+    [addTypeisOpened]
   );
 };

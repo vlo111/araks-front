@@ -1,14 +1,9 @@
 import { Drawer } from 'antd';
-import { Button } from 'components/button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useState } from 'react';
 
 export const ManageNode = () => {
   const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
 
   const onClose = () => {
     setOpen(false);
@@ -18,8 +13,8 @@ export const ManageNode = () => {
     position: 'absolute',
     height: '100%',
     width: '100%',
-    padding: 48,
     right: 0,
+    top: '63px',
     overflow: 'hidden',
     textAlign: 'center',
     // background: token.colorFillAlter,
@@ -28,12 +23,6 @@ export const ManageNode = () => {
   };
   return (
     <div style={containerStyle}>
-      Render in this
-      <div style={{ marginTop: 16 }}>
-        <Button type="primary" onClick={showDrawer}>
-          Open
-        </Button>
-      </div>
       <Drawer
         title="Add New Node / Nuclear physic"
         placement="top"
