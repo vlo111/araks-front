@@ -4,6 +4,8 @@ import { useTypeProperty } from 'pages/data-sheet/components/table-section/table
 import { useCallback } from 'react';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { PlusAction } from 'components/actions/plus';
+import { Text } from 'components/typography';
+import { COLORS } from 'helpers/constants';
 
 export const Wrapper = styled(Button)`
   /* transform: rotate(-90deg); */
@@ -19,11 +21,22 @@ export const Wrapper = styled(Button)`
   border: none;
   border-radius: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
   padding-top: 30px;
+
+  .property-text {
+    display: none;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
 
   &:hover {
     background: linear-gradient(179.75deg, #bec4db 0%, rgba(192, 198, 219, 0.3) 99.91%);
+    .property-text {
+      display: inline;
+    }
   }
 `;
 
@@ -39,6 +52,9 @@ export const VerticalButton = () => {
   return !addTypeisOpened ? (
     <Wrapper onClick={handlePropertyAddClick}>
       <PlusAction />
+      <Text className="property-text" color={COLORS.PRIMARY.BLUE}>
+        Add Property
+      </Text>
     </Wrapper>
   ) : (
     <></>
