@@ -10,6 +10,7 @@ import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
 import { DataSheetWrapper } from './components/data-sheet/wrapper';
 import { stripTrailingSlash } from 'helpers/utils';
+import {SchemaWrapper} from "./components/schema";
 
 const Layout = styled(LayoutComponent)`
   background: #f2f2f2;
@@ -79,7 +80,6 @@ export const Overview = () => {
       {
         key: PATHS.PROJECT_SCHEME,
         label: 'Scheme',
-        disabled: true,
       },
       {
         key: PATHS.DATA_SHEET,
@@ -136,6 +136,7 @@ export const Overview = () => {
                 <div className="site-layout-content">
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
                   {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
+                  {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
                 </div>
               ),
             }))}
