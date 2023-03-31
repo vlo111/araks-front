@@ -60,7 +60,7 @@ export const Folders = () => {
     }
   }, [order, orderName]);
 
-  const { data, isLoading } = useGetFolders(folderState);
+  const { data, isInitialLoading } = useGetFolders(folderState);
 
   const onPaginationChange: PaginationProps['onChange'] = useCallback((page: number) => {
     dispatch({ type: FolderAction.CHANGE_PAGE, page });
@@ -82,7 +82,7 @@ export const Folders = () => {
   const dataToDraw = useMemo(() => (state === ViewTypes.Block ? propsFolderBlockView : propsFolderGridView), [state]);
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isInitialLoading}>
       <TitleSeparator name="Folders" paginationProps={paginationProps} />
       <Row {...(dataToDraw.row as RowProps)}>
         <Col {...(dataToDraw.col as ColProps)}>

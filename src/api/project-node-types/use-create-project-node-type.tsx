@@ -39,6 +39,7 @@ export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string) 
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || '')]);
+      queryClient.invalidateQueries([GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || '')]);
       options?.onSuccess?.(data);
     },
   });

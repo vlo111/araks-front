@@ -41,7 +41,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, filteredNodeTypes, searchText } =
     useDataSheetWrapper();
 
-  const { formatted: nodesList, isLoading } = useGetProjectNoteTypes(
+  const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
       url: GET_PROJECT_NODE_TYPES_LIST,
       projectId: params.id || '',
@@ -64,6 +64,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
         }
         selectNodeType?.({
           selectNodeTypeFinished: true,
+          nodesList,
         });
       },
     }
@@ -78,7 +79,7 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
     });
   };
 
-  return !selectNodeTypeFinished || isLoading ? (
+  return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
     <StyledTree

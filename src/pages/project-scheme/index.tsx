@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 
 export const ProjectScheme = () => {
   const params = useParams();
-  const { isLoading } = useGetProject({ id: params.id }, { enabled: !!params.id });
+  const { isInitialLoading } = useGetProject({ id: params.id }, { enabled: !!params.id });
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isInitialLoading}>
       <div>Project Scheme</div>
     </Spin>
   );

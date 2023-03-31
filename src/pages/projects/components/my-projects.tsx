@@ -36,7 +36,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const {
     data: { data, folder },
-    isLoading,
+    isInitialLoading,
   } = useGetProjects(folderState, projectsUrl);
 
   const onPaginationChange: PaginationProps['onChange'] = useCallback((page: number) => {
@@ -61,7 +61,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isInitialLoading}>
       <TitleSeparator name={listTitle} paginationProps={paginationProps} />
       <Row {...(dataToDraw.row as RowProps)} justify="start">
         {showCreate && (
