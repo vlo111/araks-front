@@ -8,13 +8,17 @@ export const SchemaWrapper: React.FC = () => {
 
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
 
-  const [addPortModal, setAddPortModal] = useState<PortModal>(false);
+  const [addPortModal, setAddPortModal] = useState<PortModal>();
 
-  const [openAddType, setOpenAddType] = useState<OpenAddType>(false);
+  const [openAddType, setOpenAddType] = useState<OpenAddType>();
 
-  const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>(false);
+  const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
 
   const setGraph = useCallback<SetGraph>((item) => setGraphState(item), []);
+
+  const isOpenPortModal = useMemo(() => addPortModal !== undefined, [addPortModal]);
+  const isOpenTypeModal = useMemo(() => openAddType !== undefined, [openAddType]);
+  const isOpenLikPropertyModal = useMemo(() => openLinkPropertyModal !== undefined, [openLinkPropertyModal]);
 
   const context = useMemo(
     () => ({
@@ -28,8 +32,21 @@ export const SchemaWrapper: React.FC = () => {
       setAddPortModal,
       setSelectedNode,
       setOpenLinkPropertyModal,
+      isOpenPortModal,
+      isOpenTypeModal,
+      isOpenLikPropertyModal,
     }),
-    [graph, addPortModal, openLinkPropertyModal, selectedNode, openAddType, setGraph]
+    [
+      graph,
+      addPortModal,
+      openLinkPropertyModal,
+      selectedNode,
+      openAddType,
+      setGraph,
+      isOpenPortModal,
+      isOpenTypeModal,
+      isOpenLikPropertyModal,
+    ]
   );
 
   return <Outlet context={context} />;
