@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Input } from 'components/input';
 import { Modal } from 'components/modal';
-import { Button } from "components/button";
-
-import { useSchema } from '../provider';
+import { Button } from 'components/button';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 
 export const AddTypePropertyModal: React.FC = () => {
   const { addPortModal, setAddPortModal } = useSchema();
@@ -22,7 +21,6 @@ export const AddTypePropertyModal: React.FC = () => {
         node.portProp(port, 'attrs/portNameLabel/text', propertyName);
         node.portProp(port, 'attrs/portTypeLabel/text', propertyDataType);
       } else {
-
         //#region Set height of highlighted type, Set Center of Circle
         const linkPort = node.port.ports[node.port.ports.length - 1];
 

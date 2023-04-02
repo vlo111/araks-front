@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Graph } from "@antv/x6";
 
-import { useSchema } from '../provider';
-import { Modal } from "../../../../modal";
-import { Input } from "../../../../input";
-import { Button } from "../../../../button";
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { Button } from 'components/button';
+import { Input } from 'components/input';
+import { Modal } from 'components/modal';
 
 interface IAddTypeProps {
   openAddType: boolean | number[]
@@ -15,67 +14,65 @@ export const AddTypeModal: React.FC<IAddTypeProps> = ({
   openAddType,
   setOpenAddType
 }) => {
-  const { graph } = useSchema();
+  const { graph } = useSchema() || {};
 
   const [type, setType] = useState('');
 
   const [color, setColor] = useState('');
 
   const saveType: () => void = () => {
-    if (graph instanceof Graph) {
-      // @ts-ignore
-      graph.addNode({
-        id: Math.random().toString(),
-        shape: "er-rect",
-        label: type,
-        position: {
-          x: typeof openAddType !== "boolean" && openAddType[0],
-          y: typeof openAddType !== "boolean" && openAddType[1]
-        },
-        attrs: {
-          body: {
-            stroke: color
-          }
-        },
-        ports: [
-          {
-            id: Math.random().toString(),
-            group: "list",
-            attrs: {
-              portBody: {
-                fill: "#F2F2F2",
-                strokeWidth: 0
-              },
-              portNameLabel: {
-                text: "Name"
-              },
-              portTypeLabel: {
-                text: "STRING"
-              }
-            }
-          },
-          {
-            id: "add",
-            group: "list",
-            attrs: {
-              portBody: {
-                fill: {
-                  type: "linearGradient",
-                  stops: [
-                    { offset: "0%", color: `${"#ffffff"}B3` },
-                    { offset: "100%", color: `${"#ffffff"}33` }
-                  ]
-                }
-              },
-              portNameLabel: {
-                fill: "#808080",
-                text: "+ Add property"
-              }
+    // @ts-ignore
+    graph.addNode({
+      id: Math.random().toString(),
+      shape: "er-rect",
+      label: type,
+      position: {
+        x: typeof openAddType !== "boolean" && openAddType[0],
+        y: typeof openAddType !== "boolean" && openAddType[1]
+      },
+      attrs: {
+        body: {
+          stroke: color
+        }
+      },
+      ports: [
+        {
+          id: Math.random().toString(),
+          group: "list",
+          attrs: {
+            portBody: {
+              fill: "#F2F2F2",
+              strokeWidth: 0
+            },
+            portNameLabel: {
+              text: "Name"
+            },
+            portTypeLabel: {
+              text: "STRING"
             }
           }
-        ]
-      });
-    }
+        },
+        {
+          id: "add",
+          group: "list",
+          attrs: {
+            portBody: {
+              fill: {
+                type: "linearGradient",
+                stops: [
+                  {offset: "0%", color: `${"#ffffff"}B3`},
+                  {offset: "100%", color: `${"#ffffff"}33`}
+                ]
+              }
+            },
+            portNameLabel: {
+              fill: "#808080",
+              text: "+ Add property"
+            }
+          }
+        }
+      ]
+    });
 
     onClose();
   };
@@ -83,9 +80,7 @@ export const AddTypeModal: React.FC<IAddTypeProps> = ({
   const onClose: VoidFunction = () => {
     setType('');
     setColor('');
-    if (graph instanceof Graph) {
-      graph.container.style.cursor = "";
-    }
+    graph.container.style.cursor = "";
     setOpenAddType(false);
   };
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Graph } from '@antv/x6';
 
-import { useSchema } from '../../provider';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { Select } from 'components/select';
 import { Button } from 'components/button';
 
@@ -12,7 +11,7 @@ interface IAddLinkProps {
 }
 
 export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
-  const { graph } = useSchema();
+  const { graph } = useSchema() || {};
 
   const [nodes, setNodes] = useState<string[]>();
 
@@ -20,27 +19,27 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
   const [target, setTarget] = useState<string>();
 
   const saveEdge: () => void = () => {
-    if (graph instanceof Graph) {
-      graph.addEdge({
-        id: Math.random().toString(),
-        shape: 'er-edge',
-        target: {
-          cell: graph.getNodes().find((n) => n.attr('text/text') === target)?.id ?? '',
-        },
-        source: {
-          cell: graph.getNodes().find((n) => n.attr('text/text') === source)?.id ?? '',
-        },
-        attrs: {
-          line: {
-            stroke: graph
-              .getNodes()
+
+    const nodes = graph?.getNodes();
+
+    graph.addEdge({
+      id: Math.random().toString(),
+      shape: 'er-edge',
+      target: {
+        cell: nodes.find((n) => n.attr('text/text') === target)?.id ?? '',
+      },
+      source: {
+        cell: nodes.find((n) => n.attr('text/text') === source)?.id ?? '',
+      },
+      attrs: {
+        line: {
+          stroke: nodes
               .find((n) => n.attr('text/text') === source)
               ?.attr('body/stroke'),
-            strokeWidth: 2,
-          },
+          strokeWidth: 2,
         },
-      });
-    }
+      },
+    });
 
     onClose();
   };
@@ -54,9 +53,7 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    if (graph instanceof Graph) {
-      setNodes(graph.getNodes().map((n) => n.attr('text/text')));
-    }
+    setNodes(graph?.getNodes().map((n) => n.attr('text/text')));
   }, [graph]);
 
   return (

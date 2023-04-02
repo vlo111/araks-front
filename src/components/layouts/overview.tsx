@@ -9,8 +9,8 @@ import { HeaderSearch } from './components/header-search';
 import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
 import { DataSheetWrapper } from './components/data-sheet/wrapper';
+import { SchemaWrapper } from './components/schema/wrapper';
 import { stripTrailingSlash } from 'helpers/utils';
-import {SchemaWrapper} from "./components/schema";
 
 const Layout = styled(LayoutComponent)`
   background: #f2f2f2;

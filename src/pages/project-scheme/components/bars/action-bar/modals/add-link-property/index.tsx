@@ -1,7 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { useSchema } from '../../provider';
 import { Modal } from 'antd';
 import styled from 'styled-components';
+
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+
 import { ReactComponent as PlusSVG } from './icons/plus.svg';
 import { ReactComponent as ArrowsSVG } from './icons/arrows.svg';
 
@@ -83,7 +85,7 @@ export const AddLinkPropertyModal: React.FC = () => {
           <span>Working for</span>
           <PlusSVG />
         </div>
-        <div className="list"></div>
+        <div className="list" />
       </AntModal>
     </>
   );
