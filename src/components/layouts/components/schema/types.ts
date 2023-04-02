@@ -1,6 +1,97 @@
 import { Graph as GraphX6, Node } from '@antv/x6';
 
-export type PortModal = boolean | { node: any, port?: any, isUpdate: boolean, x: number, y: number };
+interface IStroke {
+    type: string
+    stops: Array<{
+        offset: string
+        color: string
+    }>
+}
+
+interface ILine {
+    sourceMarker?: { name?: string, fill: string }
+    targetMarker?: { name?: string, fill: string }
+    stroke: IStroke
+    strokeWidth: number
+}
+
+interface IBody {
+    stroke: string
+}
+
+interface IPosition {
+    x: number
+    y: number
+}
+
+interface IConnection {
+    cell: string
+    port?: string
+}
+
+interface ILabel {
+    name?: string
+    markup: any
+    attrs: {
+        fo: {
+            width: number
+            height: number
+            x: number
+            y: number
+        }
+    }
+}
+
+interface IPortFill {
+    type: string
+    stops: Array<{ offset: string, color: string }>
+}
+
+export interface IPortAttribute {
+    portBody: {
+        fill: IPortFill | string
+        strokeWidth?: number
+    }
+    portNameLabel: {
+        fill?: string
+        text: string
+    }
+    portTypeLabel?: {
+        text: string
+    }
+}
+
+export interface IPort {
+    id?: string
+    group: string
+    attrs?: IPortAttribute
+    args?: {
+        x: string
+        y: string
+    }
+}
+
+export interface INode {
+    id: string
+    height?: number
+    shape: string
+    label?: string | ILabel
+    width?: number
+    position?: IPosition
+    attrs: {
+        line?: ILine
+        body?: IBody
+    }
+    tools?: {
+        name: string
+    }
+    ports?: IPort[]
+    source?: IConnection
+    target?: IConnection
+    zIndex?: number
+}
+
+export type PortModal = boolean | { node: Node<Node.Properties>, portId: string, isUpdate: boolean, x: number, y: number };
 
 export type SelectedNode = Node<Node.Properties> | undefined;
 
