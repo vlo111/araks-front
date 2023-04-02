@@ -10,6 +10,8 @@ interface IAddLinkProps {
   onClose: VoidFunction;
 }
 
+type OnSelectChange = (value: unknown, item: string) => void
+
 export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
   const { graph } = useSchema() || {};
 
@@ -18,7 +20,7 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
   const [source, setSource] = useState<string>();
   const [target, setTarget] = useState<string>();
 
-  const saveEdge: () => void = () => {
+  const saveEdge: VoidFunction = () => {
 
     const nodes = graph?.getNodes();
 
@@ -44,11 +46,12 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
     onClose();
   };
 
-  const onSelectChange: (value: any, item: string) => void = (value, item) => {
+  const onSelectChange: OnSelectChange = (value, item) => {
+    const id = value as string;
     if (item === 'source') {
-      setSource(value);
+      setSource(id);
     } else {
-      setTarget(value);
+      setTarget(id);
     }
   };
 
@@ -79,22 +82,6 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
             </Option>
           ))}
         </Select>
-        {/* <AsnInput */}
-        {/*  type="text" */}
-        {/*  placeholder="Node Type" */}
-        {/*  value={type} */}
-        {/*  onChange={(ev) => */}
-        {/*    setType((ev.target as EventTarget & { value: string }).value) */}
-        {/*  } */}
-        {/* /> */}
-        {/* <AsnInput */}
-        {/*  type="text" */}
-        {/*  placeholder="Select Color" */}
-        {/*  value={color} */}
-        {/*  onChange={(ev) => */}
-        {/*    setColor((ev.target as EventTarget & { value: string }).value) */}
-        {/*  } */}
-        {/* /> */}
         <Button block type="primary" onClick={saveEdge}>
           Save
         </Button>

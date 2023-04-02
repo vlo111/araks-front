@@ -21,58 +21,59 @@ export const AddTypeModal: React.FC<IAddTypeProps> = ({
   const [color, setColor] = useState('');
 
   const saveType: () => void = () => {
-    // @ts-ignore
-    graph.addNode({
-      id: Math.random().toString(),
-      shape: "er-rect",
-      label: type,
-      position: {
-        x: typeof openAddType !== "boolean" && openAddType[0],
-        y: typeof openAddType !== "boolean" && openAddType[1]
-      },
-      attrs: {
-        body: {
-          stroke: color
-        }
-      },
-      ports: [
-        {
-          id: Math.random().toString(),
-          group: "list",
-          attrs: {
-            portBody: {
-              fill: "#F2F2F2",
-              strokeWidth: 0
-            },
-            portNameLabel: {
-              text: "Name"
-            },
-            portTypeLabel: {
-              text: "STRING"
-            }
+    if(typeof openAddType !== "boolean") {
+      graph.addNode({
+        id: Math.random().toString(),
+        shape: "er-rect",
+        label: type,
+        position: {
+          x: openAddType[0],
+          y: openAddType[1]
+        },
+        attrs: {
+          body: {
+            stroke: color
           }
         },
-        {
-          id: "add",
-          group: "list",
-          attrs: {
-            portBody: {
-              fill: {
-                type: "linearGradient",
-                stops: [
-                  {offset: "0%", color: `${"#ffffff"}B3`},
-                  {offset: "100%", color: `${"#ffffff"}33`}
-                ]
+        ports: [
+          {
+            id: Math.random().toString(),
+            group: "list",
+            attrs: {
+              portBody: {
+                fill: "#F2F2F2",
+                strokeWidth: 0
+              },
+              portNameLabel: {
+                text: "Name"
+              },
+              portTypeLabel: {
+                text: "STRING"
               }
-            },
-            portNameLabel: {
-              fill: "#808080",
-              text: "+ Add property"
+            }
+          },
+          {
+            id: "add",
+            group: "list",
+            attrs: {
+              portBody: {
+                fill: {
+                  type: "linearGradient",
+                  stops: [
+                    {offset: "0%", color: `${"#ffffff"}B3`},
+                    {offset: "100%", color: `${"#ffffff"}33`}
+                  ]
+                }
+              },
+              portNameLabel: {
+                fill: "#808080",
+                text: "+ Add property"
+              }
             }
           }
-        }
-      ]
-    });
+        ]
+      });
+    }
 
     onClose();
   };
