@@ -26,13 +26,13 @@ export const useActions = () => {
                 render: () => '',
                 align: 'center',
               },
-              {
-                key: 'space',
-                fixed: 'right',
-                dataIndex: 'space',
-              },
             ]
           : []),
+        {
+          key: 'space',
+          fixed: 'right',
+          dataIndex: 'space',
+        },
       ] as ColumnsType<DataType>,
     [addTypeisOpened]
   );

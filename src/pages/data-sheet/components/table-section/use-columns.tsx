@@ -7,9 +7,9 @@ import { Skeleton } from 'antd';
 
 export const useColumns = () => {
   const { nodeTypeId } = useDataSheetWrapper();
-  const { data, isLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
+  const { data, isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
 
-  if (isLoading) {
+  if (isInitialLoading) {
     return [
       {
         title: <Skeleton paragraph={false} />,

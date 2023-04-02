@@ -16,12 +16,12 @@ type WrapperProps = ButtonProps & {
 const LeftSidebarSize = 350;
 
 export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button {...props} />)`
-  height: 712px;
+  height: 100%;
   width: 64px;
   z-index: 4;
   position: absolute;
   ${(props) =>
-    props.rowsCount * 300 > screen.width - LeftSidebarSize
+    props.rowsCount * 200 > screen.width - LeftSidebarSize
       ? css`
       right 0;
     `

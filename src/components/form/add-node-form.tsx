@@ -5,7 +5,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 export const AddNodeForm = () => {
   const [form] = Form.useForm();
   const { nodeTypeId } = useDataSheetWrapper();
-  const { data, isLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
+  const { data, isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
   // eslint-disable-next-line no-console
   console.log('dataatatata', data);
 
@@ -13,7 +13,7 @@ export const AddNodeForm = () => {
     return;
   };
 
-  if (isLoading) {
+  if (isInitialLoading) {
     return <Skeleton />;
   }
 

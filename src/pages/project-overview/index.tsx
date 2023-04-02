@@ -29,7 +29,7 @@ export const ProjectOverview = () => {
   const isXXl = useIsXXlScreen();
   const navigate = useNavigate();
   const params = useParams();
-  const { data, isLoading } = useGetProject(
+  const { data, isInitialLoading } = useGetProject(
     { id: params.id },
     {
       enabled: !!params.id,
@@ -37,7 +37,7 @@ export const ProjectOverview = () => {
   );
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isInitialLoading}>
       <VerticalSpace size={17} className="overview-form-items">
         <VerticalSpace size={42}>
           <div style={{ width: '100%', display: 'flex', gap: '22px' }}>

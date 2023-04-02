@@ -3,6 +3,7 @@ import { useColumns } from './use-columns';
 import { DataType } from './types';
 import { useActions } from './table-actions';
 import { VerticalButton } from 'components/button/vertical-button';
+import { getTableHeight } from './constants';
 
 const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
   key: i,
@@ -15,10 +16,13 @@ export const TableSection = () => {
 
   const columnsAndAction = [...columns, ...actions];
 
+  // make this with dispatch to change right position also
+  // document.getElementById("container").scrollLeft += 200;
+
   return (
-    <div style={{ overflow: 'auto' }}>
+    <div id="container" style={{ overflow: 'hidden', width: '100%', height: getTableHeight, position: 'relative' }}>
       <VerticalButton />
-      <Table dataSource={dataSource} columns={columnsAndAction} pagination={false} />
+      <Table id="node-table" size="large" dataSource={dataSource} columns={columnsAndAction} pagination={false} />
     </div>
   );
 };

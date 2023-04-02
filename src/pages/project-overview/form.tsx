@@ -73,7 +73,7 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
   const handleCancel = () => {
     form.resetFields();
   };
-  const { data, isLoading } = useGetProject(
+  const { data, isInitialLoading } = useGetProject(
     { id: params.id },
     {
       enabled: !!params.id,
@@ -91,7 +91,7 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
       : `${logedInUser?.first_name} ${logedInUser?.last_name}`;
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isInitialLoading}>
       <Form
         name="overview-create"
         form={form}
