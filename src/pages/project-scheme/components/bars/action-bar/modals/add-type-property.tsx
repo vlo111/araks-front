@@ -4,6 +4,12 @@ import { Modal } from 'components/modal';
 import { Button } from 'components/button';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 
+export enum Path {
+  Rect = 'attrs/link_rect/height',
+  Circle = 'attrs/link_circle/cy',
+  Link = 'attrs/link_path/transform',
+}
+
 export const AddTypePropertyModal: React.FC = () => {
   const { addPortModal, setAddPortModal } = useSchema();
 
@@ -15,24 +21,23 @@ export const AddTypePropertyModal: React.FC = () => {
 
   const saveProperty: VoidFunction = () => {
     if (typeof addPortModal !== 'boolean') {
-      const { node, port, isUpdate } = addPortModal;
+      const { node, portId, isUpdate } = addPortModal;
 
       if (isUpdate as boolean) {
-        node.portProp(port, 'attrs/portNameLabel/text', propertyName);
-        node.portProp(port, 'attrs/portTypeLabel/text', propertyDataType);
+        node.portProp(portId, 'attrs/portNameLabel/text', propertyName);
+        node.portProp(portId, 'attrs/portTypeLabel/text', propertyDataType);
       } else {
         //#region Set height of highlighted type, Set Center of Circle
-        const linkPort = node.port.ports[node.port.ports.length - 1];
 
-        const pathRect = 'attrs/link_rect/height';
-        const pathCircle = 'attrs/link_circle/cy';
-        const pathLink = 'attrs/link_path/transform';
+        const ports = node.ports.items;
 
-        const height = (node.portProp(linkPort, pathRect) as number) + 30;
+        const id = ports[ports.length - 1].id ?? '';
 
-        node.portProp(linkPort, pathRect, height);
-        node.portProp(linkPort, pathCircle, height / 2);
-        node.portProp(linkPort, pathLink, `matrix(1,0,0,1,${150 - 16}, ${height / 2 - 16})`);
+        const height = (node.portProp(id, Path.Rect) as number) + 30;
+
+        node.portProp(id, Path.Rect, height);
+        node.portProp(id, Path.Circle, height / 2);
+        node.portProp(id, Path.Link, `matrix(1,0,0,1,${150 - 16}, ${height / 2 - 16})`);
         //#endregion
 
         const length: number = node.ports.items.length;
@@ -67,10 +72,18 @@ export const AddTypePropertyModal: React.FC = () => {
   useEffect(() => {
     if (typeof addPortModal !== 'boolean') {
       if (addPortModal.isUpdate) {
-        const portNameLabel = addPortModal.node.portProp(addPortModal.port).attrs.portNameLabel.text;
-        const portTypeLabel = addPortModal.node.portProp(addPortModal.port).attrs.portTypeLabel.text;
-        setPropertyName(portNameLabel);
-        setPropertyDataType(portTypeLabel);
+        const { node, portId } = addPortModal;
+
+        const { attrs } = node.portProp(portId);
+
+        if (attrs !== undefined) {
+          const { portNameLabel, portTypeLabel } = attrs;
+
+          if (typeof portNameLabel.text === 'string' && typeof portTypeLabel.text === 'string') {
+            setPropertyName(portNameLabel.text);
+            setPropertyDataType(portTypeLabel.text);
+          }
+        }
       }
 
       setPosition({
