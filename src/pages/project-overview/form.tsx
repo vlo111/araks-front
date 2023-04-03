@@ -67,7 +67,16 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
   const { mutate } = useManageProject(manageUrl, type);
 
   const onFinish = (values: CreateOverviewFormData) => {
-    mutate(values);
+    const defaultValues = {
+      color: '#DBDBDB',
+      icon: 'araks-small',
+    };
+
+    mutate({
+      ...values,
+      color: values.color ?? defaultValues.color,
+      icon: values.icon ?? defaultValues.icon,
+    });
   };
 
   const handleCancel = () => {
