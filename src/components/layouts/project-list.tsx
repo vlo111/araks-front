@@ -13,7 +13,7 @@ type Props = {
 export const ProjectList = ({ children }: Props) => {
   return (
     <ViewProvider>
-      <SortProvider defaultValue={PROJECT_SORT[0].key}>
+      <SortProvider defaultValue={PROJECT_SORT[2].key}>
         <VerticalSpace size="large">
           <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Template />
