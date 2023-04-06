@@ -26,6 +26,7 @@ export const useColumns = () => {
       width: 200,
       dataIndex: 'address',
       key: item.id,
+      ...(item.default_proprty ? { fixed: 'left' } : {}),
     })) || ([] as ColumnsType<DataType>);
 
   return columns;
