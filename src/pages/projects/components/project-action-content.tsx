@@ -13,9 +13,10 @@ type MoveToFolder = {
 type Props = {
   projectId: string;
   folderId: string;
+  setIsDeleteModalOpen: () => void;
 };
 
-export const ProjectActionContent = ({ projectId, folderId }: Props) => {
+export const ProjectActionContent = ({ projectId, folderId, setIsDeleteModalOpen }: Props) => {
   const { data } = useGetFolders({
     page: 1,
     size: 100,
@@ -36,6 +37,7 @@ export const ProjectActionContent = ({ projectId, folderId }: Props) => {
   return (
     <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
       <ProjectActionMenu
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
         projectId={projectId}
         folderId={folderId}
         foldersList={data?.rows?.reduce(

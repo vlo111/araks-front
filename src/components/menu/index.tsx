@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Menu as MenuComponent, MenuProps } from 'antd';
 import { FolderFilled } from '@ant-design/icons';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
@@ -7,16 +8,11 @@ import { ReactComponent as ArrowRight } from 'components/icons/arrow-right.svg';
 import { MenuText, SecondaryText } from 'components/typography';
 import styled from 'styled-components';
 
-import './index.css';
 import { useMoveProjectTo } from 'api/projects/use-move-project-to';
 import { COLORS, PATHS, VARIABLES } from 'helpers/constants';
 import { useMoveProjectToAll } from 'api/projects/use-move-project-to-all';
-import { useState } from 'react';
-import { RequestTypes } from 'api/types';
-import { FOLDER_UPDATE_URL } from 'api/folders/use-manage-folder';
-import { CreateEditFolderModal, DeleteFolderModal } from 'components/modal';
-import { DeleteProjectModal } from 'components/modal/delete-project-modal';
-import { useNavigate } from 'react-router-dom';
+
+import './index.css';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -114,12 +110,12 @@ type Props = {
   foldersList: FoldersList[];
   projectId: string;
   folderId?: string;
+  setIsDeleteModalOpen: () => void;
 };
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
-export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) => {
+export const ProjectActionMenu = ({ foldersList, projectId, folderId, setIsDeleteModalOpen }: Props) => {
   const navigate = useNavigate();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { mutate } = useMoveProjectTo(folderId);
   const { mutate: mutateAll } = useMoveProjectToAll(folderId);
   const onClick: MenuProps['onClick'] = (e) => {
@@ -128,7 +124,7 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
       return;
     }
     if (e.key === 'delete') {
-      setIsDeleteModalOpen(true);
+      setIsDeleteModalOpen();
       return;
     }
     if (e.key === 'all') {
@@ -147,56 +143,28 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
         forceSubMenuRender={false}
         onClick={onClick}
       />
-      <DeleteProjectModal
-        isModalOpen={isDeleteModalOpen}
-        setIsModalOpen={setIsDeleteModalOpen}
-        folderId={folderId}
-        projectId={projectId}
-      />
     </>
   );
 };
 
 type PropsFolder = {
-  countItems: number;
+  setIsDeleteModalOpen: () => void;
+  setIsEditModalOpen: () => void;
   folderName: string;
   folderId: string;
 };
 
-export const FolderActionMenu = ({ folderName, folderId, countItems }: PropsFolder) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+export const FolderActionMenu = ({ folderName, folderId, setIsDeleteModalOpen, setIsEditModalOpen }: PropsFolder) => {
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
-      setIsModalOpen(true);
+      setIsEditModalOpen();
     } else if (e.key === 'delete') {
-      setIsDeleteModalOpen(true);
+      setIsDeleteModalOpen();
     }
     e.domEvent.stopPropagation();
   };
 
   return (
-    <>
-      <Menu
-        style={{ width: 256 }}
-        mode="vertical"
-        items={menuItemsFolder}
-        forceSubMenuRender={false}
-        onClick={onClick}
-      />
-      <DeleteFolderModal
-        isModalOpen={isDeleteModalOpen}
-        setIsModalOpen={setIsDeleteModalOpen}
-        folderId={folderId}
-        countItems={countItems}
-      />
-      <CreateEditFolderModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        initialValue={folderName}
-        type={RequestTypes.Put}
-        url={FOLDER_UPDATE_URL.replace(':id', folderId)}
-      />
-    </>
+    <Menu style={{ width: 256 }} mode="vertical" items={menuItemsFolder} forceSubMenuRender={false} onClick={onClick} />
   );
 };

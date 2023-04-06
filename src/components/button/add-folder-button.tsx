@@ -1,4 +1,5 @@
 import { Button as Component, ButtonProps } from 'antd';
+import { textSizeMedia } from 'components/typography/text';
 import styled, { css } from 'styled-components';
 import { COLORS } from '../../helpers/constants';
 import { ReactComponent as AddFolder } from '../icons/add-folder.svg';
@@ -22,6 +23,7 @@ export const AddFolderButton = styled(({ fullWidth = false, ...props }: Props) =
             border-radius: 0;
           `
         : css`
+            display: flex;
             border-color: #c3c3c3;
           `}
     padding: 16px 28px;
@@ -33,6 +35,7 @@ export const AddFolderButton = styled(({ fullWidth = false, ...props }: Props) =
       font-size: 24px;
       line-height: 31px;
       font-weight: 600;
+      ${textSizeMedia}
     }
 
     &:not(:disabled) {

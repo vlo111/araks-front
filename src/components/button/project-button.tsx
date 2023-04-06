@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { Button as Component, ButtonProps, Space } from 'antd';
 import styled, { css } from 'styled-components';
 
@@ -11,6 +12,7 @@ import { ProjectActionContent } from 'pages/projects/components/project-action-c
 import { FullWidth, ProjectButtonContent } from 'types/project';
 import { ProjectLogo } from 'components/project/project-logo';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { DeleteProjectModal } from 'components/modal/delete-project-modal';
 
 type ProjectButtonDraw = ButtonProps &
   ProjectButtonContent & {
@@ -45,37 +47,60 @@ const DotsWrapper = styled.div<FullWidth>`
   }
 `;
 
-const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => (
-  <Space
-    size={fullWidth ? 'middle' : 0}
-    direction={fullWidth ? 'horizontal' : 'vertical'}
-    style={fullWidth ? { display: 'flex', justifyContent: 'space-between', width: '100%' } : {}}
-  >
-    <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
-      <ProjectLogo project={project} fullWidth={fullWidth} />
-      {project.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH && !fullWidth ? (
-        <LongTitle className="button-content__text" name={project.name} />
-      ) : (
-        <Text className="button-content__text">{project.name}</Text>
-      )}
-    </VerticalSpace>
+const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const openModal = useCallback(() => {
+    setIsClicked(false);
+    setIsDeleteModalOpen(true);
+  }, [setIsClicked]);
+
+  return (
     <Space
-      style={{ width: '100%', display: 'flex', alignItems: 'center' }}
+      size={fullWidth ? 'middle' : 0}
       direction={fullWidth ? 'horizontal' : 'vertical'}
+      style={fullWidth ? { display: 'flex', justifyContent: 'space-between', width: '100%' } : {}}
     >
-      <MenuText className="button-content__text">{project.dateTime}</MenuText>
-      <ProjectActionPopover
-        align={{ offset: [-20, -5] }}
-        title={<ProjectActionTitle />}
-        content={<ProjectActionContent projectId={project.id} folderId={project.folderId} />}
+      <VerticalSpace size={fullWidth ? 'middle' : 8} direction={fullWidth ? 'horizontal' : 'vertical'}>
+        <ProjectLogo project={project} fullWidth={fullWidth} />
+        {project.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH && !fullWidth ? (
+          <LongTitle className="button-content__text" name={project.name} />
+        ) : (
+          <Text className="button-content__text">{project.name}</Text>
+        )}
+      </VerticalSpace>
+      <Space
+        style={{ width: '100%', display: 'flex', alignItems: 'center' }}
+        direction={fullWidth ? 'horizontal' : 'vertical'}
       >
-        <DotsWrapper fullWidth={fullWidth}>
-          <DotsVertical className="more-dots" />
-        </DotsWrapper>
-      </ProjectActionPopover>
+        <MenuText className="button-content__text">{project.dateTime}</MenuText>
+        <ProjectActionPopover
+          align={{ offset: [-20, -5] }}
+          title={<ProjectActionTitle />}
+          open={isClicked}
+          onOpenChange={(open: boolean) => {
+            !open && setIsClicked(false);
+            return open;
+          }}
+          content={
+            <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
+          }
+        >
+          <DotsWrapper fullWidth={fullWidth}>
+            <DotsVertical className="more-dots" onClick={() => setIsClicked((prev) => !prev)} />
+          </DotsWrapper>
+        </ProjectActionPopover>
+        <DeleteProjectModal
+          isModalOpen={isDeleteModalOpen}
+          setIsModalOpen={setIsDeleteModalOpen}
+          folderId={project.folderId}
+          projectId={project.id}
+        />
+      </Space>
     </Space>
-  </Space>
-);
+  );
+};
 
 const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} />)`
   &.ant-btn-default {
