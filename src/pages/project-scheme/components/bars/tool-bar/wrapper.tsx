@@ -9,11 +9,12 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 
 const ToolbarPanel = styled.div`
   position: fixed;
+  flex-direction: column;
+  z-index: 1;
   bottom: 32px;
   right: 32px;
   width: 46px;
   display: flex;
-  flex-direction: column;
   gap: 8px;
 
   .fit,

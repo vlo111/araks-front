@@ -1,7 +1,7 @@
 import { IProjectType, IProjectTypeData } from "api/types";
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from '../client';
-import { formattedTypes } from "../../components/layouts/components/schema/helpers/utils";
+import { formattedTypes } from "../../components/layouts/components/schema/helpers/utils/utils";
 import { INode } from "../../components/layouts/components/schema/types";
 
 export const GET_TYPES = '/projects/:project_id/node-types';

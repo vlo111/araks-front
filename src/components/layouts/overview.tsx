@@ -125,6 +125,7 @@ export const Overview = () => {
       <Content>
         <div className="overview-tabs">
           <Tabs
+            destroyInactiveTabPane
             defaultActiveKey={activeItem?.key}
             activeKey={activeItem?.key}
             type="card"

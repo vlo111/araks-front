@@ -1,6 +1,6 @@
-import { IProjectType, ITypeProperty } from '../../../../../api/types';
-import { INode, IPort, IPortFill } from '../types';
-import { antTheme } from '../../../../../helpers/ant-theme';
+import { IProjectType, ITypeProperty } from '../../../../../../api/types';
+import { INode, IPort, IPortFill } from '../../types';
+import { antTheme } from '../../../../../../helpers/ant-theme';
 
 type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
 
@@ -82,7 +82,10 @@ export const formattedTypes = (nodesList: IProjectType[]) => {
       id: node.id,
       shape: 'er-rect',
       label: node.name,
-      position: node.position,
+      position: {
+        x: Math.floor(Math.random() * 1800),
+        y: Math.floor(Math.random() * 700)
+      },
       attrs: {
         body: {
           stroke: node.color,

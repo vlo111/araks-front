@@ -1,4 +1,4 @@
-import { Graph as GraphX6, Node, Edge } from '@antv/x6';
+import { Graph as GraphX6, Node, Edge, Cell } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
 import OnEdgeLabelRenderedArgs = Options.OnEdgeLabelRenderedArgs;
@@ -117,10 +117,10 @@ export interface SchemaContextType {
   selectedNode: SelectedNode | boolean;
   openAddType: OpenAddType;
   setGraph: (item: Graph) => void;
-  setOpenAddType: (item: OpenAddType) => void;
-  setAddPortModal: (item: PortModal) => void;
+  setOpenAddType: Dispatch<SetStateAction<OpenAddType>>;
+  setAddPortModal: Dispatch<SetStateAction<PortModal>>;
   setSelectedNode: (item: SelectedNode | undefined) => void;
-  setOpenLinkPropertyModal: (item: LinkPropertyModal) => void;
+  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
   isOpenPortModal: boolean;
   isOpenTypeModal: boolean;
   isOpenLikPropertyModal: boolean;
@@ -141,7 +141,7 @@ export type BoundingEvent = EventTarget & {
 
 export type OnEdgeLabelRendered = (
   args: OnEdgeLabelRenderedArgs,
-  openAddLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
+  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
   nodes: INode[]
 ) => void;
 
@@ -150,3 +150,40 @@ export interface EdgeCreate {
   type: TerminalType;
   previous: TerminalData;
 }
+
+export type PickSchemaContextType = Pick<
+  SchemaContextType,
+  | 'graph'
+  | 'addPortModal'
+  | 'openLinkPropertyModal'
+  | 'selectedNode'
+  | 'openAddType'
+  | 'setOpenAddType'
+  | 'setAddPortModal'
+  | 'setSelectedNode'
+  | 'setOpenLinkPropertyModal'
+  | 'isOpenPortModal'
+  | 'isOpenTypeModal'
+  | 'isOpenLikPropertyModal'
+>;
+
+export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType, nodes: INode[]) => Graph;
+
+export type EdgeLabel = ((args: Options.OnEdgeLabelRenderedArgs) => void) | undefined;
+
+export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
+
+export type ElementBox = Element & {
+  getBBox: () => { height: number; width: number };
+};
+
+export type ElementStyle = Element & {
+  style: { outline: string };
+  dataset: { cellId: string };
+};
+
+export type RemoveElement = (graph: Graph, element: ElementStyle) => void;
+
+export type CellRemovePort = Cell<Cell.Properties> & {
+  removePort: (id: string) => void;
+};

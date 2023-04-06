@@ -8,6 +8,8 @@ const TopologyPanelStyle = styled.div`
   width: 250px;
   height: 100%;
   z-index: 2;
+  background-color: rgb(247, 247, 247);
+  box-shadow: rgba(111, 111, 111, 0.1) -10px 10px 10px inset;
 `;
 
 export const Topology: React.FC = () => (
