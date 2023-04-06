@@ -6,6 +6,11 @@ import { ReactComponent as FolderFilled } from '../icons/folder-filled.svg';
 import { ProjectActionPopover } from 'components/popover';
 import { FolderActionMenu } from 'components/menu';
 import { ActionDots } from 'components/actions/dots';
+import { textSizeMedia } from 'components/typography/text';
+import { CreateEditFolderModal, DeleteFolderModal } from 'components/modal';
+import { useCallback, useState } from 'react';
+import { RequestTypes } from 'api/types';
+import { FOLDER_UPDATE_URL } from 'api/folders/use-manage-folder';
 
 type Props = ButtonProps & {
   folderName: string;
@@ -14,23 +19,55 @@ type Props = ButtonProps & {
   fullWidth?: boolean;
 };
 
-const FolrderText = (props: Omit<Props, 'ButtonProps'>) => (
-  <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-    <Space style={{ lineHeight: '1' }}>
-      <FolderFilled />
-      <Text className="folder-name">{props.folderName}</Text>
-      <Text className="folder-count">({props.countItems})</Text>
+const FolrderText = (props: Omit<Props, 'ButtonProps'>) => {
+  const [isClicked, setIsClicked] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const openDeleteModal = useCallback(() => {
+    setIsClicked?.(false);
+    setIsDeleteModalOpen(true);
+  }, [setIsClicked]);
+  const openEditModal = useCallback(() => {
+    setIsClicked?.(false);
+    setIsEditModalOpen(true);
+  }, [setIsClicked]);
+  return (
+    <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Space style={{ lineHeight: '1' }}>
+        <FolderFilled />
+        <Text className="folder-name">{props.folderName}</Text>
+        <Text className="folder-count">({props.countItems})</Text>
+      </Space>
+      <ProjectActionPopover
+        align={{ offset: [-20, -5] }}
+        open={isClicked}
+        content={
+          <FolderActionMenu
+            setIsDeleteModalOpen={openDeleteModal}
+            setIsEditModalOpen={openEditModal}
+            folderName={props.folderName}
+            folderId={props.folderId}
+          />
+        }
+      >
+        <ActionDots onClick={() => setIsClicked((prev) => !prev)} />
+      </ProjectActionPopover>
+      <DeleteFolderModal
+        isModalOpen={isDeleteModalOpen}
+        setIsModalOpen={setIsDeleteModalOpen}
+        folderId={props.folderId}
+        countItems={props.countItems}
+      />
+      <CreateEditFolderModal
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={setIsEditModalOpen}
+        initialValue={props.folderName}
+        type={RequestTypes.Put}
+        url={FOLDER_UPDATE_URL.replace(':id', props.folderId)}
+      />
     </Space>
-    <ProjectActionPopover
-      align={{ offset: [-20, -5] }}
-      content={
-        <FolderActionMenu countItems={props.countItems} folderName={props.folderName} folderId={props.folderId} />
-      }
-    >
-      <ActionDots />
-    </ProjectActionPopover>
-  </Space>
-);
+  );
+};
 
 export const FolderButton = styled(({ folderName, folderId, countItems, fullWidth, ...props }: Props) => (
   <Component {...props} size="large" type="default">
@@ -61,6 +98,7 @@ export const FolderButton = styled(({ folderName, folderId, countItems, fullWidt
       font-weight: 600;
       font-size: 24px;
       line-height: 31px;
+      ${textSizeMedia}
     }
 
     .folder-count {

@@ -12,9 +12,6 @@ import { useMoveProjectTo } from 'api/projects/use-move-project-to';
 import { COLORS, PATHS, VARIABLES } from 'helpers/constants';
 import { useMoveProjectToAll } from 'api/projects/use-move-project-to-all';
 import { useState } from 'react';
-import { RequestTypes } from 'api/types';
-import { FOLDER_UPDATE_URL } from 'api/folders/use-manage-folder';
-import { CreateEditFolderModal, DeleteFolderModal } from 'components/modal';
 import { DeleteProjectModal } from 'components/modal/delete-project-modal';
 import { useNavigate } from 'react-router-dom';
 
@@ -158,45 +155,23 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
 };
 
 type PropsFolder = {
-  countItems: number;
+  setIsDeleteModalOpen: () => void;
+  setIsEditModalOpen: () => void;
   folderName: string;
   folderId: string;
 };
 
-export const FolderActionMenu = ({ folderName, folderId, countItems }: PropsFolder) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+export const FolderActionMenu = ({ folderName, folderId, setIsDeleteModalOpen, setIsEditModalOpen }: PropsFolder) => {
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
-      setIsModalOpen(true);
+      setIsEditModalOpen();
     } else if (e.key === 'delete') {
-      setIsDeleteModalOpen(true);
+      setIsDeleteModalOpen();
     }
     e.domEvent.stopPropagation();
   };
 
   return (
-    <>
-      <Menu
-        style={{ width: 256 }}
-        mode="vertical"
-        items={menuItemsFolder}
-        forceSubMenuRender={false}
-        onClick={onClick}
-      />
-      <DeleteFolderModal
-        isModalOpen={isDeleteModalOpen}
-        setIsModalOpen={setIsDeleteModalOpen}
-        folderId={folderId}
-        countItems={countItems}
-      />
-      <CreateEditFolderModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        initialValue={folderName}
-        type={RequestTypes.Put}
-        url={FOLDER_UPDATE_URL.replace(':id', folderId)}
-      />
-    </>
+    <Menu style={{ width: 256 }} mode="vertical" items={menuItemsFolder} forceSubMenuRender={false} onClick={onClick} />
   );
 };
