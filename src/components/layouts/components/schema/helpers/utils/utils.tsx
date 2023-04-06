@@ -1,7 +1,7 @@
 import { IProjectType } from '../../../../../../api/types';
 import { INode, InsertAddProperty, IPort, SetPropertyColor } from "../../types";
 import { antTheme } from '../../../../../../helpers/ant-theme';
-import { Cell, Graph } from '@antv/x6';
+import { Cell, Graph, Node } from "@antv/x6";
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -72,6 +72,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
             text: property.ref_property_type_id,
           },
         },
+        zIndex: 0,
       });
     }
 
@@ -92,9 +93,10 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
       },
       ports: formattedProperties,
     };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    cells.push(graph.createNode(formattedNode));
+
+    const cell: Node = graph.createNode(formattedNode as Node.Metadata);
+
+    cells.push(cell);
   }
 
   return cells;

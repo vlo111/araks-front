@@ -73,6 +73,7 @@ export interface IPort {
   id?: string;
   group: string;
   attrs?: IPortAttribute;
+  zIndex?: number
   args?: {
     x: string;
     y: string;

@@ -42,7 +42,7 @@ Graph.registerNode(
         // },
         zIndex: 1,
         strokeDasharray: '150,250,219',
-        filter: 'drop-shadow(0 6px 2px rgb(0 0 0 / 0.4))'
+        filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.2))'
       },
       label: {
         fontWeight: '600',
