@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { Cell, Graph } from "@antv/x6";
+import { Graph } from "@antv/x6";
 import { Options } from '@antv/x6/lib/graph/options';
 import { EdgeSvg } from '../svg/edge-svg';
 import { antTheme } from '../../../../../../helpers/ant-theme';
@@ -8,7 +8,6 @@ import {
   BoundingEvent,
   CellRemovePort,
   EdgeCreate,
-  EdgeLabel,
   ElementBox,
   ElementStyle,
   InitEvents,
@@ -16,6 +15,7 @@ import {
   INode,
   OnEdgeLabelRendered,
   RemoveElement,
+  InitNodes
 } from '../../types';
 
 import Connecting = Options.Connecting;
@@ -148,6 +148,8 @@ const initEvents: InitEvents = (graph, params) => {
         },
       });
 
+      // transform: translate(-1px, 41px) scale(1.01)
+
       setSelectedNode(node);
     }
   });
@@ -166,7 +168,7 @@ const initEvents: InitEvents = (graph, params) => {
   });
 };
 
-export const initGraph: InitGraph = (container, _params, nodes) => {
+export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {
     connector: 'smooth',
     router: {
@@ -228,8 +230,6 @@ export const initGraph: InitGraph = (container, _params, nodes) => {
     maxScale: 3,
   };
 
-  const onEdgeLabelRendered: EdgeLabel = (args) => onEdgeLabel(args, _params.setOpenLinkPropertyModal, nodes);
-
   const options = {
     container: container,
     panning: true,
@@ -238,7 +238,6 @@ export const initGraph: InitGraph = (container, _params, nodes) => {
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,
-    onEdgeLabelRendered,
     connecting,
   };
 
@@ -246,24 +245,16 @@ export const initGraph: InitGraph = (container, _params, nodes) => {
 
   initEvents(graph, _params);
 
-  const cells: Cell[] = [];
-
-  nodes.forEach((item) => {
-    if (item.shape === 'er-edge') {
-      // const newItem = _.cloneDeep(item);
-      // InitPortColors(newItem);
-
-      cells.push(graph.createEdge(item));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      cells.push(graph.createNode(item));
-    }
-  });
-
-  graph.resetCells(cells);
-
   graph.zoomToFit({ padding: 10, maxScale: 1 });
 
   return graph;
 };
+
+export const initNodes: InitNodes = (graph, cells, setOpenLinkPropertyModal) => {
+  if (cells.length > 0) {
+
+    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args, setOpenLinkPropertyModal, []);
+
+    graph.resetCells(cells);
+  }
+}

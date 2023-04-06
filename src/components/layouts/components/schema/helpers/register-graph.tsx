@@ -1,6 +1,5 @@
 import { Graph, Markup, Path } from '@antv/x6';
 import { ArrowD } from './svg/path-d';
-// import { Vertices } from '@antv/x6/es/registry/tool/vertices';
 
 const LINE_HEIGHT = 30;
 const NODE_WIDTH = 150;
@@ -166,9 +165,6 @@ Graph.registerEdge(
         }
       }
     },
-    // tools: {
-    //   name: 'point-vertices'
-    // },
     attrs: {
       line: {
         targetMarker: {
@@ -183,16 +179,6 @@ Graph.registerEdge(
   },
   true
 );
-
-// const RedVertices = Vertices.define<Vertices.Options>({
-//   name: 'vertices',
-//   attrs: {
-//     fill: '#adadada1',
-//     stroke: '#adadad'
-//   }
-// });
-//
-// Graph.registerEdgeTool('point-vertices', RedVertices, true);
 
 Graph.registerConnector(
   'smooth',

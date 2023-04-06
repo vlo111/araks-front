@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
+import { ITypeProperty } from "../../../../api/types";
 
 export interface IStroke {
   type: string;
@@ -153,7 +154,6 @@ export interface EdgeCreate {
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  | 'graph'
   | 'addPortModal'
   | 'openLinkPropertyModal'
   | 'selectedNode'
@@ -161,15 +161,14 @@ export type PickSchemaContextType = Pick<
   | 'setOpenAddType'
   | 'setAddPortModal'
   | 'setSelectedNode'
-  | 'setOpenLinkPropertyModal'
   | 'isOpenPortModal'
   | 'isOpenTypeModal'
   | 'isOpenLikPropertyModal'
 >;
 
-export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType, nodes: INode[]) => Graph;
+export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
 
-export type EdgeLabel = ((args: Options.OnEdgeLabelRenderedArgs) => void) | undefined;
+export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
 
@@ -187,3 +186,7 @@ export type RemoveElement = (graph: Graph, element: ElementStyle) => void;
 export type CellRemovePort = Cell<Cell.Properties> & {
   removePort: (id: string) => void;
 };
+
+export type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
+
+export type InsertAddProperty = () => IPort;

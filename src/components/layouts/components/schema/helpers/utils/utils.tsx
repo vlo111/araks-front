@@ -1,10 +1,7 @@
-import { IProjectType, ITypeProperty } from '../../../../../../api/types';
-import { INode, IPort, IPortFill } from '../../types';
+import { IProjectType } from '../../../../../../api/types';
+import { INode, InsertAddProperty, IPort, SetPropertyColor } from "../../types";
 import { antTheme } from '../../../../../../helpers/ant-theme';
-
-type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
-
-type InsertAddProperty = () => IPort;
+import { Cell, Graph } from '@antv/x6';
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -48,20 +45,22 @@ const insertAddProperty: InsertAddProperty = () => ({
 
 /**
  * initialization special type data with property for graph chart
+ * @param graph
  * @param nodesList
  */
-export const formattedTypes = (nodesList: IProjectType[]) => {
-  const formattedNode: INode[] = [];
+export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
+  const cells: Cell[] = [];
 
   for (const node of nodesList) {
-    const formattedProperty: IPort[] = [];
+    let formattedNode: INode = {} as INode;
+    const formattedProperties: IPort[] = [];
 
     const { properties } = node;
 
     for (const property of properties) {
       const color = setPropertyColor(property, node.color);
 
-      formattedProperty.push({
+      formattedProperties.push({
         id: property.id,
         group: 'cell',
         attrs: {
@@ -76,24 +75,27 @@ export const formattedTypes = (nodesList: IProjectType[]) => {
       });
     }
 
-    formattedProperty.push(insertAddProperty());
+    formattedProperties.push(insertAddProperty());
 
-    formattedNode.push({
+    formattedNode = {
       id: node.id,
       shape: 'er-rect',
       label: node.name,
       position: {
-        x: Math.floor(Math.random() * 1800),
-        y: Math.floor(Math.random() * 700)
+        x: Math.random() * (1000 - -600) + -600,
+        y: Math.random() * (350 - -250) + -250,
       },
       attrs: {
         body: {
           stroke: node.color,
         },
       },
-      ports: formattedProperty,
-    });
+      ports: formattedProperties,
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    cells.push(graph.createNode(formattedNode));
   }
 
-  return formattedNode;
+  return cells;
 };
