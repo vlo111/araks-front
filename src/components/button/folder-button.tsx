@@ -41,6 +41,10 @@ const FolrderText = (props: Omit<Props, 'ButtonProps'>) => {
       <ProjectActionPopover
         align={{ offset: [-20, -5] }}
         open={isClicked}
+        onOpenChange={(open: boolean) => {
+          !open && setIsClicked(false);
+          return open;
+        }}
         content={
           <FolderActionMenu
             setIsDeleteModalOpen={openDeleteModal}

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Menu as MenuComponent, MenuProps } from 'antd';
 import { FolderFilled } from '@ant-design/icons';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
@@ -7,13 +8,11 @@ import { ReactComponent as ArrowRight } from 'components/icons/arrow-right.svg';
 import { MenuText, SecondaryText } from 'components/typography';
 import styled from 'styled-components';
 
-import './index.css';
 import { useMoveProjectTo } from 'api/projects/use-move-project-to';
 import { COLORS, PATHS, VARIABLES } from 'helpers/constants';
 import { useMoveProjectToAll } from 'api/projects/use-move-project-to-all';
-import { useState } from 'react';
-import { DeleteProjectModal } from 'components/modal/delete-project-modal';
-import { useNavigate } from 'react-router-dom';
+
+import './index.css';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -111,12 +110,12 @@ type Props = {
   foldersList: FoldersList[];
   projectId: string;
   folderId?: string;
+  setIsDeleteModalOpen: () => void;
 };
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
-export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) => {
+export const ProjectActionMenu = ({ foldersList, projectId, folderId, setIsDeleteModalOpen }: Props) => {
   const navigate = useNavigate();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { mutate } = useMoveProjectTo(folderId);
   const { mutate: mutateAll } = useMoveProjectToAll(folderId);
   const onClick: MenuProps['onClick'] = (e) => {
@@ -125,7 +124,7 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
       return;
     }
     if (e.key === 'delete') {
-      setIsDeleteModalOpen(true);
+      setIsDeleteModalOpen();
       return;
     }
     if (e.key === 'all') {
@@ -143,12 +142,6 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId }: Props) =
         items={menuItems(foldersList)}
         forceSubMenuRender={false}
         onClick={onClick}
-      />
-      <DeleteProjectModal
-        isModalOpen={isDeleteModalOpen}
-        setIsModalOpen={setIsDeleteModalOpen}
-        folderId={folderId}
-        projectId={projectId}
       />
     </>
   );
