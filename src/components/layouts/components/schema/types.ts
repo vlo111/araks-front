@@ -1,6 +1,13 @@
-import { Graph as GraphX6, Node } from '@antv/x6';
+import { Graph as GraphX6, Node, Edge } from '@antv/x6';
+import { Options } from '@antv/x6/lib/graph/options';
 
-interface IStroke {
+import OnEdgeLabelRenderedArgs = Options.OnEdgeLabelRenderedArgs;
+import { Dispatch, SetStateAction } from 'react';
+import Properties = Edge.Properties;
+import TerminalType = Edge.TerminalType;
+import TerminalData = Edge.TerminalData;
+
+export interface IStroke {
   type: string;
   stops: Array<{
     offset: string;
@@ -42,7 +49,7 @@ interface ILabel {
   };
 }
 
-interface IPortFill {
+export interface IPortFill {
   type: string;
   stops: Array<{ offset: string; color: string }>;
 }
@@ -97,8 +104,6 @@ export type PortModal =
 
 export type SelectedNode = Node<Node.Properties> | undefined;
 
-export type SetGraph = (item: Graph) => void;
-
 export type LinkPropertyModal = undefined | { x: number; y: number; color: string[] };
 
 export type OpenAddType = undefined | number[];
@@ -119,4 +124,29 @@ export interface SchemaContextType {
   isOpenPortModal: boolean;
   isOpenTypeModal: boolean;
   isOpenLikPropertyModal: boolean;
+}
+
+export interface ClientRect {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+}
+
+export type BoundingEvent = EventTarget & {
+  tagName: string;
+  previousElementSibling: { firstChild: HTMLElement };
+  getBoundingClientRect: () => ClientRect;
+};
+
+export type OnEdgeLabelRendered = (
+  args: OnEdgeLabelRenderedArgs,
+  openAddLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
+  nodes: INode[]
+) => void;
+
+export interface EdgeCreate {
+  edge: Edge<Properties>;
+  type: TerminalType;
+  previous: TerminalData;
 }

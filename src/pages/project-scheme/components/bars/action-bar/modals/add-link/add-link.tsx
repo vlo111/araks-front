@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { Modal } from 'components/modal';
-import { AddLinkWrapper } from './wrapper';
+import { AddSchemaLinkForm } from "../../form/add-link-form";
 
 interface IAddLinkProps {
   openAddLink: boolean;
@@ -23,7 +23,7 @@ export const AddLinkModal: React.FC<IAddLinkProps> = ({ openAddLink, setOpenAddL
         width="496px"
         centered
       >
-        <AddLinkWrapper onClose={onClose} />
+        <AddSchemaLinkForm />
       </Modal>
     </>
   );

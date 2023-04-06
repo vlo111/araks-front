@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddLinkModal } from './modals/add-link/add-link';
-import { AddLinkPropertyModal } from './modals/add-link-property';
 
 import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as SearchSVG } from './icons/search.svg';
@@ -36,7 +35,7 @@ const ToolStyle = styled.div`
   }
 `;
 
-export const ActionBarWrapper: React.FC = () => {
+export const ActionBar: React.FC = () => {
   const { graph } = useSchema() || {};
 
   const [openAddLink, setOpenAddLink] = useState(false);
@@ -55,7 +54,6 @@ export const ActionBarWrapper: React.FC = () => {
       <AddTypeModal />
       <AddLinkModal openAddLink={openAddLink} setOpenAddLink={setOpenAddLink} />
       <AddTypePropertyModal />
-      <AddLinkPropertyModal />
     </>
   );
 };

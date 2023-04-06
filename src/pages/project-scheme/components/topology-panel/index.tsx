@@ -10,6 +10,6 @@ const TopologyPanelStyle = styled.div`
   z-index: 2;
 `;
 
-export const TopologyWrapper: React.FC = () => (
+export const Topology: React.FC = () => (
     <TopologyPanelStyle>Side</TopologyPanelStyle>
 );

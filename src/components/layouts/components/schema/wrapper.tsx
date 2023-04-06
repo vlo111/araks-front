@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
 
-import { Graph, LinkPropertyModal, OpenAddType, PortModal, SchemaContextType, SelectedNode, SetGraph } from './types';
+import { Graph, LinkPropertyModal, OpenAddType, PortModal, SchemaContextType, SelectedNode } from './types';
 
 export const SchemaWrapper: React.FC = () => {
-  const [graph, setGraphState] = useState<Graph>();
+  const [graph, setGraph] = useState<Graph>();
 
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
 
@@ -13,8 +13,6 @@ export const SchemaWrapper: React.FC = () => {
   const [openAddType, setOpenAddType] = useState<OpenAddType>();
 
   const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
-
-  const setGraph = useCallback<SetGraph>((item) => setGraphState(item), []);
 
   const isOpenPortModal = useMemo(() => addPortModal !== undefined, [addPortModal]);
   const isOpenTypeModal = useMemo(() => openAddType !== undefined, [openAddType]);

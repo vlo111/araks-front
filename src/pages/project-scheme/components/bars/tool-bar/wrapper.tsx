@@ -74,7 +74,7 @@ const ToolbarPanel = styled.div`
   }
 `
 
-export const ToolbarWrapper: React.FC = () => {
+export const Toolbar: React.FC = () => {
   const { graph, selectedNode } = useSchema() || {};
 
   const onCenterContent = useCallback(() => {
