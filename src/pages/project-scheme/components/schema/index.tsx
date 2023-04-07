@@ -4,15 +4,16 @@ import { useParams } from 'react-router-dom';
 import { GET_TYPES, useGetTypes } from 'api/schema/use-get-types';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { initGraph, initNodes } from 'components/layouts/components/schema/helpers/utils/graph-utils';
-import 'components/layouts/components/schema/helpers/register-graph';
 import { formattedTypes } from 'components/layouts/components/schema/helpers/utils/utils';
+import 'components/layouts/components/schema/helpers/register-graph';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 const Graph = styled.div`
   position: fixed;
-  width: 1500px;
-  height: 900px;
+  left: 250px;
+  top: 152px;
+  z-index: 0;
 `;
 
 export const Schema: React.FC = () => {

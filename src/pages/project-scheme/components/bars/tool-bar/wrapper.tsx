@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import { FitType } from './fit-type';
 import { FitSchema } from './fit-schema';
 import { ZoomIn } from './zoom-in';
 import { ZoomOut } from './zoom-out';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { LINE_HEIGHT } from '../../../../../components/layouts/components/schema/helpers/register-graph';
 
 const ToolbarPanel = styled.div`
   position: fixed;
@@ -73,7 +74,7 @@ const ToolbarPanel = styled.div`
       }
     }
   }
-`
+`;
 
 export const Toolbar: React.FC = () => {
   const { graph, selectedNode } = useSchema() || {};
@@ -85,7 +86,20 @@ export const Toolbar: React.FC = () => {
 
   const onCenterType = useCallback(() => {
     if (typeof selectedNode !== 'boolean' && selectedNode !== undefined) {
+      graph.zoom(0.5, {
+        minScale: 2,
+        maxScale: 2,
+      });
+
+      const propertiesHeight = selectedNode.ports.items.length * LINE_HEIGHT * 2;
+
+      const height = (propertiesHeight + selectedNode.getSize().height) / 2;
+
+      graph.options.height = graph.options.height - height;
+
       graph.centerCell(selectedNode);
+
+      graph.options.height = graph.options.height + height;
     }
   }, [graph, selectedNode]);
 

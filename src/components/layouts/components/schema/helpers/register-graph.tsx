@@ -1,7 +1,7 @@
 import { Graph, Markup, Path } from '@antv/x6';
 import { ArrowD } from './svg/path-d';
 
-const LINE_HEIGHT = 30;
+export const LINE_HEIGHT = 30;
 const NODE_WIDTH = 150;
 
 Graph.registerPortLayout(

@@ -42,6 +42,7 @@ const Tabs = styled(TabsComponent)`
   .ant-tabs-nav {
     box-shadow: 0px 10px 10px rgba(111, 111, 111, 0.16);
     margin-bottom: 0;
+    z-index: 2;
 
     &::before {
       border-color: transparent;

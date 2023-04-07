@@ -233,8 +233,8 @@ export const initGraph: InitGraph = (container, _params) => {
   const options = {
     container: container,
     panning: true,
-    height: window.innerHeight - 84 - 44,
-    width: window.innerWidth,
+    height: window.innerHeight - 152,
+    width: window.innerWidth - 250,
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,
