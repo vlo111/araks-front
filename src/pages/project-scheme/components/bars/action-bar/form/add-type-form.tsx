@@ -22,9 +22,10 @@ const Wrapper = styled.div`
 
 type Props = {
     isEdit?: boolean;
+    onCancel: () => void
 };
 
-export const AddSchemaTypeForm = ({ isEdit = false }: Props) => {
+export const AddSchemaTypeForm = ({ isEdit = false, onCancel }: Props) => {
     const {
         nodesList,
         finishAddType,
@@ -35,7 +36,6 @@ export const AddSchemaTypeForm = ({ isEdit = false }: Props) => {
         nodeTypeId,
         deleteEditType,
         finishEditType,
-        cancelAddType,
     } = useDataSheetWrapper();
     const { mutate } = useCreateProjectNodeType(
         {
@@ -87,7 +87,8 @@ export const AddSchemaTypeForm = ({ isEdit = false }: Props) => {
 
     /** this action works only for create */
     const onHandleCancel = () => {
-        cancelAddType();
+        onCancel();
+
         form.resetFields();
     };
 

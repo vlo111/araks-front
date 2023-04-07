@@ -8,8 +8,8 @@ const setPropertyColor: SetPropertyColor = (property, color) => {
     fill: {
       type: 'linearGradient',
       stops: [
-        { offset: '15%', color: `${color}B3` },
-        { offset: '100%', color: `${color}33` },
+        { offset: '1.47%', color: color },
+        { offset: '98.93%', color: `#EEEEEE` },
       ],
     },
   };
