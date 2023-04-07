@@ -86,6 +86,7 @@ export const Toolbar: React.FC = () => {
 
   const onCenterType = useCallback(() => {
     if (typeof selectedNode !== 'boolean' && selectedNode !== undefined) {
+      /** calculate height of type before fit on center */
       graph.zoom(0.5, {
         minScale: 2,
         maxScale: 2,
@@ -99,6 +100,7 @@ export const Toolbar: React.FC = () => {
 
       graph.centerCell(selectedNode);
 
+      /** reset graph height after fit on center */
       graph.options.height = graph.options.height + height;
     }
   }, [graph, selectedNode]);
