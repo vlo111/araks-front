@@ -7,6 +7,7 @@ import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
 import { ITypeProperty } from '../../../../api/types';
+import { TreeNodeType } from "../../../../pages/data-sheet/types";
 
 export interface IStroke {
   type: string;
@@ -104,7 +105,7 @@ export type PortModal =
   | undefined
   | { node: Node<Node.Properties>; portId: string; isUpdate: boolean; x: number; y: number };
 
-export type SelectedNode = Node<Node.Properties> | undefined;
+export type SelectedNode = Node<Node.Properties> | string | undefined;
 
 export type LinkPropertyModal = undefined | { x: number; y: number; color: string[] };
 
@@ -114,7 +115,7 @@ export type Graph = GraphX6;
 
 export interface SchemaContextType {
   graph: GraphX6;
-  selectedNode: SelectedNode | boolean;
+  selectedNode: SelectedNode | string | undefined;
 
   addPortModal: PortModal;
   openLinkPropertyModal: LinkPropertyModal;
@@ -122,6 +123,8 @@ export interface SchemaContextType {
   setAddTypeModal: OpenTypeModal;
   setGraph: (item: Graph) => void;
   setAddPortModal: Dispatch<SetStateAction<PortModal>>;
+  setNodesTree: Dispatch<SetStateAction<TreeNodeType[]>>;
+  nodesTree: TreeNodeType[];
   setSelectedNode: (item: SelectedNode | undefined) => void;
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
 }
@@ -160,6 +163,7 @@ export type PickSchemaContextType = Pick<
   | 'setAddPortModal'
   | 'setSelectedNode'
   | 'setAddTypeModal'
+  | 'setOpenLinkPropertyModal'
 >;
 
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
@@ -167,7 +171,7 @@ export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextTyp
 export type InitNodes = (
   graph: Graph,
   cells: Cell<Cell.Properties>[],
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>
+  params: PickSchemaContextType
 ) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;

@@ -1,6 +1,6 @@
-import { IProjectType } from '../../../../../../api/types';
-import { INode, InsertAddProperty, IPort, SetPropertyColor } from "../../types";
-import { antTheme } from '../../../../../../helpers/ant-theme';
+import { IProjectType } from '../../../../../api/types';
+import { INode, InsertAddProperty, IPort, SetPropertyColor } from "../types";
+import { antTheme } from '../../../../../helpers/ant-theme';
 import { Cell, Graph, Node } from "@antv/x6";
 
 const setPropertyColor: SetPropertyColor = (property, color) => {

@@ -10,10 +10,13 @@ import {
   SchemaContextType,
   SelectedNode,
 } from './types';
+import { TreeNodeType } from '../../../../pages/data-sheet/types';
 
 export const SchemaWrapper: React.FC = () => {
   const [graph, setGraph] = useState<Graph>();
+  /** String Type ID. Set the selected type that was created */
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
+  const [nodesTree, setNodesTree] = useState<TreeNodeType[]>();
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
   const [addTypeModal, openTypeModal] = useState<OpenAddType>();
@@ -21,7 +24,7 @@ export const SchemaWrapper: React.FC = () => {
 
   const setAddTypeModal: OpenTypeModal = useCallback(
     (param) => {
-        openTypeModal(param);
+      openTypeModal(param);
       if (graph !== undefined) graph.container.style.cursor = '';
     },
     [graph]
@@ -31,16 +34,18 @@ export const SchemaWrapper: React.FC = () => {
     () => ({
       graph,
       selectedNode,
+      nodesTree,
       addPortModal,
       addTypeModal,
       openLinkPropertyModal,
       setGraph,
+      setSelectedNode,
+      setNodesTree,
       setAddTypeModal,
       setAddPortModal,
-      setSelectedNode,
       setOpenLinkPropertyModal,
     }),
-    [graph, selectedNode, addPortModal, openLinkPropertyModal, addTypeModal, setAddTypeModal]
+    [graph, selectedNode, nodesTree, addPortModal, addTypeModal, openLinkPropertyModal, setAddTypeModal]
   );
 
   return <Outlet context={context} />;

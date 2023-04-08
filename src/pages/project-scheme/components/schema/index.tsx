@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { GET_TYPES, useGetTypes } from 'api/schema/use-get-types';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { initGraph, initNodes } from 'components/layouts/components/schema/helpers/utils/graph-utils';
-import { formattedTypes } from 'components/layouts/components/schema/helpers/utils/utils';
-import 'components/layouts/components/schema/helpers/register-graph';
+import { formattedTypes } from 'components/layouts/components/schema/helpers/utils';
+import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
+import { initGraph } from 'components/layouts/components/schema/container/initial/graph';
+import 'components/layouts/components/schema/container/register';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
@@ -18,7 +20,7 @@ const Graph = styled.div`
 
 export const Schema: React.FC = () => {
   const { id } = useParams();
-  const { graph, setGraph, setOpenLinkPropertyModal, ...params } = useSchema() ?? {};
+  const { graph, setGraph, ...params } = useSchema() ?? {};
 
   const ref: GraphRef = React.useRef(null);
 
@@ -30,9 +32,9 @@ export const Schema: React.FC = () => {
     {
       enabled: !!id,
       onSuccess: ({ data: { projectsNodeTypes } }) => {
-        const cells = formattedTypes(graph, projectsNodeTypes);
+        params.setNodesTree(createNodesTree(projectsNodeTypes));
 
-        initNodes(graph, cells, setOpenLinkPropertyModal);
+        initNodes(graph, formattedTypes(graph, projectsNodeTypes), params);
       },
     }
   );
