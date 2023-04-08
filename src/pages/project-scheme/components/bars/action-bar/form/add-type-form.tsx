@@ -14,6 +14,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { useCreateProjectNodeType } from 'api/project-node-types/use-create-project-node-type';
 import { useDeleteProjectNodeType } from 'api/project-node-types/use-delete-project-node-type';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
+import {useSchema} from "../../../../../../components/layouts/components/schema/wrapper";
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -22,10 +23,9 @@ const Wrapper = styled.div`
 
 type Props = {
     isEdit?: boolean;
-    onCancel: () => void
 };
 
-export const AddSchemaTypeForm = ({ isEdit = false, onCancel }: Props) => {
+export const AddSchemaTypeForm = ({ isEdit = false }: Props) => {
     const {
         nodesList,
         finishAddType,
@@ -37,6 +37,9 @@ export const AddSchemaTypeForm = ({ isEdit = false, onCancel }: Props) => {
         deleteEditType,
         finishEditType,
     } = useDataSheetWrapper();
+
+    const { setAddTypeModal } = useSchema() || {};
+
     const { mutate } = useCreateProjectNodeType(
         {
             onSuccess: ({ data }) => {
@@ -66,7 +69,8 @@ export const AddSchemaTypeForm = ({ isEdit = false, onCancel }: Props) => {
         }
     }, [color, form, isEdit, parentId, titleText]);
 
-    const onFinish = (values: ProjectNodeTypeSubmit) => {
+    const onFinish = (values: ProjectNodeTypeSubmit) =>
+    {
         mutate(
             isEdit
                 ? ({
@@ -87,7 +91,7 @@ export const AddSchemaTypeForm = ({ isEdit = false, onCancel }: Props) => {
 
     /** this action works only for create */
     const onHandleCancel = () => {
-        onCancel();
+        setAddTypeModal(undefined);
 
         form.resetFields();
     };

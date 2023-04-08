@@ -1,50 +1,46 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
 
-import { Graph, LinkPropertyModal, OpenAddType, PortModal, SchemaContextType, SelectedNode } from './types';
+import {
+  Graph,
+  LinkPropertyModal,
+  OpenAddType,
+  OpenTypeModal,
+  PortModal,
+  SchemaContextType,
+  SelectedNode,
+} from './types';
 
 export const SchemaWrapper: React.FC = () => {
   const [graph, setGraph] = useState<Graph>();
-
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
-
-  const [openAddType, setOpenAddType] = useState<OpenAddType>();
-
+  const [addTypeModal, openTypeModal] = useState<OpenAddType>();
   const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
 
-  const isOpenPortModal = useMemo(() => addPortModal !== undefined, [addPortModal]);
-  const isOpenTypeModal = useMemo(() => openAddType !== undefined, [openAddType]);
-  const isOpenLikPropertyModal = useMemo(() => openLinkPropertyModal !== undefined, [openLinkPropertyModal]);
+  const setAddTypeModal: OpenTypeModal = useCallback(
+    (param) => {
+        openTypeModal(param);
+      if (graph !== undefined) graph.container.style.cursor = '';
+    },
+    [graph]
+  );
 
   const context = useMemo(
     () => ({
       graph,
-      addPortModal,
-      openLinkPropertyModal,
       selectedNode,
-      openAddType,
+      addPortModal,
+      addTypeModal,
+      openLinkPropertyModal,
       setGraph,
-      setOpenAddType,
+      setAddTypeModal,
       setAddPortModal,
       setSelectedNode,
       setOpenLinkPropertyModal,
-      isOpenPortModal,
-      isOpenTypeModal,
-      isOpenLikPropertyModal,
     }),
-    [
-      graph,
-      addPortModal,
-      openLinkPropertyModal,
-      selectedNode,
-      openAddType,
-      setGraph,
-      isOpenPortModal,
-      isOpenTypeModal,
-      isOpenLikPropertyModal,
-    ]
+    [graph, selectedNode, addPortModal, openLinkPropertyModal, addTypeModal, setAddTypeModal]
   );
 
   return <Outlet context={context} />;

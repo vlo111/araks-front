@@ -72,7 +72,7 @@ const removeSelected: RemoveElement = (chart, element) => {
 };
 
 const initEvents: InitEvents = (graph, params) => {
-  const { setAddPortModal, setSelectedNode, setOpenAddType } = params;
+  const { setAddPortModal, setSelectedNode, setAddTypeModal } = params;
 
   graph.on('node:port:click', (event) => {
     if (event.port === 'connector') return;
@@ -163,7 +163,7 @@ const initEvents: InitEvents = (graph, params) => {
     }
 
     if (graph.container.style.cursor === 'crosshair') {
-      setOpenAddType([event.x, event.y]);
+      setAddTypeModal([event.x, event.y]);
     }
   });
 };

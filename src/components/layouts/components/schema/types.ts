@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
-import { ITypeProperty } from "../../../../api/types";
+import { ITypeProperty } from '../../../../api/types';
 
 export interface IStroke {
   type: string;
@@ -73,7 +73,7 @@ export interface IPort {
   id?: string;
   group: string;
   attrs?: IPortAttribute;
-  zIndex?: number
+  zIndex?: number;
   args?: {
     x: string;
     y: string;
@@ -114,18 +114,16 @@ export type Graph = GraphX6;
 
 export interface SchemaContextType {
   graph: GraphX6;
+  selectedNode: SelectedNode | boolean;
+
   addPortModal: PortModal;
   openLinkPropertyModal: LinkPropertyModal;
-  selectedNode: SelectedNode | boolean;
-  openAddType: OpenAddType;
+  addTypeModal: OpenAddType;
+  setAddTypeModal: OpenTypeModal;
   setGraph: (item: Graph) => void;
-  setOpenAddType: Dispatch<SetStateAction<OpenAddType>>;
   setAddPortModal: Dispatch<SetStateAction<PortModal>>;
   setSelectedNode: (item: SelectedNode | undefined) => void;
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
-  isOpenPortModal: boolean;
-  isOpenTypeModal: boolean;
-  isOpenLikPropertyModal: boolean;
 }
 
 export interface ClientRect {
@@ -158,18 +156,19 @@ export type PickSchemaContextType = Pick<
   | 'addPortModal'
   | 'openLinkPropertyModal'
   | 'selectedNode'
-  | 'openAddType'
-  | 'setOpenAddType'
+  | 'addTypeModal'
   | 'setAddPortModal'
   | 'setSelectedNode'
-  | 'isOpenPortModal'
-  | 'isOpenTypeModal'
-  | 'isOpenLikPropertyModal'
+  | 'setAddTypeModal'
 >;
 
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
 
-export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>) => void;
+export type InitNodes = (
+  graph: Graph,
+  cells: Cell<Cell.Properties>[],
+  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>
+) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
 
@@ -191,3 +190,5 @@ export type CellRemovePort = Cell<Cell.Properties> & {
 export type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
 
 export type InsertAddProperty = () => IPort;
+
+export type OpenTypeModal = (param: OpenAddType) => void;

@@ -5,16 +5,18 @@ import { Modal } from 'antd';
 import { AddSchemaTypeForm } from '../../form/add-type-form';
 
 export const AddTypeModal: React.FC = () => {
-  const { graph, setOpenAddType, isOpenTypeModal } = useSchema() || {};
+  const { addTypeModal, setAddTypeModal } = useSchema() || {};
 
-  const onCancel = () => {
-    setOpenAddType(undefined);
-    graph.container.style.cursor = '';
-  }
+  const props = {
+    centered: true,
+    open: addTypeModal !== undefined,
+    onCancel: () => setAddTypeModal(undefined),
+    footer: false,
+  };
 
   return (
-    <Modal centered onCancel={onCancel} open={isOpenTypeModal} footer={false}>
-      <AddSchemaTypeForm onCancel={onCancel} />
+    <Modal {...props}>
+      <AddSchemaTypeForm />
     </Modal>
   );
 };

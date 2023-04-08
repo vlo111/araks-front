@@ -10,7 +10,7 @@ interface IPosition {
 }
 
 export const AddTypePropertyModal: React.FC = () => {
-  const { setOpenAddType, addPortModal, isOpenPortModal } = useSchema() || {};
+  const { addPortModal } = useSchema() || {};
 
   const position: IPosition = useMemo(() => {
     return {
@@ -22,8 +22,8 @@ export const AddTypePropertyModal: React.FC = () => {
   return (
     <Modal
       style={{ position: 'fixed', ...position }}
-      onCancel={() => setOpenAddType(undefined)}
-      open={isOpenPortModal}
+      // onCancel={() => setOpenAddType(undefined)}
+      open={addPortModal !== undefined}
       footer={false}
     >
       <AddSchemaTypePropertyForm />
