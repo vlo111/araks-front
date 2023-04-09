@@ -18,15 +18,15 @@ Graph.registerNode(
       },
       {
         tagName: 'text',
-        selector: 'title',
+        selector: 'text',
       },
       {
         tagName: 'circle',
-        selector: 'circle',
+        selector: 'setting_circle',
       },
       {
         tagName: 'path',
-        selector: 'node_path',
+        selector: 'setting_path',
       },
     ],
     attrs: {
@@ -37,7 +37,7 @@ Graph.registerNode(
         strokeDasharray: '150,250,219',
         filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.1))',
       },
-      title: {
+      text: {
         fontWeight: '600',
         fill: '#414141',
         fontSize: 12,

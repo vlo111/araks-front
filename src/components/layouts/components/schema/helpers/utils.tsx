@@ -90,6 +90,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
         body: {
           stroke: node.color,
         },
+        parentId: node.parent_id,
       },
       ports: formattedProperties,
     };

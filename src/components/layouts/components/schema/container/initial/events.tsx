@@ -6,8 +6,8 @@ const removeSelected: RemoveElement = (chart, element) => {
 
   type.removePort('connector');
 
-  type.attr('node_path', undefined)
-  type.attr('circle', undefined)
+  type.attr('setting_path', undefined)
+  type.attr('setting_circle', undefined)
 
   element.classList.remove('selected-node');
 };
@@ -114,7 +114,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
     },
   });
 
-  node.attr('circle',  {
+  node.attr('setting_circle',  {
     id: 'setting_circle',
     r: 16,
     cx: 128,
@@ -124,7 +124,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
     cursor: 'pointer',
   });
 
-  node.attr('node_path',  {
+  node.attr('setting_path',  {
     id: 'setting_path',
     fill: '#414141',
     cursor: 'pointer',

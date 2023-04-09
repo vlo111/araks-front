@@ -91,6 +91,7 @@ export interface INode {
   attrs: {
     line?: ILine;
     body?: IBody;
+    parentId?: string
   };
   tools?: {
     name: string;

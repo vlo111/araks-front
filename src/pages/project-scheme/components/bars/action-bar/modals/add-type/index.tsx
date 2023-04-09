@@ -13,7 +13,6 @@ export const AddTypeModal: React.FC = () => {
     open: addTypeModal !== undefined,
     onCancel: () => {
       setAddTypeModal(undefined)
-      form.resetFields();
     },
     footer: false,
   };

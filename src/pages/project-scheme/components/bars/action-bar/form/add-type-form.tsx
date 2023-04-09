@@ -1,17 +1,19 @@
-import styled from 'styled-components';
-import { InfoCircleFilled } from '@ant-design/icons';
+import { useEffect, useMemo } from 'react';
+import { Node } from '@antv/x6';
 import { Checkbox, Form, FormInstance, Space, Tooltip } from 'antd';
+import { InfoCircleFilled } from '@ant-design/icons';
+import styled from 'styled-components';
 
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
 import { Button } from 'components/button';
 import { TreeSelect } from 'components/select';
-import { ColorSelect } from 'components/select/color-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/use-create-types';
+import { SelectColor } from '../components/select/select-color';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -23,13 +25,13 @@ type Props = {
   form: FormInstance;
 };
 
-export const AddSchemaTypeForm = ({ isEdit = false, form }: Props) => {
-  const { setAddTypeModal, nodesTree, setSelectedNode } = useSchema() || {};
+export const AddSchemaTypeForm = ({ form }: Props) => {
+  const { setAddTypeModal, nodesTree, setSelectedNode, selectedNode } = useSchema() || {};
 
   const { mutate: createType } = useCreateType(
     {
       onSuccess: ({ data: { id } }) => {
-          setSelectedNode(id);
+        setSelectedNode(id);
       },
     },
     undefined
@@ -38,8 +40,6 @@ export const AddSchemaTypeForm = ({ isEdit = false, form }: Props) => {
   /** this action works only for create */
   const onHandleCancel = () => {
     setAddTypeModal(undefined);
-
-    form.resetFields();
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
@@ -55,6 +55,23 @@ export const AddSchemaTypeForm = ({ isEdit = false, form }: Props) => {
 
     onHandleCancel();
   };
+
+  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
+
+  useEffect(() => {
+    if (isEdit) {
+      const node = selectedNode as Node<Node.Properties>;
+      form.setFieldsValue({
+        name: node.attr('text/text'),
+        color: node.attr('body/stroke'),
+        parent_id: node.attr('parentId'),
+      });
+    }
+
+    return () => {
+      form.resetFields()
+    }
+  }, [form, isEdit, selectedNode]);
 
   return (
     <Wrapper>
@@ -113,9 +130,9 @@ export const AddSchemaTypeForm = ({ isEdit = false, form }: Props) => {
             )}
           </Form.Item>
         )}
-        <FormItem name="color" rules={[{ required: true, message: 'Node type color is required' }]}>
-          <ColorSelect />
-        </FormItem>
+        <Form.Item name="color" rules={[{ required: true, message: 'Node type color is required' }]}>
+          <SelectColor />
+        </Form.Item>
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">
