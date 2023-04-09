@@ -12,9 +12,9 @@ import { TreeSelect } from 'components/select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
-import { useCreateType } from 'api/schema/use-create-types';
+import { useCreateType } from 'api/schema/type/use-create-types';
 import { SelectColor } from '../components/select/select-color';
-import { useDeleteType } from "api/schema/use-delete-type";
+import { useDeleteType } from "api/schema/type/use-delete-type";
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;

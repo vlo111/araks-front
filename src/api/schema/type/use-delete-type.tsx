@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import client from '../client';
+import client from '../../client';
 import { GET_TYPES } from './use-get-types';
 
 const URL_PROJECT_NODE_TYPES_DELETE = '/projects-node-types/delete/:id';

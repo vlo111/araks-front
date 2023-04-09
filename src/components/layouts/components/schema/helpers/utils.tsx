@@ -1,7 +1,7 @@
-import { IProjectType } from '../../../../../api/types';
-import { INode, InsertAddProperty, IPort, SetPropertyColor } from "../types";
-import { antTheme } from '../../../../../helpers/ant-theme';
-import { Cell, Graph, Node } from "@antv/x6";
+import { Cell, Graph, Node } from '@antv/x6';
+import { IProjectType } from 'api/types';
+import { antTheme } from 'helpers/ant-theme';
+import { INode, InsertAddProperty, IPort, SetPropertyColor } from '../types';
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -71,6 +71,9 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
           portTypeLabel: {
             text: property.ref_property_type_id,
           },
+          required_type: property.required_type,
+          multiple_type: property.multiple_type,
+          unique_type: property.unique_type,
         },
         zIndex: 0,
       });

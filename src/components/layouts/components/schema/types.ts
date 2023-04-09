@@ -7,7 +7,7 @@ import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
 import { ITypeProperty } from '../../../../api/types';
-import { TreeNodeType } from "../../../../pages/data-sheet/types";
+import { TreeNodeType } from '../../../../pages/data-sheet/types';
 
 export interface IStroke {
   type: string;
@@ -57,6 +57,9 @@ export interface IPortFill {
 }
 
 export interface IPortAttribute {
+  required_type?: boolean;
+  multiple_type?: string;
+  unique_type?: boolean;
   portBody: {
     fill: IPortFill | string;
     strokeWidth?: number;
@@ -91,7 +94,7 @@ export interface INode {
   attrs: {
     line?: ILine;
     body?: IBody;
-    parentId?: string
+    parentId?: string;
   };
   tools?: {
     name: string;
@@ -169,11 +172,7 @@ export type PickSchemaContextType = Pick<
 
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
 
-export type InitNodes = (
-  graph: Graph,
-  cells: Cell<Cell.Properties>[],
-  params: PickSchemaContextType
-) => void;
+export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: PickSchemaContextType) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
 
@@ -198,4 +197,4 @@ export type InsertAddProperty = () => IPort;
 
 export type OpenTypeModal = (param: OpenAddType) => void;
 
-export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void
+export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void;

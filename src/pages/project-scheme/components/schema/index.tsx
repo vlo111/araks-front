@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { GET_TYPES, useGetTypes } from 'api/schema/use-get-types';
+import { GET_TYPES, useGetTypes } from 'api/schema/type/use-get-types';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { formattedTypes } from 'components/layouts/components/schema/helpers/utils';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';

@@ -6,69 +6,86 @@ import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
 import { Button } from 'components/button';
 
-import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
-import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
 import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { Checkbox } from 'components/checkbox';
-// import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
+import { useEffect, useMemo } from 'react';
+import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
+import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
+import { Node } from '@antv/x6';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
   width: 422px;
 `;
 
-type Props = {
-  isEdit?: boolean;
-};
+export const AddSchemaTypePropertyForm = () => {
+  const { addPortModal, setAddPortModal } = useSchema() || {};
 
-export const AddSchemaTypePropertyForm = ({ isEdit = false }: Props) => {
-  // const { nodeTypeId } = useDataSheetWrapper();
-  // const { state, dispatch } = useTypeProperty();
-  const { mutate } = useCreateProjectNodeTypeProperty(
+  const type = useMemo(() => addPortModal?.node as Node<Node.Properties>, [addPortModal]);
+
+  const { mutate } = useCreateTypeProperty(
     {
       onSuccess: ({ data }) => {
         return;
       },
     },
-    isEdit ? '1' : undefined
+    addPortModal?.isUpdate ? addPortModal?.portId : undefined
   );
 
-  useGetProjectNodeTypeProperty('1', {
-    enabled: !!'1',
-    onSuccess: (data) => {
-      form.setFieldsValue({
-        ...data,
-      });
+  const { mutate: mutateDelete } = useDeleteTypeProperty(addPortModal?.portId, {
+    onSuccess: () => {
+      onHandleCancel();
     },
   });
 
   const [form] = Form.useForm();
 
+  const onHandleCancel = () => {
+    setAddPortModal(undefined);
+  };
+
+  const onHandleDelete = () => {
+    mutateDelete();
+  };
+
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
     mutate({
       ...values,
-      project_type_id: 'nodeTypeId',
+      project_type_id: type.id,
     });
     form.resetFields();
-    // if (isEdit) {
-    //   dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
-    // } else {
-    //   dispatch({ type: TypePropertyActionKind.ADD_TYPE_FINISH, payload: {} });
-    // }
+
+    onHandleCancel();
   };
 
-  /** this action works only for create */
-  const onHandleCancel = () => {
-    // dispatch({ type: TypePropertyActionKind.ADD_TYPE_CANCEL, payload: { titleText: undefined } });
-    form.resetFields();
-  };
+  useEffect(() => {
+    if (addPortModal?.isUpdate) {
+      const { node, portId } = addPortModal;
 
-  /** this action works only for edit */
-  const onHandleDelete = () => {
-    // dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
-  };
+      const {
+        portNameLabel: { text: name },
+        portTypeLabel: { text: ref_property_type_id },
+        required_type,
+        multiple_type,
+        unique_type,
+      } = node.portProp(portId).attrs ?? {};
+
+      form.setFieldsValue({
+        name,
+        ref_property_type_id,
+        required_type,
+        multiple_type,
+        unique_type,
+      });
+    }
+
+    return () => {
+      form.resetFields();
+    };
+  }, [addPortModal, form]);
 
   return (
     <Wrapper>
@@ -81,7 +98,7 @@ export const AddSchemaTypePropertyForm = ({ isEdit = false }: Props) => {
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isEdit ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{addPortModal?.isUpdate ? 'Edit type' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>
@@ -139,7 +156,7 @@ export const AddSchemaTypePropertyForm = ({ isEdit = false }: Props) => {
             <Button block type="primary" htmlType="submit">
               Save
             </Button>
-            {isEdit ? (
+            {addPortModal?.isUpdate ? (
               <Button block type="text" onClick={onHandleDelete}>
                 Delete
               </Button>

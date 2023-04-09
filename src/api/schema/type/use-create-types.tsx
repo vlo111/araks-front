@@ -3,7 +3,7 @@ import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-qu
 import { useParams } from 'react-router-dom';
 import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-node-types';
 
-import client from '../client';
+import client from '../../client';
 import { GET_TYPES } from './use-get-types';
 
 const URL_PROJECT_NODE_TYPES_CREATE = '/projects-node-types/create';
