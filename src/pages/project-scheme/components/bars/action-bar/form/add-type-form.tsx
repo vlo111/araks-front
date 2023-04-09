@@ -22,12 +22,16 @@ const Wrapper = styled.div`
 `;
 
 type Props = {
-  isEdit?: boolean;
+  onCancel: VoidFunction;
   form: FormInstance;
 };
 
-export const AddSchemaTypeForm = ({ form }: Props) => {
-  const { setAddTypeModal, nodesTree, setSelectedNode, selectedNode } = useSchema() || {};
+export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
+  const { nodesTree, setSelectedNode, selectedNode } = useSchema() || {};
+
+  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
+
+  const type = useMemo(() => (selectedNode as Node<Node.Properties>), [selectedNode]);
 
   const { mutate: createType } = useCreateType(
     {
@@ -35,19 +39,15 @@ export const AddSchemaTypeForm = ({ form }: Props) => {
         setSelectedNode(id);
       },
     },
-    undefined
+      isEdit ? type.id : undefined
   );
 
-  const { mutate: mutateDelete } = useDeleteType((selectedNode as Node<Node.Properties>)?.id, {});
-
-  const onHandleCancel = () => {
-    setAddTypeModal(undefined);
-  };
+  const { mutate: mutateDelete } = useDeleteType(type?.id, {});
 
   const onHandleDelete = () => {
     mutateDelete();
 
-    onHandleCancel();
+    onCancel();
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
@@ -61,25 +61,22 @@ export const AddSchemaTypeForm = ({ form }: Props) => {
         : values
     );
 
-    onHandleCancel();
+    onCancel();
   };
-
-  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
 
   useEffect(() => {
     if (isEdit) {
-      const node = selectedNode as Node<Node.Properties>;
       form.setFieldsValue({
-        name: node.attr('text/text'),
-        color: node.attr('body/stroke'),
-        parent_id: node.attr('parentId'),
+        name: type.attr('text/text'),
+        color: type.attr('body/stroke'),
+        parent_id: type.attr('parentId'),
       });
     }
 
     return () => {
       form.resetFields()
     }
-  }, [form, isEdit, selectedNode]);
+  }, [form, isEdit, selectedNode, type]);
 
   return (
     <Wrapper>
@@ -151,7 +148,7 @@ export const AddSchemaTypeForm = ({ form }: Props) => {
                 Delete
               </Button>
             ) : (
-              <Button block type="text" onClick={onHandleCancel}>
+              <Button block type="text" onClick={onCancel}>
                 Cancel
               </Button>
             )}
