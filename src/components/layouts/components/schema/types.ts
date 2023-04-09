@@ -196,3 +196,5 @@ export type SetPropertyColor = (property: ITypeProperty, color: string) => { fil
 export type InsertAddProperty = () => IPort;
 
 export type OpenTypeModal = (param: OpenAddType) => void;
+
+export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void

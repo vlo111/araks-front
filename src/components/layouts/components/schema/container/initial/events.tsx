@@ -1,10 +1,13 @@
-import { CellRemovePort, ElementBox, ElementStyle, InitEvents, RemoveElement } from '../../types';
-import {Graph, Node} from "@antv/x6";
+import {CellRemovePort, ElementBox, ElementStyle, InitEvents, RemoveElement, SelectNode} from '../../types';
+import { TypeSettingD } from "../../helpers/svg/path-d";
 
 const removeSelected: RemoveElement = (chart, element) => {
   const type = chart.getCellById(element.dataset.cellId) as CellRemovePort;
 
   type.removePort('connector');
+
+  type.attr('node_path', undefined)
+  type.attr('circle', undefined)
 
   element.classList.remove('selected-node');
 };
@@ -43,6 +46,10 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
       node,
     } = event;
 
+    if (event.e.target.id === 'setting_circle' || event.e.target.id === 'setting_path') {
+      setAddTypeModal([event.x, event.y]);
+    }
+
     if (!container.classList.contains('selected-node')) {
 
       selectNode(graph, container, node)
@@ -66,7 +73,7 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
   });
 };
 
-export const selectNode: (graph: Graph, container: Element, node: Node<Node.Properties>) => void = (graph, container, node) => {
+export const selectNode: SelectNode = (graph, container, node) => {
   const nodes: NodeListOf<ElementStyle> = graph.view.stage.querySelectorAll('.x6-node');
 
   for (const node of nodes) {
@@ -105,5 +112,23 @@ export const selectNode: (graph: Graph, container: Element, node: Node<Node.Prop
       x: 0,
       y: 0,
     },
+  });
+
+  node.attr('circle',  {
+    id: 'setting_circle',
+    r: 16,
+    cx: 128,
+    cy: 21.5,
+    strokeWidth: 2,
+    fill: '#DBDBDB',
+    cursor: 'pointer',
+  });
+
+  node.attr('node_path',  {
+    id: 'setting_path',
+    fill: '#414141',
+    cursor: 'pointer',
+    d: TypeSettingD,
+    transform: `matrix(1,0,0,1,${width - 37.5}, 5.5)`
   });
 }

@@ -1,5 +1,5 @@
 import { Graph } from '@antv/x6';
-import { ArrowD } from '../../helpers/svg/path-d';
+import {ArrowD} from '../../helpers/svg/path-d';
 
 export const LINE_HEIGHT = 30;
 
@@ -11,25 +11,33 @@ Graph.registerNode(
     inherit: 'rect',
     height: 40,
     width: 150,
+    markup: [
+      {
+        tagName: 'rect',
+        selector: 'body',
+      },
+      {
+        tagName: 'text',
+        selector: 'title',
+      },
+      {
+        tagName: 'circle',
+        selector: 'circle',
+      },
+      {
+        tagName: 'path',
+        selector: 'node_path',
+      },
+    ],
     attrs: {
-      rect: {
+      body: {
         strokeWidth: 6,
         fill: '#F5F5F5',
-        // filter: {
-        //   name: 'dropShadow',
-        //   args: {
-        //     dx: 0,
-        //     dy: 4
-        //     // blur: 40
-        //     // color: 'red',
-        //     // opacity: 0
-        //   }
-        // },
         zIndex: 1,
         strokeDasharray: '150,250,219',
         filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.1))',
       },
-      label: {
+      title: {
         fontWeight: '600',
         fill: '#414141',
         fontSize: 12,
@@ -37,6 +45,7 @@ Graph.registerNode(
         refX2: 0,
         textAnchor: 'start',
         textVerticalAnchor: 'middle',
+        zIndex: 2,
       },
     },
     ports: {
