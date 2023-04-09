@@ -14,6 +14,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/use-create-types';
 import { SelectColor } from '../components/select/select-color';
+import { useDeleteType } from "api/schema/use-delete-type";
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -37,9 +38,16 @@ export const AddSchemaTypeForm = ({ form }: Props) => {
     undefined
   );
 
-  /** this action works only for create */
+  const { mutate: mutateDelete } = useDeleteType((selectedNode as Node<Node.Properties>)?.id, {});
+
   const onHandleCancel = () => {
     setAddTypeModal(undefined);
+  };
+
+  const onHandleDelete = () => {
+    mutateDelete();
+
+    onHandleCancel();
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
@@ -139,7 +147,7 @@ export const AddSchemaTypeForm = ({ form }: Props) => {
               Save
             </Button>
             {isEdit ? (
-              <Button block type="text">
+              <Button block onClick={onHandleDelete} type="text">
                 Delete
               </Button>
             ) : (
