@@ -116,7 +116,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
 
   node.attr('setting_circle',  {
     id: 'setting_circle',
-    r: 16,
+    r: 12,
     cx: 128,
     cy: 21.5,
     strokeWidth: 2,
@@ -129,6 +129,6 @@ export const selectNode: SelectNode = (graph, container, node) => {
     fill: '#414141',
     cursor: 'pointer',
     d: TypeSettingD,
-    transform: `matrix(1,0,0,1,${width - 37.5}, 5.5)`
+    transform: `matrix(1,0,0,1,${width - 30.1}, 12.8)`
   });
 }

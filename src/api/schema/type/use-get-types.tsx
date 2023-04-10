@@ -22,7 +22,7 @@ type QueryResponse = {
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
 
-type Result = { nodes: IProjectType[] };
+type Result = { nodes: IProjectType[], isInitialLoading: boolean };
 
 export const useGetTypes = ({ url, ...params }: GetProjectParam, options: Options = { enabled: true }): Result => {
   const urlNodes = url.replace(':project_id', params?.projectId || '');
@@ -36,6 +36,7 @@ export const useGetTypes = ({ url, ...params }: GetProjectParam, options: Option
   const nodes = isSuccess ? data.data.projectsNodeTypes : ({} as IProjectType[]);
 
   return {
+    ...result,
     nodes,
   } as Result;
 };

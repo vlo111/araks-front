@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { GET_TYPES, useGetTypes } from 'api/schema/type/use-get-types';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { formattedTypes } from 'components/layouts/components/schema/helpers/utils';
-import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
 import { initGraph } from 'components/layouts/components/schema/container/initial/graph';
 import 'components/layouts/components/schema/container/register';
 
@@ -19,25 +14,9 @@ const Graph = styled.div`
 `;
 
 export const Schema: React.FC = () => {
-  const { id } = useParams();
   const { graph, setGraph, ...params } = useSchema() ?? {};
 
   const ref: GraphRef = React.useRef(null);
-
-  useGetTypes(
-    {
-      url: GET_TYPES,
-      projectId: id ?? '',
-    },
-    {
-      enabled: !!id,
-      onSuccess: ({ data: { projectsNodeTypes } }) => {
-        params.setNodesTree(createNodesTree(projectsNodeTypes));
-
-        initNodes(graph, formattedTypes(graph, projectsNodeTypes), params);
-      },
-    }
-  );
 
   useEffect(() => {
     if (graph === undefined && setGraph !== undefined) {
