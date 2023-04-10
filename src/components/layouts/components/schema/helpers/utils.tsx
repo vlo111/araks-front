@@ -81,8 +81,8 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
       shape: 'er-rect',
       label: node.name,
       position: {
-        x: node?.fx ?? Math.random() * (1000 - -600) + -600,
-        y: node?.fy ?? Math.random() * (350 - -250) + -250,
+        x: node?.fx - 130 ?? Math.random() * (1000 - -600) + -600,
+        y: node?.fy - 20 ?? Math.random() * (350 - -250) + -250,
       },
       attrs: {
         body: {

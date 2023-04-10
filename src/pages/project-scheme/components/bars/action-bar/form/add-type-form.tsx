@@ -29,7 +29,7 @@ type Props = {
 export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
   const { nodesTree, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
 
-  const isEdit = useMemo(() => selectedNode instanceof Node<Node.Properties>, [selectedNode]);
+  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
 
   const type = useMemo(() => selectedNode as Node<Node.Properties>, [selectedNode]);
 
