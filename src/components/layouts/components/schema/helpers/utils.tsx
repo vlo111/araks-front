@@ -40,6 +40,7 @@ const insertAddProperty: InsertAddProperty = () => ({
       fill: antTheme.components.Schema.colorPropertyText,
       text: '+ Add property',
     },
+    portTypeLabel: { text: '' }
   },
 });
 

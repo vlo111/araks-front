@@ -11,10 +11,13 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Checkbox } from 'components/checkbox';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
 import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
 import { Node } from '@antv/x6';
+import { IPortAttribute } from '../../../../../../components/layouts/components/schema/types';
+
+type InitEditForm = (attrs: IPortAttribute) => void;
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -24,7 +27,28 @@ const Wrapper = styled.div`
 export const AddSchemaTypePropertyForm = () => {
   const { addPortModal, setAddPortModal } = useSchema() || {};
 
+  const [form] = Form.useForm();
+
   const type = useMemo(() => addPortModal?.node as Node<Node.Properties>, [addPortModal]);
+
+  const initEditForm: InitEditForm = useCallback(
+    ({
+      portNameLabel: { text: name },
+      portTypeLabel: { text: ref_property_type_id },
+      required_type,
+      multiple_type,
+      unique_type,
+    }) => {
+      form.setFieldsValue({
+        name,
+        ref_property_type_id,
+        required_type,
+        multiple_type,
+        unique_type,
+      });
+    },
+    [form]
+  );
 
   const { mutate } = useCreateTypeProperty(
     {
@@ -40,8 +64,6 @@ export const AddSchemaTypePropertyForm = () => {
       onHandleCancel();
     },
   });
-
-  const [form] = Form.useForm();
 
   const onHandleCancel = () => {
     setAddPortModal(undefined);
@@ -62,30 +84,15 @@ export const AddSchemaTypePropertyForm = () => {
   };
 
   useEffect(() => {
-    if (addPortModal?.isUpdate) {
-      const { node, portId } = addPortModal;
-
-      const {
-        portNameLabel: { text: name },
-        portTypeLabel: { text: ref_property_type_id },
-        required_type,
-        multiple_type,
-        unique_type,
-      } = node.portProp(portId).attrs ?? {};
-
-      form.setFieldsValue({
-        name,
-        ref_property_type_id,
-        required_type,
-        multiple_type,
-        unique_type,
-      });
+    const { isUpdate, portId } = addPortModal ?? {};
+    if (isUpdate) {
+      initEditForm(type.portProp(portId ?? '').attrs as unknown as IPortAttribute);
     }
 
     return () => {
       form.resetFields();
     };
-  }, [addPortModal, form]);
+  }, [addPortModal, form, initEditForm, type]);
 
   return (
     <Wrapper>
@@ -98,7 +105,7 @@ export const AddSchemaTypePropertyForm = () => {
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{addPortModal?.isUpdate ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{addPortModal?.isUpdate ? 'Edit property for type' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>

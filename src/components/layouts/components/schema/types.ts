@@ -68,7 +68,7 @@ export interface IPortAttribute {
     fill?: string;
     text: string;
   };
-  portTypeLabel?: {
+  portTypeLabel: {
     text: string;
   };
 }
