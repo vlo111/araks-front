@@ -14,7 +14,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/type/use-create-types';
 import { SelectColor } from '../components/select/select-color';
-import { useDeleteType } from "api/schema/type/use-delete-type";
+import { useDeleteType } from 'api/schema/type/use-delete-type';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -27,11 +27,11 @@ type Props = {
 };
 
 export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
-  const { nodesTree, setSelectedNode, selectedNode } = useSchema() || {};
+  const { nodesTree, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
 
-  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
+  const isEdit = useMemo(() => selectedNode instanceof Node<Node.Properties>, [selectedNode]);
 
-  const type = useMemo(() => (selectedNode as Node<Node.Properties>), [selectedNode]);
+  const type = useMemo(() => selectedNode as Node<Node.Properties>, [selectedNode]);
 
   const { mutate: createType } = useCreateType(
     {
@@ -39,7 +39,7 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
         setSelectedNode(id);
       },
     },
-      isEdit ? type.id : undefined
+    isEdit ? type.id : undefined
   );
 
   const { mutate: mutateDelete } = useDeleteType(type?.id, {});
@@ -54,11 +54,17 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
     createType(
       isEdit
         ? ({
+            fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
+            fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
             parent_id: values.parent_id,
             name: values.name,
             color: values.color,
           } as ProjectNodeTypeSubmit)
-        : values
+        : {
+            fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
+            fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
+            ...values,
+          }
     );
 
     onCancel();
@@ -74,8 +80,8 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
     }
 
     return () => {
-      form.resetFields()
-    }
+      form.resetFields();
+    };
   }, [form, isEdit, selectedNode, type]);
 
   return (

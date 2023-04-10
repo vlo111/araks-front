@@ -80,10 +80,8 @@ export interface IProjectType {
   id: string;
   name: string;
   parent_id: string;
-  position?: {
-    x: number,
-    y: number
-  }
+  fx: number,
+  fy: number,
   properties: ITypeProperty[]
 }
 

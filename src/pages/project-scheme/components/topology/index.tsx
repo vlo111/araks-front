@@ -129,7 +129,11 @@ export const Topology: React.FC = () => {
           autoExpandParent
           blockNode
           defaultExpandAll
-          color={(params.selectedNode as Node<Node.Properties>)?.attr('body/stroke')}
+          color={
+            params.selectedNode === undefined || typeof params.selectedNode === 'string'
+              ? ''
+              : params.selectedNode.attr('body/stroke')
+          }
         />
       )}
     </TopologyPanelStyle>
