@@ -38,7 +38,8 @@ Graph.registerNode(
         filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.1))',
       },
       text: {
-        fontWeight: '600',
+        fontFamily: 'Rajdhani',
+        fontWeight: 600,
         fill: '#414141',
         fontSize: 12,
         refX: 6,

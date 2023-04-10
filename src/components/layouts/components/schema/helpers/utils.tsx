@@ -28,13 +28,7 @@ const insertAddProperty: InsertAddProperty = () => ({
   group: 'cell',
   attrs: {
     portBody: {
-      fill: {
-        type: 'linearGradient',
-        stops: [
-          { offset: '0%', color: `${antTheme.components.Schema.colorAddProperty}B3` },
-          { offset: '100%', color: `${antTheme.components.Schema.colorAddProperty}33` },
-        ],
-      },
+      fill: antTheme.components.Schema.colorAddProperty,
     },
     portNameLabel: {
       fill: antTheme.components.Schema.colorPropertyText,

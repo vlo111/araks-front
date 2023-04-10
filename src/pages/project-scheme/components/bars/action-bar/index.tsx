@@ -30,6 +30,7 @@ const ToolStyle = styled.div`
     border: 1px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(7px);
     border-radius: 4px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
     transition: width 0.2s ease, height 0.2s ease, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1),
       -webkit-transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
@@ -106,7 +107,7 @@ export const ActionBar: React.FC = () => {
           <div className="search-button" onClick={handleSearch}>
             <SearchSVG />
           </div>
-          <Input value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search"/>
         </div>
         <AddTypeSVG className="add-type" onClick={addType} />
         <AddLinkSVG className="add-link" onClick={() => setOpenAddLink(true)} />
