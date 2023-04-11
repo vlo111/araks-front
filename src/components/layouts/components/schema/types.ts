@@ -197,3 +197,10 @@ export type InsertAddProperty = () => IPort;
 export type OpenTypeModal = (param: OpenAddType) => void;
 
 export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void;
+
+export type SelectNodeWithZoom = (
+  id: string,
+  graph: Graph,
+  selectedNode: Node<Node.Properties> | undefined | string,
+  setSelectedNode: (item: SelectedNode | undefined) => void
+) => void;

@@ -8,13 +8,13 @@ import {
   INode,
   InsertAddProperty,
   IPort,
-  RemoveElement, SelectedNode,
-  SelectNode,
+  RemoveElement,
+  SelectNode, SelectNodeWithZoom,
   SetPropertyColor
 } from "../types";
-import { TypeSettingD } from "./svg/path-d";
-import { LINE_HEIGHT } from "../container/register/node";
-import { PATH } from "helpers/constants";
+import { TypeSettingD } from './svg/path-d';
+import { LINE_HEIGHT } from '../container/register/node';
+import { PATH } from 'helpers/constants';
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -47,7 +47,7 @@ const insertAddProperty: InsertAddProperty = () => ({
       fill: antTheme.components.Schema.colorPropertyText,
       text: '+ Add property',
     },
-    portTypeLabel: { text: '' }
+    portTypeLabel: { text: '' },
   },
 });
 
@@ -119,8 +119,8 @@ export const removeSelected: RemoveElement = (chart, element) => {
 
   type.removePort('connector');
 
-  type.attr('setting_path', undefined)
-  type.attr('setting_circle', undefined)
+  type.attr('setting_path', undefined);
+  type.attr('setting_circle', undefined);
 
   element.classList.remove('selected-node');
 };
@@ -166,7 +166,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
     },
   });
 
-  node.attr('setting_circle',  {
+  node.attr('setting_circle', {
     id: 'setting_circle',
     r: 12,
     cx: 128,
@@ -176,25 +176,21 @@ export const selectNode: SelectNode = (graph, container, node) => {
     cursor: 'pointer',
   });
 
-  node.attr('setting_path',  {
+  node.attr('setting_path', {
     id: 'setting_path',
     fill: '#414141',
     cursor: 'pointer',
     d: TypeSettingD,
-    transform: `matrix(1,0,0,1,${width - 30.1}, 12.8)`
+    transform: `matrix(1,0,0,1,${width - 30.1}, 12.8)`,
   });
-}
+};
 
-type SelectNodeWithZoom = (id: string, graph: Graph, selectedNode: Node<Node.Properties> | undefined | string, setSelectedNode : (item: SelectedNode | undefined) => void) => void;
-
-export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode , setSelectedNode) => {
-
+export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, setSelectedNode) => {
   if (id !== (selectedNode as Node<Node.Properties>)?.id) {
     const container: Element = Array.from(graph.view.stage.childNodes)
       .filter((n) => (n as Element).tagName === 'g')
       .find(
-        (n) =>
-          (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === id
+        (n) => (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === id
       ) as Element;
 
     const node = graph.getNodes().find((n) => n.id === id) as Node<Node.Properties>;
@@ -220,4 +216,4 @@ export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode ,
     /** reset graph height after fit on center */
     graph.options.height = graph.options.height + height;
   }
-}
+};
