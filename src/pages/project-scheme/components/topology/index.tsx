@@ -23,7 +23,7 @@ const TopologyPanelStyle = styled.div`
   position: fixed;
   left: 0;
   top: 152px;
-  width: 250px;
+  width: 300px;
   height: 100%;
   z-index: 2;
   background-color: rgb(247, 247, 247);

@@ -71,7 +71,7 @@ export const initGraph: InitGraph = (container, _params) => {
     container: container,
     panning: true,
     height: window.innerHeight - 152,
-    width: window.innerWidth - 250,
+    width: window.innerWidth - 300,
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,

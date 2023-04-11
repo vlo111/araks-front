@@ -10,13 +10,14 @@ import { AddTypePropertyModal } from './modals/add-type-property-modal';
 import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as SearchSVG } from './icons/search.svg';
 import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
+import { AutoComplete } from "antd";
 
 const ToolStyle = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  left: 280px;
+  left: 330px;
   top: 188px;
   z-index: 1;
 
@@ -37,13 +38,23 @@ const ToolStyle = styled.div`
     &.stretch {
       width: 400px;
 
-      .ant-input {
+      .ant-select {
+        position: absolute;
         visibility: initial;
+        width: 90%;
+        height: 100%;
+        left: 30px;
+        top: 0;
+      }
+      
+      .ant-input {
         background: none;
         border: none;
         height: 100%;
-        width: 90%;
-        top: 0;
+      }
+      
+      .ant-select-selector {
+        height: 100%;
       }
     }
 
@@ -55,14 +66,8 @@ const ToolStyle = styled.div`
       cursor: pointer;
     }
 
-    .ant-input {
+    .ant-select {
       visibility: hidden;
-      background: none;
-      border: none;
-      height: 100%;
-      width: 90%;
-      position: absolute;
-      left: 30px;
     }
 
     &:hover {
@@ -82,6 +87,32 @@ const ToolStyle = styled.div`
   }
 `;
 
+// const renderTitle = (title: string) => (
+//   <span>
+//     {title}
+//     <a style={{ float: 'right' }} href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
+//       more
+//     </a>
+//   </span>
+// );
+
+const renderItem = (title: string, count: number) => ({
+  value: title,
+  label: (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      {title}
+      <span>
+       {count}
+      </span>
+    </div>
+  ),
+});
+
 export const ActionBar: React.FC = () => {
   const { graph } = useSchema() || {};
 
@@ -96,8 +127,8 @@ export const ActionBar: React.FC = () => {
   };
 
   const handleSearch: VoidFunction = () => {
-    setSearch('');
-    setStretchSearch(!stretchSearch);
+    setStretchSearch(!stretchSearch)
+    setTimeout(() => setSearch(''), 0);
   };
 
   return (
@@ -107,7 +138,20 @@ export const ActionBar: React.FC = () => {
           <div className="search-button" onClick={handleSearch}>
             <SearchSVG />
           </div>
-          <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search"/>
+          {stretchSearch && <AutoComplete
+            popupClassName="certain-category-search-dropdown"
+            dropdownMatchSelectWidth={400}
+            dropdownStyle={{ left: 330, top: 228, backdropFilter: 'blur(7px)', background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)' }}
+            style={{ width: 400 }}
+            options={[
+              {
+                label: <span style={{fontWeight: 800, fontSize: 18, color: '#000000b5' }}>Node Types</span>,
+                options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
+              },
+            ]}
+          >
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search"/>
+          </AutoComplete>}
         </div>
         <AddTypeSVG className="add-type" onClick={addType} />
         <AddLinkSVG className="add-link" onClick={() => setOpenAddLink(true)} />

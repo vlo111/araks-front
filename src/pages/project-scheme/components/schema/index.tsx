@@ -8,7 +8,7 @@ type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 const Graph = styled.div`
   position: fixed;
-  left: 250px;
+  left: 300px;
   top: 152px;
   z-index: 0;
 `;
