@@ -71,3 +71,8 @@ export const screenSize = {
   xl: '1200px',
   xxl: '1600px',
 };
+
+export const PATH = {
+  NODE_COLOR: 'body/stroke',
+  NODE_TEXT: 'text/text',
+};

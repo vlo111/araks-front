@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { Node } from '@antv/x6';
 import { BoundingEvent, InitNodes, INode, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
-import { selectNode } from './events';
+import { selectNode } from "../../helpers/utils";
 
 const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkPropertyModal, nodes) => {
   /** This label is svg foreign object that is rendered on chart as edge property icon */
@@ -54,6 +54,7 @@ export const initNodes: InitNodes = (graph, cells, { setOpenLinkPropertyModal, s
     graph.resetCells(cells);
   }
 
+  /** The Type need to be selected after create a type */
   /** Set Select Type the last created type */
   if (typeof selectedNode === 'string') {
     setTimeout(() => {

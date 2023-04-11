@@ -6,8 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
-import { ITypeProperty } from '../../../../api/types';
-import { TreeNodeType } from '../../../../pages/data-sheet/types';
+import { IProjectType, ITypeProperty } from "../../../../api/types";
 
 export interface IStroke {
   type: string;
@@ -127,8 +126,8 @@ export interface SchemaContextType {
   setAddTypeModal: OpenTypeModal;
   setGraph: (item: Graph) => void;
   setAddPortModal: Dispatch<SetStateAction<PortModal>>;
-  setNodesTree: Dispatch<SetStateAction<TreeNodeType[]>>;
-  nodesTree: TreeNodeType[];
+  setNodes: Dispatch<SetStateAction<IProjectType[]>>;
+  nodes: IProjectType[];
   setSelectedNode: (item: SelectedNode | undefined) => void;
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
 }

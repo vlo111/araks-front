@@ -5,6 +5,7 @@ import { Options } from '@antv/x6/lib/graph/options';
 
 import Connecting = Options.Connecting;
 import { initEvents } from './events';
+import { PATH } from "helpers/constants";
 
 export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {
@@ -35,7 +36,7 @@ export const initGraph: InitGraph = (container, _params) => {
               d: '',
             },
             strokeDasharray: '5 5',
-            stroke: item.sourceCell.attr('body/stroke'),
+            stroke: item.sourceCell.attr(PATH.NODE_COLOR),
           },
         },
         zIndex: -1,

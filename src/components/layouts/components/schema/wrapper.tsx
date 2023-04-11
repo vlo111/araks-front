@@ -10,13 +10,13 @@ import {
   SchemaContextType,
   SelectedNode,
 } from './types';
-import { TreeNodeType } from '../../../../pages/data-sheet/types';
+import { IProjectType } from 'api/types';
 
 export const SchemaWrapper: React.FC = () => {
   const [graph, setGraph] = useState<Graph>();
   /** String Type ID. Set the selected type that was created */
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
-  const [nodesTree, setNodesTree] = useState<TreeNodeType[]>();
+  const [nodes, setNodes] = useState<IProjectType[]>();
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
   const [addTypeModal, openTypeModal] = useState<OpenAddType>();
@@ -34,18 +34,18 @@ export const SchemaWrapper: React.FC = () => {
     () => ({
       graph,
       selectedNode,
-      nodesTree,
+      nodes,
       addPortModal,
       addTypeModal,
       openLinkPropertyModal,
       setGraph,
       setSelectedNode,
-      setNodesTree,
+      setNodes,
       setAddTypeModal,
       setAddPortModal,
       setOpenLinkPropertyModal,
     }),
-    [graph, selectedNode, nodesTree, addPortModal, addTypeModal, openLinkPropertyModal, setAddTypeModal]
+    [graph, selectedNode, nodes, addPortModal, addTypeModal, openLinkPropertyModal, setAddTypeModal]
   );
 
   return <Outlet context={context} />;

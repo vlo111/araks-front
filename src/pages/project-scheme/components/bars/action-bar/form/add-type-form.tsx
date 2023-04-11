@@ -15,6 +15,8 @@ import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/type/use-create-types';
 import { SelectColor } from '../components/select/select-color';
 import { useDeleteType } from 'api/schema/type/use-delete-type';
+import { createNodesTree } from "components/layouts/components/data-sheet/utils";
+import { PATH } from "helpers/constants";
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -27,7 +29,7 @@ type Props = {
 };
 
 export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
-  const { nodesTree, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
+  const { nodes, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
 
   const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
 
@@ -73,8 +75,8 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
   useEffect(() => {
     if (isEdit) {
       form.setFieldsValue({
-        name: type.attr('text/text'),
-        color: type.attr('body/stroke'),
+        name: type.attr(PATH.NODE_TEXT),
+        color: type.attr(PATH.NODE_COLOR),
         parent_id: type.attr('parentId'),
       });
     }
@@ -113,7 +115,7 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
         </FormItem>
         <FormItem name="parent_id">
           <TreeSelect
-            treeData={nodesTree}
+            treeData={createNodesTree(nodes)}
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}

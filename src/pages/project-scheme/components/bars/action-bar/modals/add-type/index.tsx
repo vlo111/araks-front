@@ -4,6 +4,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import {Form, Modal} from 'antd';
 import { AddSchemaTypeForm } from '../../form/add-type-form';
 import {Node} from "@antv/x6";
+import { PATH } from "helpers/constants";
 
 export const AddTypeModal: React.FC = () => {
   const { addTypeModal, setAddTypeModal, selectedNode } = useSchema() || {};
@@ -21,8 +22,8 @@ export const AddTypeModal: React.FC = () => {
         form.resetFields();
       } else {
         form.setFieldsValue({
-          name: type.attr('text/text'),
-          color: type.attr('body/stroke'),
+          name: type.attr(PATH.NODE_TEXT),
+          color: type.attr(PATH.NODE_COLOR),
           parent_id: type.attr('parentId'),
         })
       }

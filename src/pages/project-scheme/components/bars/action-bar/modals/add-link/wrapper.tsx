@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { Select } from 'components/select';
 import { Button } from 'components/button';
+import { PATH } from "helpers/constants";
 
 const { Option } = Select;
 
@@ -28,16 +29,16 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
       id: Math.random().toString(),
       shape: 'er-edge',
       target: {
-        cell: nodes.find((n) => n.attr('text/text') === target)?.id ?? '',
+        cell: nodes.find((n) => n.attr(PATH.NODE_TEXT) === target)?.id ?? '',
       },
       source: {
-        cell: nodes.find((n) => n.attr('text/text') === source)?.id ?? '',
+        cell: nodes.find((n) => n.attr(PATH.NODE_TEXT) === source)?.id ?? '',
       },
       attrs: {
         line: {
           stroke: nodes
-              .find((n) => n.attr('text/text') === source)
-              ?.attr('body/stroke'),
+              .find((n) => n.attr(PATH.NODE_TEXT) === source)
+              ?.attr(PATH.NODE_COLOR),
           strokeWidth: 2,
         },
       },
@@ -56,7 +57,7 @@ export const AddLinkWrapper: React.FC<IAddLinkProps> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    setNodes(graph?.getNodes().map((n) => n.attr('text/text')));
+    setNodes(graph?.getNodes().map((n) => n.attr(PATH.NODE_TEXT)));
   }, [graph]);
 
   return (
