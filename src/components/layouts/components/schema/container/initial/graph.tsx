@@ -1,4 +1,4 @@
-import { EdgeCreate, InitGraph } from '../../types';
+import { InitGraph } from '../../types';
 import { antTheme } from '../../../../../../helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
