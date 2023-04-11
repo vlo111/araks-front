@@ -8,7 +8,7 @@ Graph.registerPortLayout(
       return {
         position: {
           x: 0,
-          y: index === 0 ? (index + 1) * 40 : (index + 1) * LINE_HEIGHT + 10, // * 1.1
+          y: index === 0 ? (index + 1) * 40 : (index + 1) * LINE_HEIGHT + 10,
         },
         angle: 0,
       };

@@ -17,12 +17,6 @@ export const initGraph: InitGraph = (container, _params) => {
         direction: 'H',
       },
     },
-    validateEdge(item: EdgeCreate) {
-      // eslint-disable-next-line no-console
-      console.log(item);
-
-      return false;
-    },
     createEdge(item) {
       return this.createEdge({
         shape: 'er-edge',
