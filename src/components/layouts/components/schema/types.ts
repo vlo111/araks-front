@@ -39,7 +39,7 @@ interface IConnection {
 
 interface ILabel {
   name?: string;
-  markup: any;
+  markup: never;
   attrs: {
     fo: {
       width: number;

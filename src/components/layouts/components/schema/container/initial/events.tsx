@@ -1,5 +1,7 @@
 import { ElementStyle, InitEvents } from '../../types';
 import { removeSelected, selectNode } from "../../helpers/utils";
+import client from "../../../../../../api/client";
+import { TYPE_POSITION_UPDATE_URL } from "../../../../../../api/schema/type/use-update-types-position";
 
 export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode, setAddTypeModal }) => {
   graph.on('node:port:click', (event) => {
@@ -59,5 +61,12 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
       setAddTypeModal([event.x, event.y]);
     }
   });
+
+  graph.on('node:mouseup', (event) => {
+    client.put(`${process.env.REACT_APP_BASE_URL}${TYPE_POSITION_UPDATE_URL.replace(':id', event.node.id)}`, {
+      fx: event.x,
+      fy: event.y
+    })
+  })
 };
 
