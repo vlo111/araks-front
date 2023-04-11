@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddTypeModal } from './modals/add-type';
-import { AddLinkModal } from './modals/add-link/add-link';
 import { AddTypePropertyModal } from './modals/add-type-property-modal';
 import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
@@ -38,8 +37,6 @@ const ToolStyle = styled.div`
 export const ActionBar: React.FC = () => {
   const { graph } = useSchema() || {};
 
-  const [openAddLink, setOpenAddLink] = useState(false);
-
   const addType: VoidFunction = () => {
     graph.container.style.cursor = 'crosshair';
   };
@@ -49,10 +46,9 @@ export const ActionBar: React.FC = () => {
       <ToolStyle>
         <Search />
         <AddTypeSVG className="add-type" onClick={addType} />
-        <AddLinkSVG className="add-link" onClick={() => setOpenAddLink(true)} />
+        <AddLinkSVG className="add-link" onClick={() => {return;}} />
       </ToolStyle>
       <AddTypeModal />
-      <AddLinkModal openAddLink={openAddLink} setOpenAddLink={setOpenAddLink} />
       <AddTypePropertyModal />
     </>
   );
