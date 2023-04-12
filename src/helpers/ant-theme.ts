@@ -114,6 +114,14 @@ export const antTheme = {
         colorTextTertiary: 'rgba(0, 0, 0, 0.45)',
         colorBgContainerDisabled: '#ffffff',
       },
+      Schema: {
+        colorBg: "#f0f0f0",
+        colorDefaultProperty: "#F2F2F2",
+        colorAddProperty: "#ffffff",
+        colorPropertyText: "#808080",
+        colorGridThickness: "#DBDBDB",
+        colorGridLine: "#C3C3C3",
+      },
     },
     token: {
       colorError: '#cf000f',
@@ -131,7 +139,6 @@ export const antTheme = {
       fontSizeHeading2: 30,
       fontSizeHeading3: 24,
       lineHeightHeading3: 1.3,
-      
+
     },
   };
-  

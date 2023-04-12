@@ -9,6 +9,7 @@ import { HeaderSearch } from './components/header-search';
 import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
 import { DataSheetWrapper } from './components/data-sheet/wrapper';
+import { SchemaWrapper } from './components/schema/wrapper';
 import { stripTrailingSlash } from 'helpers/utils';
 
 const Layout = styled(LayoutComponent)`
@@ -41,6 +42,7 @@ const Tabs = styled(TabsComponent)`
   .ant-tabs-nav {
     box-shadow: 0px 10px 10px rgba(111, 111, 111, 0.16);
     margin-bottom: 0;
+    z-index: 2;
 
     &::before {
       border-color: transparent;
@@ -79,7 +81,6 @@ export const Overview = () => {
       {
         key: PATHS.PROJECT_SCHEME,
         label: 'Scheme',
-        disabled: true,
       },
       {
         key: PATHS.DATA_SHEET,
@@ -125,6 +126,7 @@ export const Overview = () => {
       <Content>
         <div className="overview-tabs">
           <Tabs
+            destroyInactiveTabPane
             defaultActiveKey={activeItem?.key}
             activeKey={activeItem?.key}
             type="card"
@@ -136,6 +138,7 @@ export const Overview = () => {
                 <div className="site-layout-content">
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
                   {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
+                  {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
                 </div>
               ),
             }))}

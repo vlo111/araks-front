@@ -1,13 +1,14 @@
-import { Spin } from 'antd';
-import { useGetProject } from 'api/projects/use-get-project';
-import { useParams } from 'react-router-dom';
+import { Space } from 'antd';
+import { Topology } from './components/topology';
+import { Toolbar } from './components/bars/tool-bar/wrapper';
+import { ActionBar } from './components/bars/action-bar';
+import { Schema } from './components/schema';
 
-export const ProjectScheme = () => {
-  const params = useParams();
-  const { isInitialLoading } = useGetProject({ id: params.id }, { enabled: !!params.id });
-  return (
-    <Spin spinning={isInitialLoading}>
-      <div>Project Scheme</div>
-    </Spin>
-  );
-};
+export const ProjectScheme = () => (
+  <Space>
+    <Topology />
+    <Schema />
+    <ActionBar />
+    <Toolbar />
+  </Space>
+);
