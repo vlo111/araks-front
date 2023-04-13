@@ -50,13 +50,8 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty(
-    {
-      onSuccess: ({ data }) => {
-        return;
-      },
-    },
-    addPortModal?.isUpdate ? addPortModal?.portId : undefined
+  const { mutate } = useCreateTypeProperty({},
+    addPortModal?.portId
   );
 
   const { mutate: mutateDelete } = useDeleteTypeProperty(addPortModal?.portId, {
@@ -74,7 +69,11 @@ export const AddSchemaTypePropertyForm = () => {
   };
 
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
-    mutate({
+    mutate(addPortModal?.isUpdate ? {
+      ...values,
+      project_type_id: type.id,
+      propertyId: addPortModal?.portId
+    } : {
       ...values,
       project_type_id: type.id,
     });

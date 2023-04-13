@@ -18,14 +18,18 @@ type Options = UseQueryOptions<ProjectNodeTypePropertySubmit, Error, ReturnData>
 export const useCreateTypeProperty = (options: Options, nodeTypePropertyId?: string) => {
   const params = useParams();
   const queryClient = useQueryClient();
-  const url = nodeTypePropertyId
-    ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', nodeTypePropertyId || '')
-    : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
-  const mutation = useMutation<ReturnData, unknown, ProjectNodeTypePropertySubmit>({
+  const mutation = useMutation<ReturnData, unknown, ProjectNodeTypePropertySubmit >({
     mutationFn: (values: ProjectNodeTypePropertySubmit) => {
-      const type = nodeTypePropertyId ? RequestTypes.Put : RequestTypes.Post;
+      const type = values.propertyId ? RequestTypes.Put : RequestTypes.Post;
+
+      const url = values.propertyId
+        ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', values.propertyId || '')
+        : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
+
+      const { propertyId, ...data } = values
+
       const body = {
-        ...values,
+        ...data,
         project_id: params.id,
       };
       return client[type](url, body);
