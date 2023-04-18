@@ -205,7 +205,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
 
 export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, setSelectedNode) => {
   if (id !== (selectedNode as Node<Node.Properties>)?.id) {
-    animateGraphFit(graph);
+    animateGraphFit(graph, '0.4s');
 
     const container: Element = Array.from(graph.view.stage.childNodes)
       .filter((n) => (n as Element).tagName === 'g')
@@ -238,9 +238,9 @@ export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, 
   }
 };
 
-export const animateGraphFit: (graph: Graph) => void = (graph) => {
+export const animateGraphFit: (graph: Graph, sec: string) => void = (graph, sec) => {
   const stage = graph.view.stage.parentElement as HTMLElement;
-  stage.style.transitionDuration = '0.4s';
+  stage.style.transitionDuration = sec;
   setTimeout(() => {
     stage.style.transitionDuration = '0s';
   }, 10);
