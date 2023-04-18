@@ -1,4 +1,4 @@
-import { Cell, Graph, Node } from '@antv/x6';
+import { Cell, Graph, Node } from "@antv/x6";
 import { IProjectType } from 'api/types';
 import { antTheme } from 'helpers/ant-theme';
 import {
@@ -16,6 +16,7 @@ import {
 import { TypeSettingD } from './svg/path-d';
 import { LINE_HEIGHT } from '../container/register/node';
 import { PATH } from 'helpers/constants';
+import { GridLayout } from "@antv/layout";
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -60,6 +61,22 @@ const insertAddProperty: InsertAddProperty = () => ({
 export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
   const cells: Cell[] = [];
 
+  const data = {
+    nodes: nodesList,
+    edges: [],
+  }
+
+  const dagreLayout = new GridLayout({
+    type: 'grid',
+    nodeSize: [200, 300],
+    cols: 7,
+    rows: 10,
+    width: window.innerWidth - 400,
+    height: window.innerHeight - 400
+  })
+
+  dagreLayout.layout(data)
+
   for (const node of nodesList) {
     let formattedNode: INode = {} as INode;
     const formattedProperties: IPort[] = [];
@@ -95,8 +112,8 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
       shape: 'er-rect',
       label: node.name,
       position: {
-        x: node?.fx ?? Math.random() * (1000 - -600) + -600,
-        y: node?.fy ?? Math.random() * (350 - -250) + -250,
+        x: node.x ?? node.fx,
+        y: node.y ?? node.fy,
       },
       attrs: {
         body: {

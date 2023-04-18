@@ -82,6 +82,8 @@ export interface IProjectType {
   parent_id: string;
   fx: number,
   fy: number,
+  x?: number,
+  y?: number,
   properties: ITypeProperty[]
 }
 
