@@ -7,6 +7,7 @@ import { ZoomIn } from './zoom-in';
 import { ZoomOut } from './zoom-out';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { LINE_HEIGHT } from 'components/layouts/components/schema/container/register/node';
+import { animateGraphFit } from '../../../../../components/layouts/components/schema/helpers/utils';
 
 const ToolbarPanel = styled.div`
   position: fixed;
@@ -80,13 +81,15 @@ export const Toolbar: React.FC = () => {
   const { graph, selectedNode } = useSchema() || {};
 
   const onCenterContent = useCallback(() => {
-    graph.centerContent();
+    animateGraphFit(graph);
     graph.zoomToFit({ padding: 10, maxScale: 1 });
   }, [graph]);
 
   const onCenterType = useCallback(() => {
     if (typeof selectedNode !== 'string' && selectedNode !== undefined) {
       /** calculate height of type before fit on center */
+      animateGraphFit(graph);
+
       graph.zoom(0.5, {
         minScale: 2,
         maxScale: 2,

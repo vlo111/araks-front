@@ -2,6 +2,7 @@ import { InitGraph } from '../../types';
 import { antTheme } from '../../../../../../helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
+import { Snapline } from '@antv/x6-plugin-snapline'
 
 import Connecting = Options.Connecting;
 import { initEvents } from './events';
@@ -77,7 +78,13 @@ export const initGraph: InitGraph = (container, _params) => {
 
   initEvents(graph, _params);
 
-  graph.zoomToFit({ padding: 10, maxScale: 1 });
+  graph.use(
+    new Snapline({
+      enabled:true,
+      sharp: true,
+      tolerance: 20,
+    }),
+  )
 
   return graph;
 };

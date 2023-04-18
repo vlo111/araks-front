@@ -9,9 +9,10 @@ import {
   InsertAddProperty,
   IPort,
   RemoveElement,
-  SelectNode, SelectNodeWithZoom,
-  SetPropertyColor
-} from "../types";
+  SelectNode,
+  SelectNodeWithZoom,
+  SetPropertyColor,
+} from '../types';
 import { TypeSettingD } from './svg/path-d';
 import { LINE_HEIGHT } from '../container/register/node';
 import { PATH } from 'helpers/constants';
@@ -94,8 +95,8 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
       shape: 'er-rect',
       label: node.name,
       position: {
-        x: node?.fx - 130 ?? Math.random() * (1000 - -600) + -600,
-        y: node?.fy - 20 ?? Math.random() * (350 - -250) + -250,
+        x: node?.fx ?? Math.random() * (1000 - -600) + -600,
+        y: node?.fy ?? Math.random() * (350 - -250) + -250,
       },
       attrs: {
         body: {
@@ -187,6 +188,8 @@ export const selectNode: SelectNode = (graph, container, node) => {
 
 export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, setSelectedNode) => {
   if (id !== (selectedNode as Node<Node.Properties>)?.id) {
+    animateGraphFit(graph);
+
     const container: Element = Array.from(graph.view.stage.childNodes)
       .filter((n) => (n as Element).tagName === 'g')
       .find(
@@ -216,4 +219,12 @@ export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, 
     /** reset graph height after fit on center */
     graph.options.height = graph.options.height + height;
   }
+};
+
+export const animateGraphFit: (graph: Graph) => void = (graph) => {
+  const stage = graph.view.stage.parentElement as HTMLElement;
+  stage.style.transitionDuration = '0.4s';
+  setTimeout(() => {
+    stage.style.transitionDuration = '0s';
+  }, 10);
 };

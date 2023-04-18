@@ -52,6 +52,8 @@ export const initNodes: InitNodes = (graph, cells, { setOpenLinkPropertyModal, s
     graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args, setOpenLinkPropertyModal, []);
 
     graph.resetCells(cells);
+
+    graph.zoomToFit({ padding: 10, maxScale: 1 });
   }
 
   /** The Type need to be selected after create a type */
