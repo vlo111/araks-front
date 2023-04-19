@@ -15,6 +15,8 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropertyBasicDetails } from './property/property-basic-details';
+import { PropertyConnectionDetails } from './property/property-connection-details';
+import { Checkbox } from 'components/checkbox';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -109,6 +111,17 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
           <PropertyDataTypeSelect />
         </FormItem>
         <PropertyBasicDetails />
+        <PropertyConnectionDetails />
+        <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
+          <Checkbox>
+            <Space>
+              Multiple
+              <Tooltip title="Useful information" placement="right">
+                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+              </Tooltip>
+            </Space>
+          </Checkbox>
+        </FormItem>
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

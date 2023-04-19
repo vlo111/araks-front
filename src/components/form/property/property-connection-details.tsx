@@ -1,9 +1,66 @@
-import { Form } from "antd";
+import { InfoCircleFilled } from '@ant-design/icons';
+import { Form, Space, Tooltip, TreeSelect } from 'antd';
+import { Checkbox } from 'components/checkbox';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useEffect, useState } from 'react';
+import { FormItem } from '../form-item';
 
 export const PropertyConnectionDetails = () => {
-    const dataType = Form.useWatch('ref_property_type_id');
+  const [hasNodeType, setHasNodeType] = useState(false);
+  const form = Form.useFormInstance();
+  const dataType = Form.useWatch('ref_property_type_id');
+  const { nodesList, parentId, nodeTypeId } = useDataSheetWrapper();
 
-    return <>{dataType && <>
-    
-    </>}</>
-}
+  useEffect(() => {
+    if (nodeTypeId) {
+      form.setFieldValue('source_id', nodeTypeId);
+      setHasNodeType(true);
+    }
+  }, [form, nodeTypeId]);
+
+  return (
+    <>
+      {dataType === 'connection' && (
+        <>
+          <FormItem name="source_id" label="Source" rules={[{ required: true, message: 'Source is required' }]}>
+            <TreeSelect
+              disabled={hasNodeType}
+              treeData={nodesList}
+              showSearch
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="Please select"
+              allowClear
+              treeDefaultExpandAll
+              fieldNames={{ value: 'key' }}
+              value={parentId}
+            />
+          </FormItem>
+          <FormItem name="target_id" label="Target" rules={[{ required: true, message: 'Target is required' }]}>
+            <TreeSelect
+              treeData={nodesList}
+              showSearch
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="Please select"
+              allowClear
+              treeDefaultExpandAll
+              fieldNames={{ value: 'key' }}
+              value={parentId}
+            />
+          </FormItem>
+          <FormItem name="required_type" valuePropName="checked" initialValue={false}>
+            <Checkbox>
+              <Space>
+                Inverse
+                <Tooltip title="Useful information" placement="right">
+                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+                </Tooltip>
+              </Space>
+            </Checkbox>
+          </FormItem>
+        </>
+      )}
+    </>
+  );
+};

@@ -20,16 +20,6 @@ export const PropertyBasicDetails = () => {
               </Space>
             </Checkbox>
           </FormItem>
-          <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
-            <Checkbox>
-              <Space>
-                Multiple
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
-              </Space>
-            </Checkbox>
-          </FormItem>
           <FormItem name="unique_type" valuePropName="checked" initialValue={false}>
             <Checkbox>
               <Space>
