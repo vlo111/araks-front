@@ -65,6 +65,30 @@ export type ProjectTreeReturnData = {
   parent_id: string;
 };
 
+export interface ITypeProperty {
+  id: string
+  name: string;
+  multiple_type: string;
+  unique_type: boolean;
+  required_type: boolean;
+  default_proprty: boolean;
+  ref_property_type_id: string;
+}
+
+export interface IProjectType {
+  color: string;
+  id: string;
+  name: string;
+  parent_id: string;
+  fx: number,
+  fy: number,
+  properties: ITypeProperty[]
+}
+
+export interface IProjectTypeData extends ProjectFullInfo{
+  projectsNodeTypes: IProjectType[]
+}
+
 export type ProjectTypePropertyReturnData = {
   created_at: string;
   default_proprty: boolean;

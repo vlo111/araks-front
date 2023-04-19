@@ -6,6 +6,7 @@ export type ProjectNodeTypePropertySubmit = {
     multiple_type: boolean;
     required_type: boolean;
     ref_property_type_id: string;
+    propertyId?: string
 }
 
 export type ProjectNodeTypeResponse = {
