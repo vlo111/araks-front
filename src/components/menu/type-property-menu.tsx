@@ -2,12 +2,14 @@ import styled from 'styled-components';
 import { Menu as MenuComponent, MenuProps } from 'antd';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
+import { ReactComponent as SetAsDefault } from 'components/icons/set-as-default.svg';
 import { MenuText } from 'components/typography';
 import { DeleteTypePropertyModal } from 'components/modal/delete-type-property-modal';
 
 import './index.css';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
+import { COLORS } from 'helpers/constants';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -16,22 +18,25 @@ export enum FolderType {
   all,
 }
 
-const menuItems = (isDefault: boolean) =>
+const menuItems = (isDefault: boolean, propertyType: string) =>
   [
+    {
+      key: 'default',
+      icon: <SetAsDefault />,
+      label: <MenuText>Set as default property</MenuText>,
+      disabled: isDefault || propertyType !== 'text',
+    },
     {
       key: 'edit',
       icon: <Edit />,
       label: <MenuText>Edit</MenuText>,
     },
-    ...(!isDefault
-      ? [
-          {
-            key: 'delete',
-            icon: <Delete />,
-            label: <MenuText>Delete</MenuText>,
-          },
-        ]
-      : []),
+    {
+      key: 'delete',
+      icon: <Delete />,
+      label: <MenuText>Delete</MenuText>,
+      disabled: isDefault,
+    },
   ] as MenuItem[];
 
 const Menu = styled(MenuComponent)`
@@ -39,6 +44,10 @@ const Menu = styled(MenuComponent)`
 
   &&.ant-menu-vertical {
     border-inline-end: none;
+  }
+
+  .ant-menu-title-content .ant-typography {
+    color: ${COLORS.PRIMARY.BLUE};
   }
 
   .ant-menu-submenu .ant-menu-submenu-title,
@@ -52,15 +61,26 @@ const Menu = styled(MenuComponent)`
       border: 1px solid #ffffff;
       transition: transform 0.15s;
     }
+
+    &.ant-menu-item-disabled {
+      .ant-menu-title-content .ant-typography {
+        color: ${COLORS.PRIMARY.GRAY};
+      }
+
+      svg path {
+        fill: ${COLORS.PRIMARY.GRAY};
+      }
+    }
   }
 `;
 
 type Props = {
   propertyId: string;
   isDefault: boolean;
+  propertyType: string;
 };
 
-export const TypePropertyMenu = ({ propertyId, isDefault }: Props) => {
+export const TypePropertyMenu = ({ propertyId, isDefault, propertyType }: Props) => {
   const { dispatch } = useTypeProperty();
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
@@ -76,7 +96,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault }: Props) => {
       <Menu
         style={{ width: 256 }}
         mode="vertical"
-        items={menuItems(isDefault)}
+        items={menuItems(isDefault, propertyType)}
         forceSubMenuRender={false}
         onClick={onClick}
       />

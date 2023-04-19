@@ -11,10 +11,10 @@ import { PropertyDataTypeSelect } from 'components/select/property-data-type-sel
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
-import { Checkbox } from 'components/checkbox';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { PropertyBasicDetails } from './property/property-basic-details';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -108,36 +108,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
         >
           <PropertyDataTypeSelect />
         </FormItem>
-        <FormItem name="required_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Required
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Multiple
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem name="unique_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Set field as unique
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
+        <PropertyBasicDetails />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

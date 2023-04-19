@@ -24,6 +24,7 @@ export const useColumns = () => {
         <ManageTypeProperty
           propertyId={item.id}
           isDefault={item.default_proprty}
+          propertyType={item.ref_property_type_id}
         >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
       ),
       width: 200,
