@@ -21,7 +21,10 @@ export const useColumns = () => {
   const columns: ColumnsType<DataType> =
     data?.map((item) => ({
       title: (
-        <ManageTypeProperty propertyId={item.id}>{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
+        <ManageTypeProperty
+          propertyId={item.id}
+          isDefault={item.default_proprty}
+        >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
       ),
       width: 200,
       dataIndex: 'address',

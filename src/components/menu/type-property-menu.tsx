@@ -16,18 +16,23 @@ export enum FolderType {
   all,
 }
 
-const menuItems: MenuItem[] = [
-  {
-    key: 'edit',
-    icon: <Edit />,
-    label: <MenuText>Edit</MenuText>,
-  },
-  {
-    key: 'delete',
-    icon: <Delete />,
-    label: <MenuText>Delete</MenuText>,
-  },
-];
+const menuItems = (isDefault: boolean) =>
+  [
+    {
+      key: 'edit',
+      icon: <Edit />,
+      label: <MenuText>Edit</MenuText>,
+    },
+    ...(!isDefault
+      ? [
+          {
+            key: 'delete',
+            icon: <Delete />,
+            label: <MenuText>Delete</MenuText>,
+          },
+        ]
+      : []),
+  ] as MenuItem[];
 
 const Menu = styled(MenuComponent)`
   background-color: transparent;
@@ -52,9 +57,10 @@ const Menu = styled(MenuComponent)`
 
 type Props = {
   propertyId: string;
+  isDefault: boolean;
 };
 
-export const TypePropertyMenu = ({ propertyId }: Props) => {
+export const TypePropertyMenu = ({ propertyId, isDefault }: Props) => {
   const { dispatch } = useTypeProperty();
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
@@ -67,7 +73,13 @@ export const TypePropertyMenu = ({ propertyId }: Props) => {
 
   return (
     <>
-      <Menu style={{ width: 256 }} mode="vertical" items={menuItems} forceSubMenuRender={false} onClick={onClick} />
+      <Menu
+        style={{ width: 256 }}
+        mode="vertical"
+        items={menuItems(isDefault)}
+        forceSubMenuRender={false}
+        onClick={onClick}
+      />
       <DeleteTypePropertyModal id={propertyId} />
     </>
   );
