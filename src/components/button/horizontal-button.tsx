@@ -53,8 +53,6 @@ export const HorizontalButton = () => {
   useEffect(() => {
     setPosition(getTableHeadHeight());
   }, []);
-  // eslint-disable-next-line no-console
-  console.log('position', position);
 
   return !addTypeisOpened ? (
     <Wrapper onClick={handlePropertyAddClick} position={position}>

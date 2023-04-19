@@ -28,13 +28,14 @@ type Props = {
 export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
+
   const { mutate } = useCreateProjectNodeTypeProperty(
     {
       onSuccess: ({ data }) => {
         return;
       },
     },
-    isEdit ? state.typePropertyId : undefined
+    isEdit ? state.propertyId : undefined
   );
 
   useGetProjectNodeTypeProperty(state.propertyId, {
@@ -51,6 +52,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
     mutate({
       ...values,
+      propertyId: state.propertyId,
       project_type_id: nodeTypeId,
     });
     form.resetFields();
