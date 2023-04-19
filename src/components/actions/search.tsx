@@ -37,7 +37,7 @@ export const SearchAction = ({ isSearchActive, setSearchActive }: Props) => {
   return (
     <Wrapper className={`search-box ${isSearchActive ? 'active' : ''}`} style={{ width: '100%' }}>
       <Input
-        placeholder="input here"
+        placeholder="search"
         style={{ width: '90%' }}
         size="small"
         onChange={(e) => {

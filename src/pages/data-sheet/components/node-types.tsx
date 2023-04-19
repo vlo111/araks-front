@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton, Tree } from 'antd';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
@@ -21,6 +22,13 @@ const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
           background-color: transparent;
         }
       }
+
+      &.filter-node {
+        background-color: #ffaf2620;
+        .ant-badge-status-text {
+          color: red;
+        }
+      }
     }
 
     .ant-tree-treenode-selected {
@@ -36,10 +44,24 @@ const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
   }
 `;
 
+function filterTreeNodes(searchText: string, treeNode: any) {
+  // Return true if the node's name matches the search text
+  if (treeNode.name.toLowerCase().includes(searchText.toLowerCase())) {
+    return true;
+  }
+
+  // Recursively check the node's children
+  if (treeNode.children) {
+    return treeNode.children.some((child: any) => filterTreeNodes(searchText, child));
+  }
+
+  // If no match was found, return false
+  return false;
+}
+
 export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   const params = useParams();
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, filteredNodeTypes, searchText } =
-    useDataSheetWrapper();
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, searchText } = useDataSheetWrapper();
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
@@ -82,17 +104,21 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
   return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
-    <StyledTree
-      onSelect={onSelect}
-      switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
-      selectedKeys={[nodeTypeId]}
-      defaultExpandedKeys={[nodeTypeId]}
-      treeData={searchText ? filteredNodeTypes : nodesList}
-      autoExpandParent
-      blockNode
-      defaultExpandAll
-      style={!visible ? { display: 'none' } : {}}
-      color={color}
-    />
+    <>
+      {/* <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={onChange} /> */}
+      <StyledTree
+        onSelect={onSelect}
+        switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
+        selectedKeys={[nodeTypeId]}
+        defaultExpandedKeys={[nodeTypeId]}
+        treeData={nodesList}
+        autoExpandParent
+        blockNode
+        defaultExpandAll
+        style={!visible ? { display: 'none' } : {}}
+        color={color}
+        filterTreeNode={(node: any) => searchText && filterTreeNodes(searchText, node)}
+      />
+    </>
   );
 };
