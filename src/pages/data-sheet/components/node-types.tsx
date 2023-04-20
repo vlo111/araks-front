@@ -1,82 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Skeleton, Tree } from 'antd';
+import { Skeleton } from 'antd';
+import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import styled from 'styled-components';
 import { PropsSetState, TreeNodeType } from '../types';
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS } from 'helpers/constants';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import { Input } from 'components/input';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { SearchAction } from 'components/actions';
+import { filterTreeData } from '../utils';
+import { NodeTree } from 'components/tree/node-tree';
 
-const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
-  && {
-    background-color: transparent;
-
-    .ant-tree-treenode {
-      padding: 0 24px;
-
-      .ant-tree-node-content-wrapper {
-        &:hover {
-          background-color: transparent;
-        }
-      }
-
-      &.filter-node {
-        background-color: #ffaf2620;
-        .ant-badge-status-text {
-          color: red;
-        }
-      }
-    }
-
-    .ant-tree-treenode-selected {
-      background-color: ${(props) => `${props.color}20`};
-
-      .ant-tree-node-selected {
-        background-color: transparent;
-        .ant-badge-status-text {
-          font-weight: 700;
-        }
-      }
-    }
-  }
-`;
-
-function filterTreeData(data: TreeNodeType[], searchText: string): TreeNodeType[] {
-  return data
-    .map((node) => {
-      // Clone the node object to avoid modifying the original data
-      const clonedNode = { ...node };
-
-      if (clonedNode.name.toLowerCase().includes(searchText)) {
-        // The node matches the search text, so keep it and filter its children recursively
-        if (clonedNode.children) {
-          clonedNode.children = filterTreeData(clonedNode.children as TreeNodeType[], searchText);
-        }
-        return clonedNode;
-      } else if (clonedNode.children) {
-        // The node does not match the search text, so filter its children recursively
-        const filteredChildren = filterTreeData(clonedNode.children as TreeNodeType[], searchText);
-        if (filteredChildren.length > 0) {
-          clonedNode.children = filteredChildren;
-          return clonedNode;
-        }
-      }
-
-      // The node and its children do not match the search text, so exclude it from the filtered data
-      return null;
-    })
-    .filter((node) => node !== null) as TreeNodeType[];
-}
-
-export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
+export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>();
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
@@ -123,23 +63,35 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
     });
   };
 
-  function onSearch(event: React.ChangeEvent<HTMLInputElement>) {
-    const searchText = event.target.value.trim().toLowerCase();
+  const onSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const searchText = event.target.value.trim().toLowerCase();
 
-    clearTimeout(searchTimeoutRef.current);
-    searchTimeoutRef.current = setTimeout(() => {
-      const filteredData = filterTreeData(nodesList, searchText);
+      debounce(() => {
+        const filteredData = filterTreeData(nodesList, searchText);
+        setFilteredData(filteredData);
+      }, 500)();
+    },
+    [nodesList]
+  );
 
-      setFilteredData(filteredData);
-    }, 500);
-  }
+  const onClear = useCallback(() => {
+    setFilteredData(nodesList);
+  }, [nodesList]);
 
   return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
     <>
-      <Input.Search placeholder="Search" onChange={onSearch} />
-      <StyledTree
+      {searchVisible && (
+        <SearchAction
+          isSearchActive={searchVisible}
+          onClear={onClear}
+          onChange={onSearch}
+          setSearchActive={setSearchVisible}
+        />
+      )}
+      <NodeTree
         onSelect={onSelect}
         showSearch
         switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
@@ -151,7 +103,6 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
         defaultExpandAll
         style={!visible ? { display: 'none' } : {}}
         color={color}
-        // filterTreeNode={(node: any) => filterText && filterTreeNodes(filterText, node)}
       />
     </>
   );
