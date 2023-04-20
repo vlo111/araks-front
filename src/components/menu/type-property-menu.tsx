@@ -10,6 +10,7 @@ import './index.css';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { COLORS } from 'helpers/constants';
+import { useSetPropertyDefault } from 'api/project-node-type-property/use-set-property-default';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -82,11 +83,14 @@ type Props = {
 
 export const TypePropertyMenu = ({ propertyId, isDefault, propertyType }: Props) => {
   const { dispatch } = useTypeProperty();
+  const { mutate } = useSetPropertyDefault();
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
       dispatch({ type: TypePropertyActionKind.EDIT_TYPE_START, payload: { propertyId } });
     } else if (e.key === 'delete') {
       dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: { propertyId } });
+    } else if (e.key === 'default') {
+      mutate({ propertyId });
     }
     e.domEvent.stopPropagation();
   };
