@@ -21,8 +21,8 @@ export const useSetPropertyDefault = (options?: Options) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ReturnData, unknown, NodeTypePropertyDefault>({
-    mutationFn: (values: NodeTypePropertyDefault) => {
-      return client.put(URL_SET_PROPERTY_DEFAULT.replace(':id', values.propertyId));
+    mutationFn: ({ propertyId, nodeTypeId }: NodeTypePropertyDefault) => {
+      return client.put(URL_SET_PROPERTY_DEFAULT.replace(':id', propertyId), { project_type_id: nodeTypeId });
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([

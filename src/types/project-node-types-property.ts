@@ -25,4 +25,5 @@ export type ProjectNodeTypeResponse = {
 
 export type NodeTypePropertyDefault = {
   propertyId: string;
+  nodeTypeId: string;
 };
