@@ -12,7 +12,7 @@ export const PropertyBasicDetails = () => {
   const disableUnique = dataType !== PropertyTypes.Text;
   useEffect(() => {
     if (disableUnique) {
-      form.setFieldValue('unique_type', null);
+      form.setFieldValue('unique_type', false);
     }
   }, [disableUnique, form]);
   return (

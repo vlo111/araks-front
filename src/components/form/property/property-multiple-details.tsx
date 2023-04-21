@@ -12,7 +12,7 @@ export const PropertyMultipleDetails = () => {
   const disableMultiple = refPropertyType === PropertyTypes.RichText || refPropertyType === PropertyTypes.Boolean;
   useEffect(() => {
     if (disableMultiple) {
-      form.setFieldValue('multiple_type', null);
+      form.setFieldValue('multiple_type', false);
     }
   }, [disableMultiple, form]);
   return (
