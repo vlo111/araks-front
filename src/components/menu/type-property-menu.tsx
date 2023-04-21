@@ -20,13 +20,13 @@ export enum FolderType {
   all,
 }
 
-const menuItems = (isDefault: boolean, propertyType: string) =>
+const menuItems = (isDefault: boolean, canSetDefault: boolean) =>
   [
     {
       key: 'default',
       icon: <SetAsDefault />,
       label: <MenuText>Set as default property</MenuText>,
-      disabled: isDefault || propertyType !== 'text',
+      disabled: isDefault || !canSetDefault,
     },
     {
       key: 'edit',
@@ -79,10 +79,10 @@ const Menu = styled(MenuComponent)`
 type Props = {
   propertyId: string;
   isDefault: boolean;
-  propertyType: string;
+  canSetDefault: boolean;
 };
 
-export const TypePropertyMenu = ({ propertyId, isDefault, propertyType }: Props) => {
+export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault }: Props) => {
   const { dispatch } = useTypeProperty();
   const { nodeTypeId } = useDataSheetWrapper();
   const { mutate } = useSetPropertyDefault();
@@ -102,7 +102,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault, propertyType }: Props)
       <Menu
         style={{ width: 256 }}
         mode="vertical"
-        items={menuItems(isDefault, propertyType)}
+        items={menuItems(isDefault, canSetDefault)}
         forceSubMenuRender={false}
         onClick={onClick}
       />

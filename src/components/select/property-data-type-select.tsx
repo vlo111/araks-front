@@ -8,7 +8,7 @@ export const PropertyDataTypeSelect = (props: Partial<RefSelectProps>) => {
     <Select
       style={{ width: '100%' }}
       placeholder="Please select"
-      fieldNames={{ value: 'code' }}
+      fieldNames={{ value: 'code', label: 'name' }}
       options={data}
       {...props}
     />
