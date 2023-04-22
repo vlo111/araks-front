@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'antd';
 
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { AddSchemaTypePropertyForm } from '../../form/add-property-type-form';
+import { AddSchemaTypePropertyForm } from '../../form/add-property-type';
 
 // interface IPosition {
 //   left: number;
