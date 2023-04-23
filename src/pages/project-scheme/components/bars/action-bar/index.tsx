@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddTypeModal } from './modals/add-type';
-import { AddTypePropertyModal } from './modals/add-type-property-modal';
+import { AddTypePropertyModal } from './modals/add-type-property';
 import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
 import { Search } from './search';

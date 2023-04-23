@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useSchema } from '../../../../components/layouts/components/schema/wrapper';
-import { GET_TYPES, useGetTypes } from '../../../../api/schema/type/use-get-types';
-import { initNodes } from '../../../../components/layouts/components/schema/container/initial/nodes';
-import { formattedTypes } from "../../../../components/layouts/components/schema/helpers/utils";
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { GET_TYPES, useGetTypes } from 'api/schema/type/use-get-types';
+import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
+import { formattedTypes } from 'components/layouts/components/schema/helpers/utils';
 import { Skeleton } from 'antd';
 import { SecondaryText } from '../../../../components/typography';
-import { TreeView } from "./tree-view";
+import { TreeView } from './tree-view';
+import client from 'api/client';
 
 const TopologyPanelStyle = styled.div`
   display: flex;
@@ -39,10 +40,14 @@ export const Topology: React.FC = () => {
     },
     {
       enabled: !!id,
-      onSuccess: ({ data: { projectsNodeTypes } }) => {
+      onSuccess: async ({ data: { projectsNodeTypes } }) => {
+        /** Get edges for format and render with types  */
+        const { data: edges } = await client.get(`${process.env.REACT_APP_BASE_URL}node-edge-type/${id}`);
+
+        params.setEdges(edges);
         params.setNodes(projectsNodeTypes);
 
-        initNodes(graph, formattedTypes(graph, projectsNodeTypes), params);
+        initNodes(graph, formattedTypes(graph, projectsNodeTypes, edges), params);
       },
     }
   );
@@ -50,11 +55,7 @@ export const Topology: React.FC = () => {
   return (
     <TopologyPanelStyle>
       <NodeHeader>Schema vault</NodeHeader>
-      {isInitialLoading ? (
-        <Skeleton />
-      ) : (
-        <TreeView nodes={nodes} />
-      )}
+      {isInitialLoading ? <Skeleton /> : <TreeView nodes={nodes} />}
     </TopologyPanelStyle>
   );
 };

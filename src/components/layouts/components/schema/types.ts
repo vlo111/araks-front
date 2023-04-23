@@ -6,7 +6,10 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
-import { IProjectType, ITypeProperty } from "../../../../api/types";
+import { IProjectType, ITypeProperty } from '../../../../api/types';
+import { ProjectEdgeResponse } from '../../../../types/project-edge';
+import { AxiosResponse } from 'axios';
+import { FormInstance } from 'antd';
 
 export interface IStroke {
   type: string;
@@ -119,15 +122,17 @@ export type Graph = GraphX6;
 export interface SchemaContextType {
   graph: GraphX6;
   selectedNode: SelectedNode | string | undefined;
-
+  nodes: IProjectType[];
+  edges: ProjectEdgeResponse[];
   addPortModal: PortModal;
-  openLinkPropertyModal: LinkPropertyModal;
   addTypeModal: OpenAddType;
+  openLinkPropertyModal: LinkPropertyModal;
+
   setAddTypeModal: OpenTypeModal;
   setGraph: (item: Graph) => void;
   setAddPortModal: Dispatch<SetStateAction<PortModal>>;
   setNodes: Dispatch<SetStateAction<IProjectType[]>>;
-  nodes: IProjectType[];
+  setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
   setSelectedNode: (item: SelectedNode | undefined) => void;
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
 }
@@ -204,3 +209,16 @@ export type SelectNodeWithZoom = (
   selectedNode: Node<Node.Properties> | undefined | string,
   setSelectedNode: (item: SelectedNode | undefined) => void
 ) => void;
+
+export type PropsAddEdge = {
+  form: FormInstance;
+  onCancel: VoidFunction;
+};
+
+export type AddEdgeType = (item: ProjectEdgeResponse) => void;
+
+export type AddProperty = (
+  id: string,
+  name: string,
+  multiple: boolean
+) => Promise<AxiosResponse<{ id: string }, never>>;
