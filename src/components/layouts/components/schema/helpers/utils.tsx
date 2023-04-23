@@ -16,8 +16,7 @@ import {
 import { TypeSettingD } from './svg/path-d';
 import { LINE_HEIGHT } from '../container/register/node';
 import { PATH } from 'helpers/constants';
-import { GridLayout } from '@antv/layout';
-import { ProjectEdgeResponse } from '../../../../../types/project-edge';
+import { ProjectEdgeResponse } from 'types/project-edge';
 
 const setPropertyColor: SetPropertyColor = (property, color) => {
   const gradient = {
@@ -63,27 +62,32 @@ const insertAddProperty: InsertAddProperty = () => ({
 export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: ProjectEdgeResponse[]) => {
   const cells: Cell[] = [];
 
+  /** Set Grid layout if nodes have position 0 0 */
   /** TODO: Make edge for grid layout */
-  const data = {
-    nodes: nodesList,
-    edges: [],
-    // edges: edges.map(e => ({
-    //   id: e.id,
-    //   source: e.source_id,
-    //   target: e.target_id
-    // })),
-  };
+  /*
+  if (nodesList?.find((n) => n.fx === 0 && n.fy === 0)) {
+    const data = {
+      nodes: nodesList,
+      edges: [],
+      // edges: edges.map(e => ({
+      //   id: e.id,
+      //   source: e.source_id,
+      //   target: e.target_id
+      // })),
+    };
 
-  const dagreLayout = new GridLayout({
-    type: 'grid',
-    nodeSize: [200, 300],
-    cols: 7,
-    rows: 10,
-    width: window.innerWidth - 400,
-    height: window.innerHeight - 400,
-  });
+    const dagreLayout = new GridLayout({
+      type: 'grid',
+      nodeSize: [200, 300],
+      cols: 7,
+      rows: 10,
+      width: window.innerWidth - 400,
+      height: window.innerHeight - 400,
+    });
 
-  dagreLayout.layout(data);
+    dagreLayout.layout(data);
+  }
+  */
 
   for (const node of nodesList) {
     let formattedNode: INode = {} as INode;
@@ -138,8 +142,8 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
   }
 
   for (const edge of edges) {
-    const sourceColor = nodesList.find((n) => n.id === edge.source_id)?.color
-    const targetColor = nodesList.find((n) => n.id === edge.target_id)?.color
+    const sourceColor = nodesList.find((n) => n.id === edge.source_id)?.color;
+    const targetColor = nodesList.find((n) => n.id === edge.target_id)?.color;
     const formattedEdge = {
       id: edge.id,
       shape: 'er-edge',
@@ -157,15 +161,15 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
             type: 'linearGradient',
             stops: [
               { offset: '50%', color: `${sourceColor}` },
-              { offset: '50%', color: `${edge.properties.inverse ? targetColor : sourceColor}` }
-            ]
+              { offset: '50%', color: `${edge.properties.inverse ? targetColor : sourceColor}` },
+            ],
           },
           sourceMarker: {
-            fill: sourceColor
+            fill: sourceColor,
           },
           targetMarker: {
-            fill: targetColor
-          }
+            fill: targetColor,
+          },
         },
       },
     };
