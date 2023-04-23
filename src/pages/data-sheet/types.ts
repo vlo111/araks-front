@@ -3,7 +3,9 @@ import { ProjectTreeReturnData } from 'api/types';
 
 export type PropsSetState = {
   visible: boolean;
+  searchVisible?: boolean;
   setVisible: (value: boolean | ((prevVar: boolean) => boolean)) => void;
+  setSearchVisible: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 };
 
 export type TreeNodeType = ProjectTreeReturnData & DefaultOptionType;

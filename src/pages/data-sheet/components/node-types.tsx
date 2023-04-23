@@ -1,45 +1,23 @@
-import { Skeleton, Tree } from 'antd';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Skeleton } from 'antd';
+import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import styled from 'styled-components';
 import { PropsSetState, TreeNodeType } from '../types';
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS } from 'helpers/constants';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { useCallback, useEffect, useState } from 'react';
+import { SearchAction } from 'components/actions';
+import { filterTreeData } from '../utils';
+import { NodeTree } from 'components/tree/node-tree';
 
-const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
-  && {
-    background-color: transparent;
-
-    .ant-tree-treenode {
-      padding: 0 24px;
-
-      .ant-tree-node-content-wrapper {
-        &:hover {
-          background-color: transparent;
-        }
-      }
-    }
-
-    .ant-tree-treenode-selected {
-      background-color: ${(props) => `${props.color}20`};
-
-      .ant-tree-node-selected {
-        background-color: transparent;
-        .ant-badge-status-text {
-          font-weight: 700;
-        }
-      }
-    }
-  }
-`;
-
-export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
+export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, filteredNodeTypes, searchText } =
-    useDataSheetWrapper();
+  const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
@@ -70,6 +48,12 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
     }
   );
 
+  useEffect(() => {
+    if (nodesList && nodesList.length) {
+      setFilteredData(nodesList);
+    }
+  }, [nodesList]);
+
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     selectNodeType({
       titleText: e.node.name,
@@ -79,20 +63,47 @@ export const NodeTypes = ({ visible, setVisible }: PropsSetState) => {
     });
   };
 
+  const onSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const searchText = event.target.value.trim().toLowerCase();
+
+      debounce(() => {
+        const filteredData = filterTreeData(nodesList, searchText);
+        setFilteredData(filteredData);
+      }, 500)();
+    },
+    [nodesList]
+  );
+
+  const onClear = useCallback(() => {
+    setFilteredData(nodesList);
+  }, [nodesList]);
+
   return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
-    <StyledTree
-      onSelect={onSelect}
-      switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
-      selectedKeys={[nodeTypeId]}
-      defaultExpandedKeys={[nodeTypeId]}
-      treeData={searchText ? filteredNodeTypes : nodesList}
-      autoExpandParent
-      blockNode
-      defaultExpandAll
-      style={!visible ? { display: 'none' } : {}}
-      color={color}
-    />
+    <>
+      {searchVisible && (
+        <SearchAction
+          isSearchActive={searchVisible}
+          onClear={onClear}
+          onChange={onSearch}
+          setSearchActive={setSearchVisible}
+        />
+      )}
+      <NodeTree
+        onSelect={onSelect}
+        showSearch
+        switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
+        selectedKeys={[nodeTypeId]}
+        defaultExpandedKeys={[nodeTypeId]}
+        treeData={filteredData}
+        autoExpandParent
+        blockNode
+        defaultExpandAll
+        style={!visible ? { display: 'none' } : {}}
+        color={color}
+      />
+    </>
   );
 };

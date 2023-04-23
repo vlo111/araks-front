@@ -21,7 +21,7 @@ export const TableSection = () => {
   // document.getElementById("container").scrollLeft += 200;
 
   return (
-    <div id="container" style={{ overflow: 'hidden', width: '100%', height: getTableHeight, position: 'relative' }}>
+    <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
       <VerticalButton />
       <HorizontalButton />
       <Table id="node-table" size="large" dataSource={dataSource} columns={columnsAndAction} pagination={false} />

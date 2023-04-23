@@ -9,9 +9,11 @@ import React, { useCallback, useMemo } from 'react';
 
 type Props = PopoverProps & {
   propertyId: string;
+  isDefault: boolean;
+  canSetDefault: boolean;
 };
 
-export const ManageTypeProperty = React.memo(({ children, propertyId, ...props }: Props) => {
+export const ManageTypeProperty = React.memo(({ children, propertyId, isDefault, canSetDefault, ...props }: Props) => {
   const {
     state: { manageTypeisOpened, propertyId: editPropertyId, editTypeisOpened },
     dispatch,
@@ -34,7 +36,7 @@ export const ManageTypeProperty = React.memo(({ children, propertyId, ...props }
   return (
     <>
       <ManageNodeTypePopover
-        content={<TypePropertyMenu propertyId={propertyId} />}
+        content={<TypePropertyMenu isDefault={isDefault} propertyId={propertyId} canSetDefault={canSetDefault} />}
         open={isOpened}
         trigger="click"
         onOpenChange={(open: boolean) => {
