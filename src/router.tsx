@@ -13,6 +13,7 @@ import { PublicRoutes } from './components/routes/public-route';
 import { PATHS } from './helpers/constants';
 import { Projects } from './pages/projects';
 import { SignIn } from './pages/sign-in';
+import { Profile } from './pages/profile';
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PUBLIC,
             element: <Public />,
+          },
+          {
+            path: PATHS.PROFILE,
+            element: <Profile />,
           },
         ],
       },

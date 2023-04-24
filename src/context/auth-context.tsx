@@ -1,10 +1,11 @@
 import { AUTH_KEYS } from 'helpers/constants';
 import { useLocalStorage } from 'hooks/use-local-storage';
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, Dispatch, SetStateAction, useCallback, useContext, useMemo, useState } from 'react';
 import { User, UserDetails } from 'types/auth';
 
 interface AuthContextType {
   user: UserDetails | null;
+  setUser: Dispatch<SetStateAction<UserDetails | null>>;
   login: (user: User | null) => void;
   logout: () => void;
 }
@@ -15,6 +16,9 @@ type AuthProviderProps = {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
+  setUser: () => {
+    return;
+  },
   login: () => {
     return;
   },
@@ -62,7 +66,7 @@ function AuthProvider(props: AuthProviderProps) {
     removeUser();
   }, [removeUser]);
 
-  const providerValues = useMemo(() => ({ user, login, logout }), [login, logout, user]);
+  const providerValues = useMemo(() => ({ user, login, logout, setUser }), [login, logout, user]);
   return <AuthContext.Provider value={providerValues} {...props} />;
 }
 

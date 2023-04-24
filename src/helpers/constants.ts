@@ -3,6 +3,7 @@ export const PATHS = {
   UI: '/ui',
   SIGN_IN: '/sign-in',
   PROJECTS: '/projects',
+  PROFILE: '/profile',
   PROJECT_OVERVIEW: '/projects/:id',
   PROJECT_UPDATE: '/projects/update/:id',
   PROJECT_CREATE: '/projects/create',
