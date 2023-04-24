@@ -1,18 +1,17 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { Form, Modal } from 'antd';
 import { AddSchemaEdgeForm } from '../form/add-edge';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 
-type Props = React.FC<{ open: boolean; cancel: Dispatch<SetStateAction<boolean>> }>;
-
-export const AddEdgeModal: Props = ({ open, cancel }) => {
+export const AddEdgeModal: React.FC = () => {
   const [form] = Form.useForm();
+  const { addLinkModal, setAddLinkModal } = useSchema() || {};
 
   const props = {
     centered: true,
-    open: open,
+    open: addLinkModal !== undefined,
     onCancel: () => {
-      cancel(false);
-
+      setAddLinkModal(undefined);
       form.resetFields();
     },
     footer: false,

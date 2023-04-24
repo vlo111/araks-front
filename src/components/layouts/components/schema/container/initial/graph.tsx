@@ -2,11 +2,11 @@ import { InitGraph } from '../../types';
 import { antTheme } from '../../../../../../helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
-import { Snapline } from '@antv/x6-plugin-snapline'
+import { Snapline } from '@antv/x6-plugin-snapline';
 
 import Connecting = Options.Connecting;
 import { initEvents } from './events';
-import { PATH } from "helpers/constants";
+import { PATH } from 'helpers/constants';
 
 export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {
@@ -26,6 +26,7 @@ export const initGraph: InitGraph = (container, _params) => {
         },
         attrs: {
           line: {
+            creator: true,
             sourceMarker: {
               name: 'path',
               d: '',
@@ -36,6 +37,15 @@ export const initGraph: InitGraph = (container, _params) => {
         },
         zIndex: -1,
       });
+    },
+    validateEdge: ({ edge: { source, target } }) => {
+      if ("cell" in source && "cell" in target) {
+        _params.setAddLinkModal({
+          source: source.cell as string,
+          target: target.cell as string
+        })
+      }
+      return false
     },
   };
 
@@ -80,11 +90,11 @@ export const initGraph: InitGraph = (container, _params) => {
 
   graph.use(
     new Snapline({
-      enabled:true,
+      enabled: true,
       sharp: true,
       tolerance: 20,
-    }),
-  )
+    })
+  );
 
   return graph;
 };

@@ -28,13 +28,27 @@ Graph.registerConnector(
         y: target.y - offset - control,
       };
     }
-    return Path.normalize(
-      `M ${source.x + offsetX} ${source.y}
+
+    if (e.sourceView?.cell.id === e.targetView?.cell.id) {
+
+      const targetX = target.x - 158;
+
+      return Path.normalize(
+          `M ${source.x - 5} ${source.y}
+       L ${source.x} ${source.y + offset}
+       C ${source.x-15} ${source.y} ${targetX - 15} ${target.y} ${targetX} ${target.y}
+       L ${targetX} ${target.y}
+      `
+      );
+    } else {
+      return Path.normalize(
+        `M ${source.x + offsetX} ${source.y}
        L ${source.x} ${source.y + offset}
        C ${v1.x} ${v1.y} ${v2.x} ${v2.y} ${target.x} ${target.y - offset}
        L ${target.x - offsetX} ${target.y}
       `
-    );
+      );
+    }
   },
   true
 );

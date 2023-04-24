@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { GET_TYPES, useGetTypes } from 'api/schema/type/use-get-types';
 import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
-import { formattedTypes } from 'components/layouts/components/schema/helpers/utils';
 import { Skeleton } from 'antd';
 import { SecondaryText } from '../../../../components/typography';
 import { TreeView } from './tree-view';
 import client from 'api/client';
+import { formattedTypes } from 'components/layouts/components/schema/helpers/format-type';
 
 const TopologyPanelStyle = styled.div`
   display: flex;

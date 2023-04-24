@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddTypeModal } from './modals/add-type';
@@ -7,6 +7,7 @@ import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
 import { Search } from './search';
 import { AddEdgeModal } from './modals/add-edge';
+import { AddEdgePropertyModal } from './modals/add-edge-property/modal';
 
 const ToolStyle = styled.div`
   position: fixed;
@@ -36,17 +37,17 @@ const ToolStyle = styled.div`
 `;
 
 export const ActionBar: React.FC = () => {
-  const { graph } = useSchema() || {};
-  const [openLinkModal, setOpenLinkModal] = useState(false);
+  const { graph, setAddLinkModal } = useSchema() || {};
 
   return (
     <>
       <ToolStyle>
         <Search />
         <AddTypeSVG className="add-type" onClick={() => (graph.container.style.cursor = 'crosshair')} />
-        <AddLinkSVG className="add-link" onClick={() => setOpenLinkModal(!openLinkModal)} />
+        <AddLinkSVG className="add-link" onClick={() => setAddLinkModal(true)} />
       </ToolStyle>
-      <AddEdgeModal open={openLinkModal} cancel={setOpenLinkModal} />
+      <AddEdgeModal />
+      <AddEdgePropertyModal />
       <AddTypeModal />
       <AddTypePropertyModal />
     </>

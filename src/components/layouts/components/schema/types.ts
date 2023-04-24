@@ -1,7 +1,6 @@
 import { Graph as GraphX6, Node, Edge, Cell } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
-import OnEdgeLabelRenderedArgs = Options.OnEdgeLabelRenderedArgs;
 import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
@@ -113,9 +112,11 @@ export type PortModal =
 
 export type SelectedNode = Node<Node.Properties> | string | undefined;
 
-export type LinkPropertyModal = undefined | { x: number; y: number; color: string[] };
+export type LinkPropertyModal = undefined | { open: boolean; x?: number; y?: number; color?: string[] };
 
 export type OpenAddType = undefined | number[];
+
+export type AddLinkModal = undefined | boolean | { source: string; target: string };
 
 export type Graph = GraphX6;
 
@@ -126,15 +127,17 @@ export interface SchemaContextType {
   edges: ProjectEdgeResponse[];
   addPortModal: PortModal;
   addTypeModal: OpenAddType;
+  addLinkModal: AddLinkModal;
   openLinkPropertyModal: LinkPropertyModal;
 
   setAddTypeModal: OpenTypeModal;
   setGraph: (item: Graph) => void;
   setAddPortModal: Dispatch<SetStateAction<PortModal>>;
+  setAddLinkModal: Dispatch<SetStateAction<AddLinkModal>>;
+  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
   setNodes: Dispatch<SetStateAction<IProjectType[]>>;
   setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
   setSelectedNode: (item: SelectedNode | undefined) => void;
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
 }
 
 export interface ClientRect {
@@ -151,9 +154,9 @@ export type BoundingEvent = EventTarget & {
 };
 
 export type OnEdgeLabelRendered = (
-  args: OnEdgeLabelRenderedArgs,
+  args: Options.OnEdgeLabelRenderedArgs,
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
-  nodes: INode[]
+  nodes: Node<Node.Properties>[]
 ) => void;
 
 export interface EdgeCreate {
@@ -169,6 +172,7 @@ export type PickSchemaContextType = Pick<
   | 'selectedNode'
   | 'addTypeModal'
   | 'setAddPortModal'
+  | 'setAddLinkModal'
   | 'setSelectedNode'
   | 'setAddTypeModal'
   | 'setOpenLinkPropertyModal'
@@ -222,3 +226,5 @@ export type AddProperty = (
   name: string,
   multiple: boolean
 ) => Promise<AxiosResponse<{ id: string }, never>>;
+
+export type GetTypeColors = (edge: Edge<Properties>) => string[];

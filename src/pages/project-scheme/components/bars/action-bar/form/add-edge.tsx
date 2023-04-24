@@ -26,7 +26,7 @@ const AddEdge = styled.div`
 export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
   const params = useParams();
 
-  const { nodes, graph } = useSchema() || {};
+  const { nodes, graph, addLinkModal } = useSchema() || {};
 
   const { mutate: createEdge } = useCreateEdge();
 
@@ -100,19 +100,27 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
   };
 
   useEffect(() => {
-    /** TODO: Edit Edge Form Field */
-    // form.setFieldsValue({
-    //   name: 'working for',
-    //   source: nodes[0].name,
-    //   target: nodes[1].name,
-    //   inverse: true,
-    //   multiple: true,
-    // });
+    if (typeof addLinkModal !== 'boolean' && addLinkModal !== undefined) {
+      form.setFieldsValue({
+        source: nodes.find((n) => n.id === addLinkModal.source)?.name,
+        target: nodes.find((n) => n.id === addLinkModal.target)?.name,
+      });
+    }
 
+    /** TODO: Edit Edge Form Field */
+    /*
+    form.setFieldsValue({
+      name: 'working for',
+      source: nodes[0].name,
+      target: nodes[1].name,
+      inverse: true,
+      multiple: true,
+    });
+     */
     return () => {
       form.resetFields();
     };
-  }, [form, graph, nodes]);
+  }, [addLinkModal, form, graph, nodes]);
 
   return (
     <AddEdge>

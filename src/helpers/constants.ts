@@ -75,4 +75,7 @@ export const screenSize = {
 export const PATH = {
   NODE_COLOR: 'body/stroke',
   NODE_TEXT: 'text/text',
+  EDGE_SOURCE_COLOR: 'line/stroke/stops/0/color',
+  EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
+  EDGE_CREATOR: 'line/creator',
 };
