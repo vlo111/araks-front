@@ -1,5 +1,6 @@
-import { Graph, Node } from '@antv/x6';
+import { Node } from '@antv/x6';
 import {
+  AnimateGraphFit,
   CellRemovePort,
   ElementBox,
   ElementStyle,
@@ -118,7 +119,7 @@ export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, 
   }
 };
 
-export const animateGraphFit: (graph: Graph, sec: string) => void = (graph, sec) => {
+export const animateGraphFit: AnimateGraphFit = (graph, sec) => {
   const stage = graph.view.stage.parentElement as HTMLElement;
   stage.style.transitionDuration = sec;
   setTimeout(() => {
@@ -126,7 +127,7 @@ export const animateGraphFit: (graph: Graph, sec: string) => void = (graph, sec)
   }, 10);
 };
 
-export const getTypeColors: GetTypeColors = (edge) => ([
+export const getTypeColors: GetTypeColors = (edge) => [
   edge.attr(PATH.EDGE_SOURCE_COLOR),
   edge.attr(PATH.EDGE_TARGET_COLOR),
-]);
+];

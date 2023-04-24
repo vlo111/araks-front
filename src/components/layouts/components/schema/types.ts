@@ -194,6 +194,7 @@ export type ElementStyle = Element & {
 };
 
 export type RemoveElement = (graph: Graph, element: ElementStyle) => void;
+export type AnimateGraphFit = (graph: Graph, sec: string) => void;
 
 export type CellRemovePort = Cell<Cell.Properties> & {
   removePort: (id: string) => void;
