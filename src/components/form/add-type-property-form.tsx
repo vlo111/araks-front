@@ -17,6 +17,9 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { PropertyBasicDetails } from './property/property-basic-details';
 import { PropertyConnectionDetails } from './property/property-connection-details';
 import { PropertyMultipleDetails } from './property/property-multiple-details';
+import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
+import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
+import { PropertyTypes } from './property/types';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -28,7 +31,7 @@ type Props = {
 };
 
 export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
-  const { nodeTypeId } = useDataSheetWrapper();
+  const { nodeTypeId, dataList } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
   const { mutate } = useCreateProjectNodeTypeProperty(
@@ -39,6 +42,8 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
     },
     isEdit ? state.propertyId : undefined
   );
+
+  const { mutate: mutateConnection } = useCreateNodeEdgeType();
 
   useGetProjectNodeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,
@@ -51,12 +56,25 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
 
   const [form] = Form.useForm();
 
-  const onFinish = (values: ProjectNodeTypePropertySubmit) => {
-    mutate({
-      ...values,
-      propertyId: state.propertyId,
-      project_type_id: nodeTypeId,
-    });
+  const onFinish = (values: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
+    if (values.ref_property_type_id === PropertyTypes.Connection) {
+      mutateConnection({
+        ...values,
+        target_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+          ?.properties?.find((property) => property.default_proprty === true)?.id,
+        source_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+          ?.properties?.find((property) => property.default_proprty === true)?.id,
+      } as NodeEdgeTypesSubmit);
+    } else {
+      mutate({
+        ...values,
+        propertyId: state.propertyId,
+        project_type_id: nodeTypeId,
+      } as ProjectNodeTypePropertySubmit);
+    }
+
     form.resetFields();
     if (isEdit) {
       dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });

@@ -3,7 +3,7 @@ import { ProjectTreeReturnData } from 'api/types';
 import { TreeNodeType } from 'pages/data-sheet/types';
 import styled from 'styled-components';
 
-const StyledBadge = styled(Badge)`
+const StyledBadge = styled(({ defaultProprtyId, ...props }) => <Badge {...props} />)`
   && {
     .ant-badge-status-dot {
       height: 16px;
@@ -22,9 +22,10 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: s
     ) {
       continue;
     }
+    const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_proprty === true)?.id || '';
     const key = nodesList[i].id;
     const treeNode: TreeNodeType = {
-      title: <StyledBadge color={nodesList[i].color} text={nodesList[i].name} />,
+      title: <StyledBadge color={nodesList[i].color} text={nodesList[i].name} defaultProprtyId={defaultProprtyId} />,
       label: nodesList[i].name,
       value: key,
       key,

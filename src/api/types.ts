@@ -58,15 +58,22 @@ export type ProjectReturnData = ProjectFullInfo & {
   user: UserData;
 };
 
+type ProjectTreeProperties = {
+  id: string;
+  name: string;
+  default_proprty: boolean;
+};
+
 export type ProjectTreeReturnData = {
   color: string;
   id: string;
   name: string;
   parent_id: string;
+  properties?: ProjectTreeProperties[];
 };
 
 export interface ITypeProperty {
-  id: string
+  id: string;
   name: string;
   multiple_type: string;
   unique_type: boolean;
@@ -80,13 +87,13 @@ export interface IProjectType {
   id: string;
   name: string;
   parent_id: string;
-  fx: number,
-  fy: number,
-  properties: ITypeProperty[]
+  fx: number;
+  fy: number;
+  properties: ITypeProperty[];
 }
 
-export interface IProjectTypeData extends ProjectFullInfo{
-  projectsNodeTypes: IProjectType[]
+export interface IProjectTypeData extends ProjectFullInfo {
+  projectsNodeTypes: IProjectType[];
 }
 
 export type ProjectTypePropertyReturnData = {
