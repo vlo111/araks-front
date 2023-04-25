@@ -15,6 +15,7 @@ export type DataSheetState = {
   editTypeisOpened?: boolean;
   color?: string;
   nodesList?: TreeNodeType[];
+  dataList?: ProjectTreeReturnData[];
   filteredNodeTypes?: TreeNodeType[];
   titleText?: string;
   prevState?: PrevDataSheetState;

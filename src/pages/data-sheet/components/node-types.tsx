@@ -37,6 +37,7 @@ export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSet
             parentId: data.data[0].parent_id,
             selectNodeTypeFinished: true,
             nodesList,
+            dataList: data.data,
           });
           return;
         }
