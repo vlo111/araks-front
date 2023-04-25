@@ -9,7 +9,7 @@ export const PropertyConnectionDetails = () => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
   const dataType = Form.useWatch('ref_property_type_id');
-  const { nodesList, parentId, nodeTypeId } = useDataSheetWrapper();
+  const { nodesList, nodeTypeId } = useDataSheetWrapper();
 
   useEffect(() => {
     if (nodeTypeId) {
@@ -33,7 +33,6 @@ export const PropertyConnectionDetails = () => {
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
-              value={parentId}
             />
           </FormItem>
           <FormItem name="target_id" label="Target" rules={[{ required: true, message: 'Target is required' }]}>
@@ -46,7 +45,6 @@ export const PropertyConnectionDetails = () => {
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
-              value={parentId}
             />
           </FormItem>
           <FormItem name="required_type" valuePropName="checked" initialValue={false}>
