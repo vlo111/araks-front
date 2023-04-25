@@ -4,6 +4,7 @@ import { Form, Space, Tooltip } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { FormItem } from '../form-item';
 import { PropertyTypes } from './types';
+import { PropertyMultipleDetails } from './property-multiple-details';
 
 export const PropertyBasicDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
@@ -39,6 +40,7 @@ export const PropertyBasicDetails = () => {
               </Space>
             </Checkbox>
           </FormItem>
+          <PropertyMultipleDetails />
         </>
       )}
     </>

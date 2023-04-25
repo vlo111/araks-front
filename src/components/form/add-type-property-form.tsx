@@ -16,7 +16,6 @@ import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/us
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropertyBasicDetails } from './property/property-basic-details';
 import { PropertyConnectionDetails } from './property/property-connection-details';
-import { PropertyMultipleDetails } from './property/property-multiple-details';
 import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { PropertyTypes } from './property/types';
@@ -56,8 +55,8 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
 
   const [form] = Form.useForm();
 
-  const onFinish = (values: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
-    if (values.ref_property_type_id === PropertyTypes.Connection) {
+  const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
+    if (ref_property_type_id === PropertyTypes.Connection) {
       mutateConnection({
         ...values,
         target_attribute_id: dataList
@@ -70,6 +69,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
     } else {
       mutate({
         ...values,
+        ref_property_type_id,
         propertyId: state.propertyId,
         project_type_id: nodeTypeId,
       } as ProjectNodeTypePropertySubmit);
@@ -130,7 +130,6 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
         </FormItem>
         <PropertyBasicDetails />
         <PropertyConnectionDetails />
-        <PropertyMultipleDetails />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">
