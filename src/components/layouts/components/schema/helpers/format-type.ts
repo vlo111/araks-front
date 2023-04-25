@@ -61,7 +61,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
         //   target: e.target_id
         // })),
       };
-  
+
       const dagreLayout = new GridLayout({
         type: 'grid',
         nodeSize: [200, 300],
@@ -70,7 +70,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
         width: window.innerWidth - 400,
         height: window.innerHeight - 400,
       });
-  
+
       dagreLayout.layout(data);
     }
     */
@@ -128,18 +128,25 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
   }
 
   for (const edge of edges) {
-    const sourceColor = nodesList.find((n) => n.id === edge.source_id)?.color;
-    const targetColor = nodesList.find((n) => n.id === edge.target_id)?.color;
+    const source =  nodesList.find((n) => n.id === edge.source_id);
+    const target =  nodesList.find((n) => n.id === edge.target_id);
+
+    const sourceColor =source?.color;
+    const targetColor = target?.color;
+
+    const s_prop = source?.properties.find((a) => a.id === edge.source_attribute_id)
+    const t_prop = target?.properties.find((a) => a.id === edge.target_attribute_id)
+
     const formattedEdge = {
       id: edge.id,
       shape: 'er-edge',
       source: {
         cell: edge.source_id,
-        port: edge.source_attribute_id,
+        port: s_prop?.default_proprty ? undefined : edge.source_attribute_id,
       },
       target: {
         cell: edge.target_id,
-        port: edge.target_attribute_id,
+        port: t_prop?.default_proprty ? undefined : edge.target_attribute_id,
       },
       attrs: {
         line: {

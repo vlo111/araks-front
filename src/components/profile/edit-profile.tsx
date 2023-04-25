@@ -27,6 +27,10 @@ const Wrapper = styled(Col)`
       margin: 0 auto;
       display: block;
     }
+
+    textarea {
+      max-height: 200px;
+    }
   }
 `;
 
