@@ -1,7 +1,7 @@
 import { Row } from 'antd';
 import styled from 'styled-components';
 import { InfoPanel } from '../../components/profile/info-panel';
-import { EditProfile } from '../../components/profile/edit-profile';
+import { EditWrapper } from '../../components/profile/edit/wrapper';
 
 const Wrapper = styled(Row)`
   height: calc(100% + 60px);
@@ -14,7 +14,7 @@ export const Profile = () => {
   return (
     <Wrapper>
       <InfoPanel />
-      <EditProfile />
+      <EditWrapper />
     </Wrapper>
   );
 };

@@ -2,9 +2,9 @@ import { Button, Col, Row, Skeleton, Space } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { COLORS } from 'helpers/constants';
-import { useGetProjects } from '../../api/projects/use-get-projects';
+import { useGetProjects } from 'api/projects/use-get-projects';
 
 const Wrapper = styled(Col)`
   background: #f7f7f7;
@@ -14,7 +14,7 @@ const Wrapper = styled(Col)`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  
+
   h1 {
     font-size: clamp(1rem, 2.5vw, 2rem);
   }
@@ -24,7 +24,7 @@ const Avatar = styled(Space)`
   margin: 0 auto;
   max-width: 250px;
   min-width: 100px;
-  
+
   img {
     border-radius: 5px;
     width: 100%;
@@ -45,7 +45,9 @@ const LearnMore = styled(Button)`
   }
 `;
 
-const Description = styled(Space)``;
+const Description = styled.div`
+  display: block;
+`;
 
 const Footer = styled(Row)`
   display: flex;
@@ -80,7 +82,9 @@ export const InfoPanel = () => {
 
   const [readMore, setReadMore] = useState(false);
 
-  const bio: string = useMemo(() => (readMore ? user?.bio : user?.bio?.slice(0, 180)), [readMore, user]) ?? '';
+  const hasLargeLength = user?.bio?.length !== undefined && user?.bio?.length > 80;
+
+  const etc = hasLargeLength ? `${user?.bio?.slice(0, 80)}...` : user?.bio?.slice(0, 80);
 
   if (isInitialLoading) {
     return <Skeleton />;
@@ -94,8 +98,8 @@ export const InfoPanel = () => {
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
 
       <Description>
-        {bio}
-        {bio.length > 180 && (
+        {readMore ? user?.bio : etc}
+        {hasLargeLength && (
           <LearnMore onClick={() => setReadMore(!readMore)}>{`Learn ${readMore ? 'less' : 'more'}`}</LearnMore>
         )}
       </Description>
