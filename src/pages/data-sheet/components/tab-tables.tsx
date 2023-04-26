@@ -4,7 +4,7 @@ import { NodeTypesSection } from './node-types-section';
 export const TabTables = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 2 }}>
         <NodeTypesSection />
       </div>
       <div style={{ flex: 1 }}>

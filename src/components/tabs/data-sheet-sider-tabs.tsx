@@ -5,6 +5,15 @@ import styled from 'styled-components';
 
 export const DataSheetSiderTabs = styled(TabsComponent)`
   &&& {
+    height: 100%;
+
+    .ant-tabs-content {
+      height: 100%;
+
+      .ant-tabs-tabpane {
+        height: 100%;
+      }
+    }
     .ant-tabs-nav {
       box-shadow: none;
       border-bottom: 1px solid ${COLORS.PRIMARY.GRAY};

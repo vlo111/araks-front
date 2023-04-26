@@ -26,13 +26,11 @@ export const LeftSection = () => {
       items={items.map((item) => ({
         ...item,
         children: (
-          <div className="site-layout-content">
-            {item.key === '1' && (
+            item.key === '1' && (
               <>
                 <TabTables />
               </>
-            )}
-          </div>
+            )
         ),
       }))}
       onChange={onChange}
