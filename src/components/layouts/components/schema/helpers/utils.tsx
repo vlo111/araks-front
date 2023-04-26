@@ -1,118 +1,17 @@
-import { Cell, Graph, Node } from '@antv/x6';
-import { IProjectType } from 'api/types';
-import { antTheme } from 'helpers/ant-theme';
+import { Node } from '@antv/x6';
 import {
+  AnimateGraphFit,
   CellRemovePort,
   ElementBox,
   ElementStyle,
-  INode,
-  InsertAddProperty,
-  IPort,
+  GetTypeColors,
   RemoveElement,
-  SelectNode, SelectNodeWithZoom,
-  SetPropertyColor
-} from "../types";
+  SelectNode,
+  SelectNodeWithZoom,
+} from '../types';
 import { TypeSettingD } from './svg/path-d';
 import { LINE_HEIGHT } from '../container/register/node';
 import { PATH } from 'helpers/constants';
-
-const setPropertyColor: SetPropertyColor = (property, color) => {
-  const gradient = {
-    fill: {
-      type: 'linearGradient',
-      stops: [
-        { offset: '1.47%', color: color },
-        { offset: '98.93%', color: `#EEEEEE` },
-      ],
-    },
-  };
-
-  const fill = {
-    fill: antTheme.components.Schema.colorDefaultProperty,
-  };
-
-  const isConnection = property.ref_property_type_id === 'connection' ? gradient : '';
-
-  return isConnection ? gradient : fill;
-};
-
-const insertAddProperty: InsertAddProperty = () => ({
-  id: 'add',
-  group: 'cell',
-  attrs: {
-    portBody: {
-      fill: antTheme.components.Schema.colorAddProperty,
-    },
-    portNameLabel: {
-      fill: antTheme.components.Schema.colorPropertyText,
-      text: '+ Add property',
-    },
-    portTypeLabel: { text: '' },
-  },
-});
-
-/**
- * initialization special type data with property for graph chart
- * @param graph
- * @param nodesList
- */
-export const formattedTypes = (graph: Graph, nodesList: IProjectType[]) => {
-  const cells: Cell[] = [];
-
-  for (const node of nodesList) {
-    let formattedNode: INode = {} as INode;
-    const formattedProperties: IPort[] = [];
-
-    const { properties } = node;
-
-    for (const property of properties) {
-      const color = setPropertyColor(property, node.color);
-
-      formattedProperties.push({
-        id: property.id,
-        group: 'cell',
-        attrs: {
-          portBody: color,
-          portNameLabel: {
-            text: property.name,
-          },
-          portTypeLabel: {
-            text: property.ref_property_type_id,
-          },
-          required_type: property.required_type,
-          multiple_type: property.multiple_type,
-          unique_type: property.unique_type,
-        },
-        zIndex: 0,
-      });
-    }
-
-    formattedProperties.push(insertAddProperty());
-
-    formattedNode = {
-      id: node.id,
-      shape: 'er-rect',
-      label: node.name,
-      position: {
-        x: node?.fx - 130 ?? Math.random() * (1000 - -600) + -600,
-        y: node?.fy - 20 ?? Math.random() * (350 - -250) + -250,
-      },
-      attrs: {
-        body: {
-          stroke: node.color,
-        },
-        parentId: node.parent_id,
-      },
-      ports: formattedProperties,
-    };
-
-    const cell: Node = graph.createNode(formattedNode as Node.Metadata);
-
-    cells.push(cell);
-  }
-
-  return cells;
-};
 
 export const removeSelected: RemoveElement = (chart, element) => {
   const type = chart.getCellById(element.dataset.cellId) as CellRemovePort;
@@ -187,6 +86,8 @@ export const selectNode: SelectNode = (graph, container, node) => {
 
 export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, setSelectedNode) => {
   if (id !== (selectedNode as Node<Node.Properties>)?.id) {
+    animateGraphFit(graph, '0.4s');
+
     const container: Element = Array.from(graph.view.stage.childNodes)
       .filter((n) => (n as Element).tagName === 'g')
       .find(
@@ -217,3 +118,16 @@ export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, 
     graph.options.height = graph.options.height + height;
   }
 };
+
+export const animateGraphFit: AnimateGraphFit = (graph, sec) => {
+  const stage = graph.view.stage.parentElement as HTMLElement;
+  stage.style.transitionDuration = sec;
+  setTimeout(() => {
+    stage.style.transitionDuration = '0s';
+  }, 10);
+};
+
+export const getTypeColors: GetTypeColors = (edge) => [
+  edge.attr(PATH.EDGE_SOURCE_COLOR),
+  edge.attr(PATH.EDGE_TARGET_COLOR),
+];

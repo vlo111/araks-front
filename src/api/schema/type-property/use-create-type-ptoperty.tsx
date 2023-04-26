@@ -6,6 +6,7 @@ import client from '../../client';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { GET_TYPES } from '../type/use-get-types';
 
+export const NODE_TYPE_PROPERTY_CREATE = `${process.env.REACT_APP_BASE_URL}node-type-property/create`;
 const URL_PROJECT_NODE_TYPE_PROPERTY_CREATE = '/node-type-property/create';
 const URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE = '/node-type-property/update/:id';
 

@@ -64,8 +64,8 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
 
   graph.on('node:mouseup', (event) => {
     client.put(`${process.env.REACT_APP_BASE_URL}${TYPE_POSITION_UPDATE_URL.replace(':id', event.node.id)}`, {
-      fx: event.x,
-      fy: event.y
+      fx: event.x - 120,
+      fy: event.y - 20
     })
   })
 };

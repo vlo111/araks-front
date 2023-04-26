@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
 import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
 import { Node } from '@antv/x6';
-import { IPortAttribute } from '../../../../../../components/layouts/components/schema/types';
+import { IPortAttribute } from 'components/layouts/components/schema/types';
 
 type InitEditForm = (attrs: IPortAttribute) => void;
 
@@ -50,9 +50,7 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty({},
-    addPortModal?.portId
-  );
+  const { mutate } = useCreateTypeProperty({}, addPortModal?.portId);
 
   const { mutate: mutateDelete } = useDeleteTypeProperty(addPortModal?.portId, {
     onSuccess: () => {

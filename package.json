@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@antv/layout": "^0.3.20",
     "@antv/x6": "^2.8.0",
+    "@antv/x6-plugin-snapline": "^2.1.7",
     "@tanstack/react-query": "^4.27.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

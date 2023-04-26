@@ -1,9 +1,8 @@
 import { edgePropertyD } from './path-d';
-import { IStroke } from "../../types";
 
 interface Props {
   id: string;
-  stroke: IStroke;
+  stroke: string[];
 }
 
 type EdgeSvgType = ({ id, stroke }: Props) => JSX.Element;
@@ -33,8 +32,8 @@ export const EdgeSvg: EdgeSvgType = ({ id, stroke }) => (
         <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_394_4629" result="shape" />
       </filter>
       <linearGradient id={`fill${id}`} x1="5.23077" y1="1.5" x2="38.5687" y2="4.62864" gradientUnits="userSpaceOnUse">
-        <stop offset="0.0127841" stopColor={stroke.stops[0].color} />
-        <stop offset="1" stopColor={stroke.stops[1].color} stopOpacity="0.6" />
+        <stop offset="0.0127841" stopColor={stroke[0]} />
+        <stop offset="1" stopColor={stroke[1]} stopOpacity="0.6" />
       </linearGradient>
     </defs>
   </svg>
