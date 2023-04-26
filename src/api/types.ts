@@ -136,3 +136,18 @@ export type ProjectNodeTypePropertyReturnData = {
   created_at: string;
   updated_at: string;
 };
+
+export type NodeEdgeTypesReturnData = {
+  created_at: string;
+  id: string;
+  name: string;
+  project_id: string;
+  properties: { inverse: boolean; multiple: boolean };
+  ref_property_type_id: number;
+  source_attribute_id: string;
+  source_id: string;
+  target_attribute_id: string;
+  target_id: string;
+  updated_at: string;
+  user_id: string;
+};

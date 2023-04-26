@@ -1,23 +1,47 @@
-import { ProjectTypePropertyReturnData } from 'api/types';
-import { TreeNodeType } from 'pages/data-sheet/types';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { NodeEdgeTypesReturnData } from 'api/types';
+import { createConnectionTree } from 'components/layouts/components/data-sheet/utils';
+import { TreeConnectionType } from 'pages/data-sheet/types';
+import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
+import { useMemo } from 'react';
 
 export const URL_GET_NODE_EDGE_TYPES_LIST = '/node-edge-type/:project_id';
 
-type Result = UseQueryResult<ProjectTypePropertyReturnData[]> & { formatted: TreeNodeType[] };
+type GetProjectParam = {
+  id?: string;
+  projectId: string;
+  url: string;
+};
 
-export const useGetNodeEdgeTypes = (nodeTypeId: string, options = { enabled: true }): Result => {
-  const urlNodes = URL_GET_NODE_EDGE_TYPES_LIST.replace(':project_id', nodeTypeId);
+type QueryKey = Omit<GetProjectParam, 'url'> | string;
+
+type ReturnData = {
+  data: NodeEdgeTypesReturnData[];
+};
+
+type QueryResponse = {
+  data: ReturnData;
+};
+
+type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
+type Result = UseQueryResult<NodeEdgeTypesReturnData[]> & { formatted: TreeConnectionType[] };
+
+export const useGetNodeEdgeTypes = (
+  { url, ...params }: GetProjectParam,
+  options: Options = { enabled: true }
+): Result => {
+  const urlNodes = url.replace(':id', params?.id || '').replace(':project_id', params?.projectId || '');
   const result = useQuery({
-    queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes),
+    queryKey: [urlNodes, params],
+    queryFn: () => client.get(urlNodes, { params }),
     ...options,
   });
   const { data, isSuccess } = result;
 
+  const formatted = useMemo(() => (isSuccess ? createConnectionTree(data.data) : []), [data?.data, isSuccess]);
   return {
     ...result,
-    data: isSuccess ? data.data : ([] as ProjectTypePropertyReturnData[]),
+    data: isSuccess ? data.data : ([] as NodeEdgeTypesReturnData[]),
+    formatted,
   } as Result;
 };

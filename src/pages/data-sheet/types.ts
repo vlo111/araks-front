@@ -1,5 +1,5 @@
 import { DefaultOptionType } from 'antd/es/cascader';
-import { ProjectTreeReturnData } from 'api/types';
+import { NodeEdgeTypesReturnData, ProjectTreeReturnData } from 'api/types';
 
 export type PropsSetState = {
   visible: boolean;
@@ -9,6 +9,7 @@ export type PropsSetState = {
 };
 
 export type TreeNodeType = ProjectTreeReturnData & DefaultOptionType;
+export type TreeConnectionType = NodeEdgeTypesReturnData & DefaultOptionType;
 
 export type DataSheetState = {
   addTypeisOpened?: boolean;
