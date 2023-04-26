@@ -146,6 +146,14 @@ export type NodeEdgeTypesReturnData = {
   ref_property_type_id: number;
   source_attribute_id: string;
   source_id: string;
+  source: {
+    id: string;
+    name: string;
+  };
+  target: {
+    id: string;
+    name: string;
+  };
   target_attribute_id: string;
   target_id: string;
   updated_at: string;

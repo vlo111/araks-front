@@ -61,14 +61,14 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
         children: [
           ...(result[nameExists].children || []),
           {
-            label: item.source_id,
+            label: `${item.source.name}-${item.target.name}`,
             value: item.id,
             key: item.id,
             title: (
               <Space>
-                <Text>{item.source_id}</Text>
+                <Text>{item.source.name}</Text>
                 {item.properties.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
-                <Text>{item.target_id}</Text>
+                <Text>{item.target.name}</Text>
               </Space>
             ),
           },
@@ -91,12 +91,12 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
       selectable: false,
       children: [
         {
-          label: item.source_id,
+          label: `${item.source.name}-${item.target.name}`,
           title: (
             <Space>
-              <Text>{item.source_id}</Text>
+              <Text>{item.source.name}</Text>
               {item.properties.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
-              <Text>{item.target_id}</Text>
+              <Text>{item.target.name}</Text>
             </Space>
           ),
           value: item.id,
