@@ -24,6 +24,7 @@ Graph.registerEdge(
         sourceMarker: {
           name: 'circle',
         },
+        strokeWidth: 2,
       },
     },
     zIndex: 0,

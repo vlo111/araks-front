@@ -3,6 +3,7 @@ export const PATHS = {
   UI: '/ui',
   SIGN_IN: '/sign-in',
   PROJECTS: '/projects',
+  PROFILE: '/profile',
   PROJECT_OVERVIEW: '/projects/:id',
   PROJECT_UPDATE: '/projects/update/:id',
   PROJECT_CREATE: '/projects/create',
@@ -75,4 +76,7 @@ export const screenSize = {
 export const PATH = {
   NODE_COLOR: 'body/stroke',
   NODE_TEXT: 'text/text',
+  EDGE_SOURCE_COLOR: 'line/stroke/stops/0/color',
+  EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
+  EDGE_CREATOR: 'line/creator',
 };
