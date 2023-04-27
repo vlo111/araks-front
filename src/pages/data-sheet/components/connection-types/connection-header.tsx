@@ -2,14 +2,20 @@ import { Button, Space } from 'antd';
 import { CaretUpFilled, CaretDownFilled, PlusOutlined } from '@ant-design/icons';
 import { Text } from 'components/typography';
 
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState } from '../../types';
 import { COLORS } from 'helpers/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SearchIcon } from 'components/icon';
+import { useTypeProperty } from '../table-section/table-context';
+import { useCallback } from 'react';
+import { TypePropertyActionKind } from '../table-section/types';
 
 export const ConnectionHeader = ({ visible, setVisible, setSearchVisible }: PropsSetState) => {
-  const { startAddType } = useDataSheetWrapper();
+  const { dispatch } = useTypeProperty();
+
+  const handlePropertyAddClick = useCallback(() => {
+    dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: { isConnectionType: true } });
+  }, [dispatch]);
 
   return (
     <VerticalSpace>
@@ -31,7 +37,7 @@ export const ConnectionHeader = ({ visible, setVisible, setSearchVisible }: Prop
           </Button>
           <SearchIcon setSearchActive={setSearchVisible} />
         </Space>
-        <PlusOutlined style={{ cursor: 'pointer' }} onClick={startAddType} />
+        <PlusOutlined style={{ cursor: 'pointer' }} onClick={handlePropertyAddClick} />
       </Space>
     </VerticalSpace>
   );

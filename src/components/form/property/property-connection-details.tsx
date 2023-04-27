@@ -2,6 +2,7 @@ import { InfoCircleFilled } from '@ant-design/icons';
 import { Form, Space, Tooltip, TreeSelect } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useEffect, useState } from 'react';
 import { FormItem } from '../form-item';
 
@@ -10,13 +11,14 @@ export const PropertyConnectionDetails = () => {
   const form = Form.useFormInstance();
   const dataType = Form.useWatch('ref_property_type_id');
   const { nodesList, nodeTypeId } = useDataSheetWrapper();
+  const { state } = useTypeProperty();
 
   useEffect(() => {
-    if (nodeTypeId) {
+    if (nodeTypeId && state.isConnectionType !== true) {
       form.setFieldValue('source_id', nodeTypeId);
       setHasNodeType(true);
     }
-  }, [form, nodeTypeId]);
+  }, [form, nodeTypeId, state.isConnectionType]);
 
   return (
     <>

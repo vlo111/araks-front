@@ -2,6 +2,7 @@ import { Col, Row as RowComponent } from 'antd';
 import styled from 'styled-components';
 import { LeftSection } from './components/left-section';
 import { RightSection } from './components/right-section';
+import { TypePropertyProvider } from './components/table-section/table-context';
 
 const Row = styled((props) => <RowComponent {...props} />)`
   &.overview {
@@ -26,13 +27,15 @@ const Row = styled((props) => <RowComponent {...props} />)`
 
 export const DataSheet = () => {
   return (
-    <Row className="overview">
-      <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list">
-        <LeftSection />
-      </Col>
-      <Col xs={18} xxl={18} className="overview__section project-share">
-        <RightSection />
-      </Col>
-    </Row>
+    <TypePropertyProvider>
+      <Row className="overview">
+        <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list">
+          <LeftSection />
+        </Col>
+        <Col xs={18} xxl={18} className="overview__section project-share">
+          <RightSection />
+        </Col>
+      </Row>
+    </TypePropertyProvider>
   );
 };

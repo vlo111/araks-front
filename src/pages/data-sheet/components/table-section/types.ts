@@ -24,4 +24,5 @@ export type TypePropertyState = {
   titleText?: string;
   typePropertyId?: string;
   propertyId?: string;
+  isConnectionType?: boolean;
 };

@@ -6,7 +6,6 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { HeaderActions } from './header-actions';
 import { TableSection } from './table-section';
 import { ManageNode } from './table-section/node/manage-node';
-import { TypePropertyProvider } from './table-section/table-context';
 
 export const RightSection = () => {
   const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
@@ -30,10 +29,10 @@ export const RightSection = () => {
       </AddType>
       {!nodeTypeId && <EmptyList />}
       {nodeTypeId && (
-        <TypePropertyProvider>
+        <>
           <ManageNode />
           <TableSection />
-        </TypePropertyProvider>
+        </>
       )}
     </>
   );

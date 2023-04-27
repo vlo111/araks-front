@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form, Space, Tooltip } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
@@ -94,6 +95,13 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
     dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
   };
 
+  /** Set default as connection type when clicked from left menu connection type add button */
+  useEffect(() => {
+    if (state.isConnectionType === true) {
+      form.setFieldValue('ref_property_type_id', PropertyTypes.Connection);
+    }
+  }, [form, state.isConnectionType]);
+
   return (
     <Wrapper>
       <Form
@@ -125,6 +133,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
           name="ref_property_type_id"
           label="Data type"
           rules={[{ required: true, message: 'Node property data type is required' }]}
+          hidden={state.isConnectionType === true}
         >
           <PropertyDataTypeSelect />
         </FormItem>

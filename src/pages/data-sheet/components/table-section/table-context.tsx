@@ -22,18 +22,21 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         titleText: 'New Property ()',
         addTypeisOpened: true,
+        ...payload,
       };
     case TypePropertyActionKind.ADD_TYPE_FINISH:
       return {
         ...state,
         addTypeisOpened: false,
         titleText: undefined,
+        isConnectionType: false,
       };
     case TypePropertyActionKind.ADD_TYPE_CANCEL:
       return {
         ...state,
         ...payload,
         addTypeisOpened: false,
+        isConnectionType: false,
       };
     case TypePropertyActionKind.TYPE_SELECTED:
       return {
@@ -54,18 +57,21 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         ...state,
         propertyId: undefined,
         editTypeisOpened: false,
+        isConnectionType: false,
       };
     case TypePropertyActionKind.MANAGE_TYPE_START:
       return {
         ...state,
         propertyId: payload.propertyId,
         manageTypeisOpened: true,
+        isConnectionType: false,
       };
     case TypePropertyActionKind.MANAGE_TYPE_FINISH:
       return {
         ...state,
         propertyId: undefined,
         manageTypeisOpened: false,
+        isConnectionType: false,
       };
     case TypePropertyActionKind.DELETE_TYPE_START:
       return {
@@ -89,6 +95,7 @@ export const initialState: TypePropertyState = {
   titleText: '',
   addTypeisOpened: false,
   editTypeisOpened: false,
+  isConnectionType: false,
 };
 
 function TypePropertyProvider({ children }: TypePropertyProviderProps) {
