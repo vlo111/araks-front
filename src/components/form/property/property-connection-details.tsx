@@ -1,7 +1,8 @@
 import { InfoCircleFilled } from '@ant-design/icons';
-import { Form, Space, Tooltip, TreeSelect } from 'antd';
+import { Form, Space, Tooltip } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { TreeSelect } from 'components/select';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useEffect, useState } from 'react';
 import { FormItem } from '../form-item';
