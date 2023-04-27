@@ -2,9 +2,7 @@ import { DefaultOptionType } from 'antd/es/cascader';
 import { NodeEdgeTypesReturnData, ProjectTreeReturnData } from 'api/types';
 
 export type PropsSetState = {
-  visible: boolean;
   searchVisible?: boolean;
-  setVisible: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   setSearchVisible: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 };
 

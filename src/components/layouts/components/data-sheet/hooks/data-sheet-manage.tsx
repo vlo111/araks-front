@@ -96,6 +96,12 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         ...state,
         editTypeisOpened: false,
         nodeTypeId: undefined,
+        titleText: dataSheetInitialState.titleText,
+        color: dataSheetInitialState.color,
+        parentId: undefined,
+        selectNodeTypeFinished: dataSheetInitialState.selectNodeTypeFinished,
+        nodesList: undefined,
+        dataList: undefined,
       };
     default:
       return state;

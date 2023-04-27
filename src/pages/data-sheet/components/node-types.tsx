@@ -14,7 +14,7 @@ import { SearchAction } from 'components/actions';
 import { filterTreeData } from '../utils';
 import { NodeTree } from 'components/tree/node-tree';
 
-export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSetState) => {
+export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
@@ -52,6 +52,8 @@ export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSet
   useEffect(() => {
     if (nodesList && nodesList.length) {
       setFilteredData(nodesList);
+    } else {
+      setFilteredData([]);
     }
   }, [nodesList]);
 
@@ -102,7 +104,6 @@ export const NodeTypes = ({ visible, searchVisible, setSearchVisible }: PropsSet
         autoExpandParent
         blockNode
         defaultExpandAll
-        style={!visible ? { display: 'none' } : {}}
         color={color}
       />
     </>

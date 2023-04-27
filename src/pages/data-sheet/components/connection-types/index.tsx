@@ -12,7 +12,7 @@ import { SearchAction } from 'components/actions';
 import { NodeTree } from 'components/tree/node-tree';
 import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
 
-export const ConnectionTypes = ({ visible, searchVisible, setSearchVisible }: PropsSetState) => {
+export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
   const { selectNodeType, color, selectNodeTypeFinished } = useDataSheetWrapper();
@@ -73,7 +73,6 @@ export const ConnectionTypes = ({ visible, searchVisible, setSearchVisible }: Pr
         autoExpandParent
         blockNode
         defaultExpandAll
-        style={!visible ? { display: 'none' } : {}}
         color={color}
       />
     </>
