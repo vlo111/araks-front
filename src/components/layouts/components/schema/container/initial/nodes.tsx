@@ -14,6 +14,7 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
       label.style.display = 'flex';
       label.style.alignItems = 'center';
       label.style.justifyContent = 'center';
+      label.setAttribute('title', edge.attr('name'));
 
       label.onmouseenter = (e: MouseEvent) => {
         (e as MouseEvent & { target: { style: { cursor: string } } }).target.style.cursor = 'pointer';
@@ -31,6 +32,7 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
         const { x, y, height, width } = bounding?.getBoundingClientRect();
 
         setOpenLinkPropertyModal({
+          name: edge.attr('name'),
           open: true,
           x: x + width / 2,
           y: y + height,
