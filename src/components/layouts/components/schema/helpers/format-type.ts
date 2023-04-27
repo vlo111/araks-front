@@ -164,6 +164,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
             fill: targetColor,
           },
         },
+        name: s_prop?.name || t_prop?.name,
       },
     };
 
