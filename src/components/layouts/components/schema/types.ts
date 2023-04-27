@@ -112,7 +112,7 @@ export type PortModal =
 
 export type SelectedNode = Node<Node.Properties> | string | undefined;
 
-export type LinkPropertyModal = undefined | { open: boolean; x?: number; y?: number; color?: string[] };
+export type LinkPropertyModal = undefined | { name?: string, open: boolean; x?: number; y?: number; color?: string[] };
 
 export type OpenAddType = undefined | number[];
 
