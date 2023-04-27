@@ -3,7 +3,13 @@ import { SearchActionProps } from 'components/actions/type';
 import styled from 'styled-components';
 
 export const SearchIcon = styled(({ setSearchActive }: Pick<SearchActionProps, 'setSearchActive'>) => (
-  <SearchOutlined className="search-btn" onClick={() => setSearchActive(true)} />
+  <SearchOutlined
+    className="search-btn"
+    onClick={(event) => {
+      event.stopPropagation();
+      setSearchActive(true);
+    }}
+  />
 ))`
   &.search-btn {
     cursor: pointer;
