@@ -12,13 +12,20 @@ import { SearchAction } from 'components/actions';
 import { NodeTree } from 'components/tree/node-tree';
 import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
 import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
+import { filterConnectionTreeData } from 'pages/data-sheet/utils';
+import { NodeEdgeTypesReturnData } from 'api/types';
 
 export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
   const { dispatch, color, selectNodeTypeFinished } = useDataSheetWrapper();
 
-  const { formatted: connectionList, isInitialLoading } = useGetNodeEdgeTypes(
+  const {
+    formatted: connectionList,
+    isInitialLoading,
+    data: connectionData,
+    isFetched,
+  } = useGetNodeEdgeTypes(
     {
       url: URL_GET_NODE_EDGE_TYPES_LIST,
       projectId: params.id || '',
@@ -42,20 +49,25 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
     });
   };
 
-  const onSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    // const searchText = event.target.value.trim().toLowerCase();
+  const onSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const searchText = event.target.value.trim().toLowerCase();
 
-    debounce(() => {
-      // const filteredData = filterTreeData(connectionList, searchText);
-      // setFilteredData(filteredData);
-    }, 500)();
-  }, []);
+      debounce(() => {
+        // setFilteredData(connectionList);
+        const filteredData = filterConnectionTreeData(connectionData as NodeEdgeTypesReturnData[], searchText);
+        const connectionList = createConnectionTree(filteredData as NodeEdgeTypesReturnData[]);
+        setFilteredData(connectionList);
+      }, 500)();
+    },
+    [connectionData]
+  );
 
   const onClear = useCallback(() => {
     setFilteredData(connectionList);
   }, [connectionList]);
 
-  return !selectNodeTypeFinished || isInitialLoading ? (
+  return !selectNodeTypeFinished || isInitialLoading || !isFetched ? (
     <Skeleton />
   ) : (
     <>
@@ -69,12 +81,9 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
       )}
       <NodeTree
         onSelect={onSelect}
-        showSearch
         switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
         treeData={filteredData}
-        autoExpandParent
         blockNode
-        defaultExpandAll
         color={color}
       />
     </>
