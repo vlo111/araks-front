@@ -23,6 +23,7 @@ export const useColumns = () => {
 
   const columns: ColumnsType<DataType> =
     data?.map((item) => ({
+      className: 'aaaaa4',
       title: (
         <ManageTypeProperty
           propertyId={item.id}
@@ -32,7 +33,7 @@ export const useColumns = () => {
           }
         >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
       ),
-      width: 200,
+      width: '200px',
       dataIndex: item.name,
       key: item.id,
       ...(item.default_proprty ? { fixed: 'left' } : {}),
