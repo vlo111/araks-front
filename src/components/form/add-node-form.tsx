@@ -4,8 +4,10 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 
 export const AddNodeForm = () => {
   const [form] = Form.useForm();
-  const { nodeTypeId } = useDataSheetWrapper();
-  const { isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
+  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
+  const { isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
 
   const onFinish = () => {
     return;

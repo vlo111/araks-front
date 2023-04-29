@@ -87,11 +87,11 @@ export interface IProjectType {
   id: string;
   name: string;
   parent_id: string;
-  fx: number,
-  fy: number,
-  x?: number,
-  y?: number,
-  properties: ITypeProperty[]
+  fx: number;
+  fy: number;
+  x?: number;
+  y?: number;
+  properties: ITypeProperty[];
 }
 
 export interface IProjectTypeData extends ProjectFullInfo {

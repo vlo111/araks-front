@@ -11,11 +11,12 @@ import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { NodeTree } from 'components/tree/node-tree';
 import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
+import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
 
 export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
-  const { selectNodeType, color, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { dispatch, color, selectNodeTypeFinished } = useDataSheetWrapper();
 
   const { formatted: connectionList, isInitialLoading } = useGetNodeEdgeTypes(
     {
@@ -23,7 +24,7 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
       projectId: params.id || '',
     },
     {
-      enabled: !!(params.id && selectNodeType),
+      enabled: !!params.id,
       onSuccess: (data) => {
         const connectionList = createConnectionTree(data.data);
         setFilteredData(connectionList);
@@ -32,12 +33,13 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
   );
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeConnectionType> }) => {
-    // selectNodeType({
-    //   titleText: e.node.name,
-    //   color: e.node.color,
-    //   nodeTypeId: e.node.id,
-    //   parentId: e.node.parent_id,
-    // });
+    dispatch({
+      type: DataSheetActionKind.CONNECTION_SELECTED,
+      payload: {
+        titleText: e.node.parentName,
+        nodeTypeId: e.node.id,
+      },
+    });
   };
 
   const onSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

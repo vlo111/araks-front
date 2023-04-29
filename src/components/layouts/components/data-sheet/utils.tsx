@@ -64,6 +64,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
             label: `${item.source.name}-${item.target.name}`,
             value: item.id,
             key: item.id,
+            id: item.id,
+            parentName: item.name,
             title: (
               <Space>
                 <Text>{item.source.name}</Text>
@@ -101,6 +103,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
           ),
           value: item.id,
           key: item.id,
+          id: item.id,
+          parentName: item.name,
         },
       ],
       ...item,

@@ -6,8 +6,11 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { Skeleton } from 'antd';
 
 export const useColumns = () => {
-  const { nodeTypeId } = useDataSheetWrapper();
-  const { data, isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
+  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
+
+  const { data, isInitialLoading } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
 
   if (isInitialLoading) {
     return [
@@ -30,7 +33,7 @@ export const useColumns = () => {
         >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
       ),
       width: 200,
-      dataIndex: 'address',
+      dataIndex: item.name,
       key: item.id,
       ...(item.default_proprty ? { fixed: 'left' } : {}),
     })) || ([] as ColumnsType<DataType>);

@@ -10,6 +10,8 @@ export enum DataSheetActionKind {
   EDIT_TYPE_START = 'EDIT_TYPE_START',
   EDIT_TYPE_FINISH = 'EDIT_TYPE_FINISH',
   DELETE_TYPE = 'DELETE_TYPE',
+
+  CONNECTION_SELECTED = 'CONNECTION_SELECTED',
 }
 
 interface DataSheetAction {
@@ -25,6 +27,11 @@ export const dataSheetInitialState: DataSheetState = {
   editTypeisOpened: false,
   selectNodeTypeFinished: false,
   filteredNodeTypes: [] as TreeNodeType[],
+  nodeTypeId: undefined,
+  parentId: undefined,
+  nodesList: undefined,
+  dataList: undefined,
+  isConnectionType: false,
 };
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
@@ -102,6 +109,14 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         selectNodeTypeFinished: dataSheetInitialState.selectNodeTypeFinished,
         nodesList: undefined,
         dataList: undefined,
+      };
+    case DataSheetActionKind.CONNECTION_SELECTED:
+      return {
+        ...state /** @todo maybe don't need */,
+        ...dataSheetInitialState,
+        ...payload,
+        isConnectionType: true,
+        selectNodeTypeFinished: true,
       };
     default:
       return state;

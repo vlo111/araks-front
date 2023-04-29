@@ -54,8 +54,10 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
 `;
 
 export const VerticalButton = () => {
-  const { nodeTypeId } = useDataSheetWrapper();
-  const { data } = useGetProjectNodeTypeProperties(nodeTypeId, { enabled: !!nodeTypeId });
+  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
+  const { data } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
   const {
     dispatch,
     state: { addTypeisOpened },

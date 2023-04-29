@@ -3,7 +3,13 @@ import { Outlet, useOutletContext } from 'react-router-dom';
 import { DataSheetActionKind, dataSheetInitialState, dataSheetReducer } from './hooks/data-sheet-manage';
 import { DataSheetState } from 'pages/data-sheet/types';
 
+type DispatchProps = {
+  type: DataSheetActionKind;
+  payload: DataSheetState;
+};
+
 export type DataSheetContextType = DataSheetState & {
+  dispatch: ({ type, payload }: DispatchProps) => void;
   startAddType: () => void;
   finishAddType: () => void;
   cancelAddType: () => void;
@@ -42,6 +48,7 @@ export const DataSheetWrapper = () => {
 
   const context = useMemo(
     () => ({
+      dispatch,
       isLoading: false,
       startAddType,
       finishAddType,

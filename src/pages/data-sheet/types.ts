@@ -22,6 +22,7 @@ export type DataSheetState = {
   parentId?: string;
   selectNodeTypeFinished?: boolean; //Runs onece , on page load
   searchText?: string;
+  isConnectionType?: boolean;
 };
 
 export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;

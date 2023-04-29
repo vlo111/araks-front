@@ -52,15 +52,5 @@ export const TabTables = () => {
         },
       ]}
     />
-    // <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-    //   <div style={{ flex: 2 }}>
-    //     <SiderCollapse>
-    //       <NodeTypesSection />
-    //     </SiderCollapse>
-    //   </div>
-    //   <div style={{ flex: 1 }}>
-    //     <ConnectionTypesSection />
-    //   </div>
-    // </div>
   );
 };
