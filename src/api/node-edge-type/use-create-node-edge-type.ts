@@ -6,7 +6,7 @@ import client from '../client';
 import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { URL_GET_NODE_EDGE_TYPES_LIST } from './use-get-node-edge-types';
 
-const URL_NODE_EDGE_TYPE_CREATE = '/node-edge-type/create';
+const URL_NODE_EDGE_TYPE_CREATE = '/projects-edge-type/create';
 // const URL_NODE_EDGE_TYPE_UPDATE = '/node-edge-type/update/:id';
 
 type ReturnData = {

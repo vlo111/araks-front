@@ -69,7 +69,7 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
             title: (
               <Space>
                 <Text>{item.source.name}</Text>
-                {item.properties.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
+                {item.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
                 <Text>{item.target.name}</Text>
               </Space>
             ),
@@ -97,7 +97,7 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
           title: (
             <Space>
               <Text>{item.source.name}</Text>
-              {item.properties.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
+              {item.inverse === true ? <ConnectionInverse /> : <ConnectionOneDirection />}
               <Text>{item.target.name}</Text>
             </Space>
           ),

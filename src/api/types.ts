@@ -144,7 +144,8 @@ export type NodeEdgeTypesReturnData = {
   id: string;
   name: string;
   project_id: string;
-  properties: { inverse: boolean; multiple: boolean };
+  inverse: boolean;
+  multiple: boolean;
   ref_property_type_id: number;
   source_attribute_id: string;
   source_id: string;
