@@ -26,3 +26,7 @@ export type TypePropertyState = {
   propertyId?: string;
   isConnectionType?: boolean;
 };
+
+export interface ConnectionDataType {
+  label: string;
+}

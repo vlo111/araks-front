@@ -63,10 +63,8 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
       source_id,
       target_id: edge_target?.id ?? '',
       name,
-      properties: {
-        inverse,
-        multiple,
-      },
+      inverse,
+      multiple,
     };
 
     if (inverse) {

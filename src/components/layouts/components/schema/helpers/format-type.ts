@@ -128,14 +128,14 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
   }
 
   for (const edge of edges) {
-    const source =  nodesList.find((n) => n.id === edge.source_id);
-    const target =  nodesList.find((n) => n.id === edge.target_id);
+    const source = nodesList.find((n) => n.id === edge.source_id);
+    const target = nodesList.find((n) => n.id === edge.target_id);
 
-    const sourceColor =source?.color;
+    const sourceColor = source?.color;
     const targetColor = target?.color;
 
-    const s_prop = source?.properties.find((a) => a.id === edge.source_attribute_id)
-    const t_prop = target?.properties.find((a) => a.id === edge.target_attribute_id)
+    const s_prop = source?.properties.find((a) => a.id === edge.source_attribute_id);
+    const t_prop = target?.properties.find((a) => a.id === edge.target_attribute_id);
 
     const formattedEdge = {
       id: edge.id,
@@ -154,7 +154,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
             type: 'linearGradient',
             stops: [
               { offset: '50%', color: `${sourceColor}` },
-              { offset: '50%', color: `${edge.properties.inverse ? targetColor : sourceColor}` },
+              { offset: '50%', color: `${edge.inverse ? targetColor : sourceColor}` },
             ],
           },
           sourceMarker: {

@@ -3,12 +3,14 @@ import { AddType } from 'components/button';
 import { ColorFill } from 'components/color-fill';
 import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { TableSection } from './table-section';
 import { ManageNode } from './table-section/node/manage-node';
 
 export const RightSection = () => {
-  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, selectNodeTypeFinished, isConnectionType } =
+    useDataSheetWrapper();
   if (!selectNodeTypeFinished) {
     return <Skeleton />;
   }
@@ -31,7 +33,7 @@ export const RightSection = () => {
       {nodeTypeId && (
         <>
           <ManageNode />
-          <TableSection />
+          {isConnectionType ? <ConnectionTableSection /> : <TableSection />}
         </>
       )}
     </>

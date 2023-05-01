@@ -23,7 +23,6 @@ export const useColumns = () => {
 
   const columns: ColumnsType<DataType> =
     data?.map((item) => ({
-      className: 'aaaaa4',
       title: (
         <ManageTypeProperty
           propertyId={item.id}

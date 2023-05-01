@@ -50,7 +50,7 @@ export const PropertyConnectionDetails = () => {
               fieldNames={{ value: 'key' }}
             />
           </FormItem>
-          <FormItem name={['properties', 'inverse']} valuePropName="checked" initialValue={false}>
+          <FormItem name="inverse" valuePropName="checked" initialValue={false}>
             <Checkbox>
               <Space>
                 Inverse
@@ -60,7 +60,7 @@ export const PropertyConnectionDetails = () => {
               </Space>
             </Checkbox>
           </FormItem>
-          <FormItem name={['properties', 'multiple']} valuePropName="checked" initialValue={false}>
+          <FormItem name="multiple" valuePropName="checked" initialValue={false}>
             <Checkbox>
               <Space>
                 Multiple
