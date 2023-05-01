@@ -6,14 +6,12 @@ import { TypePropertyActionKind } from 'pages/data-sheet/components/table-sectio
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 
 type WrapperProps = ButtonProps & {
   rowsCount: number;
 };
 
-const LeftSidebarSize = 350;
+const dataSheetSectionSize = document.querySelectorAll('#datasheet-data')?.[0]?.clientWidth;
 
 export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button {...props} />)`
   height: 100%;
@@ -21,12 +19,12 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
   z-index: 5;
   position: absolute;
   ${(props) =>
-    props.rowsCount * 200 > screen.width - LeftSidebarSize
+    props.rowsCount > dataSheetSectionSize - 40
       ? css`
       right 0;
     `
       : css`
-          left: ${props.rowsCount * 200}px;
+          left: ${props.rowsCount}px;
         `}
 
   background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);
@@ -53,11 +51,11 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
   }
 `;
 
-export const VerticalButton = () => {
-  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
-  const { data } = useGetProjectNodeTypeProperties(nodeTypeId, {
-    enabled: !!(nodeTypeId && isConnectionType === false),
-  });
+type Props = {
+  columnWidth?: number;
+};
+
+export const VerticalButton = ({ columnWidth }: Props) => {
   const {
     dispatch,
     state: { addTypeisOpened },
@@ -67,7 +65,7 @@ export const VerticalButton = () => {
   }, [dispatch]);
 
   return !addTypeisOpened ? (
-    <Wrapper onClick={handlePropertyAddClick} rowsCount={data?.length || 1}>
+    <Wrapper onClick={handlePropertyAddClick} rowsCount={columnWidth || 1}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>
         Add Property

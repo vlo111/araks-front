@@ -33,6 +33,7 @@ export const useColumns = () => {
         >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
       ),
       width: '200px',
+      className: 'node-property-column',
       dataIndex: item.name,
       key: item.id,
       ...(item.default_proprty ? { fixed: 'left' } : {}),

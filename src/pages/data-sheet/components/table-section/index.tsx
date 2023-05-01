@@ -14,18 +14,27 @@ const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
 
 export const TableSection = () => {
   const [tableHead, setTableHead] = useState(0);
+  const [columnWidth, setColumnWidth] = useState(0);
   const columns = useColumns();
   const actions = useActions();
 
   useEffect(() => {
     if (columns.length) {
       setTableHead(document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight);
+      let summaryWidth = 0;
+      const columnsProperty = document.querySelectorAll('.ant-table-thead .node-property-column');
+
+      columnsProperty.forEach((column: Element) => {
+        summaryWidth += column.clientWidth;
+      });
+
+      setColumnWidth(summaryWidth);
     }
   }, [columns.length]);
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
-      <VerticalButton />
+      <VerticalButton columnWidth={columnWidth} />
       <HorizontalButton tableHead={tableHead} />
       <Table
         id="node-table"

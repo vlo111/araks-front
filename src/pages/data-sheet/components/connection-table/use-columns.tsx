@@ -67,6 +67,7 @@ export const useColumns = () => {
         </StyledCustomColumn>
       ),
       dataIndex: 'label',
+      className: 'connection-column', //need to set fro all columns to calculate width by this
       key: 'label',
       fixed: true,
       width: '550px',

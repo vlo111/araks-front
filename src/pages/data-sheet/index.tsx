@@ -32,7 +32,7 @@ export const DataSheet = () => {
         <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list">
           <LeftSection />
         </Col>
-        <Col xs={18} xxl={18} className="overview__section project-share">
+        <Col xs={18} xxl={18} className="overview__section project-share" id="datasheet-data">
           <RightSection />
         </Col>
       </Row>
