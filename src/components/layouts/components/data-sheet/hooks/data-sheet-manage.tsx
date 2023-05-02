@@ -114,7 +114,10 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
     case DataSheetActionKind.CONNECTION_SELECTED:
       return {
         ...state /** @todo maybe don't need */,
-        ...dataSheetInitialState,
+        color: dataSheetInitialState.color,
+        titleText: dataSheetInitialState.titleText,
+        addTypeisOpened: dataSheetInitialState.addTypeisOpened,
+        editTypeisOpened: dataSheetInitialState.editTypeisOpened,
         ...payload,
         isConnectionType: true,
         selectNodeTypeFinished: true,

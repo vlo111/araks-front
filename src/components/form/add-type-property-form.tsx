@@ -20,6 +20,7 @@ import { PropertyConnectionDetails } from './property/property-connection-detail
 import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { PropertyTypes } from './property/types';
+import { Rule } from 'antd/es/form';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -94,6 +95,10 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   const onHandleDelete = () => {
     dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
   };
+  const handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
+    // Prevent the click event from bubbling up to the Collapse component
+    e.stopPropagation();
+  };
 
   /** Set default as connection type when clicked from left menu connection type add button */
   useEffect(() => {
@@ -103,7 +108,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   }, [form, state.isConnectionType]);
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handlePopoverClick}>
       <Form
         name="project-node-type-property"
         form={form}
@@ -122,9 +127,20 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
           name="name"
           label="Property name"
           rules={[
-            { required: true, message: 'Property name name is required' },
+            { required: true, message: 'Property name is required' },
             { min: 3, message: 'The minimum length for this field is 3 characters' },
             { max: 30, message: 'The maximum length for this field is 30 characters' },
+            {
+              validator: async (_: Rule, value: string | undefined) => {
+                if (value !== undefined) {
+                  const regex = /^[a-z0-9_]+$/;
+                  if (!regex.test(value)) {
+                    return Promise.reject('Name must only contain lowercase letters and underscores');
+                  }
+                }
+                return Promise.resolve();
+              },
+            },
           ]}
         >
           <FormInput placeholder="Property name" />

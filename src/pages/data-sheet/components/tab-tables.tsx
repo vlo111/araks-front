@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { SiderCollapse } from 'components/collapse/sider-collapse';
@@ -7,18 +7,19 @@ import { ConnectionHeader } from './connection-types/connection-header';
 import { NodeTypes } from './node-types';
 import { NodesHeader } from './nodes-header';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { useTypeProperty } from './table-section/table-context';
-import { TypePropertyActionKind } from './table-section/types';
+// import { useTypeProperty } from './table-section/table-context';
+// import { TypePropertyActionKind } from './table-section/types';
+import { AddNewConnection } from './connection-types/add-new-connection';
 
 export const TabTables = () => {
   const { startAddType } = useDataSheetWrapper();
-  const { dispatch } = useTypeProperty();
+  // const { dispatch } = useTypeProperty();
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
 
-  const handlePropertyAddClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: { isConnectionType: true } });
-  }, [dispatch]);
+  // const handlePropertyAddClick = useCallback(() => {
+  //   dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: { isConnectionType: true } });
+  // }, [dispatch]);
 
   const handleExtraClick = (event: React.MouseEvent<HTMLElement>, action: () => void) => {
     event.stopPropagation();
@@ -43,12 +44,7 @@ export const TabTables = () => {
           children: (
             <ConnectionTypes setSearchVisible={setSearchConnectionVisible} searchVisible={searchConnectionVisible} />
           ),
-          extra: (
-            <PlusOutlined
-              style={{ cursor: 'pointer' }}
-              onClick={(event) => handleExtraClick(event, handlePropertyAddClick)}
-            />
-          ),
+          extra: <AddNewConnection />,
         },
       ]}
     />

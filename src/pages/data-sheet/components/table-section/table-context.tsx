@@ -86,6 +86,12 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         deleteTypeisOpened: false,
         propertyId: undefined,
       };
+    case TypePropertyActionKind.CREATE_CONNECTION:
+      return {
+        ...state,
+        ...payload,
+        isConnectionType: true,
+      };
     default:
       return state;
   }

@@ -19,6 +19,11 @@ export const PropertyConnectionDetails = () => {
       form.setFieldValue('source_id', nodeTypeId);
       setHasNodeType(true);
     }
+
+    return () => {
+      setHasNodeType(false);
+      form.resetFields(['source_id']);
+    };
   }, [form, nodeTypeId, state.isConnectionType]);
 
   return (
