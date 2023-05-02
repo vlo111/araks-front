@@ -1,22 +1,26 @@
 import { PopoverProps } from 'antd';
-import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { AddConnectionTypePropertyForm } from 'components/form/add-connection-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
 import { Title } from 'components/typography';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 
 type Props = PopoverProps;
 
-/**  @TODO This should be in popover folder */
-export const AddTypeProprty = ({ children, ...props }: Props) => {
+export const AddConnectionTypeProprty = ({ children, ...props }: Props) => {
   const {
-    state: { addTypeisOpened },
+    state: { addConnectionTypeisOpened },
   } = useTypeProperty();
 
   return (
     <>
-      {addTypeisOpened && (
+      {addConnectionTypeisOpened && (
         <>
-          <AddNodeTypePopover content={<AddTypePropertyForm />} open={addTypeisOpened} trigger="click" {...props}>
+          <AddNodeTypePopover
+            content={<AddConnectionTypePropertyForm />}
+            open={addConnectionTypeisOpened}
+            trigger="click"
+            {...props}
+          >
             <Title level={3}>New Property</Title>
           </AddNodeTypePopover>
           {children}

@@ -40,7 +40,7 @@ export const useColumns = () => {
       {
         title: <Skeleton paragraph={false} />,
         width: '100%',
-        dataIndex: 'label',
+        dataIndex: 'skeleton',
       },
     ];
   }
@@ -67,14 +67,10 @@ export const useColumns = () => {
         </StyledCustomColumn>
       ),
       dataIndex: 'label',
-      className: 'connection-column', //need to set fro all columns to calculate width by this
+      className: 'connection-column', //need to set for all columns to calculate width by this
       key: 'label',
       fixed: true,
       width: '550px',
-    },
-    {
-      key: 'space',
-      dataIndex: 'space',
     },
   ];
 

@@ -15,6 +15,9 @@ export enum TypePropertyActionKind {
   MANAGE_TYPE_START = 'MANAGE_TYPE_START',
   MANAGE_TYPE_FINISH = 'MANAGE_TYPE_FINISH',
   CREATE_CONNECTION = 'CREATE_CONNECTION',
+  ADD_CONNECTION_TYPE_START = 'ADD_CONNECTION_TYPE_START',
+  ADD_CONNECTION_TYPE_FINISH = 'ADD_CONNECTION_TYPE_FINISH',
+  ADD_CONNECTION_TYPE_CANCEL = 'ADD_CONNECTION_TYPE_CANCEL',
 }
 
 export type TypePropertyState = {
@@ -26,8 +29,19 @@ export type TypePropertyState = {
   typePropertyId?: string;
   propertyId?: string;
   isConnectionType?: boolean;
+  addConnectionTypeisOpened?: boolean;
 };
 
 export interface ConnectionDataType {
   label: string;
+  key: React.Key;
+  source: {
+    name: string;
+    color: string;
+  };
+  target: {
+    name: string;
+    color: string;
+  };
+  inverse?: boolean;
 }

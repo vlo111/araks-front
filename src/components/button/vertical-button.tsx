@@ -53,18 +53,19 @@ export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button
 
 type Props = {
   columnWidth?: number;
+  type?: TypePropertyActionKind;
 };
 
-export const VerticalButton = ({ columnWidth }: Props) => {
+export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_TYPE_START }: Props) => {
   const {
     dispatch,
-    state: { addTypeisOpened },
+    state: { addTypeisOpened, addConnectionTypeisOpened },
   } = useTypeProperty();
   const handlePropertyAddClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: {} });
-  }, [dispatch]);
+    dispatch({ type, payload: {} });
+  }, [dispatch, type]);
 
-  return !addTypeisOpened ? (
+  return !(addTypeisOpened || addConnectionTypeisOpened) ? (
     <Wrapper onClick={handlePropertyAddClick} rowsCount={columnWidth || 1}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>

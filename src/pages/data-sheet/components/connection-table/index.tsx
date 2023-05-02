@@ -4,6 +4,8 @@ import { HorizontalButton } from 'components/button/horizontal-button';
 import { useEffect, useState } from 'react';
 import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
+import { TypePropertyActionKind } from '../table-section/types';
+import { useActions } from './table-actions';
 
 const dataSource = [...Array(20)].map((_, i) => ({
   key: i,
@@ -14,6 +16,7 @@ export const ConnectionTableSection = () => {
   const [tableHead, setTableHead] = useState(0);
   const [columnWidth, setColumnWidth] = useState(0);
   const columns = useColumns();
+  const actions = useActions();
 
   useEffect(() => {
     if (columns.length) {
@@ -24,20 +27,25 @@ export const ConnectionTableSection = () => {
       columns.forEach((column: Element) => {
         summaryWidth += column.clientWidth;
       });
+      // eslint-disable-next-line no-console
+      console.log('summaryWidth', summaryWidth, columns.length);
       setColumnWidth(summaryWidth);
     }
-  }, [columns.length]);
+  }, [columns.length, columns]);
+
+  // eslint-disable-next-line no-console
+  console.log('columns', columns);
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
-      <VerticalButton columnWidth={columnWidth} />
+      <VerticalButton columnWidth={columnWidth} type={TypePropertyActionKind.ADD_CONNECTION_TYPE_START} />
       <HorizontalButton tableHead={tableHead} />
       <ConnectionTable
         id="connection-table"
         size="large"
         bordered
         dataSource={dataSource}
-        columns={columns}
+        columns={[...columns, ...actions]}
         pagination={false}
       />
     </div>
