@@ -19,7 +19,11 @@ export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) =>
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
 
-  const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
+  const {
+    formatted: nodesList,
+    isInitialLoading,
+    data,
+  } = useGetProjectNoteTypes(
     {
       url: GET_PROJECT_NODE_TYPES_LIST,
       projectId: params.id || '',
@@ -63,6 +67,9 @@ export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) =>
       color: e.node.color,
       nodeTypeId: e.node.id,
       parentId: e.node.parent_id,
+      selectNodeTypeFinished: true,
+      nodesList,
+      dataList: data,
     });
   };
 

@@ -30,7 +30,7 @@ export const TableSection = () => {
 
       setColumnWidth(summaryWidth);
     }
-  }, [columns.length]);
+  }, [columns, columns.length]);
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>

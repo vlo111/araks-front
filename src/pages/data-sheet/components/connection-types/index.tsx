@@ -18,7 +18,7 @@ import { NodeEdgeTypesReturnData } from 'api/types';
 export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
-  const { dispatch, color, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { dispatch, color, selectNodeTypeFinished, nodeTypeId } = useDataSheetWrapper();
 
   const {
     formatted: connectionList,
@@ -85,6 +85,7 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
         treeData={filteredData}
         blockNode
         color={color}
+        selectedKeys={[nodeTypeId]}
       />
     </>
   );

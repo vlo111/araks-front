@@ -71,6 +71,7 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         ...state,
         // color: '#DDDDDD',
         addTypeisOpened: false,
+        isConnectionType: false,
         ...payload,
       };
     case DataSheetActionKind.TYPE_SEARCH:
