@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import { Menu as MenuComponent, MenuProps } from 'antd';
+import { MenuProps } from 'antd';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
 import { ReactComponent as SetAsDefault } from 'components/icons/set-as-default.svg';
@@ -9,9 +8,9 @@ import { DeleteTypePropertyModal } from 'components/modal/delete-type-property-m
 import './index.css';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
-import { COLORS } from 'helpers/constants';
 import { useSetPropertyDefault } from 'api/project-node-type-property/use-set-property-default';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { PropertyMenu } from './property-menu';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -41,41 +40,6 @@ const menuItems = (isDefault: boolean, canSetDefault: boolean) =>
     },
   ] as MenuItem[];
 
-const Menu = styled(MenuComponent)`
-  background-color: transparent;
-
-  &&.ant-menu-vertical {
-    border-inline-end: none;
-  }
-
-  .ant-menu-title-content .ant-typography {
-    color: ${COLORS.PRIMARY.BLUE};
-  }
-
-  .ant-menu-submenu .ant-menu-submenu-title,
-  .ant-menu-item {
-    margin: 4px 0;
-    width: 100%;
-
-    &:hover,
-    &:active {
-      background: linear-gradient(90deg, rgba(35, 47, 106, 0.2) 0%, rgba(35, 47, 106, 0.2) 100%);
-      border: 1px solid #ffffff;
-      transition: transform 0.15s;
-    }
-
-    &.ant-menu-item-disabled {
-      .ant-menu-title-content .ant-typography {
-        color: ${COLORS.PRIMARY.GRAY};
-      }
-
-      svg path {
-        fill: ${COLORS.PRIMARY.GRAY};
-      }
-    }
-  }
-`;
-
 type Props = {
   propertyId: string;
   isDefault: boolean;
@@ -99,7 +63,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault }: Props
 
   return (
     <>
-      <Menu
+      <PropertyMenu
         style={{ width: 256 }}
         mode="vertical"
         items={menuItems(isDefault, canSetDefault)}

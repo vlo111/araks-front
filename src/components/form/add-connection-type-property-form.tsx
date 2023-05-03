@@ -9,13 +9,13 @@ import styled from 'styled-components';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
 import { Rule } from 'antd/es/form';
 import { PropertyDataConnectionTypeSelect } from 'components/select/property-data-connection-type-select';
 import { PropertyMultipleDetails } from './property/property-multiple-details';
 import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
+import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -32,7 +32,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
 
   const { mutate } = useManageProjectNodeTypeProperty();
 
-  useGetProjectNodeTypeProperty(state.propertyId, {
+  useGetProjectEdgeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,
     onSuccess: (data) => {
       form.setFieldsValue({
@@ -49,9 +49,6 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
       ref_property_type_id,
       propertyId: state.propertyId,
       project_type_id: nodeTypeId,
-      /** @TODO remove */
-      unique_type: false,
-      required_type: false,
     } as NodeEdgeTypePropertiesSubmit);
 
     form.resetFields();

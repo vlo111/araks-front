@@ -5,7 +5,7 @@ import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-pro
 import { VerticalSpace } from 'components/space/vertical-space';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
-import { ManageTypeProperty } from '../table-section/type-property/manage-type-property';
+import { ManageConnectionTypeProperty } from '../table-section/type-property/manage-connection-type-property';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -68,7 +68,7 @@ export const useColumns = () => {
         </StyledCustomColumn>
       ),
       dataIndex: 'label',
-      className: 'connection-column', //need to set for all columns to calculate width by this
+      className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
       key: 'label',
       fixed: true,
       width: '550px',
@@ -76,11 +76,11 @@ export const useColumns = () => {
     ...(data?.properties
       ? data.properties?.map((item) => ({
           title: (
-            <ManageTypeProperty
+            <ManageConnectionTypeProperty
               propertyId={item.id}
               isDefault={false}
               canSetDefault={false}
-            >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
+            >{`${item.name} (${item.ref_property_type_id})`}</ManageConnectionTypeProperty>
           ),
           width: '200px',
           dataIndex: item.name,

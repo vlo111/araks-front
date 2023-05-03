@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const ConnectionTable = styled(Table)`
   .ant-table-content {
     .ant-table-thead {
-      .ant-table-cell {
+      .ant-table-cell.connection-first-column {
         padding: 0;
       }
     }
