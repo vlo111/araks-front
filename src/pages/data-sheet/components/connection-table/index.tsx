@@ -27,14 +27,10 @@ export const ConnectionTableSection = () => {
       columns.forEach((column: Element) => {
         summaryWidth += column.clientWidth;
       });
-      // eslint-disable-next-line no-console
-      console.log('summaryWidth', summaryWidth, columns.length);
+
       setColumnWidth(summaryWidth);
     }
   }, [columns.length, columns]);
-
-  // eslint-disable-next-line no-console
-  console.log('columns', columns);
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>

@@ -135,7 +135,7 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
                 if (value !== undefined) {
                   const regex = /^[a-z0-9_]+$/;
                   if (!regex.test(value)) {
-                    return Promise.reject('Name must only contain lowercase letters and underscores');
+                    return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
                   }
                 }
                 return Promise.resolve();

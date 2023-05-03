@@ -1,4 +1,4 @@
-import { PropertyTypes } from 'components/form/property/types';
+import { ConnectionPropertyTypes, PropertyTypes } from 'components/form/property/types';
 
 export type NodeEdgeTypesSubmit = {
   project_id: string;
@@ -10,4 +10,12 @@ export type NodeEdgeTypesSubmit = {
   inverse: boolean;
   multiple: boolean;
   ref_property_type_id?: PropertyTypes.Connection;
+};
+
+export type NodeEdgeTypePropertiesSubmit = {
+  project_id: string;
+  name: string;
+  multiple: boolean;
+  ref_property_type_id: ConnectionPropertyTypes;
+  propertyId: string;
 };

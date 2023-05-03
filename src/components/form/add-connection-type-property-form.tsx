@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Form, Space, Tooltip } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
@@ -7,19 +6,16 @@ import { FormItem } from './form-item';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
-import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
-import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
-import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
-import { PropertyTypes } from './property/types';
+import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
 import { Rule } from 'antd/es/form';
 import { PropertyDataConnectionTypeSelect } from 'components/select/property-data-connection-type-select';
 import { PropertyMultipleDetails } from './property/property-multiple-details';
+import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -31,21 +27,10 @@ type Props = {
 };
 
 export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
-  const { nodeTypeId, dataList } = useDataSheetWrapper();
+  const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
-  /** @todo change hook for connection */
-  const { mutate } = useCreateProjectNodeTypeProperty(
-    {
-      onSuccess: ({ data }) => {
-        return;
-      },
-    },
-    isEdit ? state.propertyId : undefined
-  );
-
-  /** @todo change hook for connection */
-  const { mutate: mutateConnection } = useCreateNodeEdgeType();
+  const { mutate } = useManageProjectNodeTypeProperty();
 
   useGetProjectNodeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,
@@ -58,25 +43,13 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
 
   const [form] = Form.useForm();
 
-  const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
-    if (ref_property_type_id === PropertyTypes.Connection) {
-      mutateConnection({
-        ...values,
-        target_attribute_id: dataList
-          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
-          ?.properties?.find((property) => property.default_proprty === true)?.id,
-        source_attribute_id: dataList
-          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
-          ?.properties?.find((property) => property.default_proprty === true)?.id,
-      } as NodeEdgeTypesSubmit);
-    } else {
-      mutate({
-        ...values,
-        ref_property_type_id,
-        propertyId: state.propertyId,
-        project_type_id: nodeTypeId,
-      } as ProjectNodeTypePropertySubmit);
-    }
+  const onFinish = ({ ref_property_type_id, ...values }: NodeEdgeTypePropertiesSubmit) => {
+    mutate({
+      ...values,
+      ref_property_type_id,
+      propertyId: state.propertyId,
+      project_type_id: nodeTypeId,
+    } as NodeEdgeTypePropertiesSubmit);
 
     form.resetFields();
     if (isEdit) {
@@ -103,13 +76,6 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
     e.stopPropagation();
   };
 
-  /** Set default as connection type when clicked from left menu connection type add button */
-  useEffect(() => {
-    if (state.isConnectionType === true) {
-      form.setFieldValue('ref_property_type_id', PropertyTypes.Connection);
-    }
-  }, [form, state.isConnectionType]);
-
   return (
     <Wrapper onClick={handlePopoverClick}>
       <Form
@@ -121,7 +87,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isEdit ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{isEdit ? 'Edit connection property' : 'Add property for connection'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>
@@ -138,7 +104,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
                 if (value !== undefined) {
                   const regex = /^[a-z0-9_]+$/;
                   if (!regex.test(value)) {
-                    return Promise.reject('Name must only contain lowercase letters and underscores');
+                    return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
                   }
                 }
                 return Promise.resolve();
@@ -151,7 +117,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
         <FormItem
           name="ref_property_type_id"
           label="Data type"
-          rules={[{ required: true, message: 'Node property data type is required' }]}
+          rules={[{ required: true, message: 'Connection property data type is required' }]}
         >
           <PropertyDataConnectionTypeSelect />
         </FormItem>
