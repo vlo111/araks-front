@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Button, ButtonProps } from 'antd';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
@@ -9,17 +9,18 @@ import { COLORS } from 'helpers/constants';
 
 type WrapperProps = ButtonProps & {
   rowsCount: number;
+  dataSheetTableSize: number;
 };
 
 const dataSheetSectionSize = document.querySelectorAll('#datasheet-data')?.[0]?.clientWidth;
 
-export const Wrapper = styled(({ rowsCount, ...props }: WrapperProps) => <Button {...props} />)`
+export const Wrapper = styled(({ rowsCount, dataSheetTableSize, ...props }: WrapperProps) => <Button {...props} />)`
   height: 100%;
   width: 64px;
   z-index: 5;
   position: absolute;
   ${(props) =>
-    props.rowsCount > dataSheetSectionSize - 40
+    props.rowsCount > props.dataSheetTableSize - 64
       ? css`
       right 0;
     `
@@ -57,6 +58,7 @@ type Props = {
 };
 
 export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_TYPE_START }: Props) => {
+  const [dataSheetTableSize, setDataSheetTableSize] = useState<number>(1);
   const {
     dispatch,
     state: { addTypeisOpened, addConnectionTypeisOpened },
@@ -65,8 +67,21 @@ export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_
     dispatch({ type, payload: {} });
   }, [dispatch, type]);
 
+  // eslint-disable-next-line no-console
+  console.log(
+    'props.rowsCount > dataSheetSectionSize + 64',
+    (columnWidth || 1) > dataSheetSectionSize - 64,
+    columnWidth ?? 1,
+    dataSheetSectionSize,
+    dataSheetSectionSize - 64
+  );
+
+  useEffect(() => {
+    setDataSheetTableSize(document.querySelectorAll('#datasheet-data')?.[0]?.clientWidth ?? 0);
+  }, []);
+
   return !(addTypeisOpened || addConnectionTypeisOpened) ? (
-    <Wrapper onClick={handlePropertyAddClick} rowsCount={columnWidth || 1}>
+    <Wrapper onClick={handlePropertyAddClick} rowsCount={columnWidth || 1} dataSheetTableSize={dataSheetTableSize}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>
         Add Property

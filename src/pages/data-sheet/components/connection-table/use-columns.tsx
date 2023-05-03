@@ -11,6 +11,10 @@ const StyledCustomColumn = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: '100%';
+  height: '100%';
+  margin: 0;
+  padding: 0;
 
   .text {
     text-align: center;
@@ -26,6 +30,14 @@ const StyledCustomColumn = styled.div`
   .left,
   .right {
     padding-bottom: 16px;
+  }
+
+  .left {
+    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .right {
+    box-shadow: 4px 0px 4px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -74,18 +86,20 @@ export const useColumns = () => {
       width: '550px',
     },
     ...(data?.properties
-      ? data.properties?.map((item) => ({
-          title: (
-            <ManageConnectionTypeProperty
-              propertyId={item.id}
-              isDefault={false}
-              canSetDefault={false}
-            >{`${item.name} (${item.ref_property_type_id})`}</ManageConnectionTypeProperty>
-          ),
-          width: '200px',
-          dataIndex: item.name,
-          className: 'connection-column',
-        }))
+      ? data.properties?.map((item) => {
+          return {
+            title: (
+              <ManageConnectionTypeProperty
+                propertyId={item.id}
+                isDefault={false}
+                canSetDefault={false}
+              >{`${item.name} (${item.ref_property_type_id})`}</ManageConnectionTypeProperty>
+            ),
+            width: `${item.name} (${item.ref_property_type_id})`.length * 15,
+            dataIndex: item.name,
+            className: 'connection-column',
+          };
+        })
       : []),
   ];
 

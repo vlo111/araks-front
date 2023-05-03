@@ -30,7 +30,7 @@ export const useActions = () => {
           : []),
         {
           key: 'space',
-          fixed: 'right',
+          // fixed: 'right',
           dataIndex: 'space',
         },
       ] as ColumnsType<DataType>,

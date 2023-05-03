@@ -24,7 +24,7 @@ export const useActions = () => {
         : []),
       {
         key: 'space',
-        flex: 'right',
+        // flex: 'right',
         dataIndex: 'space',
       },
     ],
