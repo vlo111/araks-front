@@ -80,8 +80,11 @@ export const useColumns = () => {
               propertyId={item.id}
               isDefault={false}
               canSetDefault={false}
-            >{`${item.name}`}</ManageTypeProperty>
+            >{`${item.name} (${item.ref_property_type_id})`}</ManageTypeProperty>
           ),
+          width: '200px',
+          dataIndex: item.name,
+          className: 'connection-column',
         }))
       : []),
   ];

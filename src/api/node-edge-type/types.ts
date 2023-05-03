@@ -2,6 +2,7 @@ export type EdgeTypeProperties = {
   id: string;
   multiple_type: boolean;
   name: string;
+  ref_property_type_id: string;
 };
 
 export type EdgeTypePropertiesResponse = {
