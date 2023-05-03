@@ -115,6 +115,47 @@ export function typePropertyReducer(state: TypePropertyState, action: TypeProper
         addTypeisOpened: false,
         addConnectionTypeisOpened: false,
       };
+    case TypePropertyActionKind.DELETE_CONNECTION_TYPE_START:
+      return {
+        ...state,
+        deleteConnectionTypeisOpened: true,
+        manageConnectionTypeisOpened: false,
+        editConnectionTypeisOpened: false,
+      };
+    case TypePropertyActionKind.DELETE_CONNECTION_TYPE_FINISH:
+      return {
+        ...state,
+        deleteConnectionTypeisOpened: false,
+        propertyId: undefined,
+      };
+    case TypePropertyActionKind.EDIT_CONNECTION_TYPE_START:
+      return {
+        ...state,
+        propertyId: payload.propertyId,
+        editConnectionTypeisOpened: true,
+        manageConnectionTypeisOpened: false,
+      };
+    case TypePropertyActionKind.EDIT_CONNECTION_TYPE_FINISH:
+      return {
+        ...state,
+        propertyId: undefined,
+        editConnectionTypeisOpened: false,
+        // isConnectionType: false,
+      };
+    case TypePropertyActionKind.MANAGE_CONNECTION_TYPE_START:
+      return {
+        ...state,
+        propertyId: payload.propertyId,
+        manageConnectionTypeisOpened: true,
+        // isConnectionType: false,
+      };
+    case TypePropertyActionKind.MANAGE_CONNECTION_TYPE_FINISH:
+      return {
+        ...state,
+        propertyId: undefined,
+        manageConnectionTypeisOpened: false,
+        // isConnectionType: false,
+      };
     default:
       return state;
   }
@@ -126,6 +167,9 @@ export const initialState: TypePropertyState = {
   editTypeisOpened: false,
   isConnectionType: false,
   addConnectionTypeisOpened: false,
+  deleteConnectionTypeisOpened: false,
+  manageConnectionTypeisOpened: false,
+  editConnectionTypeisOpened: false,
 };
 
 function TypePropertyProvider({ children }: TypePropertyProviderProps) {

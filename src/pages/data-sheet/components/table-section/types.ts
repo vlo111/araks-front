@@ -18,6 +18,12 @@ export enum TypePropertyActionKind {
   ADD_CONNECTION_TYPE_START = 'ADD_CONNECTION_TYPE_START',
   ADD_CONNECTION_TYPE_FINISH = 'ADD_CONNECTION_TYPE_FINISH',
   ADD_CONNECTION_TYPE_CANCEL = 'ADD_CONNECTION_TYPE_CANCEL',
+  EDIT_CONNECTION_TYPE_START = 'EDIT_CONNECTION_TYPE_START',
+  EDIT_CONNECTION_TYPE_FINISH = 'EDIT_CONNECTION_TYPE_FINISH',
+  DELETE_CONNECTION_TYPE_START = 'DELETE_CONNECTION_TYPE_START',
+  DELETE_CONNECTION_TYPE_FINISH = 'DELETE_CONNECTION_TYPE_FINISH',
+  MANAGE_CONNECTION_TYPE_START = 'MANAGE_CONNECTION_TYPE_START',
+  MANAGE_CONNECTION_TYPE_FINISH = 'MANAGE_CONNECTION_TYPE_FINISH',
 }
 
 export type TypePropertyState = {
@@ -30,6 +36,9 @@ export type TypePropertyState = {
   propertyId?: string;
   isConnectionType?: boolean;
   addConnectionTypeisOpened?: boolean;
+  deleteConnectionTypeisOpened?: boolean;
+  manageConnectionTypeisOpened?: boolean;
+  editConnectionTypeisOpened?: boolean;
 };
 
 export interface ConnectionDataType {

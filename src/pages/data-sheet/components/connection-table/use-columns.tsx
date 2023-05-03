@@ -5,6 +5,7 @@ import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-pro
 import { VerticalSpace } from 'components/space/vertical-space';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
+import { ManageTypeProperty } from '../table-section/type-property/manage-type-property';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -72,6 +73,17 @@ export const useColumns = () => {
       fixed: true,
       width: '550px',
     },
+    ...(data?.properties
+      ? data.properties?.map((item) => ({
+          title: (
+            <ManageTypeProperty
+              propertyId={item.id}
+              isDefault={false}
+              canSetDefault={false}
+            >{`${item.name}`}</ManageTypeProperty>
+          ),
+        }))
+      : []),
   ];
 
   return columns;

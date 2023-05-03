@@ -1,3 +1,9 @@
+export type EdgeTypeProperties = {
+  id: string;
+  multiple_type: boolean;
+  name: string;
+};
+
 export type EdgeTypePropertiesResponse = {
   id: string;
   name: string;
@@ -17,5 +23,5 @@ export type EdgeTypePropertiesResponse = {
     name: string;
     color: string;
   };
-  properties: string[]; //needs to be changed
+  properties: EdgeTypeProperties[]; //needs to be changed
 };

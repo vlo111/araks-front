@@ -49,12 +49,15 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
       ref_property_type_id,
       propertyId: state.propertyId,
       project_type_id: nodeTypeId,
+      /** @TODO remove */
+      unique_type: false,
+      required_type: false,
     } as NodeEdgeTypePropertiesSubmit);
 
     form.resetFields();
     if (isEdit) {
       /** @todo ACTION TYPE FOR connection */
-      dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
+      dispatch({ type: TypePropertyActionKind.EDIT_CONNECTION_TYPE_FINISH, payload: {} });
     } else {
       dispatch({ type: TypePropertyActionKind.ADD_CONNECTION_TYPE_FINISH, payload: {} });
     }
@@ -69,7 +72,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
   /** this action works only for edit */
   /** @todo ACTION TYPE FOR connection */
   const onHandleDelete = () => {
-    dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
+    dispatch({ type: TypePropertyActionKind.DELETE_CONNECTION_TYPE_START, payload: {} });
   };
   const handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
     // Prevent the click event from bubbling up to the Collapse component
