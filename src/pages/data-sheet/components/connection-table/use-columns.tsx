@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { ManageConnectionTypeProperty } from '../table-section/type-property/manage-connection-type-property';
+import { ManageTypeProperty } from '../table-section/type-property/manage-type-property';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -61,23 +62,25 @@ export const useColumns = () => {
   const columns = [
     {
       title: () => (
-        <StyledCustomColumn>
-          <VerticalSpace className="left">
-            <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
-            <div className="text">{data?.source.name}</div>
-          </VerticalSpace>
-          <div className="center">
-            {data?.inverse === true ? (
-              <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-            ) : (
-              <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-            )}
-          </div>
-          <VerticalSpace className="right">
-            <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
-            <div className="text">{data?.target.name}</div>
-          </VerticalSpace>
-        </StyledCustomColumn>
+        <ManageTypeProperty propertyId={data?.id || ''} isDefault={false} canSetDefault={false}>
+          <StyledCustomColumn>
+            <VerticalSpace className="left">
+              <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
+              <div className="text">{data?.source.name}</div>
+            </VerticalSpace>
+            <div className="center">
+              {data?.inverse === true ? (
+                <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+              ) : (
+                <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+              )}
+            </div>
+            <VerticalSpace className="right">
+              <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
+              <div className="text">{data?.target.name}</div>
+            </VerticalSpace>
+          </StyledCustomColumn>
+        </ManageTypeProperty>
       ),
       dataIndex: 'label',
       className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
