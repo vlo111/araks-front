@@ -43,7 +43,7 @@ export const TableSection = () => {
         dataSource={dataSource}
         columns={[...columns, ...actions]}
         pagination={false}
-        scroll={{ x: '100vw' }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   );
