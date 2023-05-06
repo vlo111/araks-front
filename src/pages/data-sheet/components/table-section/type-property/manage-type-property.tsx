@@ -1,11 +1,8 @@
 import { PopoverProps } from 'antd';
 import { ActionDots } from 'components/actions/dots';
-import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { TypePropertyMenu } from 'components/menu/type-property-menu';
-import { AddNodeTypePopover, ManageNodeTypePopover } from 'components/popover';
-import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
-import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
-import React, { useCallback, useMemo } from 'react';
+import { ManageNodeTypePopover } from 'components/popover';
+import React, { useState } from 'react';
 
 type Props = PopoverProps & {
   propertyId: string;
@@ -14,51 +11,33 @@ type Props = PopoverProps & {
 };
 
 export const ManageTypeProperty = React.memo(({ children, propertyId, isDefault, canSetDefault, ...props }: Props) => {
-  const {
-    state: { manageTypeisOpened, propertyId: editPropertyId, editTypeisOpened },
-    dispatch,
-  } = useTypeProperty();
-
-  const handlePropertyEditClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.MANAGE_TYPE_START, payload: { propertyId } });
-  }, [dispatch, propertyId]);
-
-  const isOpened = useMemo(
-    () => editPropertyId === propertyId && manageTypeisOpened,
-    [editPropertyId, manageTypeisOpened, propertyId]
-  );
-
-  const isEditOpened = useMemo(
-    () => editPropertyId === propertyId && editTypeisOpened,
-    [editPropertyId, editTypeisOpened, propertyId]
-  );
+  const [isManageOpened, setManageOpened] = useState(false);
 
   return (
     <>
+      {children}
       <ManageNodeTypePopover
-        content={<TypePropertyMenu isDefault={isDefault} propertyId={propertyId} canSetDefault={canSetDefault} />}
-        open={isOpened}
+        content={
+          <TypePropertyMenu
+            isDefault={isDefault}
+            propertyId={propertyId}
+            canSetDefault={canSetDefault}
+            closeManageNodes={() => setManageOpened(false)}
+          />
+        }
+        open={isManageOpened}
         trigger="click"
         onOpenChange={(open: boolean) => {
-          !open && dispatch({ type: TypePropertyActionKind.MANAGE_TYPE_FINISH, payload: {} });
+          !open && setManageOpened(false);
           return open;
         }}
         {...props}
       >
-        <ActionDots style={{ position: 'absolute', right: '5px' }} onClick={handlePropertyEditClick} />
+        <ActionDots
+          style={{ position: 'absolute', right: '5px', cursor: 'pointer' }}
+          onClick={() => setManageOpened(true)}
+        />
       </ManageNodeTypePopover>
-      <AddNodeTypePopover
-        content={<AddTypePropertyForm isEdit />}
-        open={isEditOpened}
-        trigger="click"
-        onOpenChange={(open: boolean) => {
-          !open && dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
-          return open;
-        }}
-        {...props}
-      >
-        {children}
-      </AddNodeTypePopover>
     </>
   );
 });

@@ -5,7 +5,7 @@ import { useActions } from './table-actions';
 import { getTableHeight } from './constants';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { useEffect, useState } from 'react';
-import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
+import { VerticalButton } from 'components/button/vertical-button';
 
 const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
   key: i,
@@ -34,11 +34,12 @@ export const TableSection = () => {
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
-      <VerticalConnectionButton columnWidth={columnWidth} />
+      <VerticalButton columnWidth={columnWidth} />
       <HorizontalButton tableHead={tableHead} />
       <Table
         id="node-table"
         size="large"
+        bordered
         dataSource={dataSource}
         columns={[...columns, ...actions]}
         pagination={false}

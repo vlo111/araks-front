@@ -11,6 +11,9 @@ import { TypePropertyActionKind } from 'pages/data-sheet/components/table-sectio
 import { useSetPropertyDefault } from 'api/project-node-type-property/use-set-property-default';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropertyMenu } from './property-menu';
+import { AddNodeTypePopover } from 'components/popover';
+import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { useState } from 'react';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -44,20 +47,25 @@ type Props = {
   propertyId: string;
   isDefault: boolean;
   canSetDefault: boolean;
+  closeManageNodes: () => void;
 };
 
-export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault }: Props) => {
+export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeManageNodes }: Props) => {
   const { dispatch } = useTypeProperty();
+  const [isEditOpened, setEditOpened] = useState(false);
+
   const { nodeTypeId } = useDataSheetWrapper();
   const { mutate } = useSetPropertyDefault();
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'edit') {
       dispatch({ type: TypePropertyActionKind.EDIT_TYPE_START, payload: { propertyId } });
+      setEditOpened(true);
     } else if (e.key === 'delete') {
       dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: { propertyId } });
     } else if (e.key === 'default' && nodeTypeId) {
       mutate({ propertyId, nodeTypeId: nodeTypeId });
     }
+    closeManageNodes();
     e.domEvent.stopPropagation();
   };
 
@@ -71,6 +79,15 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault }: Props
         onClick={onClick}
       />
       <DeleteTypePropertyModal id={propertyId} />
+      <AddNodeTypePopover
+        content={<AddTypePropertyForm isEdit hide={() => setEditOpened(false)} />}
+        open={isEditOpened}
+        trigger="click"
+        onOpenChange={(open: boolean) => {
+          !open && setEditOpened(false);
+          return open;
+        }}
+      />
     </>
   );
 };

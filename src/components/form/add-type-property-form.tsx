@@ -29,9 +29,10 @@ const Wrapper = styled.div`
 
 type Props = {
   isEdit?: boolean;
+  hide?: () => void;
 };
 
-export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
+export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
   const { nodeTypeId, dataList } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
@@ -88,12 +89,14 @@ export const AddTypePropertyForm = ({ isEdit = false }: Props) => {
   /** this action works only for create */
   const onHandleCancel = () => {
     dispatch({ type: TypePropertyActionKind.ADD_TYPE_CANCEL, payload: { titleText: undefined } });
+    hide?.();
     form.resetFields();
   };
 
   /** this action works only for edit */
   const onHandleDelete = () => {
     dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
+    hide?.();
   };
   const handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
     // Prevent the click event from bubbling up to the Collapse component

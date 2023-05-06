@@ -1,0 +1,48 @@
+import { ButtonProps } from 'antd';
+import styled, { css } from 'styled-components';
+import { Button } from '.';
+
+type WrapperProps = ButtonProps & {
+  rowsCount: number;
+  dataSheetTableSize: number;
+  wrapperWidth?: number;
+};
+export const VerticalButtonWrapper = styled(
+  ({ rowsCount, dataSheetTableSize, wrapperWidth, ...props }: WrapperProps) => <Button {...props} />
+)`
+  height: 100%;
+  width: ${({ wrapperWidth }) => wrapperWidth ?? 64}px;
+  z-index: 5;
+  position: absolute;
+  ${(props) =>
+    props.rowsCount > props.dataSheetTableSize - 64
+      ? css`
+        right 0;
+      `
+      : css`
+          left: ${props.rowsCount}px;
+        `}
+
+  background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);
+  backdrop-filter: blur(2px);
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding-top: 30px;
+
+  .property-text {
+    display: none;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  &:hover {
+    background: linear-gradient(179.75deg, #bec4db 0%, rgba(192, 198, 219, 0.3) 99.91%);
+    .property-text {
+      display: inline;
+    }
+  }
+`;
