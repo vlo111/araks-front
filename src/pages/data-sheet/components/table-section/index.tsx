@@ -2,10 +2,10 @@ import { Table } from 'antd';
 import { useColumns } from './use-columns';
 import { DataType } from './types';
 import { useActions } from './table-actions';
-import { VerticalButton } from 'components/button/vertical-button';
 import { getTableHeight } from './constants';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { useEffect, useState } from 'react';
+import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
 
 const dataSource: DataType[] = [...Array(20)].map((_, i) => ({
   key: i,
@@ -34,7 +34,7 @@ export const TableSection = () => {
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
-      <VerticalButton columnWidth={columnWidth} />
+      <VerticalConnectionButton columnWidth={columnWidth} />
       <HorizontalButton tableHead={tableHead} />
       <Table
         id="node-table"

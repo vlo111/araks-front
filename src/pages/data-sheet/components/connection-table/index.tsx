@@ -1,11 +1,10 @@
 import { useColumns } from './use-columns';
-import { VerticalButton } from 'components/button/vertical-button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { useEffect, useState } from 'react';
 import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
-import { TypePropertyActionKind } from '../table-section/types';
 import { useActions } from './table-actions';
+import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
 
 const dataSource = [...Array(20)].map((_, i) => ({
   key: i,
@@ -34,7 +33,7 @@ export const ConnectionTableSection = () => {
 
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
-      <VerticalButton columnWidth={columnWidth} type={TypePropertyActionKind.ADD_CONNECTION_TYPE_START} />
+      <VerticalConnectionButton columnWidth={columnWidth} />
       <HorizontalButton tableHead={tableHead} />
       <ConnectionTable
         id="connection-table"

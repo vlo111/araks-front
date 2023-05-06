@@ -1,9 +1,9 @@
+import { Button } from 'components/button';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 import styled, { css } from 'styled-components';
 import { FullWidth } from 'types/project';
-// import { Wrapper } from './wrapper';
 
-const DotsWrapper = styled(({ fullWidth, ...props }) => <div {...props} />)`
+const DotsWrapper = styled(({ fullWidth, ...props }) => <Button type="text" {...props} />)`
   & {
     position: relative;
 

@@ -24,9 +24,10 @@ const Wrapper = styled.div`
 
 type Props = {
   isEdit?: boolean;
+  hide?: () => void;
 };
 
-export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
+export const AddConnectionTypePropertyForm = ({ isEdit = false, hide }: Props) => {
   const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
@@ -62,13 +63,13 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false }: Props) => {
 
   /** this action works only for create */
   const onHandleCancel = () => {
-    dispatch({ type: TypePropertyActionKind.ADD_CONNECTION_TYPE_CANCEL, payload: { titleText: undefined } });
+    hide?.();
     form.resetFields();
   };
 
   /** this action works only for edit */
-  /** @todo ACTION TYPE FOR connection */
   const onHandleDelete = () => {
+    hide?.();
     dispatch({ type: TypePropertyActionKind.DELETE_CONNECTION_TYPE_START, payload: {} });
   };
   const handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
