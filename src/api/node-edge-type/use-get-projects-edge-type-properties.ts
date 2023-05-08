@@ -1,4 +1,3 @@
-import { TreeNodeType } from 'pages/data-sheet/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 import { EdgeTypePropertiesResponse } from './types';
@@ -10,7 +9,7 @@ type ReturnData = {
 };
 
 type Options = UseQueryOptions<ReturnData, Error, EdgeTypePropertiesResponse>;
-type Result = UseQueryResult<EdgeTypePropertiesResponse> & { formatted: TreeNodeType[] };
+type Result = UseQueryResult<EdgeTypePropertiesResponse>;
 
 export const useGetProjectsEdgeTypeProperties = (edgeypeId?: string, options?: Options): Result => {
   const urlNodes = GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST.replace(':edge_type_id', edgeypeId || '');
@@ -23,6 +22,6 @@ export const useGetProjectsEdgeTypeProperties = (edgeypeId?: string, options?: O
 
   return {
     ...result,
-    data: isSuccess ? data : ({} as EdgeTypePropertiesResponse),
+    data: (isSuccess ? data : {}) as EdgeTypePropertiesResponse,
   } as Result;
 };

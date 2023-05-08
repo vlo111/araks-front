@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Skeleton } from 'antd';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
@@ -6,7 +7,8 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { ManageConnectionTypeProperty } from '../table-section/type-property/manage-connection-type-property';
-import { ManageTypeProperty } from '../table-section/type-property/manage-type-property';
+import { ConnectionTypeEdit } from '../table-section/type-property/connection-type-edit';
+import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -49,6 +51,8 @@ export const useColumns = () => {
     enabled: !!(nodeTypeId && isConnectionType === true),
   });
 
+  const connectionData = useMemo(() => data as EdgeTypePropertiesResponse, [data]);
+
   if (isInitialLoading) {
     return [
       {
@@ -62,7 +66,7 @@ export const useColumns = () => {
   const columns = [
     {
       title: () => (
-        <ManageTypeProperty propertyId={data?.id || ''} isDefault={false} canSetDefault={false}>
+        <ConnectionTypeEdit connectionData={connectionData}>
           <StyledCustomColumn>
             <VerticalSpace className="left">
               <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
@@ -80,7 +84,7 @@ export const useColumns = () => {
               <div className="text">{data?.target.name}</div>
             </VerticalSpace>
           </StyledCustomColumn>
-        </ManageTypeProperty>
+        </ConnectionTypeEdit>
       ),
       dataIndex: 'label',
       className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this

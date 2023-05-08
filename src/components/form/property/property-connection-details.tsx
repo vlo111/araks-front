@@ -6,11 +6,12 @@ import { TreeSelect } from 'components/select';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useEffect, useState } from 'react';
 import { FormItem } from '../form-item';
+import { PropertyTypes } from './types';
 
 export const PropertyConnectionDetails = () => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
-  const dataType = Form.useWatch('ref_property_type_id');
+  const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
   const { nodesList, nodeTypeId } = useDataSheetWrapper();
   const { state } = useTypeProperty();
 
@@ -28,7 +29,7 @@ export const PropertyConnectionDetails = () => {
 
   return (
     <>
-      {dataType === 'connection' && (
+      {dataType === PropertyTypes.Connection && (
         <>
           <FormItem name="source_id" label="Source" rules={[{ required: true, message: 'Source is required' }]}>
             <TreeSelect

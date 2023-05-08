@@ -10,6 +10,7 @@ export type NodeEdgeTypesSubmit = {
   inverse: boolean;
   multiple: boolean;
   ref_property_type_id?: PropertyTypes.Connection;
+  propertyId?: string;
 };
 
 export type NodeEdgeTypePropertiesSubmit = {
