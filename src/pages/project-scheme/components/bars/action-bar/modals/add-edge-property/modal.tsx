@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddSchemaEdgePropertyForm } from '../../form/add-edge-property';
 import { WrapperModal } from './wrapper';
+import { CSSProperties } from 'styled-components';
 
 const MODAL_WIDTH = 232;
 
@@ -10,8 +11,9 @@ export const AddEdgePropertyModal: React.FC = () => {
   const [form] = Form.useForm();
   const { openLinkPropertyModal, setOpenLinkPropertyModal } = useSchema() || {};
 
-  const position = useMemo(
+  const position: CSSProperties = useMemo(
     () => ({
+      position: 'fixed',
       top: openLinkPropertyModal?.y ?? 0,
       left: (openLinkPropertyModal?.x ?? 0) - MODAL_WIDTH / 2,
     }),
@@ -31,17 +33,11 @@ export const AddEdgePropertyModal: React.FC = () => {
       form.resetFields();
     },
     width: `${MODAL_WIDTH}px`,
-    color: openLinkPropertyModal?.color,
+    color: openLinkPropertyModal?.color ?? [],
   };
 
   return (
-    <WrapperModal
-      style={{
-        position: 'fixed',
-        ...position,
-      }}
-      {...props}
-    >
+    <WrapperModal style={{ ...position }} {...props}>
       <AddSchemaEdgePropertyForm form={form} />
     </WrapperModal>
   );

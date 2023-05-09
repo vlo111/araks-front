@@ -42,7 +42,7 @@ export const Topology: React.FC = () => {
       enabled: !!id,
       onSuccess: async ({ data: { projectsNodeTypes } }) => {
         /** Get edges for format and render with types  */
-        const { data: edges } = await client.get(`${process.env.REACT_APP_BASE_URL}node-edge-type/${id}`);
+        const { data: edges } = await client.get(`${process.env.REACT_APP_BASE_URL}projects-edge-type/${id}`);
 
         params.setEdges(edges);
         params.setNodes(projectsNodeTypes);
