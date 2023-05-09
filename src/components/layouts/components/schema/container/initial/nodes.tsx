@@ -32,6 +32,7 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
         const { x, y, height, width } = bounding?.getBoundingClientRect();
 
         setOpenLinkPropertyModal({
+          id: edge.id,
           name: edge.attr('name'),
           open: true,
           x: x + width / 2,

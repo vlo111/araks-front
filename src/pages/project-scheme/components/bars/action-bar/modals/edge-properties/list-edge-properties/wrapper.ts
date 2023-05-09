@@ -18,19 +18,32 @@ export const WrapperModal = styled(Modal)<{ color: string[] }>`
         align-items: center;
         color: white;
 
+        .text {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 9rem;
+          font-weight: 600;
+          font-size: 20px;
+          line-height: 26px;
+        }
+
         svg:first-child {
           width: 40px;
         }
 
-        svg:last-child {
-          position: absolute;
-          right: 0;
-          width: 40px;
+        .icon {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
         }
-      }
 
-      .list {
-        min-height: 32px;
+        .add-property-icon {
+          cursor: pointer;
+          position: absolute;
+          display: flex;
+          right: 0;
+        }
       }
     }
   }

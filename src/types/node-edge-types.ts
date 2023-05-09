@@ -18,5 +18,5 @@ export type NodeEdgeTypePropertiesSubmit = {
   name: string;
   multiple: boolean;
   ref_property_type_id: ConnectionPropertyTypes;
-  propertyId: string;
+  propertyId?: string;
 };
