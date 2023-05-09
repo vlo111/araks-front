@@ -24,7 +24,11 @@ export const useCreateNodeEdgeType = (propertyId?: string, options?: Options) =>
     mutationFn: (values: NodeEdgeTypesSubmit) => {
       const url = propertyId ? URL_NODE_EDGE_TYPE_UPDATE.replace(':id', propertyId || '') : URL_NODE_EDGE_TYPE_CREATE;
       const type = propertyId ? RequestTypes.Put : RequestTypes.Post;
-      return client[type](url, values);
+      const body = {
+        ...values,
+        project_id: params.id,
+      };
+      return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST.replace(':edge_type_id', propertyId || '')]);
