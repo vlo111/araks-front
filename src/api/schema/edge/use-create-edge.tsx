@@ -5,7 +5,7 @@ import client from '../../client';
 import { ProjectEdgeResponse } from '../../../types/project-edge';
 import { GET_TYPES } from '../type/use-get-types';
 
-const URL_PROJECT_EDGE_CREATE = '/node-edge-type/create';
+const URL_PROJECT_EDGE_CREATE = '/projects-edge-type/create';
 
 type ReturnData = {
   data: ProjectEdgeResponse;

@@ -1,8 +1,11 @@
-import { Button } from 'antd';
-import { useAuth } from 'context/auth-context';
+import { useMemo } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../../helpers/constants';
+import { Button, Dropdown } from 'antd';
+import { useAuth } from 'context/auth-context';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
+import { ReactComponent as UserProfileSvg } from './icon/user-profile.svg';
+import { ReactComponent as SignOutSvg } from './icon/sign-out.svg';
+import './profile.css';
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,12 +22,32 @@ const Wrapper = styled.div`
 `;
 
 export const HeaderProfile = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const items: ItemType[] = useMemo(
+    () => [
+      {
+        key: '0',
+        label: <a href="profile">View profile</a>,
+        icon: <UserProfileSvg />,
+      },
+      {
+        type: 'divider',
+      },
+      {
+        key: '1',
+        label: <div onClick={() => logout()}>Log Out</div>,
+        icon: <SignOutSvg />,
+      },
+    ],
+    [logout]
+  );
 
   return (
     <Wrapper>
-      <Button onClick={() => navigate(PATHS.PROFILE)} icon={<img src={user?.avatar} alt={user?.first_name} />} />
+      <Dropdown overlayClassName="profile-settings" menu={{ items }} trigger={['click']}>
+        <Button icon={<img src={user?.avatar} alt={user?.first_name} />} />
+      </Dropdown>
     </Wrapper>
   );
 };

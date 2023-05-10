@@ -30,6 +30,17 @@ Graph.registerNode(
       },
     ],
     attrs: {
+      label: {
+        fontSize: 14,
+        textAnchor: "left",
+        refX: 20,
+        cursor: "default",
+        textWrap: {
+          width: 10,
+          height: 16,
+          ellipsis: true
+        }
+      },
       body: {
         strokeWidth: 6,
         fill: '#F5F5F5',
@@ -47,6 +58,11 @@ Graph.registerNode(
         textAnchor: 'start',
         textVerticalAnchor: 'middle',
         zIndex: 2,
+        cursor: "default",
+        textWrap: {
+          width: 100,
+          ellipsis: true
+        }
       },
     },
     ports: {
@@ -81,6 +97,10 @@ Graph.registerNode(
               refX: 6,
               refY: 10,
               fontSize: 10,
+              textWrap: {
+                width: 100,
+                ellipsis: true
+              }
             },
             portTypeLabel: {
               ref: 'portBody',
