@@ -10,13 +10,15 @@ import { useGetProjectsEdgeTypeProperties } from '../../../../../../../../api/no
 
 const MODAL_WIDTH = 232;
 
+type OpenEditModal = (item?: string | boolean) => void
+
 export const AddEdgePropertyModal: React.FC = () => {
   const { openLinkPropertyModal, setOpenLinkPropertyModal } = useSchema() || {};
 
   const { data, isInitialLoading } = useGetProjectsEdgeTypeProperties(openLinkPropertyModal?.id, {
     enabled: !!openLinkPropertyModal?.id,
   });
-  const [openCreateProperty, setOpenCreateProperty] = useState(false);
+  const [openCreateProperty, setOpenCreateProperty] = useState<boolean | string>(false);
 
   const position: CSSProperties = useMemo(
     () => ({
@@ -42,6 +44,8 @@ export const AddEdgePropertyModal: React.FC = () => {
     color: openLinkPropertyModal?.color ?? [],
   };
 
+  const openEditModal: OpenEditModal = (item = true) => setOpenCreateProperty(item);
+
   return (
     <>
       {openLinkPropertyModal?.id && !isInitialLoading && (
@@ -52,13 +56,17 @@ export const AddEdgePropertyModal: React.FC = () => {
                 <ArrowsSVG />
               </div>
               <span className="text">{openLinkPropertyModal?.name}</span>
-              <div className="add-property-icon" onClick={() => setOpenCreateProperty(true)}>
+              <div className="add-property-icon" onClick={() => openEditModal()}>
                 <PlusSVG />
               </div>
             </div>
-            <EdgePropertyList list={data} />
+            <EdgePropertyList list={data} openEditModal={openEditModal} />
           </WrapperModal>
-          <AddSchemaEdgePropertyForm open={openCreateProperty} onClose={setOpenCreateProperty} />
+          <AddSchemaEdgePropertyForm
+            open={openCreateProperty}
+            onClose={setOpenCreateProperty}
+            isEdit={typeof openCreateProperty === 'string'}
+          />
         </>
       )}
     </>

@@ -9,18 +9,17 @@ import { PropertyDataConnectionTypeSelect } from 'components/select/property-dat
 import { PropertyMultipleDetails } from 'components/form/property/property-multiple-details';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Button } from 'components/button';
-import { NodeEdgeTypePropertiesSubmit } from "types/node-edge-types";
-import {
-  useManageProjectNodeTypeProperty
-} from "api/node-edge-type/use-manage-project-edge-type-property";
-import { useSchema } from "../../../../../../../components/layouts/components/schema/wrapper";
+import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
+import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
+import { useSchema } from '../../../../../../../components/layouts/components/schema/wrapper';
+import { useGetProjectEdgeTypeProperty } from '../../../../../../../api/node-edge-type/use-get-project-edge-type-property';
 
 const MODAL_WIDTH = 500;
 
 type Props = {
   isEdit?: boolean;
-  open: boolean;
-  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean | string;
+  onClose: React.Dispatch<React.SetStateAction<boolean | string>>;
 };
 
 export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClose }) => {
@@ -29,8 +28,17 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
 
   const { mutate } = useManageProjectNodeTypeProperty();
 
+  useGetProjectEdgeTypeProperty(open as string, {
+    enabled: !!isEdit,
+    onSuccess: (data) => {
+      form.setFieldsValue({
+        ...data,
+      });
+    },
+  });
+
   const props = {
-    open,
+    open: open !== false,
     centered: true,
     footer: false,
     onCancel: () => onClose(false),
@@ -51,31 +59,19 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
     mutate({
       ...values,
       ref_property_type_id,
-      propertyId: undefined,
+      propertyId: open,
       project_type_id: openLinkPropertyModal?.id,
     } as NodeEdgeTypePropertiesSubmit);
 
     form.resetFields();
 
-    onClose(false)
-    // if (isEdit) {
-    //   /** @todo ACTION TYPE FOR connection */
-    //   dispatch({ type: TypePropertyActionKind.EDIT_CONNECTION_TYPE_FINISH, payload: {} });
-    // } else {
-    //   dispatch({ type: TypePropertyActionKind.ADD_CONNECTION_TYPE_FINISH, payload: {} });
-    // }
+    onClose(false);
   };
 
   return (
     <Modal {...props}>
       <div>
-        <Form
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-          requiredMark={false}
-        >
+        <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <Space size={8}>
             <Text>{isEdit ? 'Edit connection property' : 'Add property for connection type'}</Text>
             <Tooltip title="Useful information" placement="right">
