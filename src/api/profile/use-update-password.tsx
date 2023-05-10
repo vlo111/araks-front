@@ -11,8 +11,8 @@ export const useUpdatePassword = () => {
     mutationFn: (values: ProfilePassword) => {
       return client.put(url, values);
     },
-    onSuccess: () => message.success('Password successfully changed').then((r) => r),
-    onError: (data) => message.error(data.response.data.message).then((r) => r),
+    onSuccess: () => message.success('Password successfully changed'),
+    onError: (data) => message.error(data.response.data.message),
   });
   return mutation;
 };
