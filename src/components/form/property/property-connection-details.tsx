@@ -12,6 +12,9 @@ export const PropertyConnectionDetails = () => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
   const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
+  const source = Form.useWatch('source_id', { preserve: true });
+  const target = Form.useWatch('target_id', { preserve: true });
+  const inverse = Form.useWatch('inverse', { preserve: true });
   const { nodesList, nodeTypeId } = useDataSheetWrapper();
   const { state } = useTypeProperty();
 
@@ -26,6 +29,12 @@ export const PropertyConnectionDetails = () => {
       form.resetFields(['source_id']);
     };
   }, [form, nodeTypeId, state.isConnectionType]);
+
+  useEffect(() => {
+    if (target === source && inverse) {
+      form.setFieldValue('inverse', false);
+    }
+  }, [form, source, target, inverse]);
 
   return (
     <>
@@ -57,7 +66,7 @@ export const PropertyConnectionDetails = () => {
             />
           </FormItem>
           <FormItem name="inverse" valuePropName="checked" initialValue={false}>
-            <Checkbox>
+            <Checkbox disabled={target === source}>
               <Space>
                 Inverse
                 <Tooltip title="Useful information" placement="right">

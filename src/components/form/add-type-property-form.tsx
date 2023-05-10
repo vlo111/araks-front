@@ -29,11 +29,11 @@ const Wrapper = styled.div`
 
 type Props = {
   isEdit?: boolean;
-  hide?: () => void;
+  hide: () => void;
 };
 
 export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
-  const { nodeTypeId, dataList } = useDataSheetWrapper();
+  const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
   const { mutate } = useCreateProjectNodeTypeProperty(
@@ -51,7 +51,12 @@ export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
     isEdit ? state.propertyId : undefined
   );
 
-  const { mutate: mutateConnection } = useCreateNodeEdgeType();
+  const { mutate: mutateConnection } = useCreateNodeEdgeType(undefined, {
+    onSuccess: ({ data }) => {
+      hide?.();
+      form.resetFields();
+    },
+  });
 
   useGetProjectNodeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,
@@ -68,12 +73,6 @@ export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
     if (ref_property_type_id === PropertyTypes.Connection) {
       mutateConnection({
         ...values,
-        target_attribute_id: dataList
-          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
-          ?.properties?.find((property) => property.default_proprty === true)?.id,
-        source_attribute_id: dataList
-          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
-          ?.properties?.find((property) => property.default_proprty === true)?.id,
       } as NodeEdgeTypesSubmit);
     } else {
       mutate({
