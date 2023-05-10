@@ -7,13 +7,13 @@ import client from '../client';
 const url = 'users/update';
 
 export const useUpdateProfile = () => {
-  const { setUser } = useAuth();
+  const { addUser } = useAuth();
   const mutation = useMutation<{data: UserDetails}, unknown, ProfileForm>({
     mutationFn: (values: ProfileForm) => {
       return client.put(url, values);
     },
     onSuccess: (data) => {
-      setUser({
+      addUser({
         ...data.data,
       });
     },
