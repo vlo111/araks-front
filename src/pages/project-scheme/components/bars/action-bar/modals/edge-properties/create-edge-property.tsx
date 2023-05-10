@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Form, Modal, Space, Tooltip } from 'antd';
 import { Text } from 'components/typography';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -11,8 +11,9 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Button } from 'components/button';
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
 import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
-import { useSchema } from '../../../../../../../components/layouts/components/schema/wrapper';
-import { useGetProjectEdgeTypeProperty } from '../../../../../../../api/node-edge-type/use-get-project-edge-type-property';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
+import { useDeleteProjectEdgeTypeProperty } from 'api/node-edge-type/use-delete-project-edge-type-property';
 
 const MODAL_WIDTH = 500;
 
@@ -25,6 +26,10 @@ type Props = {
 export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClose }) => {
   const [form] = Form.useForm();
   const { openLinkPropertyModal } = useSchema() || {};
+
+  const id = useMemo(() => open as string, [open]);
+
+  const { mutate: deleteEdgeProperty } = useDeleteProjectEdgeTypeProperty(id, openLinkPropertyModal?.id || '');
 
   const { mutate } = useManageProjectNodeTypeProperty();
 
@@ -47,24 +52,26 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
 
   const onHandleCancel = () => {
     form.resetFields();
+    onClose(false);
   };
 
-  const onHandleDelete = () => {
+  const onHandleDelete = async () => {
+    await deleteEdgeProperty();
     form.resetFields();
+    onClose(false);
   };
 
-  const onFinish = ({ ref_property_type_id, ...values }: NodeEdgeTypePropertiesSubmit) => {
+  const onFinish = async ({ ref_property_type_id, ...values }: NodeEdgeTypePropertiesSubmit) => {
     /** propertyId, project_type_id - Is edge ID */
     /** propertyId - Fill for edit */
-    mutate({
+    await mutate({
       ...values,
       ref_property_type_id,
-      propertyId: open,
+      propertyId: isEdit ? id : undefined,
       project_type_id: openLinkPropertyModal?.id,
     } as NodeEdgeTypePropertiesSubmit);
 
     form.resetFields();
-
     onClose(false);
   };
 
