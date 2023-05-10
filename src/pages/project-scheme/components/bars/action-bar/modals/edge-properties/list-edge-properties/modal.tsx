@@ -6,7 +6,7 @@ import { ReactComponent as ArrowsSVG } from './icons/arrows.svg';
 import { ReactComponent as PlusSVG } from './icons/plus.svg';
 import { AddSchemaEdgePropertyForm } from '../create-edge-property';
 import { EdgePropertyList } from './list';
-import { useGetProjectsEdgeTypeProperties } from '../../../../../../../../api/node-edge-type/use-get-projects-edge-type-properties';
+import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 
 const MODAL_WIDTH = 232;
 
