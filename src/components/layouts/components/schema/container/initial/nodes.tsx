@@ -32,6 +32,7 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
         const { x, y, height, width } = bounding?.getBoundingClientRect();
 
         setOpenLinkPropertyModal({
+          id: edge.id,
           name: edge.attr('name'),
           open: true,
           x: x + width / 2,
@@ -60,7 +61,9 @@ export const initNodes: InitNodes = (graph, cells, { setOpenLinkPropertyModal, s
   /** Set Select Type the last created type */
   if (typeof selectedNode === 'string') {
     setTimeout(() => {
-      const container: Element = Array.from(graph.view.stage.childNodes).find(
+      const nodes = graph.view.stage.querySelectorAll('.x6-cell.x6-node');
+
+      const container: Element = Array.from(nodes).find(
         (n) =>
           (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === selectedNode
       ) as Element;
