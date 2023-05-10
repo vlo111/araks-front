@@ -21,6 +21,8 @@ import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-t
 import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { PropertyTypes } from './property/types';
 import { Rule } from 'antd/es/form';
+import { useQueryClient } from '@tanstack/react-query';
+import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -33,6 +35,7 @@ type Props = {
 };
 
 export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
+  const queryClient = useQueryClient();
   const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
@@ -55,6 +58,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
     onSuccess: ({ data }) => {
       hide?.();
       form.resetFields();
+      queryClient.invalidateQueries([GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', nodeTypeId || '')]);
     },
   });
 
