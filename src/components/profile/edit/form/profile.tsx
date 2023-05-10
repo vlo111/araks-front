@@ -6,6 +6,7 @@ import { FormInput, TextArea } from 'components/input';
 import { Button } from 'components/button';
 import { useUpdateProfile } from 'api/profile/use-update-profile';
 import { ProfileForm } from 'types/auth';
+import { rulesInput } from '../utils';
 
 export const EditProfile = () => {
   const [form] = Form.useForm();
@@ -32,28 +33,12 @@ export const EditProfile = () => {
     <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
       <Row>
         <Col span={11}>
-          <FormItem
-            name="first_name"
-            label="First Name"
-            rules={[
-              { required: true, message: 'First name is required' },
-              { min: 3, message: 'The minimum length for this field is 3 characters' },
-              { max: 30, message: 'The maximum length for this field is 30 characters' },
-            ]}
-          >
+          <FormItem name="first_name" label="First Name" rules={rulesInput}>
             <FormInput placeholder="First Name" />
           </FormItem>
         </Col>
         <Col span={12} offset={1}>
-          <FormItem
-            name="last_name"
-            label="Last Name"
-            rules={[
-              { required: true, message: 'Last name is required' },
-              { min: 3, message: 'The minimum length for this field is 3 characters' },
-              { max: 30, message: 'The maximum length for this field is 30 characters' },
-            ]}
-          >
+          <FormItem name="last_name" label="Last Name" rules={rulesInput}>
             <FormInput placeholder="Last Name" />
           </FormItem>
         </Col>
