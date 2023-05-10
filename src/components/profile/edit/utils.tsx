@@ -12,7 +12,7 @@ export const rulesPassword = [
     async validator(_: { field: string }, value: string) {
       if (
         _.field === 'old_password' ||
-        getFieldValue(_.field === 'new_password' ? 'repeat_password' : 'new_password') === value
+        getFieldValue(_.field === 'new_password' ? 'confirm_password' : 'new_password') === value
       ) {
         return await Promise.resolve();
       }

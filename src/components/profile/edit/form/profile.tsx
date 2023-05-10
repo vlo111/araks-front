@@ -42,11 +42,6 @@ export const EditProfile = () => {
             <FormInput placeholder="Last Name" />
           </FormItem>
         </Col>
-        <Col span={11}>
-          <FormItem name="email" label="Email" rules={[{ required: true }, { type: 'email' }]}>
-            <FormInput placeholder="Email" />
-          </FormItem>
-        </Col>
         <Divider style={{ color: 'red', marginTop: '6px' }} />
       </Row>
       <FormItem name="bio" label="Description">
