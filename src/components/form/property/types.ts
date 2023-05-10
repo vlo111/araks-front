@@ -1,8 +1,13 @@
 export enum PropertyTypes {
-  Text = 'text',
   Boolean = 'boolean',
-  RichText = 'rich_text',
   Connection = 'connection',
+  Integer = 'integer',
+  DateTime = 'datetime',
+  Decimal = 'decimal',
+  Document = 'document',
+  Location = 'location',
+  RichText = 'rich_text',
+  Text = 'text',
 }
 
 export enum ConnectionPropertyTypes {

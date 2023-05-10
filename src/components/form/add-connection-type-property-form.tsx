@@ -31,7 +31,13 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide }: Props) =
   const { nodeTypeId } = useDataSheetWrapper();
   const { state, dispatch } = useTypeProperty();
 
-  const { mutate } = useManageProjectNodeTypeProperty();
+  const { mutate } = useManageProjectNodeTypeProperty({
+    onSuccess: (
+      
+    ) => {
+      hide?.();
+    },
+  });
 
   useGetProjectEdgeTypeProperty(state.propertyId, {
     enabled: !!state.propertyId,

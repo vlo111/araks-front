@@ -1,5 +1,4 @@
 import { useColumns } from './use-columns';
-import { HorizontalButton } from 'components/button/horizontal-button';
 import { useEffect, useState } from 'react';
 import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
@@ -12,14 +11,12 @@ const dataSource = [...Array(20)].map((_, i) => ({
 }));
 
 export const ConnectionTableSection = () => {
-  const [tableHead, setTableHead] = useState(0);
   const [columnWidth, setColumnWidth] = useState(0);
   const columns = useColumns();
   const actions = useActions();
 
   useEffect(() => {
     if (columns.length) {
-      setTableHead(document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight);
       const columns = document.querySelectorAll('.ant-table-thead .connection-column');
       let summaryWidth = 0;
 
@@ -34,7 +31,6 @@ export const ConnectionTableSection = () => {
   return (
     <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}>
       <VerticalConnectionButton columnWidth={columnWidth} />
-      <HorizontalButton tableHead={tableHead} />
       <ConnectionTable
         id="connection-table"
         size="large"

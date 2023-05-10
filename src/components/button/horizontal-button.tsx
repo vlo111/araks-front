@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Button, ButtonProps } from 'antd';
-import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
+// import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useCallback } from 'react';
-import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
+// import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
@@ -41,18 +41,21 @@ export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button 
 
 type Props = {
   tableHead: number;
+  openForm: () => void;
+  formIsOpened: boolean;
 };
 
-export const HorizontalButton = ({ tableHead }: Props) => {
-  const {
-    dispatch,
-    state: { addTypeisOpened },
-  } = useTypeProperty();
+export const HorizontalButton = ({ tableHead, openForm, formIsOpened }: Props) => {
+  // const {
+  //   dispatch,
+  //   state: { addTypeisOpened },
+  // } = useTypeProperty();
   const handlePropertyAddClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: {} });
-  }, [dispatch]);
+    openForm();
+    // dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: {} });
+  }, [openForm]);
 
-  return !addTypeisOpened ? (
+  return !formIsOpened ? (
     <Wrapper onClick={handlePropertyAddClick} position={tableHead}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>

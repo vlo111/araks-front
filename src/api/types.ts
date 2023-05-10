@@ -102,7 +102,7 @@ export type ProjectTypePropertyReturnData = {
   created_at: string;
   default_proprty: boolean;
   id: string;
-  multiple_type: string;
+  multiple_type: boolean;
   name: string;
   project_id: string;
   project_type_id: string;

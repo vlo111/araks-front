@@ -6,7 +6,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { TableSection } from './table-section';
-import { ManageNode } from './table-section/node/manage-node';
+// import { ManageNode } from './table-section/node/manage-node';
 
 export const RightSection = () => {
   const { startAddType, addTypeisOpened, color, titleText, nodeTypeId, selectNodeTypeFinished, isConnectionType } =
@@ -30,12 +30,7 @@ export const RightSection = () => {
         <HeaderActions />
       </AddType>
       {!nodeTypeId && <EmptyList />}
-      {nodeTypeId && (
-        <>
-          <ManageNode />
-          {isConnectionType ? <ConnectionTableSection /> : <TableSection />}
-        </>
-      )}
+      {nodeTypeId && <>{isConnectionType ? <ConnectionTableSection /> : <TableSection />}</>}
     </>
   );
 };

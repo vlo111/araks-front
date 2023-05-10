@@ -39,7 +39,13 @@ export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
   const { mutate } = useCreateProjectNodeTypeProperty(
     {
       onSuccess: ({ data }) => {
-        return;
+        hide?.();
+        form.resetFields();
+        if (isEdit) {
+          dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
+        } else {
+          dispatch({ type: TypePropertyActionKind.ADD_TYPE_FINISH, payload: {} });
+        }
       },
     },
     isEdit ? state.propertyId : undefined
@@ -76,13 +82,6 @@ export const AddTypePropertyForm = ({ isEdit = false, hide }: Props) => {
         propertyId: state.propertyId,
         project_type_id: nodeTypeId,
       } as ProjectNodeTypePropertySubmit);
-    }
-
-    form.resetFields();
-    if (isEdit) {
-      dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
-    } else {
-      dispatch({ type: TypePropertyActionKind.ADD_TYPE_FINISH, payload: {} });
     }
   };
 

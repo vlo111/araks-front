@@ -80,3 +80,7 @@ export const PATH = {
   EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
   EDGE_CREATOR: 'line/creator',
 };
+
+export const VALIDATE_MESSAGES = {
+  required: 'Required field',
+};

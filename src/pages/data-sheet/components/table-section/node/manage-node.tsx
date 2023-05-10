@@ -1,12 +1,23 @@
 import { Drawer } from 'antd';
+import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
 
-export const ManageNode = () => {
+type Props = {
+  tableHead: number;
+};
+
+export const ManageNode = ({ tableHead }: Props) => {
   const [open, setOpen] = useState(false);
+  const { titleText } = useDataSheetWrapper();
 
   const onClose = () => {
     setOpen(false);
+  };
+
+  const onOpen = () => {
+    setOpen(true);
   };
 
   const containerStyle: React.CSSProperties = {
@@ -14,26 +25,28 @@ export const ManageNode = () => {
     height: '100%',
     width: '100%',
     right: 0,
-    top: '63px',
+    top: `${tableHead}px`,
     overflow: 'hidden',
     textAlign: 'center',
-    // background: token.colorFillAlter,
-    // border: `1px solid ${token.colorBorderSecondary}`,
-    // borderRadius: token.borderRadiusLG,
+    paddingLeft: '64px',
+    paddingRight: '64px',
   };
   return (
-    <div style={containerStyle}>
-      <Drawer
-        title="Add New Node / Nuclear physic"
-        placement="top"
-        closable={false}
-        onClose={onClose}
-        open={open}
-        getContainer={false}
-        style={{ marginRight: '135px' }}
-      >
-        <AddNodeForm />
-      </Drawer>
-    </div>
+    <>
+      <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
+      <div style={containerStyle}>
+        <Drawer
+          title={`Add New Node / ${titleText}`}
+          placement="top"
+          closable={false}
+          onClose={onClose}
+          open={open}
+          getContainer={false}
+          contentWrapperStyle={{ marginRight: '135px', marginLeft: '135px', height: '100%' }}
+        >
+          <AddNodeForm />
+        </Drawer>
+      </div>
+    </>
   );
 };
