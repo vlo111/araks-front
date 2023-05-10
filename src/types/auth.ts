@@ -26,3 +26,13 @@ export type ProfileForm = {
   email: string;
   bio: string;
 };
+
+export type ProfilePassword = {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
+};
+
+export type PasswordResponseData = { data: { success: string; data: UserDetails; message: string } };
+
+export type PasswordResponseDataError = { response: { data: { message: string } }};

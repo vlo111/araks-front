@@ -1,4 +1,4 @@
-import { Button, Col, Row, Skeleton, Space } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
@@ -87,7 +87,7 @@ export const InfoPanel = () => {
   const etc = hasLargeLength ? `${user?.bio?.slice(0, 80)}...` : user?.bio?.slice(0, 80);
 
   if (isInitialLoading) {
-    return <Skeleton />;
+    return null;
   }
 
   return (
@@ -96,14 +96,12 @@ export const InfoPanel = () => {
         <img src={user?.avatar} alt={user?.first_name} />
       </Avatar>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
-
       <Description>
         {readMore ? user?.bio : etc}
         {hasLargeLength && (
           <LearnMore onClick={() => setReadMore(!readMore)}>{`Learn ${readMore ? 'less' : 'more'}`}</LearnMore>
         )}
       </Description>
-
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
           <Title level={1}>{`${projects.count}`}</Title>
