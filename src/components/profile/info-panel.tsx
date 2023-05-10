@@ -96,6 +96,7 @@ export const InfoPanel = () => {
         <img src={user?.avatar} alt={user?.first_name} />
       </Avatar>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
+      <Space>{`${user?.email}`}</Space>
       <Description>
         {readMore ? user?.bio : etc}
         {hasLargeLength && (
