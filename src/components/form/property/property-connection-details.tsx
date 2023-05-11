@@ -3,12 +3,15 @@ import { Form, Space, Tooltip } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { TreeSelect } from 'components/select';
-import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useEffect, useState } from 'react';
 import { FormItem } from '../form-item';
 import { PropertyTypes } from './types';
 
-export const PropertyConnectionDetails = () => {
+type Props = {
+  isConnectionType: boolean;
+};
+
+export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
   const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
@@ -16,10 +19,9 @@ export const PropertyConnectionDetails = () => {
   const target = Form.useWatch('target_id', { preserve: true });
   const inverse = Form.useWatch('inverse', { preserve: true });
   const { nodesList, nodeTypeId } = useDataSheetWrapper();
-  const { state } = useTypeProperty();
 
   useEffect(() => {
-    if (nodeTypeId && state.isConnectionType !== true) {
+    if (nodeTypeId && isConnectionType !== true) {
       form.setFieldValue('source_id', nodeTypeId);
       setHasNodeType(true);
     }
@@ -28,7 +30,7 @@ export const PropertyConnectionDetails = () => {
       setHasNodeType(false);
       form.resetFields(['source_id']);
     };
-  }, [form, nodeTypeId, state.isConnectionType]);
+  }, [form, nodeTypeId, isConnectionType]);
 
   useEffect(() => {
     if (target === source && inverse) {

@@ -112,7 +112,7 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
         >
           <FormInput placeholder="Property name" />
         </FormItem>
-        <PropertyConnectionDetails />
+        <PropertyConnectionDetails isConnectionType />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

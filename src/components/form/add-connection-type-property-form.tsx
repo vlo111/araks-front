@@ -25,22 +25,22 @@ const Wrapper = styled.div`
 type Props = {
   isEdit?: boolean;
   hide?: () => void;
+  propertyId?: string;
 };
 
-export const AddConnectionTypePropertyForm = ({ isEdit = false, hide }: Props) => {
+/** Add or edit properties for connection types */
+export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId }: Props) => {
   const { nodeTypeId } = useDataSheetWrapper();
-  const { state, dispatch } = useTypeProperty();
+  const { dispatch } = useTypeProperty();
 
   const { mutate } = useManageProjectNodeTypeProperty({
-    onSuccess: (
-      
-    ) => {
+    onSuccess: () => {
       hide?.();
     },
   });
 
-  useGetProjectEdgeTypeProperty(state.propertyId, {
-    enabled: !!state.propertyId,
+  useGetProjectEdgeTypeProperty(propertyId, {
+    enabled: !!propertyId,
     onSuccess: (data) => {
       form.setFieldsValue({
         ...data,
@@ -54,7 +54,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide }: Props) =
     mutate({
       ...values,
       ref_property_type_id,
-      propertyId: state.propertyId,
+      propertyId: propertyId,
       project_type_id: nodeTypeId,
     } as NodeEdgeTypePropertiesSubmit);
 

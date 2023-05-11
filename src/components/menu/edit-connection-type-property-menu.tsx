@@ -69,6 +69,7 @@ export const EditConnectionTypePropertyMenu = ({ connectionData, closeManageNode
         content={<EditConnectionTypePropertyForm connectionData={connectionData} hide={() => setEditOpened(false)} />}
         open={isEditOpened}
         trigger="click"
+        align={{ offset: [50, -100] }}
         onOpenChange={(open: boolean) => {
           !open && setEditOpened(false);
           return open;

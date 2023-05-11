@@ -62,9 +62,10 @@ export const ConnectionTypePropertyMenu = ({ propertyId, closeManageNodes }: Pro
       />
       <DeleteConnectionTypePropertyModal id={propertyId} />
       <AddNodeTypePopover
-        content={<AddConnectionTypePropertyForm isEdit hide={() => setEditOpened(false)} />}
+        content={<AddConnectionTypePropertyForm isEdit hide={() => setEditOpened(false)} propertyId={propertyId} />}
         open={isEditOpened}
         trigger="click"
+        align={{ offset: [50, -100] }}
         onOpenChange={(open: boolean) => {
           !open && setEditOpened(false);
           return open;
