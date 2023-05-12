@@ -7,7 +7,7 @@ import { ReactComponent as AddTypeSVG } from './icons/add.svg';
 import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
 import { Search } from './search';
 import { AddEdgeModal } from './modals/add-edge';
-import { AddEdgePropertyModal } from './modals/edge-properties/list-edge-properties/modal';
+import { AddEdgePropertyModal } from './modals/edge-properties/modal';
 
 const ToolStyle = styled.div`
   position: fixed;

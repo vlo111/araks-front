@@ -49,6 +49,8 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
   const onHandleDelete = () => {
     mutateDelete();
 
+    setSelectedNode(undefined);
+
     onCancel();
   };
 

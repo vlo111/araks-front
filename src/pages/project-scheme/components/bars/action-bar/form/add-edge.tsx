@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -11,11 +10,9 @@ import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { EdgeDataTypeSelect } from 'components/select/edge-data-type-select';
-import { AddEdgeType, AddProperty, PropsAddEdge } from 'components/layouts/components/schema/types';
+import { AddEdgeType, PropsAddEdge } from 'components/layouts/components/schema/types';
 
-import client from 'api/client';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
-import { NODE_TYPE_PROPERTY_CREATE } from 'api/schema/type-property/use-create-type-ptoperty';
 import { ProjectEdgeForm } from 'types/project-edge';
 
 const AddEdge = styled.div`
@@ -24,7 +21,6 @@ const AddEdge = styled.div`
 `;
 
 export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
-  const params = useParams();
 
   const { nodes, graph, addLinkModal } = useSchema() || {};
 
@@ -39,18 +35,6 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
       throw e;
     }
   };
-
-  const addProperty: AddProperty = (id, name, multiple) =>
-    client.post(NODE_TYPE_PROPERTY_CREATE, {
-      name,
-      propertyId: undefined,
-      project_id: params.id,
-      project_type_id: id,
-      ref_property_type_id: 'connection',
-      multiple_type: multiple,
-      required_type: false,
-      unique_type: false,
-    });
 
   const addEdge: AddEdgeType = (item) => createEdge({ ...item });
 
@@ -67,34 +51,11 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
       multiple,
     };
 
-    if (inverse) {
-      const {
-        data: { id: source_attribute_id },
-      } = await addProperty(source_id, name, multiple);
-
-      const {
-        data: { id: target_attribute_id },
-      } = await addProperty(edge_target?.id ?? '', name, multiple);
-
-      if (source_attribute_id && target_attribute_id) {
-        addEdge({
-          source_attribute_id,
-          target_attribute_id,
-          ...edge,
-        });
-      }
-    } else {
-      const {
-        data: { id: source_attribute_id },
-      } = await addProperty(source_id, name, multiple);
-
-      if (source_attribute_id)
-        addEdge({
-          source_attribute_id,
-          target_attribute_id: edge_target?.properties.find((a) => a.default_proprty)?.id,
-          ...edge,
-        });
-    }
+    addEdge({
+      source_attribute_id: undefined,
+      target_attribute_id: undefined,
+      ...edge,
+    });
   };
 
   useEffect(() => {
