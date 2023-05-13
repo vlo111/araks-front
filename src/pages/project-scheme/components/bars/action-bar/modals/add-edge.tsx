@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Modal } from 'antd';
+import { Form } from 'antd';
 import { AddSchemaEdgeForm } from '../form/add-edge';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { Modal } from 'components/modal';
 
 export const AddEdgeModal: React.FC = () => {
   const [form] = Form.useForm();

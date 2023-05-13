@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Modal } from 'antd';
+import { Modal } from 'components/modal';
 
 export const WrapperModal = styled(Modal)<{ color: string[] }>`
   .ant-modal-content {
@@ -28,14 +28,14 @@ export const WrapperModal = styled(Modal)<{ color: string[] }>`
           line-height: 26px;
         }
 
-        svg:first-child {
-          width: 40px;
-        }
-
         .icon {
           display: flex;
           align-items: center;
           cursor: pointer;
+
+          svg {
+            width: 40px;
+          }
         }
 
         .add-property-icon {
