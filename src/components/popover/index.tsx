@@ -19,7 +19,13 @@ export const LongTextPopover = ({ fullWidth, ...props }: Props) => (
 );
 
 export const AddNodeTypePopover = (props: PopoverProps) => (
-  <PopoverComponent placement="bottom" trigger="click" {...props} overlayClassName="project-popover-node-type" />
+  <PopoverComponent
+    placement="bottom"
+    trigger="click"
+    {...props}
+    overlayClassName="project-popover-node-type"
+    destroyTooltipOnHide
+  />
 );
 
 export const ManageNodeTypePopover = (props: PopoverProps) => (

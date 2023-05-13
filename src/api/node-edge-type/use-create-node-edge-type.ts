@@ -33,6 +33,7 @@ export const useCreateNodeEdgeType = (propertyId?: string, options?: Options) =>
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST.replace(':edge_type_id', propertyId || '')]);
       queryClient.invalidateQueries([URL_GET_NODE_EDGE_TYPES_LIST.replace(':project_id', params.id || '')]);
+
       options?.onSuccess?.(data);
     },
   });

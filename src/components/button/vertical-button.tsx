@@ -21,7 +21,8 @@ export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_
   }, []);
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
-    setOpen(newOpen);
+    !newOpen && setOpen(false);
+    return newOpen;
   }, []);
 
   useEffect(() => {

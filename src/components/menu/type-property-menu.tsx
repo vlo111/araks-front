@@ -80,9 +80,10 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeMa
       />
       <DeleteTypePropertyModal id={propertyId} />
       <AddNodeTypePopover
-        content={<AddTypePropertyForm isEdit hide={() => setEditOpened(false)} />}
+        content={<AddTypePropertyForm isEdit hide={() => setEditOpened(false)} propertyId={propertyId} />}
         open={isEditOpened}
         trigger="click"
+        align={{ offset: [50, -150] }}
         onOpenChange={(open: boolean) => {
           !open && setEditOpened(false);
           return open;

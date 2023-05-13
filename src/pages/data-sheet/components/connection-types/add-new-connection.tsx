@@ -1,32 +1,30 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
-import { useCallback } from 'react';
-import { useTypeProperty } from '../table-section/table-context';
-import { TypePropertyActionKind } from '../table-section/types';
+import { useState } from 'react';
 
 export const AddNewConnection = () => {
-  const { dispatch, state } = useTypeProperty();
+  const [open, setOpen] = useState(false);
 
-  const handleExtraClick = (event: React.MouseEvent<HTMLElement>, action: () => void) => {
+  const handleExtraClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    action();
+    setOpen(true);
   };
 
-  const handlePropertyAddClick = useCallback(() => {
-    dispatch({ type: TypePropertyActionKind.CREATE_CONNECTION, payload: { isConnectionType: true } });
-  }, [dispatch]);
   return (
     <AddNodeTypePopover
-      content={<AddTypePropertyForm />}
+      content={<AddTypePropertyForm hide={() => setOpen(false)} isConnectionType />}
       trigger="click"
-      open={state.isConnectionType}
+      open={open}
       placement="right"
+      align={{ offset: [20, 0] }}
+      autoAdjustOverflow={false}
+      onOpenChange={(open: boolean) => {
+        !open && setOpen(false);
+        return open;
+      }}
     >
-      <PlusOutlined
-        style={{ cursor: 'pointer' }}
-        onClick={(event) => handleExtraClick(event, handlePropertyAddClick)}
-      />
+      <PlusOutlined style={{ cursor: 'pointer' }} onClick={handleExtraClick} />
     </AddNodeTypePopover>
   );
 };

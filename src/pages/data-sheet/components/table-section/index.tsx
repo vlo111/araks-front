@@ -33,8 +33,6 @@ export const TableSection = () => {
       setColumnWidth(summaryWidth);
     }
   }, [columns, columns.length]);
-  // eslint-disable-next-line no-console
-  console.log('tableHead', tableHead);
 
   return (
     <div style={{ position: 'relative' }}>
