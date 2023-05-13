@@ -1,11 +1,11 @@
-import { Button, Col, Row, Space, Spin } from 'antd';
+import { Button, Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
 import { FC, useState } from 'react';
 import { COLORS } from 'helpers/constants';
 
-type Prop = FC<{ loading: boolean; count: number }>;
+type Prop = FC<{ count: number }>;
 
 const Wrapper = styled(Col)`
   background: #f7f7f7;
@@ -69,7 +69,7 @@ const Footer = styled(Row)`
   }
 `;
 
-export const InfoPanel: Prop = ({ loading, count }) => {
+export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
 
   const [readMore, setReadMore] = useState(false);
@@ -80,33 +80,27 @@ export const InfoPanel: Prop = ({ loading, count }) => {
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
-      {loading ? (
-        <Spin spinning={loading} />
-      ) : (
-        <>
-          <Avatar>
-            <img src={user?.avatar} alt={user?.first_name} />
-          </Avatar>
-          <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
-          <Space>{`${user?.email}`}</Space>
-          <Description>
-            {readMore ? user?.bio : etc}
-            {hasLargeLength && (
-              <LearnMore onClick={() => setReadMore(!readMore)}>{`Learn ${readMore ? 'less' : 'more'}`}</LearnMore>
-            )}
-          </Description>
-          <Footer>
-            <Col span={12} xs={24} sm={24} md={24} xl={12}>
-              <Title level={1}>{`${count}`}</Title>
-              <Space>Projects</Space>
-            </Col>
-            <Col span={12} xs={24} sm={24} md={24} xl={12}>
-              <Title level={1}>{`${0}`}</Title>
-              <Space>Shared Projects</Space>
-            </Col>
-          </Footer>
-        </>
-      )}
+      <Avatar>
+        <img src={user?.avatar} alt={user?.first_name} />
+      </Avatar>
+      <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
+      <Space>{`${user?.email}`}</Space>
+      <Description>
+        {readMore ? user?.bio : etc}
+        {hasLargeLength && (
+          <LearnMore onClick={() => setReadMore(!readMore)}>{`Learn ${readMore ? 'less' : 'more'}`}</LearnMore>
+        )}
+      </Description>
+      <Footer>
+        <Col span={12} xs={24} sm={24} md={24} xl={12}>
+          <Title level={1}>{`${count}`}</Title>
+          <Space>Projects</Space>
+        </Col>
+        <Col span={12} xs={24} sm={24} md={24} xl={12}>
+          <Title level={1}>{`${0}`}</Title>
+          <Space>Shared Projects</Space>
+        </Col>
+      </Footer>
     </Wrapper>
   );
 };

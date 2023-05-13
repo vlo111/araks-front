@@ -1,18 +1,8 @@
-import { Row } from 'antd';
-import styled from 'styled-components';
+import { Spin } from 'antd';
 import { InfoPanel } from '../../components/profile/info-panel';
 import { EditWrapper } from '../../components/profile/edit/wrapper';
 import { useGetProjects } from '../../api/projects/use-get-projects';
-
-const Wrapper = styled(Row)`
-  height: 100%;
-
-  .ant-spin {
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
-`;
+import { Wrapper } from './wrapper';
 
 export const Profile = () => {
   const {
@@ -27,8 +17,10 @@ export const Profile = () => {
 
   return (
     <Wrapper>
-      <InfoPanel loading={loading} count={projects?.count} />
-      <EditWrapper loading={loading} />
+      <Spin spinning={loading}>
+        <InfoPanel count={projects?.count} />
+        <EditWrapper />
+      </Spin>
     </Wrapper>
   );
 };

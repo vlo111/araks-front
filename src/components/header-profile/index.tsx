@@ -5,6 +5,7 @@ import { useAuth } from 'context/auth-context';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { ReactComponent as UserProfileSvg } from './icon/user-profile.svg';
 import { ReactComponent as SignOutSvg } from './icon/sign-out.svg';
+import { Link } from "react-router-dom";
 import './profile.css';
 
 const Wrapper = styled.div`
@@ -28,7 +29,7 @@ export const HeaderProfile = () => {
     () => [
       {
         key: '0',
-        label: <a href="profile">View profile</a>,
+        label: <Link to="/profile">View profile</Link>,
         icon: <UserProfileSvg />,
       },
       {
