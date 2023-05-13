@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, FormInstance, Space, Tooltip } from 'antd';
 import { Text } from 'components/typography';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { FormItem } from 'components/form/form-item';
@@ -17,17 +17,17 @@ import { useDeleteProjectEdgeTypeProperty } from 'api/node-edge-type/use-delete-
 import styled from 'styled-components';
 
 type Props = {
+  form: FormInstance;
   isEdit?: boolean;
   open: boolean | string;
-  onClose: React.Dispatch<React.SetStateAction<boolean | string>>;
+  onCancel: VoidFunction;
 };
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
 `;
 
-export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClose }) => {
-  const [form] = Form.useForm();
+export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ form, isEdit, open, onCancel }) => {
   const { openLinkPropertyModal } = useSchema() || {};
 
   const id = useMemo(() => open as string, [open]);
@@ -51,13 +51,13 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
 
   const onHandleCancel = () => {
     form.resetFields();
-    onClose(false);
+    onCancel();
   };
 
   const onHandleDelete = async () => {
     await deleteEdgeProperty();
     form.resetFields();
-    onClose(false);
+    onCancel();
   };
 
   const onFinish = async ({ ref_property_type_id, ...values }: NodeEdgeTypePropertiesSubmit) => {
@@ -68,7 +68,7 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
       project_type_id: openLinkPropertyModal?.id,
     } as NodeEdgeTypePropertiesSubmit);
 
-    onClose(false);
+    onCancel();
 
     if (!isEdit) form.resetFields();
   };
