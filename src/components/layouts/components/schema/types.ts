@@ -116,7 +116,7 @@ export type LinkPropertyModal = undefined | { id?: string, name?: string, open: 
 
 export type OpenAddType = undefined | number[];
 
-export type AddLinkModal = undefined | boolean | { source: string; target: string };
+export type AddLinkModal = undefined | boolean | { id?: string, source?: string; target?: string };
 
 export type Graph = GraphX6;
 

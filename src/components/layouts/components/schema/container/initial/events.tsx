@@ -1,7 +1,7 @@
 import { ElementStyle, InitEvents } from '../../types';
 import { getTypeColors, removeSelected, selectNode } from '../../helpers/utils';
-import client from '../../../../../../api/client';
-import { TYPE_POSITION_UPDATE_URL } from '../../../../../../api/schema/type/use-update-types-position';
+import client from 'api/client';
+import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
 
 export const initEvents: InitEvents = (
   graph,

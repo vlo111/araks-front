@@ -38,11 +38,18 @@ export const WrapperModal = styled(Modal)<{ color: string[] }>`
           }
         }
 
-        .add-property-icon {
+        .edit-property-icon, .add-property-icon {
           cursor: pointer;
           position: absolute;
           display: flex;
-          right: 0;
+        }
+        
+        .add-property-icon {
+          right: 10px;
+        }
+        
+        .edit-property-icon {
+          right: 40px;
         }
       }
     }
