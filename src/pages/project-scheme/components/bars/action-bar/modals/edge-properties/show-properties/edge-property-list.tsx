@@ -1,5 +1,7 @@
 import React from 'react';
+import { Spin } from 'antd';
 import styled from 'styled-components';
+import { COLORS } from "helpers/constants";
 import { OpenEditModal } from '../types/property';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
@@ -25,7 +27,7 @@ const PropertyList = styled.div`
 const Text = styled.div`
   font-weight: 600;
   letter-spacing: 0.07em;
-  color: #ffffff;
+  color: ${COLORS.PRIMARY.WHITE};
 `;
 
 const Section = styled.div`
@@ -45,20 +47,22 @@ const Section = styled.div`
 export const EdgePropertyList: EdgePropertyProps = ({ openEditModal }) => {
   const { openLinkPropertyModal } = useSchema() || {};
 
-  const { data } = useGetProjectsEdgeTypeProperties(openLinkPropertyModal?.id, {
+  const { data, isInitialLoading: loading } = useGetProjectsEdgeTypeProperties(openLinkPropertyModal?.id, {
     enabled: !!openLinkPropertyModal?.id,
   });
 
   return (
-    <PropertyList>
-      {data?.properties?.map((p) => (
-        <Section key={p.id} onClick={() => openEditModal(p.id)}>
-          <Text className="property-name" title={p.name}>
-            {p.name}
-          </Text>
-          <Text>{p.ref_property_type_id}</Text>
-        </Section>
-      ))}
-    </PropertyList>
+    <Spin spinning={loading}>
+      <PropertyList>
+        {data?.properties?.map((p) => (
+          <Section key={p.id} onClick={() => openEditModal(p.id)}>
+            <Text className="property-name" title={p.name}>
+              {p.name}
+            </Text>
+            <Text>{p.ref_property_type_id}</Text>
+          </Section>
+        ))}
+      </PropertyList>
+    </Spin>
   );
 };
