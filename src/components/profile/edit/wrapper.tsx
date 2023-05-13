@@ -1,6 +1,6 @@
-import { Col } from 'antd';
+import { Col, Spin } from 'antd';
 import styled from 'styled-components';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BackMode } from './back-mode';
 import { EditMode } from './edit-mode';
 
@@ -30,14 +30,22 @@ const Wrapper = styled(Col)`
   }
 `;
 
-export const EditWrapper = () => {
+type Prop = React.FC<{ loading: boolean }>;
+
+export const EditWrapper: Prop = ({ loading }) => {
   const [isEditPassword, setIsEditPassword] = useState(false);
 
-  const onBack = () => setIsEditPassword(!isEditPassword)
+  const onBack = () => setIsEditPassword(!isEditPassword);
 
   return (
     <Wrapper span={15} xs={24} sm={24} md={15}>
-      {isEditPassword ? <BackMode onBack={onBack}/> : <EditMode onBack={onBack} />}
+      {loading ? (
+        <Spin spinning={loading} />
+      ) : isEditPassword ? (
+        <BackMode onBack={onBack} />
+      ) : (
+        <EditMode onBack={onBack} />
+      )}
     </Wrapper>
   );
 };
