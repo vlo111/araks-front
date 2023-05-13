@@ -1,4 +1,5 @@
-import { Input as InputComponent, InputProps } from "antd"
-import styled from "styled-components"
+import { InputProps } from 'antd';
+import { Input } from 'components/input';
+import styled from 'styled-components';
 
-export const Url = styled((props: InputProps) => <InputComponent {...props} prefix="http://" type='url' />)``;
+export const Url = styled((props: InputProps) => <Input {...props} prefix="http://" type="url" />)``;

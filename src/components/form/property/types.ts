@@ -8,6 +8,7 @@ export enum PropertyTypes {
   Location = 'location',
   RichText = 'rich_text',
   Text = 'text',
+  URL = 'url',
 }
 
 export enum ConnectionPropertyTypes {

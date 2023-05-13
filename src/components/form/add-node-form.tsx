@@ -10,6 +10,7 @@ import { LocationType } from './type/location-type';
 import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
+import { UrlType } from './type/url-type';
 
 export const AddNodeForm = () => {
   const [form] = Form.useForm();
@@ -39,6 +40,8 @@ export const AddNodeForm = () => {
                   return <TextType key={item.id} data={item} />;
                 case PropertyTypes.Location:
                   return <LocationType key={item.id} data={item} />;
+                case PropertyTypes.URL:
+                  return <UrlType key={item.id} data={item} />;
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
                   return <NumericType key={item.id} data={item} />;
