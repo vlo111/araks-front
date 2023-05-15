@@ -49,7 +49,7 @@ export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps)
     <Modal title="Select Location" open={visible} onCancel={onCancel} onOk={onOk}>
       <div style={{ height: '400px', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY1 || '' }}
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '' }}
           defaultCenter={mapOptions.center}
           defaultZoom={mapOptions.zoom}
           onClick={onMapClick}
