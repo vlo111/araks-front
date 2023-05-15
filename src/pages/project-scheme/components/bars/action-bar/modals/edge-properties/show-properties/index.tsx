@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { WrapperModal } from './edge-property-wrapper';
 import { EdgePropertyTools } from './edge-property-tools';
 import { EdgePropertyList } from './edge-property-list';
-import { useSchema } from '../../../../../../../../components/layouts/components/schema/wrapper';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { CSSProperties } from 'styled-components';
 import { Props } from '../types/property';
 
