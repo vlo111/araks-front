@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { Node } from '@antv/x6';
-import { BoundingEvent, InitNodes, OnEdgeLabelRendered } from '../../types';
+import { InitNodes, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
 import { getTypeColors, selectNode } from '../../helpers/utils';
 import { PATH } from 'helpers/constants';
@@ -23,23 +23,6 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
       label.onmouseleave = (e) => {
         (e as MouseEvent & { target: { style: { cursor: string } } }).target.style.cursor = 'auto';
       };
-
-      label.addEventListener('click', (e) => {
-        const target = e.target as BoundingEvent;
-
-        const bounding = target?.tagName === 'path' ? target.previousElementSibling.firstChild : target;
-
-        const { x, y, height, width } = bounding?.getBoundingClientRect();
-
-        setOpenLinkPropertyModal({
-          id: edge.id,
-          name: edge.attr('name'),
-          open: true,
-          x: x + width / 2,
-          y: y + height,
-          color: getTypeColors(edge),
-        });
-      });
 
       const root = createRoot(label);
 

@@ -2,9 +2,10 @@ import { Button, Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { COLORS } from 'helpers/constants';
-import { useGetProjects } from 'api/projects/use-get-projects';
+
+type Prop = FC<{ count: number }>;
 
 const Wrapper = styled(Col)`
   background: #f7f7f7;
@@ -68,27 +69,14 @@ const Footer = styled(Row)`
   }
 `;
 
-export const InfoPanel = () => {
+export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
-  const {
-    data: { data: projects },
-    isInitialLoading,
-  } = useGetProjects({
-    page: 1,
-    size: 1,
-    sortField: 'updated_at',
-    sortOrder: 'DESC',
-  });
 
   const [readMore, setReadMore] = useState(false);
 
   const hasLargeLength = user?.bio?.length !== undefined && user?.bio?.length > 80;
 
   const etc = hasLargeLength ? `${user?.bio?.slice(0, 80)}...` : user?.bio?.slice(0, 80);
-
-  if (isInitialLoading) {
-    return null;
-  }
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
@@ -105,7 +93,7 @@ export const InfoPanel = () => {
       </Description>
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
-          <Title level={1}>{`${projects.count}`}</Title>
+          <Title level={1}>{`${count}`}</Title>
           <Space>Projects</Space>
         </Col>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
