@@ -106,9 +106,13 @@ export const ProjectHome = () => {
             <HeaderSearch />
           </Space>
         </Header>
-        <Content>
+        {location.pathname === PATHS.PROFILE ? (
           <Outlet />
-        </Content>
+        ) : (
+          <Content>
+            <Outlet />
+          </Content>
+        )}
       </LayoutInner>
     </Layout>
   );

@@ -1,9 +1,12 @@
 import { ElementStyle, InitEvents } from '../../types';
-import { removeSelected, selectNode } from "../../helpers/utils";
-import client from "../../../../../../api/client";
-import { TYPE_POSITION_UPDATE_URL } from "../../../../../../api/schema/type/use-update-types-position";
+import { getTypeColors, removeSelected, selectNode } from '../../helpers/utils';
+import client from 'api/client';
+import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
 
-export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode, setAddTypeModal }) => {
+export const initEvents: InitEvents = (
+  graph,
+  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal }
+) => {
   graph.on('node:port:click', (event) => {
     if (event.port === 'connector') return;
     const { x, y, height, width } = event.view.container.getBoundingClientRect();
@@ -42,10 +45,28 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
     }
 
     if (!container.classList.contains('selected-node')) {
-
-      selectNode(graph, container, node)
+      selectNode(graph, container, node);
 
       setSelectedNode(node);
+    }
+  });
+
+  graph.on('edge:click', (event) => {
+    const { edge, view } = event;
+
+    const iconElement = view.container.querySelector('rect');
+
+    if (iconElement !== null) {
+      const { x, y, height, width } = iconElement.getBoundingClientRect();
+
+      setOpenLinkPropertyModal({
+        id: edge.id,
+        name: edge.attr('name'),
+        open: true,
+        x: x + width / 2,
+        y: y + height,
+        color: getTypeColors(edge),
+      });
     }
   });
 
@@ -65,8 +86,7 @@ export const initEvents: InitEvents = (graph, { setAddPortModal, setSelectedNode
   graph.on('node:mouseup', (event) => {
     client.put(`${process.env.REACT_APP_BASE_URL}${TYPE_POSITION_UPDATE_URL.replace(':id', event.node.id)}`, {
       fx: event.x - 120,
-      fy: event.y - 20
-    })
-  })
+      fy: event.y - 20,
+    });
+  });
 };
-

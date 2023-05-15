@@ -33,11 +33,11 @@ const Wrapper = styled(Col)`
 export const EditWrapper = () => {
   const [isEditPassword, setIsEditPassword] = useState(false);
 
-  const onBack = () => setIsEditPassword(!isEditPassword)
+  const onBack = () => setIsEditPassword(!isEditPassword);
 
   return (
     <Wrapper span={15} xs={24} sm={24} md={15}>
-      {isEditPassword ? <BackMode onBack={onBack}/> : <EditMode onBack={onBack} />}
+      {isEditPassword ? <BackMode onBack={onBack} /> : <EditMode onBack={onBack} />}
     </Wrapper>
   );
 };

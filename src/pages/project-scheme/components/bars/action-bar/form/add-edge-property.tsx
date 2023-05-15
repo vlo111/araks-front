@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Form, Modal, Space, Tooltip } from 'antd';
+import React, { useEffect, useMemo } from 'react';
+import { Form, FormInstance, Space, Tooltip } from 'antd';
 import { Text } from 'components/typography';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { FormItem } from 'components/form/form-item';
@@ -14,17 +14,20 @@ import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
 import { useDeleteProjectEdgeTypeProperty } from 'api/node-edge-type/use-delete-project-edge-type-property';
-
-const MODAL_WIDTH = 500;
+import styled from 'styled-components';
 
 type Props = {
+  form: FormInstance;
   isEdit?: boolean;
   open: boolean | string;
-  onClose: React.Dispatch<React.SetStateAction<boolean | string>>;
+  onCancel: VoidFunction;
 };
 
-export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClose }) => {
-  const [form] = Form.useForm();
+const Wrapper = styled.div`
+  padding: 24px 24px 8px;
+`;
+
+export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ form, isEdit, open, onCancel }) => {
   const { openLinkPropertyModal } = useSchema() || {};
 
   const id = useMemo(() => open as string, [open]);
@@ -42,28 +45,22 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
     },
   });
 
-  const props = {
-    open: open !== false,
-    centered: true,
-    footer: false,
-    onCancel: () => onClose(false),
-    width: `${MODAL_WIDTH}px`,
-  };
+  useEffect(() => {
+    form.resetFields();
+  }, [form, isEdit]);
 
   const onHandleCancel = () => {
     form.resetFields();
-    onClose(false);
+    onCancel();
   };
 
   const onHandleDelete = async () => {
     await deleteEdgeProperty();
     form.resetFields();
-    onClose(false);
+    onCancel();
   };
 
   const onFinish = async ({ ref_property_type_id, ...values }: NodeEdgeTypePropertiesSubmit) => {
-    /** propertyId, project_type_id - Is edge ID */
-    /** propertyId - Fill for edit */
     await mutate({
       ...values,
       ref_property_type_id,
@@ -71,68 +68,67 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onClo
       project_type_id: openLinkPropertyModal?.id,
     } as NodeEdgeTypePropertiesSubmit);
 
-    form.resetFields();
-    onClose(false);
+    onCancel();
+
+    if (!isEdit) form.resetFields();
   };
 
   return (
-    <Modal {...props}>
-      <div>
-        <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
-          <Space size={8}>
-            <Text>{isEdit ? 'Edit connection property' : 'Add property for connection type'}</Text>
-            <Tooltip title="Useful information" placement="right">
-              <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-            </Tooltip>
-          </Space>
-          <FormItem
-            name="name"
-            label="Property name"
-            rules={[
-              { required: true, message: 'Property name is required' },
-              { min: 3, message: 'The minimum length for this field is 3 characters' },
-              { max: 30, message: 'The maximum length for this field is 30 characters' },
-              {
-                validator: async (_: Rule, value: string | undefined) => {
-                  if (value !== undefined) {
-                    const regex = /^[a-z0-9_]+$/;
-                    if (!regex.test(value)) {
-                      return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
-                    }
+    <Wrapper>
+      <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
+        <Space size={8}>
+          <Text>{isEdit ? 'Edit connection property' : 'Add property for connection type'}</Text>
+          <Tooltip title="Useful information" placement="right">
+            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+          </Tooltip>
+        </Space>
+        <FormItem
+          name="name"
+          label="Property name"
+          rules={[
+            { required: true, message: 'Property name is required' },
+            { min: 3, message: 'The minimum length for this field is 3 characters' },
+            { max: 30, message: 'The maximum length for this field is 30 characters' },
+            {
+              validator: async (_: Rule, value: string | undefined) => {
+                if (value !== undefined) {
+                  const regex = /^[a-z0-9_]+$/;
+                  if (!regex.test(value)) {
+                    return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
                   }
-                  return Promise.resolve();
-                },
+                }
+                return Promise.resolve();
               },
-            ]}
-          >
-            <FormInput placeholder="Property name" />
-          </FormItem>
-          <FormItem
-            name="ref_property_type_id"
-            label="Data type"
-            rules={[{ required: true, message: 'Connection property data type is required' }]}
-          >
-            <PropertyDataConnectionTypeSelect />
-          </FormItem>
-          <PropertyMultipleDetails />
-          <FormItem>
-            <VerticalSpace>
-              <Button block type="primary" htmlType="submit">
-                Save
+            },
+          ]}
+        >
+          <FormInput placeholder="Property name" />
+        </FormItem>
+        <FormItem
+          name="ref_property_type_id"
+          label="Data type"
+          rules={[{ required: true, message: 'Connection property data type is required' }]}
+        >
+          <PropertyDataConnectionTypeSelect />
+        </FormItem>
+        <PropertyMultipleDetails />
+        <FormItem>
+          <VerticalSpace>
+            <Button block type="primary" htmlType="submit">
+              Save
+            </Button>
+            {isEdit ? (
+              <Button block type="text" onClick={onHandleDelete}>
+                Delete
               </Button>
-              {isEdit ? (
-                <Button block type="text" onClick={onHandleDelete}>
-                  Delete
-                </Button>
-              ) : (
-                <Button block type="text" onClick={onHandleCancel}>
-                  Cancel
-                </Button>
-              )}
-            </VerticalSpace>
-          </FormItem>
-        </Form>
-      </div>
-    </Modal>
+            ) : (
+              <Button block type="text" onClick={onHandleCancel}>
+                Cancel
+              </Button>
+            )}
+          </VerticalSpace>
+        </FormItem>
+      </Form>
+    </Wrapper>
   );
 };
