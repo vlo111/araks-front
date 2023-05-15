@@ -4,6 +4,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { VerticalSpace } from 'components/space/vertical-space';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
+import { ConnectionType } from './type/connection-type';
 import { DateType } from './type/date-type';
 import { DocumentType } from './type/document-type';
 import { LocationType } from './type/location-type';
@@ -53,6 +54,8 @@ export const AddNodeForm = () => {
                   return <RichTextType key={item.id} data={item} />;
                 case PropertyTypes.Document:
                   return <DocumentType key={item.id} data={item} />;
+                case PropertyTypes.Connection:
+                  return <ConnectionType key={item.id} data={item} />;
                 default:
                   return <></>;
               }
