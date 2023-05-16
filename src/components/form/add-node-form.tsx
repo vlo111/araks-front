@@ -2,6 +2,7 @@ import { Col, Form, Row, Skeleton } from 'antd';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { GoogleMapScript } from 'helpers/google-map-script';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
 import { ConnectionType } from './type/connection-type';
@@ -62,6 +63,7 @@ export const AddNodeForm = () => {
             })}
           </Col>
         </Row>
+        <GoogleMapScript />
       </VerticalSpace>
     </Form>
   );

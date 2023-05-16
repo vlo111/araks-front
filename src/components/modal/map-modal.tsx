@@ -15,12 +15,14 @@ interface MapModalProps {
   onSelectLocation: (location: Location) => void;
 }
 
-const markerOptions: google.maps.MarkerOptions = {
-  icon: {
-    url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
-    scaledSize: new window.google.maps.Size(48, 48),
-  },
-};
+const markerOptions: google.maps.MarkerOptions = window.google
+  ? {
+      icon: {
+        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
+        scaledSize: new window.google.maps.Size(48, 48),
+      },
+    }
+  : {};
 
 export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps) => {
   const [selectedLocation, setSelectedLocation] = useState<google.maps.LatLngLiteral | null>(null);

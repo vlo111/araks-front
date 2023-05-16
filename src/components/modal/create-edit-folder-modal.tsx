@@ -52,7 +52,7 @@ export const CreateEditFolderModal = ({ isModalOpen, setIsModalOpen, initialValu
         forceRender
       >
         <Form
-          name="create-new-folder"
+          name="create-edit-new-folder"
           form={form}
           onFinish={onFinish}
           autoComplete="off"
