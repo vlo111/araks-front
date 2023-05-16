@@ -1,18 +1,29 @@
 import { useEffect, useState } from 'react';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { Modal } from 'antd';
-import GoogleMapReact, { Coords } from 'google-map-react';
-// import { ReactComponent as Araks } from '../icons/araks.svg';
+import { ReactComponent as MapPin } from 'components/icons/map-pin.svg';
+import { renderToString } from 'react-dom/server';
 
-// const MyMarker = ({ text }: { text: string }) => <div>{text}</div>;
+interface Location {
+  lat?: number;
+  lng?: number;
+}
 
 interface MapModalProps {
   visible: boolean;
   onCancel: () => void;
-  onSelectLocation: (location: Coords) => void;
+  onSelectLocation: (location: Location) => void;
 }
 
+const markerOptions: google.maps.MarkerOptions = {
+  icon: {
+    url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
+    scaledSize: new window.google.maps.Size(48, 48),
+  },
+};
+
 export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps) => {
-  const [selectedLocation, setSelectedLocation] = useState<Coords | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
@@ -24,18 +35,11 @@ export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps)
     });
   }, []);
 
-  const mapOptions = {
-    center,
-    zoom: 12,
-  };
-
-  const onMapClick = (e: Coords) => {
-    // eslint-disable-next-line no-console
-    console.log('e', e);
-    setSelectedLocation({
-      lat: e.lat,
-      lng: e.lng,
-    });
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const lat = event.latLng?.lat();
+    const lng = event.latLng?.lng();
+    setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng });
+    onSelectLocation({ lat, lng });
   };
 
   const onOk = () => {
@@ -48,14 +52,14 @@ export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps)
   return (
     <Modal title="Select Location" open={visible} onCancel={onCancel} onOk={onOk}>
       <div style={{ height: '400px', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '' }}
-          defaultCenter={mapOptions.center}
-          defaultZoom={mapOptions.zoom}
-          onClick={onMapClick}
+        <GoogleMap
+          mapContainerStyle={{ width: '100%', height: '400px' }}
+          center={center}
+          zoom={12}
+          onClick={handleMapClick}
         >
-          {/* {selectedLocation && <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker" />} */}
-        </GoogleMapReact>
+          {selectedLocation && <Marker position={selectedLocation} options={markerOptions} />}
+        </GoogleMap>
       </div>
     </Modal>
   );

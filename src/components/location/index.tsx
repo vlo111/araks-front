@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Coords } from 'google-map-react';
 import { InputProps } from 'antd';
 import styled from 'styled-components';
 import { EnvironmentOutlined } from '@ant-design/icons';
@@ -8,17 +7,22 @@ import { MapModal } from 'components/modal/map-modal';
 
 const prefix = <EnvironmentOutlined />;
 
+interface Location {
+  lat?: number;
+  lng?: number;
+}
+
 export const Location = styled((props: InputProps) => <Input {...props} prefix={prefix} placeholder="Location" />)``;
 
 interface LocationInputProps {
-  value?: Coords | null;
-  onChange?: (location: Coords) => void;
+  value?: Location | null;
+  onChange?: (location: Location) => void;
 }
 
 export const LocationInput = ({ value, onChange }: LocationInputProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const onSelectLocation = (location: Coords) => {
+  const onSelectLocation = (location: Location) => {
     if (onChange) {
       onChange(location);
     }
