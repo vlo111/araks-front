@@ -6,6 +6,7 @@ import { GoogleMapScript } from 'helpers/google-map-script';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
 import { ConnectionType } from './type/connection-type';
+import { DateTimeType } from './type/date-time-type';
 import { DateType } from './type/date-type';
 import { DocumentType } from './type/document-type';
 import { LocationType } from './type/location-type';
@@ -47,8 +48,10 @@ export const AddNodeForm = () => {
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
                   return <NumericType key={item.id} data={item} />;
-                case PropertyTypes.DateTime:
+                case PropertyTypes.Date:
                   return <DateType key={item.id} data={item} />;
+                case PropertyTypes.DateTime:
+                  return <DateTimeType key={item.id} data={item} />;
                 case PropertyTypes.Boolean:
                   return <BooleanType key={item.id} data={item} />;
                 case PropertyTypes.RichText:

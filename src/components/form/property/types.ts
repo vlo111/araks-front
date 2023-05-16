@@ -3,6 +3,7 @@ export enum PropertyTypes {
   Connection = 'connection',
   Integer = 'integer',
   DateTime = 'datetime',
+  Date = 'date',
   Decimal = 'decimal',
   Document = 'document',
   Location = 'location',
