@@ -31,7 +31,12 @@ export const useManageNodes = (options?: Options) => {
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
-      queryClient.invalidateQueries([URL_NODES_LIST.replace(':type_id', data.data.type_id || '')]);
+      queryClient.invalidateQueries([
+        URL_NODES_LIST.replace(':project_type_id', data.data.project_type_id || '').replace(
+          ':project_id',
+          params.id || ''
+        ),
+      ]);
       options?.onSuccess?.(data);
     },
   });
