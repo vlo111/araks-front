@@ -4,9 +4,9 @@ import { AddNewFieldButton } from 'components/button/add-new-field-button';
 import { InputNumber } from 'components/input-number';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
-import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { FormItem } from '../form-item';
-import { PropertyTypes } from '../property/types';
+// import { PropertyTypes } from '../property/types';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -42,13 +42,13 @@ export const NumericType = ({ data }: Props) => {
   //   };
   // }
 
-  const validateInputValue = (rule: unknown, value: unknown, callback: (v: string) => void) => {
-    if (value && !Number.isInteger(value) && data.ref_property_type_id === PropertyTypes.Integer) {
-      callback('Please enter an integer');
-    } else {
-      callback('');
-    }
-  };
+  // const validateInputValue = (rule: unknown, value: unknown, callback: (v: string) => void) => {
+  //   if (value && !Number.isInteger(value) && data.ref_property_type_id === PropertyTypes.Integer) {
+  //     callback('Please enter an integer');
+  //   } else {
+  //     callback('');
+  //   }
+  // };
 
   return (
     <div style={{ textAlign: 'left' }}>
@@ -63,10 +63,10 @@ export const NumericType = ({ data }: Props) => {
                       noStyle
                       name={[field.name, 'name']}
                       key={field.key}
-                      rules={[
-                        { required: data.required_type, message: VALIDATE_MESSAGES.required },
-                        { validator: validateInputValue },
-                      ]}
+                      // rules={[
+                      //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
+                      //   { validator: validateInputValue },
+                      // ]}
                     >
                       <InputNumber style={{ width: '100%' }} />
                     </FormItem>
@@ -82,10 +82,10 @@ export const NumericType = ({ data }: Props) => {
           key={data.id}
           name={data.name}
           label={label}
-          rules={[
-            { required: data.required_type, message: VALIDATE_MESSAGES.required },
-            { validator: validateInputValue },
-          ]}
+          // rules={[
+          //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
+          //   { validator: validateInputValue },
+          // ]}
         >
           <InputNumber style={{ width: '100%' }} />
         </FormItem>

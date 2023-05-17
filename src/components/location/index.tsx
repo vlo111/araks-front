@@ -29,8 +29,6 @@ export const LocationInput = ({ value, onChange }: LocationInputProps) => {
   };
 
   const onOpenModal = () => {
-    // eslint-disable-next-line no-console
-    console.log('click');
     setModalVisible(true);
   };
 
