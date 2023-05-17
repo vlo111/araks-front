@@ -24,7 +24,10 @@ export const TableSection = () => {
   const { data } = useGetTypeNodes(nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: (data) => {
-      setRowData([...(data?.nodes ? data.nodes : []), ...dataSource(data?.nodes?.length || 0)] as DataType[]);
+      const rows = data.map((item) => item.nodes);
+      // eslint-disable-next-line no-console
+      console.log('data.nodes', rows);
+      setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },
   });
 
@@ -47,12 +50,12 @@ export const TableSection = () => {
   useEffect(() => {
     if (columns.length) {
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
-      if (data?.nodes && data.nodes.length) {
-        summaryHeight += data.nodes.length * 60;
+      if (data && data.length) {
+        summaryHeight += data.length * 60;
       }
       setTableHead(summaryHeight);
     }
-  }, [columns.length, data?.nodes]);
+  }, [columns.length, data]);
 
   return (
     <div style={{ position: 'relative' }}>

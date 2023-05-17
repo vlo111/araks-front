@@ -14,5 +14,5 @@ export type NodeDataResponse = {
   project_type_id: string;
   project_id: string;
   user_id: string;
-  nodes?: NodeBody[];
+  nodes?: NodeBody;
 };
