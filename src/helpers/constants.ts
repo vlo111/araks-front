@@ -8,6 +8,7 @@ export const PATHS = {
   PROJECT_UPDATE: '/projects/update/:id',
   PROJECT_CREATE: '/projects/create',
   PROJECT_SCHEME: '/projects/scheme/:id',
+  PROJECT_PERSPECTIVES: '/projects/perspectives/:id',
   DATA_SHEET: '/projects/data-sheet/:id',
   PUBLIC: '/public',
   FOLDER: '/folder/:id',

@@ -83,6 +83,10 @@ export const Overview = () => {
         label: 'Scheme',
       },
       {
+        key: PATHS.PROJECT_PERSPECTIVES,
+        label: 'Perspectives',
+      },
+      {
         key: PATHS.DATA_SHEET,
         label: 'Data sheet',
       },
@@ -139,6 +143,7 @@ export const Overview = () => {
                   {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
                   {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
                   {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
+                  {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
                 </div>
               ),
             }))}

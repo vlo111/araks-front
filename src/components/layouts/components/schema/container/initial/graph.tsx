@@ -77,7 +77,7 @@ export const initGraph: InitGraph = (container, _params) => {
     container: container,
     panning: true,
     height: window.innerHeight - 152,
-    width: window.innerWidth - 300,
+    width: location.pathname.includes('perspectives') ? window.innerWidth : window.innerWidth - 300,
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,
@@ -86,7 +86,9 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  initEvents(graph, _params);
+  if (!location.pathname.includes('perspectives')) {
+    initEvents(graph, _params);
+  }
 
   graph.use(
     new Snapline({

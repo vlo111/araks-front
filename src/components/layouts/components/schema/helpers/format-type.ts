@@ -103,7 +103,9 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       });
     }
 
-    formattedProperties.push(insertAddProperty());
+    if (!location.pathname.includes('perspectives')) {
+      formattedProperties.push(insertAddProperty());
+    }
 
     formattedNode = {
       id: node.id,
