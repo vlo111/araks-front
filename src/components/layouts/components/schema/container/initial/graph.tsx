@@ -1,5 +1,5 @@
 import { InitGraph } from '../../types';
-import { antTheme } from '../../../../../../helpers/ant-theme';
+import { antTheme } from 'helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 import { Snapline } from '@antv/x6-plugin-snapline';
@@ -39,13 +39,13 @@ export const initGraph: InitGraph = (container, _params) => {
       });
     },
     validateEdge: ({ edge: { source, target } }) => {
-      if ("cell" in source && "cell" in target) {
+      if ('cell' in source && 'cell' in target) {
         _params.setAddLinkModal({
           source: source.cell as string,
-          target: target.cell as string
-        })
+          target: target.cell as string,
+        });
       }
-      return false
+      return false;
     },
   };
 

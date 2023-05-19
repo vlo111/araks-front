@@ -1,5 +1,5 @@
 import { Graph } from '@antv/x6';
-import {ArrowD} from '../../helpers/svg/path-d';
+import { ArrowD } from '../../helpers/svg/path-d';
 
 export const LINE_HEIGHT = 30;
 
@@ -32,14 +32,14 @@ Graph.registerNode(
     attrs: {
       label: {
         fontSize: 14,
-        textAnchor: "left",
+        textAnchor: 'left',
         refX: 20,
-        cursor: "default",
+        cursor: 'default',
         textWrap: {
           width: 10,
           height: 16,
-          ellipsis: true
-        }
+          ellipsis: true,
+        },
       },
       body: {
         strokeWidth: 6,
@@ -58,11 +58,11 @@ Graph.registerNode(
         textAnchor: 'start',
         textVerticalAnchor: 'middle',
         zIndex: 2,
-        cursor: "default",
+        cursor: 'default',
         textWrap: {
           width: 100,
-          ellipsis: true
-        }
+          ellipsis: true,
+        },
       },
     },
     ports: {
@@ -99,8 +99,8 @@ Graph.registerNode(
               fontSize: 10,
               textWrap: {
                 width: 100,
-                ellipsis: true
-              }
+                ellipsis: true,
+              },
             },
             portTypeLabel: {
               ref: 'portBody',
@@ -139,7 +139,6 @@ Graph.registerNode(
               fill: 'none',
               width: 150,
               height: 10,
-              magnet: true,
               strokeWidth: 2,
             },
             link_circle: {

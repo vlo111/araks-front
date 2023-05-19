@@ -1,3 +1,4 @@
+import './highlighter'
 import './connector'
 import './edge'
 import './node'

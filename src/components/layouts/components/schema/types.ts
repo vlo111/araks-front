@@ -9,6 +9,7 @@ import { IProjectType, ITypeProperty } from '../../../../api/types';
 import { ProjectEdgeResponse } from '../../../../types/project-edge';
 import { AxiosResponse } from 'axios';
 import { FormInstance } from 'antd';
+import { Highlighter } from '@antv/x6/lib/registry';
 
 export interface IStroke {
   type: string;
@@ -112,11 +113,13 @@ export type PortModal =
 
 export type SelectedNode = Node<Node.Properties> | string | undefined;
 
-export type LinkPropertyModal = undefined | { id?: string, name?: string, open: boolean; x?: number; y?: number; color?: string[] };
+export type LinkPropertyModal =
+  | undefined
+  | { id?: string; name?: string; open: boolean; x?: number; y?: number; color?: string[] };
 
 export type OpenAddType = undefined | number[];
 
-export type AddLinkModal = undefined | boolean | { id?: string, source?: string; target?: string };
+export type AddLinkModal = undefined | boolean | { id?: string; source?: string; target?: string };
 
 export type Graph = GraphX6;
 
@@ -205,6 +208,8 @@ export type SetPropertyColor = (property: ITypeProperty, color: string) => { fil
 export type InsertAddProperty = () => IPort;
 
 export type OpenTypeModal = (param: OpenAddType) => void;
+
+export type Highlighter = Highlighter.Definition<unknown>;
 
 export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void;
 
