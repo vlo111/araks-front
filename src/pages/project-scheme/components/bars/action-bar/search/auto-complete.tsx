@@ -3,7 +3,7 @@ import { AutoComplete as AntAutoComplete, Badge } from 'antd';
 import styled from 'styled-components';
 import { Input } from 'components/input';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/utils';
+import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/selection';
 import { FilterFunc } from 'rc-select/lib/Select';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;

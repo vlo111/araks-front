@@ -7,6 +7,7 @@ import { Snapline } from '@antv/x6-plugin-snapline';
 import Connecting = Options.Connecting;
 import { initEvents } from './events';
 import { PATH } from 'helpers/constants';
+import { isPerspective } from '../../helpers/utils';
 
 export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {
@@ -77,7 +78,7 @@ export const initGraph: InitGraph = (container, _params) => {
     container: container,
     panning: true,
     height: window.innerHeight - 152,
-    width: window.innerWidth - 300,
+    width: isPerspective() ? window.innerWidth - 600 : window.innerWidth - 300,
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,
@@ -86,7 +87,9 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  initEvents(graph, _params);
+  if (!isPerspective()) {
+    initEvents(graph, _params);
+  }
 
   graph.use(
     new Snapline({

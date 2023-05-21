@@ -2,7 +2,8 @@ import { createRoot } from 'react-dom/client';
 import { Node } from '@antv/x6';
 import { InitNodes, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
-import { getTypeColors, selectNode } from '../../helpers/utils';
+import { selectNode } from '../../helpers/selection';
+import { getTypeColors } from '../../helpers/utils';
 import { PATH } from 'helpers/constants';
 
 const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkPropertyModal, nodes) => {

@@ -1,5 +1,6 @@
 import { ElementStyle, InitEvents } from '../../types';
-import { getTypeColors, removeSelected, selectNode } from '../../helpers/utils';
+import { getTypeColors } from '../../helpers/utils';
+import { removeSelected, selectNode } from '../../helpers/selection';
 import client from 'api/client';
 import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
 

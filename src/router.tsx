@@ -14,6 +14,7 @@ import { PATHS } from './helpers/constants';
 import { Projects } from './pages/projects';
 import { SignIn } from './pages/sign-in';
 import { Profile } from './pages/profile';
+import { ProjectPerspectives } from "./pages/project-perspectives";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PROJECT_SCHEME,
             element: <ProjectScheme />,
+          },
+          {
+            path: PATHS.PROJECT_PERSPECTIVES,
+            element: <ProjectPerspectives />,
           },
           {
             path: PATHS.DATA_SHEET,
