@@ -4,7 +4,11 @@ import { ProjectEdgeResponse } from 'types/project-edge';
 import { INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } from '../types';
 import { antTheme } from 'helpers/ant-theme';
 import { getProperties, isPerspective } from './utils';
-import { EyeD, EyePointD } from './svg/path-d';
+import { EyeD } from './svg/path-d';
+import { SELECTORS } from 'helpers/constants';
+
+const { colorDefaultProperty, colorAddProperty, colorPropertyType } = antTheme.components.Schema;
+const { PORT_NAME_TEXT, PORT_BODY_RECT, PORT_TYPE_TEXT, PORT_EYE_PATH } = SELECTORS;
 
 const setPropertyColor: SetPropertyColor = (ref_property_type_id, color) => {
   const gradient = {
@@ -17,57 +21,35 @@ const setPropertyColor: SetPropertyColor = (ref_property_type_id, color) => {
     },
   };
 
-  const fill = {
-    fill: antTheme.components.Schema.colorDefaultProperty,
-  };
-
   const isConnection = ref_property_type_id === 'connection' ? gradient : '';
 
-  return isConnection ? gradient : fill;
+  return isConnection ? gradient : { fill: colorDefaultProperty };
 };
 
 const insertAddProperty: InsertAddProperty = () => ({
   id: 'add',
   group: 'cell',
   attrs: {
-    portBody: {
-      fill: antTheme.components.Schema.colorAddProperty,
-    },
-    portNameLabel: {
-      fill: antTheme.components.Schema.colorPropertyText,
+    [PORT_BODY_RECT]: { fill: colorAddProperty },
+    [PORT_NAME_TEXT]: {
+      fill: colorPropertyType,
       text: '+ Add property',
     },
-    portTypeLabel: { text: '' },
+    [PORT_TYPE_TEXT]: { text: '' },
   },
 });
 
-const insertProperty: InsertProperty = ({
-                                          color,
-                                          id,
-                                          name,
-                                          required_type,
-                                          multiple_type,
-                                          unique_type,
-                                          ref_property_type_id,
-                                        }) => ({
-  id: id,
+const insertProperty: InsertProperty = ({ id, color, name, ref_property_type_id, ...props }) => ({
+  id,
   group: 'cell',
-  attrs: {
-    portNameLabel: {
-      text: name,
-    },
-    portBody: setPropertyColor(ref_property_type_id, color),
-    portTypeLabel: {
-      text: ref_property_type_id,
-      refX: isPerspective() ? 85 : 95,
-    },
-    eye: isPerspective() ? { d: EyeD } : undefined,
-    eye_point: isPerspective() ? { d: EyePointD } : undefined,
-    required_type: required_type,
-    multiple_type: multiple_type,
-    unique_type: unique_type,
-  },
   zIndex: 0,
+  attrs: {
+    [PORT_TYPE_TEXT]: { text: ref_property_type_id, refX: isPerspective() ? 85 : 95 },
+    [PORT_BODY_RECT]: setPropertyColor(ref_property_type_id, color),
+    [PORT_EYE_PATH]: props.allow ? { d: EyeD, refX: 130, refY: 11, fill: colorPropertyType } : undefined,
+    [PORT_NAME_TEXT]: { text: name },
+    ...props,
+  },
 });
 
 /**
@@ -112,7 +94,13 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
 
     const { properties } = node;
 
-    for (const property of properties) formattedProperties.push(insertProperty({ ...property, color: node.color }));
+    for (const property of properties) {
+      const props = {
+        allow: isPerspective() && property.ref_property_type_id !== 'connection',
+        color: node.color,
+      };
+      formattedProperties.push(insertProperty({ ...props, ...property }));
+    }
 
     if (!isPerspective()) formattedProperties.push(insertAddProperty());
 

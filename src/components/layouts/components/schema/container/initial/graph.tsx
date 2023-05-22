@@ -87,9 +87,7 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  if (!isPerspective()) {
-    initEvents(graph, _params);
-  }
+  initEvents(graph, _params);
 
   graph.use(
     new Snapline({

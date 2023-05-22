@@ -80,6 +80,24 @@ export const PATH = {
   EDGE_SOURCE_COLOR: 'line/stroke/stops/0/color',
   EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
   EDGE_CREATOR: 'line/creator',
+  PROPERTY_ALLOW: 'attrs/allow',
+  PROPERTY_NAME: 'attrs/portNameLabel/fill',
+  PROPERTY_TYPE: 'attrs/portTypeLabel/fill',
+  PROPERTY_D: 'attrs/eye/d',
+  PROPERTY_EYE_STROKE: 'attrs/eye/stroke',
+  PROPERTY_EYE_FILL: 'attrs/eye/fill',
+  PROPERTY_EYE_POINT_D: 'attrs/eye_point/d',
+  PROPERTY_EYE_POINT_STROKE: 'attrs/eye_point/stroke',
+  PROPERTY_EYE_POINT_FILL: 'attrs/eye_point/fill',
+};
+
+export const SELECTORS = {
+  PORT_BODY_RECT: 'portBody',
+  PORT_NAME_TEXT: 'portNameLabel',
+  PORT_TYPE_TEXT: 'portTypeLabel',
+  PORT_EYE_PATH: 'eye',
+  NODE_SETTING_CIRCLE: 'setting_circle',
+  NODE_SETTING_ARROW_PATH: 'setting_path',
 };
 
 export const VALIDATE_MESSAGES = {

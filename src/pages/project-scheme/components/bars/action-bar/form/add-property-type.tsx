@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Node } from '@antv/x6';
 import { Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { FormInput } from 'components/input';
@@ -14,10 +15,10 @@ import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property
 import { useCallback, useEffect, useMemo } from 'react';
 import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
 import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
-import { Node } from '@antv/x6';
-import { IPortAttribute } from 'components/layouts/components/schema/types';
+import { SELECTORS } from 'helpers/constants';
+import { PortAttributes } from 'components/layouts/components/schema/types';
 
-type InitEditForm = (attrs: IPortAttribute) => void;
+type InitEditForm = (attrs: PortAttributes) => void;
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -33,8 +34,8 @@ export const AddSchemaTypePropertyForm = () => {
 
   const initEditForm: InitEditForm = useCallback(
     ({
-      portNameLabel: { text: name },
-      portTypeLabel: { text: ref_property_type_id },
+      [SELECTORS.PORT_NAME_TEXT]: { text: name },
+      [SELECTORS.PORT_TYPE_TEXT]: { text: ref_property_type_id },
       required_type,
       multiple_type,
       unique_type,
@@ -83,7 +84,7 @@ export const AddSchemaTypePropertyForm = () => {
   useEffect(() => {
     const { isUpdate, portId } = addPortModal ?? {};
     if (isUpdate) {
-      initEditForm(type.portProp(portId ?? '').attrs as unknown as IPortAttribute);
+      initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
     }
 
     return () => {

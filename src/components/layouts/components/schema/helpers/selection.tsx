@@ -1,17 +1,19 @@
 import { CellRemovePort, ElementBox, ElementStyle, RemoveElement, SelectNode, SelectNodeWithZoom } from '../types';
-import { PATH } from '../../../../../helpers/constants';
+import { PATH, SELECTORS } from "helpers/constants";
 import { TypeSettingD } from './svg/path-d';
 import { Node } from '@antv/x6';
 import { LINE_HEIGHT } from '../container/register/node';
 import { animateGraphFit } from './utils';
+
+const { NODE_SETTING_CIRCLE, NODE_SETTING_ARROW_PATH } = SELECTORS;
 
 export const removeSelected: RemoveElement = (chart, element) => {
   const type = chart.getCellById(element.dataset.cellId) as CellRemovePort;
 
   type.removePort('connector');
 
-  type.attr('setting_path', undefined);
-  type.attr('setting_circle', undefined);
+  type.attr(NODE_SETTING_ARROW_PATH, undefined);
+  type.attr(NODE_SETTING_CIRCLE, undefined);
 
   element.classList.remove('selected-node');
 };
@@ -57,8 +59,8 @@ export const selectNode: SelectNode = (graph, container, node) => {
     },
   });
 
-  node.attr('setting_circle', {
-    id: 'setting_circle',
+  node.attr(NODE_SETTING_CIRCLE, {
+    id: NODE_SETTING_CIRCLE,
     r: 12,
     cx: 128,
     cy: 21.5,
@@ -67,8 +69,8 @@ export const selectNode: SelectNode = (graph, container, node) => {
     cursor: 'pointer',
   });
 
-  node.attr('setting_path', {
-    id: 'setting_path',
+  node.attr(NODE_SETTING_ARROW_PATH, {
+    id: NODE_SETTING_ARROW_PATH,
     fill: '#414141',
     cursor: 'pointer',
     d: TypeSettingD,

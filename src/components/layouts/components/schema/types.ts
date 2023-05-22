@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
-import {IProjectType, ITypeProperty} from '../../../../api/types';
-import { ProjectEdgeResponse } from '../../../../types/project-edge';
+import { IProjectType, ITypeProperty } from 'api/types';
+import { ProjectEdgeResponse } from 'types/project-edge';
 import { AxiosResponse } from 'axios';
 import { FormInstance } from 'antd';
 import { Highlighter } from '@antv/x6/lib/registry';
@@ -58,25 +58,24 @@ export interface IPortFill {
   stops: Array<{ offset: string; color: string }>;
 }
 
-export interface IPortAttribute {
+interface IPortAttribute {
   required_type?: boolean;
   multiple_type?: string;
   unique_type?: boolean;
-  portBody: {
+}
+
+export type PortAttributes = {
+  [key: string]: {
     fill: IPortFill | string;
     strokeWidth?: number;
-  };
-  portNameLabel: {
+  } & {
     fill?: string;
     text: string;
-  };
-  portTypeLabel: {
+  } & {
     text: string;
-    refX?: number
+    refX?: number;
   };
-  eye?: { d: string },
-  eye_point?: { d: string }
-}
+} & IPortAttribute;
 
 export interface IPort {
   id?: string;
@@ -238,4 +237,4 @@ export type AddProperty = (
 
 export type GetTypeColors = (edge: Edge<Properties>) => string[];
 
-export type InsertProperty = (prop: ITypeProperty & { color: string }) => IPort;
+export type InsertProperty = (prop: ITypeProperty & { color: string; allow: boolean }) => IPort;
