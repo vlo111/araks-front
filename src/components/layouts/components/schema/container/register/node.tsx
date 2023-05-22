@@ -81,6 +81,14 @@ Graph.registerNode(
               tagName: 'text',
               selector: 'portTypeLabel',
             },
+            {
+              tagName: 'path',
+              selector: 'eye',
+            },
+            {
+              tagName: 'path',
+              selector: 'eye_point',
+            },
           ],
           attrs: {
             portBody: {
@@ -98,7 +106,7 @@ Graph.registerNode(
               refY: 10,
               fontSize: 10,
               textWrap: {
-                width: 100,
+                width: 90,
                 ellipsis: true,
               },
             },
@@ -106,9 +114,22 @@ Graph.registerNode(
               ref: 'portBody',
               cursor: 'pointer',
               refX: 95,
-              refY: 10,
+              refY: 5,
               fill: '#808080',
               fontSize: 10,
+            },
+            eye: {
+              refX: 125,
+              refY: 5,
+              fill: '#808080',
+              stroke: '#808080',
+
+            },
+            eye_point: {
+              refX: 125,
+              refY: 5,
+              fill: '#808080',
+              stroke: '#808080',
             },
           },
           position: 'erPortPosition',

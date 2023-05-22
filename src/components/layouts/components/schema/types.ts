@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
-import { IProjectType, ITypeProperty } from '../../../../api/types';
+import {IProjectType, ITypeProperty} from '../../../../api/types';
 import { ProjectEdgeResponse } from '../../../../types/project-edge';
 import { AxiosResponse } from 'axios';
 import { FormInstance } from 'antd';
@@ -72,7 +72,10 @@ export interface IPortAttribute {
   };
   portTypeLabel: {
     text: string;
+    refX?: number
   };
+  eye?: { d: string },
+  eye_point?: { d: string }
 }
 
 export interface IPort {
@@ -203,7 +206,7 @@ export type CellRemovePort = Cell<Cell.Properties> & {
   removePort: (id: string) => void;
 };
 
-export type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
+export type SetPropertyColor = (ref_property_type_id: string, color: string) => { fill: IPortFill } | { fill: string };
 
 export type InsertAddProperty = () => IPort;
 
@@ -234,3 +237,5 @@ export type AddProperty = (
 ) => Promise<AxiosResponse<{ id: string }, never>>;
 
 export type GetTypeColors = (edge: Edge<Properties>) => string[];
+
+export type InsertProperty = (prop: ITypeProperty & { color: string }) => IPort;

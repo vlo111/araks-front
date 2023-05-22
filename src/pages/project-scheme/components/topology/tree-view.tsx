@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/utils';
+import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/selection';
 import { Tree } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS, PATH } from "helpers/constants";
