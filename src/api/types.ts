@@ -61,7 +61,7 @@ export type ProjectReturnData = ProjectFullInfo & {
 type ProjectTreeProperties = {
   id: string;
   name: string;
-  default_proprty: boolean;
+  default_proprty?: boolean;
 };
 
 export type ProjectTreeReturnData = {
@@ -75,10 +75,10 @@ export type ProjectTreeReturnData = {
 export interface ITypeProperty {
   id: string;
   name: string;
-  multiple_type: string;
-  unique_type: boolean;
-  required_type: boolean;
-  default_proprty: boolean;
+  multiple_type?: boolean;
+  unique_type?: boolean;
+  required_type?: boolean;
+  default_proprty?: boolean;
   ref_property_type_id: string;
 }
 

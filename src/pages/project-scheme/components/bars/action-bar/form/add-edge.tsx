@@ -38,12 +38,12 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
   const addEdge: AddEdgeType = (item) => createEdge({ ...item });
 
   const createEdgeWithTypeProperty = async ({ name, inverse, multiple, source, target }: ProjectEdgeForm) => {
-    const source_id = nodes.find((n) => n.name === source)?.id ?? '';
+    const sourceType = nodes.find((n) => n.name === source);
 
     const edge_target = nodes.find((n) => n.name === target);
 
     const edge = {
-      source_id,
+      source_id: sourceType?.id || '',
       target_id: edge_target?.id ?? '',
       name,
       inverse,
@@ -51,8 +51,8 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
     };
 
     addEdge({
-      source_attribute_id: undefined,
-      target_attribute_id: undefined,
+      source_attribute_id: sourceType?.properties?.find((p) => p.default_proprty)?.id,
+      target_attribute_id: edge_target?.properties?.find((p) => p.default_proprty)?.id,
       ...edge,
     });
   };

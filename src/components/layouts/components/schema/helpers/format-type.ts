@@ -3,7 +3,7 @@ import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } from '../types';
 import { antTheme } from 'helpers/ant-theme';
-import { getProperties, isPerspective } from './utils';
+import { isPerspective } from './utils';
 import { EyeD } from './svg/path-d';
 import { SELECTORS } from 'helpers/constants';
 
@@ -96,10 +96,27 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
 
     for (const property of properties) {
       const props = {
-        allow: isPerspective() && property.ref_property_type_id !== 'connection',
+        allow: isPerspective(),
         color: node.color,
       };
       formattedProperties.push(insertProperty({ ...props, ...property }));
+    }
+
+    const edgeProperties = edges.filter((e) => e.source_id === node.id || e.target_id === node.id);
+
+    for (const { id, name, inverse, multiple, source_id } of edgeProperties) {
+      if (inverse || source_id === node.id) {
+        formattedProperties.push(
+          insertProperty({
+            id: id || '',
+            name,
+            allow: isPerspective(),
+            color: node.color,
+            ref_property_type_id: 'connection',
+            multiple_type: multiple,
+          })
+        );
+      }
     }
 
     if (!isPerspective()) formattedProperties.push(insertAddProperty());
@@ -126,37 +143,35 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
     cells.push(cell);
   }
 
-  for (const edge of edges) {
-    const { color, targetColor, name, targetName, targetDefault, default_proprty } = getProperties(nodesList, edge);
-
+  for (const { id, name, source, source_id, target, target_id, inverse } of edges) {
     const formattedEdge = {
-      id: edge.id,
+      id: id,
       shape: 'er-edge',
       source: {
-        cell: edge.source_id,
-        port: default_proprty ? undefined : edge.source_attribute_id,
+        cell: source_id,
+        port: id,
       },
       target: {
-        cell: edge.target_id,
-        port: targetDefault ? undefined : edge.target_attribute_id,
+        cell: target_id,
+        port: id,
       },
       attrs: {
         line: {
           stroke: {
             type: 'linearGradient',
             stops: [
-              { offset: '50%', color: `${color}` },
-              { offset: '50%', color: `${edge.inverse ? targetColor : color}` },
+              { offset: '50%', color: `${source?.color}` },
+              { offset: '50%', color: `${inverse ? target?.color : source?.color}` },
             ],
           },
           sourceMarker: {
-            fill: color,
+            fill: source?.color,
           },
           targetMarker: {
-            fill: targetColor,
+            fill: target?.color,
           },
         },
-        name: name || targetName,
+        name: name,
       },
     };
 

@@ -60,7 +60,7 @@ export interface IPortFill {
 
 interface IPortAttribute {
   required_type?: boolean;
-  multiple_type?: string;
+  multiple_type?: boolean;
   unique_type?: boolean;
 }
 
