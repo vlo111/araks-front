@@ -110,7 +110,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
           insertProperty({
             id: id || '',
             name,
-            allow: isPerspective(),
+            allow: false,
             color: node.color,
             ref_property_type_id: 'connection',
             multiple_type: multiple,
