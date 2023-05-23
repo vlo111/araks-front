@@ -15,8 +15,8 @@ import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/type/use-create-types';
 import { SelectColor } from '../components/select/select-color';
 import { useDeleteType } from 'api/schema/type/use-delete-type';
-import { createNodesTree } from "components/layouts/components/data-sheet/utils";
-import { PATH } from "helpers/constants";
+import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { PATH } from 'helpers/constants';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -44,10 +44,10 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
     isEdit ? type.id : undefined
   );
 
-  const { mutate: mutateDelete } = useDeleteType(type?.id, {});
+  const { mutate: mutateDelete } = useDeleteType({});
 
   const onHandleDelete = () => {
-    mutateDelete();
+    mutateDelete(type?.id);
 
     setSelectedNode(undefined);
 
