@@ -153,7 +153,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       },
       target: {
         cell: target_id,
-        port: id,
+        port: source_id === target_id ? undefined : target_id,
       },
       attrs: {
         line: {

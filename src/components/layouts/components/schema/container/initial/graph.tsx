@@ -70,7 +70,7 @@ export const initGraph: InitGraph = (container, _params) => {
   const mousewheel = {
     enabled: true,
     zoomAtMousePosition: true,
-    minScale: 0.5,
+    minScale: 0.1,
     maxScale: 3,
   };
 
