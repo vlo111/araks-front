@@ -111,7 +111,7 @@ export const Toolbar: React.FC = () => {
   const onZoomIn = useCallback(() => {
     animateGraphFit(graph, '0.05s');
     graph.zoom(0.1, {
-      minScale: 0.1,
+      minScale: 0.2,
       maxScale: 3,
     });
   }, [graph]);
@@ -119,7 +119,7 @@ export const Toolbar: React.FC = () => {
   const onZoomOut = useCallback(() => {
     animateGraphFit(graph, '0.05s');
     graph.zoom(-0.1, {
-      minScale: 0.1,
+      minScale: 0.2,
       maxScale: 3,
     });
   }, [graph]);
