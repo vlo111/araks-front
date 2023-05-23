@@ -4,37 +4,46 @@ import { removeSelected, selectNode } from '../../helpers/selection';
 import client from 'api/client';
 import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
 import { closeEye, openEye } from '../../helpers/constants';
-import { SELECTORS } from '../../../../../../helpers/constants';
+import { PATH, SELECTORS } from 'helpers/constants';
 
 export const initEvents: InitEvents = (
   graph,
-  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal }
+  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal, setAddLinkModal }
 ) => {
   if (!isPerspective()) {
     graph.on('node:port:click', (event) => {
       if (event.port === 'connector') return;
-      const { x, y, height, width } = event.view.container.getBoundingClientRect();
 
-      const bottomX = x + width;
-      const bottomY = y + height - 30;
+      const isEdge = event.cell.getPortProp(event.port || '', PATH.PROPERTY_REF_TYPE) === 'connection';
 
-      if (event.port === 'add') {
-        setAddPortModal({
-          node: event.node,
-          portId: 'add',
-          isUpdate: false,
-          x: bottomX,
-          y: bottomY,
-        });
+      if (!isEdge) {
+        const { x, y, height, width } = event.view.container.getBoundingClientRect();
+
+        const bottomX = x + width;
+        const bottomY = y + height - 30;
+
+        if (event.port === 'add') {
+          setAddPortModal({
+            node: event.node,
+            portId: 'add',
+            isUpdate: false,
+            x: bottomX,
+            y: bottomY,
+          });
+        } else {
+          // edit
+          setAddPortModal({
+            node: event.node,
+            portId: event.port as string,
+            isUpdate: true,
+            x: bottomX,
+            y: bottomY,
+          });
+        }
       } else {
-        // edit
-        setAddPortModal({
-          node: event.node,
-          portId: event.port as string,
-          isUpdate: true,
-          x: bottomX,
-          y: bottomY,
-        });
+        setAddLinkModal({
+          id: event.port
+        })
       }
     });
 

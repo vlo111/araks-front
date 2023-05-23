@@ -80,6 +80,7 @@ export const PATH = {
   EDGE_SOURCE_COLOR: 'line/stroke/stops/0/color',
   EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
   EDGE_CREATOR: 'line/creator',
+  PROPERTY_REF_TYPE: 'attrs/ref_property_type_id',
   PROPERTY_ALLOW: 'attrs/allow',
   PROPERTY_NAME: 'attrs/portNameLabel/fill',
   PROPERTY_TYPE: 'attrs/portTypeLabel/fill',

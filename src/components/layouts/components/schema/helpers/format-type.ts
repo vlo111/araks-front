@@ -48,6 +48,7 @@ const insertProperty: InsertProperty = ({ id, color, name, ref_property_type_id,
     [PORT_BODY_RECT]: setPropertyColor(ref_property_type_id, color),
     [PORT_EYE_PATH]: props.allow ? { d: EyeD, refX: 130, refY: 11, fill: colorPropertyType } : undefined,
     [PORT_NAME_TEXT]: { text: name },
+    ref_property_type_id,
     ...props,
   },
 });
