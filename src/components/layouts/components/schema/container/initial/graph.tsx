@@ -5,7 +5,7 @@ import { Options } from '@antv/x6/lib/graph/options';
 import { Snapline } from '@antv/x6-plugin-snapline';
 
 import Connecting = Options.Connecting;
-import { initEvents } from './events';
+import { initPerspectiveEvents, initSchemaEvents } from './events';
 import { PATH } from 'helpers/constants';
 import { isPerspective } from '../../helpers/utils';
 
@@ -87,7 +87,8 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  initEvents(graph, _params);
+  if (isPerspective()) initPerspectiveEvents(graph);
+  else initSchemaEvents(graph, _params);
 
   graph.use(
     new Snapline({

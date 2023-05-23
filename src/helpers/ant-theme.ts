@@ -122,6 +122,8 @@ export const antTheme = {
       colorPropertyType: '#808080',
       colorGridThickness: '#DBDBDB',
       colorGridLine: '#C3C3C3',
+      colorPerspectiveTextClose: '#999999',
+      colorPerspectiveIconClose: '#C6C6C6',
     },
   },
   token: {

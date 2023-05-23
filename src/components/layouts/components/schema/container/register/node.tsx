@@ -132,6 +132,10 @@ const node = {
       tagName: 'path',
       selector: NODE_SETTING_ARROW_PATH,
     },
+    {
+      tagName: 'path',
+      selector: PORT_EYE_PATH,
+    },
   ],
   attrs: {
     label: {

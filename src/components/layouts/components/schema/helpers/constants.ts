@@ -1,48 +1,45 @@
-import { PATH } from '../../../../../helpers/constants';
 import { EyeClosedD, EyeD } from './svg/path-d';
+import { COLORS, SELECTORS } from 'helpers/constants';
+import { antTheme } from 'helpers/ant-theme';
 
-export const openEye = [
-  {
-    path: PATH.PROPERTY_ALLOW,
-    value: true,
+const {
+  components: {
+    Schema: { colorPerspectiveTextClose, colorPerspectiveIconClose },
   },
-  {
-    path: PATH.PROPERTY_NAME,
-    value: '#414141',
-  },
-  {
-    path: PATH.PROPERTY_TYPE,
-    value: '#414141',
-  },
-  {
-    path: PATH.PROPERTY_D,
-    value: EyeD,
-  },
-  {
-    path: PATH.PROPERTY_EYE_FILL,
-    value: '#808080',
-  },
-];
+} = antTheme;
 
-export const closeEye = [
-  {
-    path: PATH.PROPERTY_ALLOW,
-    value: false,
+const {
+  PRIMARY: { GRAY_DARK, GRAY },
+} = COLORS;
+
+export const openPropertyEye = {
+  allow: true,
+  [SELECTORS.PORT_EYE_PATH]: {
+    d: EyeD,
+    fill: GRAY,
   },
-  {
-    path: PATH.PROPERTY_NAME,
-    value: '#999999',
+  [SELECTORS.PORT_NAME_TEXT]: { fill: GRAY_DARK },
+  [SELECTORS.PORT_TYPE_TEXT]: { fill: GRAY_DARK },
+};
+
+export const closePropertyEye = {
+  allow: false,
+  [SELECTORS.PORT_EYE_PATH]: {
+    d: EyeClosedD,
+    fill: colorPerspectiveIconClose,
   },
-  {
-    path: PATH.PROPERTY_TYPE,
-    value: '#999999',
-  },
-  {
-    path: PATH.PROPERTY_D,
-    value: EyeClosedD,
-  },
-  {
-    path: PATH.PROPERTY_EYE_FILL,
-    value: '#C6C6C6',
-  },
-];
+  [SELECTORS.PORT_NAME_TEXT]: { fill: colorPerspectiveTextClose },
+  [SELECTORS.PORT_TYPE_TEXT]: { fill: colorPerspectiveTextClose },
+};
+
+export const openTypeEye = {
+  body: { allow: true },
+  text: { fill: GRAY_DARK },
+  [SELECTORS.PORT_EYE_PATH]: { d: EyeD, fill: GRAY },
+};
+
+export const closeTypeEye = {
+  body: { allow: false },
+  text: { fill: colorPerspectiveTextClose },
+  [SELECTORS.PORT_EYE_PATH]: { d: EyeClosedD, fill: colorPerspectiveIconClose },
+};

@@ -7,7 +7,6 @@ import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { AxiosResponse } from 'axios';
 import { FormInstance } from 'antd';
 import { Highlighter } from '@antv/x6/lib/registry';
 
@@ -28,6 +27,8 @@ interface ILine {
 
 interface IBody {
   stroke: string;
+  cursor: string;
+  allow: boolean
 }
 
 interface IPosition {
@@ -99,6 +100,7 @@ export interface INode {
     line?: ILine;
     body?: IBody;
     parentId?: string;
+    allow?: boolean
   };
   tools?: {
     name: string;
@@ -229,12 +231,12 @@ export type PropsAddEdge = {
 
 export type AddEdgeType = (item: ProjectEdgeResponse) => void;
 
-export type AddProperty = (
-  id: string,
-  name: string,
-  multiple: boolean
-) => Promise<AxiosResponse<{ id: string }, never>>;
-
 export type GetTypeColors = (edge: Edge<Properties>) => string[];
 
 export type InsertProperty = (prop: ITypeProperty & { color: string; allow: boolean }) => IPort;
+
+export type SwitchPermission = (node: Node<Node.Properties>, portId: string | undefined, isAllow: boolean) => void;
+
+export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
+
+export type ChangeTypePosition = (id: string, x: number, y: number) => void;
