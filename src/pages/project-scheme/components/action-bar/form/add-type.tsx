@@ -1,9 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { Node } from '@antv/x6';
-import { Checkbox, Form, FormInstance, Space, Tooltip } from 'antd';
+import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
-
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
@@ -23,17 +22,16 @@ const Wrapper = styled.div`
   width: 422px;
 `;
 
-type Props = {
-  onCancel: VoidFunction;
-  form: FormInstance;
-};
+type IProps = React.FC<{onCancel: VoidFunction}>
 
-export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
+export const AddSchemaTypeForm: IProps = ({ onCancel }) => {
+  const [form] = Form.useForm();
+
   const { nodes, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
 
   const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
 
-  const type = useMemo(() => selectedNode as Node<Node.Properties>, [selectedNode]);
+  const type = useMemo(() => (selectedNode as Node<Node.Properties>), [selectedNode]);
 
   const { mutate: createType } = useCreateType(
     {
@@ -55,21 +53,11 @@ export const AddSchemaTypeForm = ({ form, onCancel }: Props) => {
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
-    createType(
-      isEdit
-        ? ({
-            fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
-            fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
-            parent_id: values.parent_id,
-            name: values.name,
-            color: values.color,
-          } as ProjectNodeTypeSubmit)
-        : {
-            fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
-            fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
-            ...values,
-          }
-    );
+    createType({
+      fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
+      fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
+      ...values,
+    });
 
     onCancel();
   };

@@ -44,7 +44,14 @@ export const ActionBar: React.FC = () => {
       <ToolStyle>
         <Search />
         <AddTypeSVG className="add-type" onClick={() => (graph.container.style.cursor = 'crosshair')} />
-        <AddLinkSVG className="add-link" onClick={() => setAddLinkModal({})} />
+        <AddLinkSVG
+          className="add-link"
+          onClick={() =>
+            setAddLinkModal({
+              open: true,
+            })
+          }
+        />
       </ToolStyle>
       <AddEdgeModal />
       <AddEdgePropertyModal />

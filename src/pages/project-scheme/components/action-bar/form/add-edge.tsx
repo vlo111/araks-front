@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Checkbox, Form, Space, Spin, Tooltip } from "antd";
+import { Checkbox, Form, Space, Spin, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -21,7 +21,9 @@ const AddEdge = styled.div`
   width: 422px;
 `;
 
-export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
+export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
+  const [form] = Form.useForm();
+
   const { nodes, graph, addLinkModal } = useSchema() || {};
 
   const { mutate: createEdge } = useCreateEdge(addLinkModal?.id);
@@ -72,11 +74,13 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
         target: nodes.find((n) => n.id === addLinkModal?.target)?.name,
       });
     }
+
+    return () => form.resetFields();
   }, [addLinkModal, form, graph, nodes, data]);
 
   return (
     <AddEdge>
-      <Spin spinning={isInitialLoading}>
+      <Spin spinning={!addLinkModal?.id ? false : isInitialLoading}>
         <Form
           name="project-node-type"
           form={form}

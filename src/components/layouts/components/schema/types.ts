@@ -7,7 +7,6 @@ import TerminalType = Edge.TerminalType;
 import TerminalData = Edge.TerminalData;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { FormInstance } from 'antd';
 import { Highlighter } from '@antv/x6/lib/registry';
 
 export interface IStroke {
@@ -123,7 +122,7 @@ export type LinkPropertyModal =
 
 export type OpenAddType = undefined | number[];
 
-export type AddLinkModal = { id?: string; source?: string; target?: string } & { open?: boolean };
+export type AddLinkModal = { id?: string; source?: string; target?: string } & { open: boolean };
 
 export type Graph = GraphX6;
 
@@ -225,7 +224,6 @@ export type SelectNodeWithZoom = (
 ) => void;
 
 export type PropsAddEdge = {
-  form: FormInstance;
   onCancel: VoidFunction;
 };
 
