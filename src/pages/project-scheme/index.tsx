@@ -1,14 +1,14 @@
 import { Space } from 'antd';
 import { Topology } from './components/topology';
-import { Toolbar } from './components/bars/tool-bar/wrapper';
-import { ActionBar } from './components/bars/action-bar';
+import { ActionBar } from './components/action-bar';
 import { Schema } from './components/schema';
+import { Toolbar } from '../../components/tool-bar';
 
 export const ProjectScheme = () => (
   <Space>
     <Topology />
     <Schema />
     <ActionBar />
-    <Toolbar />
+    <Toolbar position="right" />
   </Space>
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 
-import { ReactComponent as ZoomInSVG } from './icons/plus.svg';
+import { ReactComponent as ZoomInSVG } from '../icons/plus.svg';
 
 export const ZoomIn: React.FC<{ onZoomIn: VoidFunction }> = ({ onZoomIn }) => {
   return (

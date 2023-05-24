@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
-import { ReactComponent as ZoomOutSVG } from './icons/minus.svg';
+import { ReactComponent as ZoomOutSVG } from '../icons/minus.svg';
 
 export const ZoomOut: React.FC<{ onZoomOut: VoidFunction }> = ({ onZoomOut }) => {
   return (

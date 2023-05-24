@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip } from 'antd';
-import { ReactComponent as FitSVG } from './icons/fit.svg';
+import { ReactComponent as FitSVG } from '../icons/fit.svg';
 
 export const FitSchema: React.FC<{ onCenterContent: VoidFunction }> = ({ onCenterContent }) => {
   return (

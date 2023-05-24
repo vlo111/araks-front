@@ -1,83 +1,14 @@
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
-
-import { FitType } from './fit-type';
-import { FitSchema } from './fit-schema';
-import { ZoomIn } from './zoom-in';
-import { ZoomOut } from './zoom-out';
+import { FitType } from './action/fit-type';
+import { FitSchema } from './action/fit-schema';
+import { ZoomIn } from './action/zoom-in';
+import { ZoomOut } from './action/zoom-out';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { LINE_HEIGHT } from 'components/layouts/components/schema/container/register/node';
 import { animateGraphFit } from 'components/layouts/components/schema/helpers/utils';
+import { ToolbarWrapper } from './wrapper';
 
-const ToolbarPanel = styled.div`
-  position: fixed;
-  flex-direction: column;
-  z-index: 1;
-  bottom: 32px;
-  right: 32px;
-  width: 46px;
-  display: flex;
-  gap: 8px;
-
-  .fit,
-  .find {
-    height: 46px;
-    justify-content: center;
-
-    &:hover {
-      background-color: #e0e0e0;
-    }
-
-    &:active {
-      svg {
-        scale: 1.1;
-      }
-    }
-  }
-
-  .box {
-    background: rgba(219, 219, 219, 0.5);
-    border: 1px solid rgba(111, 111, 111, 0.16);
-    box-shadow: 0 10px 10px rgba(141, 143, 166, 0.2);
-    backdrop-filter: blur(7px);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .zoom {
-    justify-content: center;
-    flex-direction: column;
-    height: 93px;
-
-    .separate {
-      border: 1px solid #cdcdcd;
-      width: 80%;
-    }
-
-    .zoomIn,
-    .zoomOut {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      width: 100%;
-
-      &:hover {
-        background-color: #e0e0e0;
-      }
-
-      &:active {
-        svg {
-          scale: 1.1;
-        }
-      }
-    }
-  }
-`;
-
-export const Toolbar: React.FC = () => {
+export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
   const { graph, selectedNode } = useSchema() || {};
 
   const onCenterType = useCallback(() => {
@@ -125,7 +56,7 @@ export const Toolbar: React.FC = () => {
   }, [graph]);
 
   return (
-    <ToolbarPanel>
+    <ToolbarWrapper position={position}>
       <FitType onCenterType={onCenterType} />
       <FitSchema onCenterContent={onCenterContent} />
       <div className="box zoom">
@@ -133,6 +64,6 @@ export const Toolbar: React.FC = () => {
         <div className="separate" />
         <ZoomOut onZoomOut={onZoomOut} />
       </div>
-    </ToolbarPanel>
+    </ToolbarWrapper>
   );
 };
