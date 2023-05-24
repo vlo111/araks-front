@@ -1,75 +1,52 @@
-export interface IIsOpen {
-  isOpened?: boolean;
-}
-
-export interface IEdgeState extends IIsOpen {
-  id?: string;
-  source?: string;
-  target?: string;
-}
-
-export interface ITypeState extends IIsOpen {
-  x?: number;
-  y?: number;
-}
-
-export type SchemaState = {
-  edge?: IEdgeState;
-  type?: ITypeState;
-};
-
-interface DataSheetAction {
-  type: SchemaAction;
-  payload: SchemaState;
-}
+import { DataSheetAction, Item, SchemaState } from './types';
 
 export enum SchemaAction {
   ADD_EDGE_START = 'ADD_EDGE_START',
   ADD_EDGE_FINISH = 'ADD_EDGE_FINISH',
   ADD_TYPE_START = 'ADD_TYPE_START',
   ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
+  ADD_PORT_START = 'ADD_PORT_START',
+  ADD_PORT_FINISH = 'ADD_PORT_FINISH',
 }
 
 export const schemaInitialState: SchemaState = {
-  edge: {
+  type: {
     isOpened: false,
   },
 };
 
 export function schemaReducer(state: SchemaState, action: DataSheetAction) {
   const { type, payload } = action;
+
+  const start = (item: Item) => ({
+    [item]: {
+      ...state[item],
+      ...payload,
+      isOpened: true,
+    },
+  });
+
+  const end = (item: Item) => ({
+    [item]: {
+      ...state[item],
+      isOpened: false,
+    },
+  });
+
   switch (type) {
     case SchemaAction.ADD_EDGE_START:
-      return {
-        edge: {
-          ...state.edge,
-          ...payload,
-          isOpened: true,
-        },
-      };
+      return start('edge');
     case SchemaAction.ADD_EDGE_FINISH:
-      return {
-        edge: {
-          ...state.edge,
-          isOpened: false,
-        },
-      };
+      return end('edge');
     case SchemaAction.ADD_TYPE_START:
       // #TODO.  graph.container.style.cursor = ''
-      return {
-        type: {
-          ...state.type,
-          ...payload,
-          isOpened: true,
-        },
-      };
+      return start('type');
     case SchemaAction.ADD_TYPE_FINISH:
-      return {
-        type: {
-          ...state.type,
-          isOpened: false,
-        },
-      };
+      return end('type');
+    case SchemaAction.ADD_PORT_START:
+      return start('port');
+    case SchemaAction.ADD_PORT_FINISH:
+      return end('port');
     default:
       return state;
   }

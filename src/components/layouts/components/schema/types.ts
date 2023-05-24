@@ -8,7 +8,7 @@ import TerminalData = Edge.TerminalData;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
-import { IEdgeState, ITypeState, SchemaState } from './reducer/schema-manager';
+import {IEdgeState, IPortState, ITypeState, SchemaState} from './reducer/types';
 
 export interface IStroke {
   type: string;
@@ -128,17 +128,17 @@ export type Graph = GraphX6;
 export interface SchemaContextType extends SchemaState {
   startEdgeType: (edge?: IEdgeState) => void;
   startType: (type?: ITypeState) => void;
-  finishEdgeType: () => void;
-  finishType: () => void;
+  startPort: (port?: IPortState) => void;
+  finishEdgeType: VoidFunction;
+  finishType: VoidFunction;
+  finishPort: VoidFunction;
 
   graph: GraphX6;
   selectedNode: SelectedNode | string | undefined;
   nodes: IProjectType[];
   edges: ProjectEdgeResponse[];
-  addPortModal: PortModal;
   openLinkPropertyModal: LinkPropertyModal;
   setGraph: (item: Graph) => void;
-  setAddPortModal: Dispatch<SetStateAction<PortModal>>;
   setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
   setNodes: Dispatch<SetStateAction<IProjectType[]>>;
   setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
@@ -172,12 +172,11 @@ export interface EdgeCreate {
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  | 'addPortModal'
   | 'openLinkPropertyModal'
   | 'selectedNode'
   | 'startType'
+  | 'startPort'
   | 'startEdgeType'
-  | 'setAddPortModal'
   | 'setSelectedNode'
   | 'setOpenLinkPropertyModal'
 >;
@@ -207,8 +206,6 @@ export type CellRemovePort = Cell<Cell.Properties> & {
 export type SetPropertyColor = (ref_property_type_id: string, color: string) => { fill: IPortFill } | { fill: string };
 
 export type InsertAddProperty = () => IPort;
-
-export type OpenTypeModal = (param: OpenAddType) => void;
 
 export type Highlighter = Highlighter.Definition<unknown>;
 

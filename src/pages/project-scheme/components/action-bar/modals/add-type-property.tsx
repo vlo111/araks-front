@@ -4,15 +4,13 @@ import { AddSchemaTypePropertyForm } from '../form/add-property-type';
 import { Modal } from 'components/modal';
 
 export const AddTypePropertyModal: React.FC = () => {
-  const { addPortModal, setAddPortModal } = useSchema() || {};
+  const { port, finishPort } = useSchema() || {};
 
   const props = {
-    open: addPortModal !== undefined,
+    open: port?.isOpened,
     footer: false,
     centered: true,
-    onCancel: () => {
-      setAddPortModal(undefined);
-    },
+    onCancel: finishPort,
   };
 
   return (

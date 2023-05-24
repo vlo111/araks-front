@@ -6,7 +6,7 @@ import { ElementStyle, InitEvents } from '../../types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { setAddPortModal, setSelectedNode, startType, setOpenLinkPropertyModal, startEdgeType }
+  { startPort, setSelectedNode, startType, setOpenLinkPropertyModal, startEdgeType }
 ) => {
   graph.on('node:port:click', ({ node, port, view: { container } }) => {
     if (port === 'connector') return;
@@ -23,14 +23,14 @@ export const initSchemaEvents: InitEvents = (
       };
 
       if (port === 'add') {
-        setAddPortModal({
+        startPort({
           ...props,
           portId: 'add',
           isUpdate: false,
         });
       } else {
         /** Edit type property */
-        setAddPortModal({
+        startPort({
           ...props,
           portId: port as string,
           isUpdate: true,
