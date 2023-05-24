@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Form, FormInstance, Space, Tooltip } from 'antd';
+import { Form, Space, Tooltip } from 'antd';
 import { Text } from 'components/typography';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { FormItem } from 'components/form/form-item';
@@ -17,7 +17,6 @@ import { useDeleteProjectEdgeTypeProperty } from 'api/node-edge-type/use-delete-
 import styled from 'styled-components';
 
 type Props = {
-  form: FormInstance;
   isEdit?: boolean;
   open: boolean | string;
   onCancel: VoidFunction;
@@ -27,7 +26,9 @@ const Wrapper = styled.div`
   padding: 24px 24px 8px;
 `;
 
-export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ form, isEdit, open, onCancel }) => {
+export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCancel }) => {
+  const [form] = Form.useForm();
+
   const { openLinkPropertyModal } = useSchema() || {};
 
   const id = useMemo(() => open as string, [open]);
