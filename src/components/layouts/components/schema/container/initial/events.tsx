@@ -78,10 +78,9 @@ export const initSchemaEvents: InitEvents = (
   graph.on('blank:click', ({ x, y, e: { target } }) => {
     const selectedNode: ElementStyle = target.querySelector('.selected-node');
 
-    if (selectedNode !== null) {
-      removeSelected(graph, selectedNode);
-      setSelectedNode(undefined);
-    }
+    if (selectedNode !== null) removeSelected(graph, selectedNode);
+
+    setSelectedNode(undefined);
 
     if (graph.container.style.cursor === 'crosshair') setAddTypeModal([x, y]);
   });
