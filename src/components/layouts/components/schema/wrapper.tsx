@@ -1,8 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
-
 import {
-  AddLinkModal,
   Graph,
   LinkPropertyModal,
   OpenAddType,
@@ -13,8 +11,21 @@ import {
 } from './types';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
+import { IEdgeStata, SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
 
 export const SchemaWrapper: React.FC = () => {
+  const [state, dispatch] = useReducer(schemaReducer, schemaInitialState);
+
+  const handleAction = useCallback((type: SchemaAction, payload = {}) => dispatch({ type, payload }), [dispatch]);
+
+  const callbacks = useMemo(
+    () => ({
+      startEdgeType: (payload: IEdgeStata) => handleAction(SchemaAction.ADD_EDGE_START, payload),
+      finishEdgeType: () => handleAction(SchemaAction.ADD_EDGE_FINISH),
+    }),
+    [handleAction]
+  );
+
   const [graph, setGraph] = useState<Graph>();
   /** String Type ID. Set the selected type that was created */
   const [selectedNode, setSelectedNode] = useState<SelectedNode>();
@@ -23,7 +34,6 @@ export const SchemaWrapper: React.FC = () => {
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
   const [addTypeModal, openTypeModal] = useState<OpenAddType>();
-  const [addLinkModal, setAddLinkModal] = useState<AddLinkModal>({ open: false });
   const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
 
   const setAddTypeModal: OpenTypeModal = useCallback(
@@ -40,7 +50,6 @@ export const SchemaWrapper: React.FC = () => {
       selectedNode,
       nodes,
       edges,
-      addLinkModal,
       addPortModal,
       addTypeModal,
       openLinkPropertyModal,
@@ -50,19 +59,21 @@ export const SchemaWrapper: React.FC = () => {
       setEdges,
       setAddTypeModal,
       setAddPortModal,
-      setAddLinkModal,
       setOpenLinkPropertyModal,
+      ...callbacks,
+      ...state,
     }),
     [
+      callbacks,
       graph,
       selectedNode,
       nodes,
       edges,
-      addLinkModal,
       addPortModal,
       addTypeModal,
       openLinkPropertyModal,
       setAddTypeModal,
+      state,
     ]
   );
 

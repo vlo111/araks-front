@@ -24,11 +24,11 @@ const AddEdge = styled.div`
 export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
   const [form] = Form.useForm();
 
-  const { nodes, graph, addLinkModal } = useSchema() || {};
+  const { nodes, graph, edge } = useSchema() || {};
+  
+  const { mutate: createEdge } = useCreateEdge(edge?.id);
 
-  const { mutate: createEdge } = useCreateEdge(addLinkModal?.id);
-
-  const { data, isInitialLoading } = useGetEdge(addLinkModal?.id);
+  const { data, isInitialLoading } = useGetEdge(edge?.id);
 
   const onFinish = async (values: ProjectEdgeForm) => {
     try {
@@ -62,7 +62,7 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
   };
 
   useEffect(() => {
-    if (addLinkModal?.id) {
+    if (edge?.id) {
       form.setFieldsValue({
         ...data,
         source: data?.source?.name,
@@ -70,17 +70,17 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
       });
     } else {
       form.setFieldsValue({
-        source: nodes.find((n) => n.id === addLinkModal?.source)?.name,
-        target: nodes.find((n) => n.id === addLinkModal?.target)?.name,
+        source: nodes.find((n) => n.id === edge?.source)?.name,
+        target: nodes.find((n) => n.id === edge?.target)?.name,
       });
     }
 
     return () => form.resetFields();
-  }, [addLinkModal, form, graph, nodes, data]);
+  }, [edge, form, graph, nodes, data]);
 
   return (
     <AddEdge>
-      <Spin spinning={!addLinkModal?.id ? false : isInitialLoading}>
+      <Spin spinning={!edge?.id ? false : isInitialLoading}>
         <Form
           name="project-node-type"
           form={form}
@@ -90,7 +90,7 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
           onFinish={onFinish}
         >
           <Space size={8}>
-            <Text>{addLinkModal?.id ? 'Edit Connection' : 'Add Connection'}</Text>
+            <Text>{edge?.id ? 'Edit Connection' : 'Add Connection'}</Text>
             <Tooltip title="Useful information" placement="right">
               <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
             </Tooltip>

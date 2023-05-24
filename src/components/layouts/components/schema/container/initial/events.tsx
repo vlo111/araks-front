@@ -6,7 +6,7 @@ import { ElementStyle, InitEvents } from '../../types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal, setAddLinkModal }
+  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal, startEdgeType }
 ) => {
   graph.on('node:port:click', ({ node, port, view: { container } }) => {
     if (port === 'connector') return;
@@ -37,10 +37,7 @@ export const initSchemaEvents: InitEvents = (
         });
       }
     } else {
-      setAddLinkModal({
-        id: port,
-        open: true,
-      });
+      startEdgeType({ id: port });
     }
   });
 

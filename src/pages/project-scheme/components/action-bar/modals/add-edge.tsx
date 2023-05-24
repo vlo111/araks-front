@@ -4,14 +4,12 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { Modal } from 'components/modal';
 
 export const AddEdgeModal: React.FC = () => {
-  const { addLinkModal, setAddLinkModal } = useSchema() || {};
+  const { finishEdgeType, edge: { isOpened } = { isOpened: false } } = useSchema() || {};
 
   const props = {
     centered: true,
-    open: addLinkModal?.open,
-    onCancel: () => {
-      setAddLinkModal({ ...addLinkModal, open: false });
-    },
+    open: isOpened,
+    onCancel: finishEdgeType,
     footer: false,
   };
 
