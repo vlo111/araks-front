@@ -2,14 +2,20 @@ export interface IIsOpen {
   isOpened?: boolean;
 }
 
-export interface IEdgeStata extends IIsOpen {
+export interface IEdgeState extends IIsOpen {
   id?: string;
   source?: string;
   target?: string;
 }
 
+export interface ITypeState extends IIsOpen {
+  x?: number;
+  y?: number;
+}
+
 export type SchemaState = {
-  edge?: IEdgeStata;
+  edge?: IEdgeState;
+  type?: ITypeState;
 };
 
 interface DataSheetAction {
@@ -20,6 +26,8 @@ interface DataSheetAction {
 export enum SchemaAction {
   ADD_EDGE_START = 'ADD_EDGE_START',
   ADD_EDGE_FINISH = 'ADD_EDGE_FINISH',
+  ADD_TYPE_START = 'ADD_TYPE_START',
+  ADD_TYPE_FINISH = 'ADD_TYPE_FINISH',
 }
 
 export const schemaInitialState: SchemaState = {
@@ -43,6 +51,22 @@ export function schemaReducer(state: SchemaState, action: DataSheetAction) {
       return {
         edge: {
           ...state.edge,
+          isOpened: false,
+        },
+      };
+    case SchemaAction.ADD_TYPE_START:
+      // #TODO.  graph.container.style.cursor = ''
+      return {
+        type: {
+          ...state.type,
+          ...payload,
+          isOpened: true,
+        },
+      };
+    case SchemaAction.ADD_TYPE_FINISH:
+      return {
+        type: {
+          ...state.type,
           isOpened: false,
         },
       };

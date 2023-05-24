@@ -1,17 +1,9 @@
 import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
-import {
-  Graph,
-  LinkPropertyModal,
-  OpenAddType,
-  OpenTypeModal,
-  PortModal,
-  SchemaContextType,
-  SelectedNode,
-} from './types';
+import { Graph, LinkPropertyModal, PortModal, SchemaContextType, SelectedNode } from './types';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { IEdgeStata, SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
+import { IEdgeState, ITypeState, SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
 
 export const SchemaWrapper: React.FC = () => {
   const [state, dispatch] = useReducer(schemaReducer, schemaInitialState);
@@ -20,8 +12,10 @@ export const SchemaWrapper: React.FC = () => {
 
   const callbacks = useMemo(
     () => ({
-      startEdgeType: (payload: IEdgeStata) => handleAction(SchemaAction.ADD_EDGE_START, payload),
+      startEdgeType: (payload: IEdgeState) => handleAction(SchemaAction.ADD_EDGE_START, payload),
+      startType: (payload: ITypeState) => handleAction(SchemaAction.ADD_TYPE_START, payload),
       finishEdgeType: () => handleAction(SchemaAction.ADD_EDGE_FINISH),
+      finishType: () => handleAction(SchemaAction.ADD_TYPE_FINISH),
     }),
     [handleAction]
   );
@@ -33,16 +27,7 @@ export const SchemaWrapper: React.FC = () => {
   const [edges, setEdges] = useState<ProjectEdgeResponse[]>();
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
-  const [addTypeModal, openTypeModal] = useState<OpenAddType>();
   const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
-
-  const setAddTypeModal: OpenTypeModal = useCallback(
-    (param) => {
-      openTypeModal(param);
-      if (graph !== undefined) graph.container.style.cursor = '';
-    },
-    [graph]
-  );
 
   const context = useMemo(
     () => ({
@@ -51,30 +36,17 @@ export const SchemaWrapper: React.FC = () => {
       nodes,
       edges,
       addPortModal,
-      addTypeModal,
       openLinkPropertyModal,
       setGraph,
       setSelectedNode,
       setNodes,
       setEdges,
-      setAddTypeModal,
       setAddPortModal,
       setOpenLinkPropertyModal,
       ...callbacks,
       ...state,
     }),
-    [
-      callbacks,
-      graph,
-      selectedNode,
-      nodes,
-      edges,
-      addPortModal,
-      addTypeModal,
-      openLinkPropertyModal,
-      setAddTypeModal,
-      state,
-    ]
+    [callbacks, graph, selectedNode, nodes, edges, addPortModal, openLinkPropertyModal, state]
   );
 
   return <Outlet context={context} />;

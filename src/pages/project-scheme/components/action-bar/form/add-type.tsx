@@ -27,11 +27,11 @@ type Props = FC<{ onCancel: VoidFunction }>;
 export const AddSchemaTypeForm: Props = ({ onCancel }) => {
   const [form] = Form.useForm();
 
-  const { nodes, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
+  const { nodes, setSelectedNode, selectedNode, type } = useSchema() || {};
 
   const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
 
-  const type = useMemo(() => (selectedNode as Node<Node.Properties>), [selectedNode]);
+  const selected_type = useMemo(() => selectedNode as Node<Node.Properties>, [selectedNode]);
 
   const { mutate: createType } = useCreateType(
     {
@@ -39,13 +39,13 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
         setSelectedNode(id);
       },
     },
-    isEdit ? type.id : undefined
+    isEdit ? selected_type.id : undefined
   );
 
   const { mutate: mutateDelete } = useDeleteType({});
 
   const onHandleDelete = () => {
-    mutateDelete(type?.id);
+    mutateDelete(selected_type?.id);
 
     setSelectedNode(undefined);
 
@@ -54,8 +54,8 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
     createType({
-      fx: addTypeModal !== undefined ? addTypeModal[0] : 0,
-      fy: addTypeModal !== undefined ? addTypeModal[1] : 0,
+      fx: type !== undefined ? type.x : 0,
+      fy: type !== undefined ? type.y : 0,
       ...values,
     });
 
@@ -63,18 +63,14 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
   };
 
   useEffect(() => {
-    if (isEdit) {
-      form.setFieldsValue({
-        name: type.attr(PATH.NODE_TEXT),
-        color: type.attr(PATH.NODE_COLOR),
-        parent_id: type.attr('parentId'),
-      });
-    }
+    form.setFieldsValue({
+      name: selected_type?.attr(PATH.NODE_TEXT),
+      color: selected_type?.attr(PATH.NODE_COLOR),
+      parent_id: selected_type?.attr('parentId'),
+    });
 
-    return () => {
-      form.resetFields();
-    };
-  }, [form, isEdit, selectedNode, type]);
+    return () => form.resetFields();
+  }, [form, selectedNode, selected_type]);
 
   return (
     <Wrapper>

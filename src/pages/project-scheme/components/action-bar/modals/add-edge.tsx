@@ -4,18 +4,18 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { Modal } from 'components/modal';
 
 export const AddEdgeModal: React.FC = () => {
-  const { finishEdgeType, edge: { isOpened } = { isOpened: false } } = useSchema() || {};
+  const { finishEdgeType: onCancel, edge } = useSchema() || {};
 
   const props = {
     centered: true,
-    open: isOpened,
-    onCancel: finishEdgeType,
+    open: edge?.isOpened,
+    onCancel,
     footer: false,
   };
 
   return (
     <Modal {...props}>
-      <AddSchemaEdgeForm onCancel={props.onCancel} />
+      <AddSchemaEdgeForm onCancel={onCancel} />
     </Modal>
   );
 };

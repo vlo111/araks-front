@@ -4,19 +4,17 @@ import { AddSchemaTypeForm } from '../form/add-type';
 import { Modal } from 'components/modal';
 
 export const AddTypeModal: React.FC = () => {
-  const { addTypeModal, setAddTypeModal } = useSchema() || {};
+  const { type, finishType: onCancel } = useSchema() || {};
   const props = {
     centered: true,
-    open: addTypeModal !== undefined,
-    onCancel: () => {
-      setAddTypeModal(undefined);
-    },
+    open: type?.isOpened,
+    onCancel,
     footer: false,
   };
 
   return (
     <Modal {...props}>
-      <AddSchemaTypeForm onCancel={props.onCancel} />
+      <AddSchemaTypeForm onCancel={onCancel} />
     </Modal>
   );
 };

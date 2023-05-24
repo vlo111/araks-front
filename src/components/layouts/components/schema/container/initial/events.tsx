@@ -6,7 +6,7 @@ import { ElementStyle, InitEvents } from '../../types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal, startEdgeType }
+  { setAddPortModal, setSelectedNode, startType, setOpenLinkPropertyModal, startEdgeType }
 ) => {
   graph.on('node:port:click', ({ node, port, view: { container } }) => {
     if (port === 'connector') return;
@@ -45,7 +45,7 @@ export const initSchemaEvents: InitEvents = (
     if (target.closest('.x6-port-body')) return;
 
     if (target.id === SELECTORS.NODE_SETTING_CIRCLE || target.id === SELECTORS.NODE_SETTING_ARROW_PATH) {
-      setAddTypeModal([x, y]);
+      startType({x, y});
     }
 
     if (!container.classList.contains('selected-node')) {
@@ -79,7 +79,7 @@ export const initSchemaEvents: InitEvents = (
 
     setSelectedNode(undefined);
 
-    if (graph.container.style.cursor === 'crosshair') setAddTypeModal([x, y]);
+    if (graph.container.style.cursor === 'crosshair') startType({x, y});
   });
 
   graph.on('node:mouseup', ({ node: { id }, x, y }) => changeTypePosition(id, x, y));
