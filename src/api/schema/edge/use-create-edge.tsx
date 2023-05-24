@@ -21,7 +21,8 @@ export const useCreateEdge = (id?: string) => {
   const mutation = useMutation<ReturnData, unknown, ProjectEdgeResponse>({
     mutationFn: ({ ...values }: ProjectEdgeResponse) => {
       const type = id ? RequestTypes.Put : RequestTypes.Post;
-      const body = { ...values, project_id: params.id };
+      const body = { ...values };
+      if (!id) body.project_id = params.id;
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {

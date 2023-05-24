@@ -16,7 +16,7 @@ export type ProjectEdgeResponse = {
   multiple: boolean;
   target?: IEdgeType
   source?: IEdgeType
-};
+} & { project_id?: string };
 
 export type ProjectEdgeForm = {
   name: string;
