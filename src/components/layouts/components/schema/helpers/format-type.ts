@@ -108,7 +108,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
     const edgeProperties = edges.filter((e) => e.source_id === node.id || e.target_id === node.id);
 
     for (const { id, name, inverse, multiple, source_id } of edgeProperties) {
-      if (inverse || source_id === node.id) {
+      if (inverse || (source_id === node.id)) {
         formattedProperties.push(
           insertProperty({
             id: id || '',
@@ -161,7 +161,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       },
       target: {
         cell: target_id,
-        port: source_id === target_id ? undefined : target_id,
+        port: source_id === target_id ? target_id : id,
       },
       attrs: {
         line: {

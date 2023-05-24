@@ -6,17 +6,6 @@ Graph.registerConnector(
     if (e.sourceView?.cell.id === e.targetView?.cell.id) {
       const targetX = target.x - 82;
 
-      /*
-      const control = 20// Math.floor((Math.abs(target.y - source.y + 40) / 4) * 4);
-
-      return Path.normalize(
-        `M ${source.x - 5} ${source.y}
-       L ${source.x - 40} ${source.y - 40}
-       C ${source.x - control - 20} ${source.y - 40} ${targetX - control - 20} ${target.y - 40} ${targetX - 40} ${target.y - 40}
-       L ${targetX} ${target.y}
-      `
-      );
-       */
       const control = Math.floor((Math.abs(target.y - source.y + 40) / 4) * 4);
 
       return Path.normalize(
