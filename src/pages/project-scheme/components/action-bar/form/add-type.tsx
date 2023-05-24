@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Node } from '@antv/x6';
 import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -22,9 +22,9 @@ const Wrapper = styled.div`
   width: 422px;
 `;
 
-type IProps = React.FC<{onCancel: VoidFunction}>
+type Props = FC<{ onCancel: VoidFunction }>;
 
-export const AddSchemaTypeForm: IProps = ({ onCancel }) => {
+export const AddSchemaTypeForm: Props = ({ onCancel }) => {
   const [form] = Form.useForm();
 
   const { nodes, setSelectedNode, selectedNode, addTypeModal } = useSchema() || {};
