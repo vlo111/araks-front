@@ -28,7 +28,7 @@ interface ILine {
 interface IBody {
   stroke: string;
   cursor: string;
-  allow: boolean
+  allow: boolean;
 }
 
 interface IPosition {
@@ -100,7 +100,7 @@ export interface INode {
     line?: ILine;
     body?: IBody;
     parentId?: string;
-    allow?: boolean
+    allow?: boolean;
   };
   tools?: {
     name: string;
@@ -123,7 +123,7 @@ export type LinkPropertyModal =
 
 export type OpenAddType = undefined | number[];
 
-export type AddLinkModal = undefined | boolean | { id?: string; source?: string; target?: string };
+export type AddLinkModal = { id?: string; source?: string; target?: string } & { open?: boolean };
 
 export type Graph = GraphX6;
 

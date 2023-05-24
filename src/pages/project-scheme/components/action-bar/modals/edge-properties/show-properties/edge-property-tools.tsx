@@ -22,6 +22,7 @@ export const EdgePropertyTools: React.FC<EdgePropertyProp> = ({ openEditModal })
         className="edit-property-icon"
         onClick={() => {
           setAddLinkModal({
+            open: true,
             id: openLinkPropertyModal?.id,
           });
         }}

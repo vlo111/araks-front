@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Checkbox, Form, Space, Tooltip } from 'antd';
+import { Checkbox, Form, Space, Spin, Tooltip } from "antd";
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -14,6 +14,7 @@ import { AddEdgeType, PropsAddEdge } from 'components/layouts/components/schema/
 
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { ProjectEdgeForm } from 'types/project-edge';
+import { useGetEdge } from 'api/schema/edge/use-get-edge';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -23,12 +24,13 @@ const AddEdge = styled.div`
 export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
   const { nodes, graph, addLinkModal } = useSchema() || {};
 
-  const { mutate: createEdge } = useCreateEdge();
+  const { mutate: createEdge } = useCreateEdge(addLinkModal?.id);
+
+  const { data, isInitialLoading } = useGetEdge(addLinkModal?.id);
 
   const onFinish = async (values: ProjectEdgeForm) => {
     try {
       await createEdgeWithTypeProperty(values);
-
       onCancel();
     } catch (e) {
       throw e;
@@ -58,97 +60,86 @@ export const AddSchemaEdgeForm = ({ onCancel, form }: PropsAddEdge) => {
   };
 
   useEffect(() => {
-    if (typeof addLinkModal !== 'boolean' && addLinkModal !== undefined) {
-      if (addLinkModal.id) {
-        /** TODO: get edge type */
-        /** set Fields Value */
-      } else {
-        form.setFieldsValue({
-          source: nodes.find((n) => n.id === addLinkModal.source)?.name,
-          target: nodes.find((n) => n.id === addLinkModal.target)?.name,
-        });
-      }
+    if (addLinkModal?.id) {
+      form.setFieldsValue({
+        ...data,
+        source: data?.source?.name,
+        target: data?.target?.name,
+      });
+    } else {
+      form.setFieldsValue({
+        source: nodes.find((n) => n.id === addLinkModal?.source)?.name,
+        target: nodes.find((n) => n.id === addLinkModal?.target)?.name,
+      });
     }
-
-    /** TODO: Edit Edge Form Field */
-    /*
-    form.setFieldsValue({
-      name: 'working for',
-      source: nodes[0].name,
-      target: nodes[1].name,
-      inverse: true,
-      multiple: true,
-    });
-     */
-    return () => {
-      form.resetFields();
-    };
-  }, [addLinkModal, form, graph, nodes]);
+  }, [addLinkModal, form, graph, nodes, data]);
 
   return (
     <AddEdge>
-      <Form
-        name="project-node-type"
-        form={form}
-        autoComplete="off"
-        layout="vertical"
-        requiredMark={false}
-        onFinish={onFinish}
-      >
-        <Space size={8}>
-          <Text>{'Add Connection'}</Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
-        </Space>
-        <FormItem
-          name="name"
-          label="Connection name"
-          rules={[
-            { required: true, message: 'Edge name is required' },
-            { min: 3, message: 'The minimum length for this field is 3 characters' },
-            { max: 30, message: 'The maximum length for this field is 30 characters' },
-          ]}
+      <Spin spinning={isInitialLoading}>
+        <Form
+          name="project-node-type"
+          form={form}
+          autoComplete="off"
+          layout="vertical"
+          requiredMark={false}
+          onFinish={onFinish}
         >
-          <FormInput placeholder="Connection name" />
-        </FormItem>
-        <FormItem name="source" label="Source" rules={[{ required: true, message: 'Source type most be selected' }]}>
-          <EdgeDataTypeSelect />
-        </FormItem>
-        <FormItem name="target" label="Target" rules={[{ required: true, message: 'Target type most be selected' }]}>
-          <EdgeDataTypeSelect />
-        </FormItem>
-        <FormItem name="inverse" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Inverse
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem name="multiple" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Multiple
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem>
-          <VerticalSpace>
-            <Button block type="primary" htmlType="submit">
-              Save
-            </Button>
-            <Button block type="text" onClick={() => onCancel()}>
-              Cancel
-            </Button>
-          </VerticalSpace>
-        </FormItem>
-      </Form>
+          <Space size={8}>
+            <Text>{addLinkModal?.id ? 'Edit Connection' : 'Add Connection'}</Text>
+            <Tooltip title="Useful information" placement="right">
+              <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+            </Tooltip>
+          </Space>
+          <FormItem
+            name="name"
+            label="Connection name"
+            rules={[
+              { required: true, message: 'Edge name is required' },
+              { min: 3, message: 'The minimum length for this field is 3 characters' },
+              { max: 30, message: 'The maximum length for this field is 30 characters' },
+            ]}
+          >
+            <FormInput placeholder="Connection name" />
+          </FormItem>
+          <FormItem name="source" label="Source" rules={[{ required: true, message: 'Source type most be selected' }]}>
+            <EdgeDataTypeSelect />
+          </FormItem>
+          <FormItem name="target" label="Target" rules={[{ required: true, message: 'Target type most be selected' }]}>
+            <EdgeDataTypeSelect />
+          </FormItem>
+          <FormItem name="inverse" valuePropName="checked" initialValue={false}>
+            <Checkbox>
+              <Space>
+                Inverse
+                <Tooltip title="Useful information" placement="right">
+                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+                </Tooltip>
+              </Space>
+            </Checkbox>
+          </FormItem>
+          <FormItem name="multiple" valuePropName="checked" initialValue={false}>
+            <Checkbox>
+              <Space>
+                Multiple
+                <Tooltip title="Useful information" placement="right">
+                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
+                </Tooltip>
+              </Space>
+            </Checkbox>
+          </FormItem>
+          <FormItem>
+            <VerticalSpace>
+              <Button block type="primary" htmlType="submit">
+                Save
+              </Button>
+              <Button block type="text" onClick={() => onCancel()}>
+                Cancel
+              </Button>
+            </VerticalSpace>
+          </FormItem>
+        </Form>
+      </Spin>
     </AddEdge>
   );
 };

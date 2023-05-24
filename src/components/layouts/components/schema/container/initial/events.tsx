@@ -39,6 +39,7 @@ export const initSchemaEvents: InitEvents = (
     } else {
       setAddLinkModal({
         id: port,
+        open: true,
       });
     }
   });

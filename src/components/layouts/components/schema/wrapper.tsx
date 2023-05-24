@@ -23,7 +23,7 @@ export const SchemaWrapper: React.FC = () => {
 
   const [addPortModal, setAddPortModal] = useState<PortModal>();
   const [addTypeModal, openTypeModal] = useState<OpenAddType>();
-  const [addLinkModal, setAddLinkModal] = useState<AddLinkModal>();
+  const [addLinkModal, setAddLinkModal] = useState<AddLinkModal>({ open: false });
   const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
 
   const setAddTypeModal: OpenTypeModal = useCallback(

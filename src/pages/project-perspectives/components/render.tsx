@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useGraphRef } from 'hooks/use-graph';
-import { useNodes } from '../../../hooks/use-nodes';
+import { useNodes } from 'hooks/use-nodes';
 
 const Graph = styled.div`
   position: fixed;

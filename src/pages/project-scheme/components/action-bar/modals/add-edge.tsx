@@ -10,10 +10,9 @@ export const AddEdgeModal: React.FC = () => {
 
   const props = {
     centered: true,
-    open: addLinkModal !== undefined,
+    open: addLinkModal.open,
     onCancel: () => {
-      setAddLinkModal(undefined);
-      form.resetFields();
+      setAddLinkModal({ ...addLinkModal, open: false });
     },
     footer: false,
   };

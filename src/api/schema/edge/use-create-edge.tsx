@@ -6,19 +6,23 @@ import { ProjectEdgeResponse } from '../../../types/project-edge';
 import { GET_TYPES } from '../type/use-get-types';
 
 const URL_PROJECT_EDGE_CREATE = '/projects-edge-type/create';
+const URL_PROJECT_EDGE_UPDATE = '/projects-edge-type/update/:id';
 
 type ReturnData = {
   data: ProjectEdgeResponse;
 };
 
-export const useCreateEdge = () => {
+export const useCreateEdge = (id?: string) => {
   const params = useParams();
   const queryClient = useQueryClient();
 
+  const url = id ? URL_PROJECT_EDGE_UPDATE.replace(':id', id || '') : URL_PROJECT_EDGE_CREATE;
+
   const mutation = useMutation<ReturnData, unknown, ProjectEdgeResponse>({
     mutationFn: ({ ...values }: ProjectEdgeResponse) => {
+      const type = id ? RequestTypes.Put : RequestTypes.Post;
       const body = { ...values, project_id: params.id };
-      return client[RequestTypes.Post](URL_PROJECT_EDGE_CREATE, body);
+      return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([GET_TYPES.replace(':project_id', params.id || '')]);
