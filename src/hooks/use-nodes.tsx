@@ -24,7 +24,9 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
         params.setEdges(edges);
         params.setNodes(projectsNodeTypes);
 
-        initNodes(graph, formattedTypes(graph, projectsNodeTypes, edges), params);
+        if (graph !== undefined) {
+          initNodes(graph, formattedTypes(graph, projectsNodeTypes, edges), params);
+        }
       },
     }
   );

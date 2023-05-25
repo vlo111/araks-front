@@ -39,15 +39,18 @@ const ToolStyle = styled.div`
 export const ActionBar: React.FC = () => {
   const { graph, startEdgeType } = useSchema() || {};
 
+  const addType = () => {
+    if (graph !== undefined) {
+      graph.container.style.cursor = 'crosshair';
+    }
+  };
+
   return (
     <>
       <ToolStyle>
         <Search />
-        <AddTypeSVG className="add-type" onClick={() => (graph.container.style.cursor = 'crosshair')} />
-        <AddLinkSVG
-          className="add-link"
-          onClick={() => startEdgeType()}
-        />
+        <AddTypeSVG className="add-type" onClick={addType} />
+        <AddLinkSVG className="add-link" onClick={() => startEdgeType({ isUpdate: false})} />
       </ToolStyle>
       <AddEdgeModal />
       <AddEdgePropertyModal />

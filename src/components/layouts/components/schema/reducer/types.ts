@@ -1,5 +1,7 @@
-import { Node } from '@antv/x6';
+import { Graph, Node } from '@antv/x6';
 import { SchemaAction } from './schema-manager';
+import { IProjectType } from '../../../../../api/types';
+import { ProjectEdgeResponse } from "../../../../../types/project-edge";
 
 export interface IIsOpen {
   isOpened?: boolean;
@@ -9,6 +11,14 @@ export interface IEdgeState extends IIsOpen {
   id?: string;
   source?: string;
   target?: string;
+  isUpdate: boolean;
+  isConnector?: boolean;
+}
+
+export interface ISelectNode {
+  id?: string;
+  node?: Node<Node.Properties>
+  selected?: boolean
 }
 
 export interface ITypeState extends IIsOpen {
@@ -33,13 +43,15 @@ export interface IEdgePortState extends IIsOpen {
 }
 
 export type SchemaState = {
+  nodes?: IProjectType[];
+  selected?: ISelectNode;
+  edges?: ProjectEdgeResponse[];
+  graph?: Graph;
   edge?: IEdgeState;
   type?: ITypeState;
   type_port?: ITypePortState;
   edge_port?: IEdgePortState;
 };
-
-export type Item = 'edge_port' | 'type_port' | 'type' | 'edge';
 
 export interface DataSheetAction {
   type: SchemaAction;

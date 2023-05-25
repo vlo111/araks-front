@@ -10,30 +10,42 @@ import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { EdgeDataTypeSelect } from 'components/select/edge-data-type-select';
-import { AddEdgeType, PropsAddEdge } from 'components/layouts/components/schema/types';
+import { AddEdgeType } from 'components/layouts/components/schema/types';
 
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { ProjectEdgeForm } from 'types/project-edge';
 import { useGetEdge } from 'api/schema/edge/use-get-edge';
+import { useDeleteEdge } from 'api/schema/edge/use-delete-edge';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
   width: 422px;
 `;
 
-export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
+export const AddSchemaEdgeForm = () => {
   const [form] = Form.useForm();
 
-  const { nodes, graph, edge } = useSchema() || {};
-  
-  const { mutate: createEdge } = useCreateEdge(edge?.id);
+  const {
+    nodes,
+    edge: { id, source, target, isUpdate, isConnector },
+    finishType,
+  } = useSchema() || {};
 
-  const { data, isInitialLoading } = useGetEdge(edge?.id);
+  const { mutate: createEdge } = useCreateEdge(id);
+
+  const { mutate: mutateDelete } = useDeleteEdge({
+    onSuccess: () => {
+      finishType();
+    },
+  });
+
+  const { data, isInitialLoading } = useGetEdge(isUpdate ? id : undefined);
 
   const onFinish = async (values: ProjectEdgeForm) => {
     try {
       await createEdgeWithTypeProperty(values);
-      onCancel();
+      finishType();
+      form.resetFields();
     } catch (e) {
       throw e;
     }
@@ -62,25 +74,30 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
   };
 
   useEffect(() => {
-    if (edge?.id) {
+    if (isUpdate) {
       form.setFieldsValue({
         ...data,
         source: data?.source?.name,
         target: data?.target?.name,
       });
-    } else {
-      form.setFieldsValue({
-        source: nodes.find((n) => n.id === edge?.source)?.name,
-        target: nodes.find((n) => n.id === edge?.target)?.name,
-      });
     }
 
+    if (isConnector) {
+      form.setFieldsValue({
+        source: nodes.find((n) => n.id === source)?.name,
+        target: nodes.find((n) => n.id === target)?.name,
+      });
+    }
     return () => form.resetFields();
-  }, [edge, form, graph, nodes, data]);
+  }, [id, isUpdate, isConnector, source, target, form, nodes, data]);
+
+  const onHandleDelete = () => {
+    mutateDelete(id || '');
+  };
 
   return (
     <AddEdge>
-      <Spin spinning={!edge?.id ? false : isInitialLoading}>
+      <Spin spinning={!isUpdate ? false : isInitialLoading}>
         <Form
           name="project-node-type"
           form={form}
@@ -90,7 +107,7 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
           onFinish={onFinish}
         >
           <Space size={8}>
-            <Text>{edge?.id ? 'Edit Connection' : 'Add Connection'}</Text>
+            <Text>{isUpdate ? 'Edit Connection' : 'Add Connection'}</Text>
             <Tooltip title="Useful information" placement="right">
               <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
             </Tooltip>
@@ -137,9 +154,15 @@ export const AddSchemaEdgeForm = ({ onCancel }: PropsAddEdge) => {
               <Button block type="primary" htmlType="submit">
                 Save
               </Button>
-              <Button block type="text" onClick={() => onCancel()}>
-                Cancel
-              </Button>
+              {id ? (
+                <Button block onClick={onHandleDelete} type="text">
+                  Delete
+                </Button>
+              ) : (
+                <Button block type="text" onClick={finishType}>
+                  Cancel
+                </Button>
+              )}
             </VerticalSpace>
           </FormItem>
         </Form>

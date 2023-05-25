@@ -1,12 +1,11 @@
-import { Graph as GraphX6, Node, Edge, Cell } from '@antv/x6';
+import { Graph, Node, Edge, Cell } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
-import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
-import { IEdgePortState, IEdgeState, ITypePortState, ITypeState, SchemaState } from './reducer/types';
+import { IEdgePortState, IEdgeState, ISelectNode, ITypePortState, ITypeState } from "./reducer/types";
 
 export interface IStroke {
   type: string;
@@ -109,42 +108,6 @@ export interface INode {
   zIndex?: number;
 }
 
-export type SelectedNode = Node<Node.Properties> | string | undefined;
-
-export type LinkPropertyModal =
-  | undefined
-  | { id?: string; name?: string; open: boolean; x?: number; y?: number; color?: string[] };
-
-export type Graph = GraphX6;
-
-export interface SchemaContextType extends SchemaState {
-  startEdgeType: (edge?: IEdgeState) => void;
-  startType: (type?: ITypeState) => void;
-  startTypePort: (port?: ITypePortState) => void;
-  startEdgePort: (port?: IEdgePortState) => void;
-  finishEdgeType: VoidFunction;
-  finishType: VoidFunction;
-  finishTypePort: VoidFunction;
-  finishEdgePort: VoidFunction;
-
-  graph: GraphX6;
-  selectedNode: SelectedNode | string | undefined;
-  nodes: IProjectType[];
-  edges: ProjectEdgeResponse[];
-
-  setGraph: (item: Graph) => void;
-  setNodes: Dispatch<SetStateAction<IProjectType[]>>;
-  setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
-  setSelectedNode: (item: SelectedNode | undefined) => void;
-}
-
-export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => void;
-
-export type PickSchemaContextType = Pick<
-  SchemaContextType,
-  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'selectedNode' | 'setSelectedNode'
->;
-
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
 
 export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: PickSchemaContextType) => void;
@@ -177,9 +140,9 @@ export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Prop
 
 export type SelectNodeWithZoom = (
   id: string,
-  graph: Graph,
-  selectedNode: Node<Node.Properties> | undefined | string,
-  setSelectedNode: (item: SelectedNode | undefined) => void
+  graph: Graph | undefined,
+  selected: ISelectNode,
+  setSelected: (item: ISelectNode) => void
 ) => void;
 
 export type PropsAddEdge = {
@@ -197,3 +160,39 @@ export type SwitchPermission = (node: Node<Node.Properties>, portId: string | un
 export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
 
 export type ChangeTypePosition = (id: string, x: number, y: number) => void;
+
+export type SchemaReducerState = {
+  graph: Graph;
+  nodes: IProjectType[];
+  edges: ProjectEdgeResponse[];
+  selected: ISelectNode;
+  edge: IEdgeState;
+  type: ITypeState;
+  type_port: ITypePortState;
+  edge_port: IEdgePortState;
+};
+
+export type SchemaReducerSetState = {
+  setGraph: (graph: Graph) => void;
+  setNodes: (nodes: IProjectType[]) => void;
+  setEdges: (nodes: ProjectEdgeResponse[]) => void;
+  setSelected: (selectData: ISelectNode) => void;
+
+  startEdgeType: (edge?: IEdgeState) => void;
+  startType: (type?: ITypeState) => void;
+  startTypePort: (port?: ITypePortState) => void;
+  startEdgePort: (port?: IEdgePortState) => void;
+  finishEdgeType: VoidFunction;
+  finishType: VoidFunction;
+  finishTypePort: VoidFunction;
+  finishEdgePort: VoidFunction;
+};
+
+export interface SchemaContextType extends SchemaReducerSetState, SchemaReducerState {}
+
+export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => void;
+
+export type PickSchemaContextType = Pick<
+  SchemaContextType,
+  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
+>;

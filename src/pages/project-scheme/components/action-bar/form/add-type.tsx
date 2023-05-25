@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo } from 'react';
-import { Node } from '@antv/x6';
 import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -27,35 +26,40 @@ type Props = FC<{ onCancel: VoidFunction }>;
 export const AddSchemaTypeForm: Props = ({ onCancel }) => {
   const [form] = Form.useForm();
 
-  const { nodes, setSelectedNode, selectedNode, type } = useSchema() || {};
+  const {
+    nodes,
+    setSelected,
+    selected,
+    type: { x, y },
+  } = useSchema() || {};
 
-  const isEdit = useMemo(() => (selectedNode instanceof Node<Node.Properties>), [selectedNode]);
-
-  const selected_type = useMemo(() => selectedNode as Node<Node.Properties>, [selectedNode]);
+  const isEdit = useMemo(() => selected.node, [selected]);
 
   const { mutate: createType } = useCreateType(
     {
       onSuccess: ({ data: { id } }) => {
-        setSelectedNode(id);
+        setSelected({ id });
       },
     },
-    isEdit ? selected_type.id : undefined
+    isEdit ? selected.node?.id : undefined
   );
 
   const { mutate: mutateDelete } = useDeleteType({});
 
   const onHandleDelete = () => {
-    mutateDelete(selected_type?.id);
+    mutateDelete(selected?.node?.id || '');
 
-    setSelectedNode(undefined);
+    setSelected({
+      selected: false,
+    });
 
     onCancel();
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
     createType({
-      fx: type !== undefined ? type.x : 0,
-      fy: type !== undefined ? type.y : 0,
+      fx: x,
+      fy: y,
       ...values,
     });
 
@@ -64,13 +68,13 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      name: selected_type?.attr(PATH.NODE_TEXT),
-      color: selected_type?.attr(PATH.NODE_COLOR),
-      parent_id: selected_type?.attr('parentId'),
+      name: selected.node?.attr(PATH.NODE_TEXT),
+      color: selected.node?.attr(PATH.NODE_COLOR),
+      parent_id: selected.node?.attr('parentId'),
     });
 
     return () => form.resetFields();
-  }, [form, selectedNode, selected_type]);
+  }, [form, selected]);
 
   return (
     <Wrapper>

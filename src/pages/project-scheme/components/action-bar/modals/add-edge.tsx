@@ -15,7 +15,7 @@ export const AddEdgeModal: React.FC = () => {
 
   return (
     <Modal {...props}>
-      <AddSchemaEdgeForm onCancel={onCancel} />
+      <AddSchemaEdgeForm />
     </Modal>
   );
 };

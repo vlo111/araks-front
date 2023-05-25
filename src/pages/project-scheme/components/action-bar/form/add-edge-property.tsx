@@ -6,7 +6,6 @@ import { FormItem } from 'components/form/form-item';
 import { Rule } from 'antd/es/form';
 import { FormInput } from 'components/input';
 import { PropertyDataConnectionTypeSelect } from 'components/select/property-data-connection-type-select';
-import { PropertyMultipleDetails } from 'components/form/property/property-multiple-details';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Button } from 'components/button';
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
@@ -112,7 +111,6 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCan
         >
           <PropertyDataConnectionTypeSelect />
         </FormItem>
-        <PropertyMultipleDetails />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

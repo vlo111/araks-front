@@ -1,5 +1,5 @@
 import { CellRemovePort, ElementBox, ElementStyle, RemoveElement, SelectNode, SelectNodeWithZoom } from '../types';
-import { PATH, SELECTORS } from "helpers/constants";
+import { PATH, SELECTORS } from 'helpers/constants';
 import { TypeSettingD } from './svg/path-d';
 import { Node } from '@antv/x6';
 import { LINE_HEIGHT } from '../container/register/node';
@@ -78,37 +78,38 @@ export const selectNode: SelectNode = (graph, container, node) => {
   });
 };
 
-export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selectedNode, setSelectedNode) => {
-  if (id !== (selectedNode as Node<Node.Properties>)?.id) {
-    animateGraphFit(graph, '0.4s');
+export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selected, setSelected) => {
 
-    const container: Element = Array.from(graph.view.stage.childNodes)
-      .filter((n) => (n as Element).tagName === 'g')
-      .find(
-        (n) => (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === id
-      ) as Element;
+  if (!(id !== selected?.id && graph !== undefined)) return;
 
-    const node = graph.getNodes().find((n) => n.id === id) as Node<Node.Properties>;
+  animateGraphFit(graph, '0.4s');
 
-    selectNode(graph, container, node);
+  const container: Element = Array.from(graph.view.stage.childNodes)
+    .filter((n) => (n as Element).tagName === 'g')
+    .find(
+      (n) => (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === id
+    ) as Element;
 
-    setSelectedNode(node);
+  const node = graph.getNodes().find((n) => n.id === id) as Node<Node.Properties>;
 
-    /** calculate height of type before fit on center */
-    graph.zoom(0.5, {
-      minScale: 2,
-      maxScale: 2,
-    });
+  selectNode(graph, container, node);
 
-    const propertiesHeight = node.ports.items.length * LINE_HEIGHT * 2;
+  setSelected({ node });
 
-    const height = (propertiesHeight + node.getSize().height) / 2;
+  /** calculate height of type before fit on center */
+  graph.zoom(0.5, {
+    minScale: 2,
+    maxScale: 2,
+  });
 
-    graph.options.height = graph.options.height - height;
+  const propertiesHeight = node.ports.items.length * LINE_HEIGHT * 2;
 
-    graph.centerCell(node);
+  const height = (propertiesHeight + node.getSize().height) / 2;
 
-    /** reset graph height after fit on center */
-    graph.options.height = graph.options.height + height;
-  }
+  graph.options.height = graph.options.height - height;
+
+  graph.centerCell(node);
+
+  /** reset graph height after fit on center */
+  graph.options.height = graph.options.height + height;
 };

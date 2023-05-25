@@ -7,6 +7,7 @@ export const useGetEdge = (id?: string) => {
   const result = useQuery({
     queryKey: [GET_FOLDERS_LIST, id],
     queryFn: () => client.get(GET_FOLDERS_LIST.replace(':id', id || '')),
+    enabled: !!id
   });
   const { data, isSuccess } = result;
 

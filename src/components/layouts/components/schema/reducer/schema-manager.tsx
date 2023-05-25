@@ -1,4 +1,17 @@
-import { DataSheetAction, Item, SchemaState } from './types';
+import { DataSheetAction, SchemaState } from './types';
+
+export enum ITEM {
+  GRAPH = 'graph',
+  TYPE = 'type',
+  EDGE = 'edge',
+  TYPE_PORT = 'type_port',
+  EDGE_PORT = 'edge_port',
+  NODES = 'nodes',
+  SET_EDGES = 'edges',
+  SELECT_NODE = 'selected',
+}
+
+interface Param { isConnector: boolean}
 
 export enum SchemaAction {
   ADD_EDGE_START = 'ADD_EDGE_START',
@@ -9,42 +22,55 @@ export enum SchemaAction {
   ADD_TYPE_PORT_FINISH = 'ADD_TYPE_PORT_FINISH',
   ADD_EDGE_PORT_START = 'ADD_EDGE_PORT_START',
   ADD_EDGE_PORT_FINISH = 'ADD_EDGE_PORT_FINISH',
+  SET_GRAPH = 'SET_GRAPH',
+  SET_NODES = 'SET_NODES',
+  SET_EDGES = 'SET_EDGES',
+  SET_SELECT_NODE = 'SET_SELECT_NODE',
 }
 
+const initState = {
+  x: 0,
+  y: 0,
+  isOpened: false,
+};
+
 export const schemaInitialState: SchemaState = {
-  type: {
-    x: 0,
-    y: 0,
-    isOpened: false,
-  },
+  type: { ...initState },
   edge: {
     id: '',
     source: '',
     target: '',
     isOpened: false,
+    isUpdate: false,
+    isConnector: false,
   },
   type_port: {
     portId: '',
-    y: 0,
-    x: 0,
     node: undefined,
     isUpdate: false,
-    isOpened: false,
+    ...initState,
   },
   edge_port: {
-    y: 0,
-    x: 0,
     name: '',
     color: [''],
     id: '',
-    isOpened: false,
+    ...initState,
+  },
+  selected: {
+    selected: false,
   },
 };
 
 export function schemaReducer(state: SchemaState, action: DataSheetAction) {
   const { type, payload } = action;
 
-  const start = (item: Item) => ({
+  const insert = (item: ITEM) => ({
+    ...state,
+    [item]: payload,
+  });
+
+  const start = (item: ITEM) => ({
+    ...state,
     [item]: {
       ...state[item],
       ...payload,
@@ -52,31 +78,40 @@ export function schemaReducer(state: SchemaState, action: DataSheetAction) {
     },
   });
 
-  const end = (item: Item) => ({
-    [item]: {
-      ...state[item],
-      isOpened: false,
+  const end = (item: ITEM, param?: Param) => ({
+    ...state,
+    [item]: { ...state[item],
+      ...param,
+      isOpened: false
     },
   });
 
   switch (type) {
     case SchemaAction.ADD_EDGE_START:
-      return start('edge');
+      return start(ITEM.EDGE);
     case SchemaAction.ADD_EDGE_FINISH:
-      return end('edge');
+      return end(ITEM.EDGE, { isConnector: false });
     case SchemaAction.ADD_TYPE_START:
-      // #TODO.  graph.container.style.cursor = ''
-      return start('type');
+      if (state.graph !== undefined) state.graph.container.style.cursor = '';
+      return start(ITEM.TYPE);
     case SchemaAction.ADD_TYPE_FINISH:
-      return end('type');
+      return end(ITEM.TYPE);
     case SchemaAction.ADD_TYPE_PORT_START:
-      return start('type_port');
+      return start(ITEM.TYPE_PORT);
     case SchemaAction.ADD_TYPE_PORT_FINISH:
-      return end('type_port');
+      return end(ITEM.TYPE_PORT);
     case SchemaAction.ADD_EDGE_PORT_START:
-      return start('edge_port');
+      return start(ITEM.EDGE_PORT);
     case SchemaAction.ADD_EDGE_PORT_FINISH:
-      return end('edge_port');
+      return end(ITEM.EDGE_PORT);
+    case SchemaAction.SET_GRAPH:
+      return insert(ITEM.GRAPH);
+    case SchemaAction.SET_NODES:
+      return insert(ITEM.NODES);
+    case SchemaAction.SET_EDGES:
+      return insert(ITEM.SET_EDGES);
+    case SchemaAction.SET_SELECT_NODE:
+      return insert(ITEM.SELECT_NODE);
     default:
       return state;
   }

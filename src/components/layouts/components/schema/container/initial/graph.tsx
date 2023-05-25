@@ -42,7 +42,8 @@ export const initGraph: InitGraph = (container, _params) => {
     validateEdge: ({ edge: { source, target } }) => {
       if ('cell' in source && 'cell' in target) {
         _params.startEdgeType({
-          id: undefined,
+          isUpdate: false,
+          isConnector: true,
           source: source.cell as string,
           target: target.cell as string,
         });

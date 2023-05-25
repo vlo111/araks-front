@@ -26,11 +26,14 @@ const Wrapper = styled.div`
 `;
 
 export const AddSchemaTypePropertyForm = () => {
-  const { type_port: port, finishTypePort } = useSchema() || {};
+  const {
+    type_port: { node, portId, isUpdate },
+    finishTypePort,
+  } = useSchema() || {};
 
   const [form] = Form.useForm();
 
-  const type = useMemo(() => port?.node as Node<Node.Properties>, [port]);
+  const type = useMemo(() => node as Node<Node.Properties>, [node]);
 
   const initEditForm: InitEditForm = useCallback(
     ({
@@ -51,9 +54,9 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty({}, port?.portId);
+  const { mutate } = useCreateTypeProperty({}, portId);
 
-  const { mutate: mutateDelete } = useDeleteTypeProperty(port?.portId, {
+  const { mutate: mutateDelete } = useDeleteTypeProperty(portId, {
     onSuccess: () => {
       finishTypePort();
     },
@@ -64,27 +67,28 @@ export const AddSchemaTypePropertyForm = () => {
   };
 
   const onFinish = (values: ProjectNodeTypePropertySubmit) => {
-    mutate(port?.isUpdate ? {
-      ...values,
-      project_type_id: type.id,
-      propertyId: port?.portId
-    } : {
-      ...values,
-      project_type_id: type.id,
-    });
+    mutate(
+      isUpdate
+        ? {
+            ...values,
+            project_type_id: type.id,
+            propertyId: portId,
+          }
+        : {
+            ...values,
+            project_type_id: type.id,
+          }
+    );
     form.resetFields();
 
     finishTypePort();
   };
 
   useEffect(() => {
-    const { isUpdate, portId } = port ?? {};
-    if (isUpdate) {
-      initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
-    }
+    if (isUpdate) initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
 
-    return () => form.resetFields()
-  }, [port, form, initEditForm, type]);
+    return () => form.resetFields();
+  }, [form, initEditForm, type, isUpdate, portId]);
 
   return (
     <Wrapper>
@@ -97,7 +101,7 @@ export const AddSchemaTypePropertyForm = () => {
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{port?.isUpdate ? 'Edit property for type' : 'Add property for type'}</Text>
+          <Text>{isUpdate ? 'Edit property for type' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>
@@ -155,7 +159,7 @@ export const AddSchemaTypePropertyForm = () => {
             <Button block type="primary" htmlType="submit">
               Save
             </Button>
-            {port?.isUpdate ? (
+            {isUpdate ? (
               <Button block type="text" onClick={onHandleDelete}>
                 Delete
               </Button>

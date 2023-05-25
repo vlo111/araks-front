@@ -34,10 +34,10 @@ const renderTypes = (title: string, color: string) => ({
 });
 
 export const AutoComplete: Props = ({ search, setSearch }) => {
-  const { graph, selectedNode, setSelectedNode, nodes } = useSchema() || {};
+  const { graph, selected, setSelected, nodes } = useSchema() || {};
 
   const onSelect = (name: string) => {
-    selectNodeWithZoom(nodes.find((n) => n.name === name)?.id ?? '', graph, selectedNode, setSelectedNode);
+    selectNodeWithZoom(nodes.find((n) => n.name === name)?.id ?? '', graph, selected, setSelected);
   };
 
   const filterOption: FilterOption = (inputValue, option) =>

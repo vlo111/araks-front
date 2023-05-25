@@ -21,7 +21,7 @@ export const EdgePropertyTools: React.FC<EdgePropertyProp> = ({ openEditModal })
       <div
         className="edit-property-icon"
         onClick={() => {
-          startEdgeType({ id: edge_port?.id });
+          startEdgeType({ id: edge_port?.id, isUpdate: true });
         }}
       >
         <EditSVG />

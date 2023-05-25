@@ -27,7 +27,6 @@ const Row = styled(({hasProject, ...props}) => <RowComponent {...props} />)`
             min-height: 80vh;
         }
     }
-    
 `;
 
 export const OverviewWrapper = () => {

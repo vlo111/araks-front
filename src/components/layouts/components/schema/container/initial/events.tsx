@@ -6,7 +6,7 @@ import { ElementStyle, InitEvents } from '../../types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { startTypePort, setSelectedNode, startType, startEdgePort, startEdgeType }
+  { startTypePort, setSelected, startType, startEdgePort, startEdgeType }
 ) => {
   graph.on('node:port:click', ({ node, port, view: { container } }) => {
     if (port === 'connector') return;
@@ -37,7 +37,7 @@ export const initSchemaEvents: InitEvents = (
         });
       }
     } else {
-      startEdgeType({ id: port });
+      startEdgeType({ id: port, isUpdate: true });
     }
   });
 
@@ -51,7 +51,7 @@ export const initSchemaEvents: InitEvents = (
     if (!container.classList.contains('selected-node')) {
       selectNode(graph, container, node);
 
-      setSelectedNode(node);
+      setSelected({ node });
     }
   });
 
@@ -76,7 +76,9 @@ export const initSchemaEvents: InitEvents = (
 
     if (selectedNode !== null) removeSelected(graph, selectedNode);
 
-    setSelectedNode(undefined);
+    setSelected({
+      selected: false,
+    });
 
     if (graph.container.style.cursor === 'crosshair') startType({ x, y });
   });

@@ -9,11 +9,11 @@ import { animateGraphFit } from 'components/layouts/components/schema/helpers/ut
 import { ToolbarWrapper } from './wrapper';
 
 export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
-  const { graph, selectedNode } = useSchema() || {};
+  const { graph, selected } = useSchema() || {};
 
   const onCenterType = useCallback(() => {
     /** calculate height of type before fit on center */
-    if (typeof selectedNode !== 'string' && selectedNode !== undefined) {
+    if (selected.node !== undefined) {
       animateGraphFit(graph, '0.4s');
 
       graph.zoom(0.5, {
@@ -21,18 +21,18 @@ export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
         maxScale: 2,
       });
 
-      const propertiesHeight = selectedNode.ports.items.length * LINE_HEIGHT * 2;
+      const propertiesHeight = selected.node.ports.items.length * LINE_HEIGHT * 2;
 
-      const height = (propertiesHeight + selectedNode.getSize().height) / 2;
+      const height = (propertiesHeight + selected.node.getSize().height) / 2;
 
       graph.options.height = graph.options.height - height;
 
-      graph.centerCell(selectedNode);
+      graph.centerCell(selected.node);
 
       /** reset graph height after fit on center */
       graph.options.height = graph.options.height + height;
     }
-  }, [graph, selectedNode]);
+  }, [graph, selected]);
 
   const onCenterContent = useCallback(() => {
     animateGraphFit(graph, '0.4s');
