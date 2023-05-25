@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
-import { Graph, LinkPropertyModal, SchemaContextType, SelectedNode } from './types';
+import { Graph, SchemaContextType, SelectedNode } from './types';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
-import { IEdgeState, IPortState, ITypeState } from './reducer/types';
+import { IEdgePortState, IEdgeState, ITypePortState, ITypeState } from './reducer/types';
 
 export const SchemaWrapper: React.FC = () => {
   const [state, dispatch] = useReducer(schemaReducer, schemaInitialState);
@@ -15,10 +15,13 @@ export const SchemaWrapper: React.FC = () => {
     () => ({
       startEdgeType: (payload: IEdgeState) => handleAction(SchemaAction.ADD_EDGE_START, payload),
       startType: (payload: ITypeState) => handleAction(SchemaAction.ADD_TYPE_START, payload),
-      startPort: (payload: IPortState) => handleAction(SchemaAction.ADD_PORT_START, payload),
+      startTypePort: (payload: ITypePortState) => handleAction(SchemaAction.ADD_TYPE_PORT_START, payload),
+      startEdgePort: (payload: IEdgePortState) => handleAction(SchemaAction.ADD_EDGE_PORT_START, payload),
+
       finishEdgeType: () => handleAction(SchemaAction.ADD_EDGE_FINISH),
       finishType: () => handleAction(SchemaAction.ADD_TYPE_FINISH),
-      finishPort: () => handleAction(SchemaAction.ADD_PORT_FINISH),
+      finishTypePort: () => handleAction(SchemaAction.ADD_TYPE_PORT_FINISH),
+      finishEdgePort: () => handleAction(SchemaAction.ADD_EDGE_PORT_FINISH),
     }),
     [handleAction]
   );
@@ -29,24 +32,20 @@ export const SchemaWrapper: React.FC = () => {
   const [nodes, setNodes] = useState<IProjectType[]>();
   const [edges, setEdges] = useState<ProjectEdgeResponse[]>();
 
-  const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
-
   const context = useMemo(
     () => ({
       graph,
       selectedNode,
       nodes,
       edges,
-      openLinkPropertyModal,
       setGraph,
       setSelectedNode,
       setNodes,
       setEdges,
-      setOpenLinkPropertyModal,
       ...callbacks,
       ...state,
     }),
-    [callbacks, graph, selectedNode, nodes, edges, openLinkPropertyModal, state]
+    [callbacks, graph, selectedNode, nodes, edges, state]
   );
 
   return <Outlet context={context} />;

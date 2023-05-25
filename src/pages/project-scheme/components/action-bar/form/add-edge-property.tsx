@@ -29,11 +29,11 @@ const Wrapper = styled.div`
 export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCancel }) => {
   const [form] = Form.useForm();
 
-  const { openLinkPropertyModal } = useSchema() || {};
+  const { edge_port } = useSchema() || {};
 
   const id = useMemo(() => open as string, [open]);
 
-  const { mutate: deleteEdgeProperty } = useDeleteProjectEdgeTypeProperty(id, openLinkPropertyModal?.id || '');
+  const { mutate: deleteEdgeProperty } = useDeleteProjectEdgeTypeProperty(id, edge_port?.id || '');
 
   const { mutate } = useManageProjectNodeTypeProperty();
 
@@ -66,7 +66,7 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCan
       ...values,
       ref_property_type_id,
       propertyId: isEdit ? id : undefined,
-      project_type_id: openLinkPropertyModal?.id,
+      project_type_id: edge_port?.id,
     } as NodeEdgeTypePropertiesSubmit);
 
     onCancel();

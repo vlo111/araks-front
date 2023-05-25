@@ -26,7 +26,7 @@ const Wrapper = styled.div`
 `;
 
 export const AddSchemaTypePropertyForm = () => {
-  const { port, finishPort } = useSchema() || {};
+  const { type_port: port, finishTypePort } = useSchema() || {};
 
   const [form] = Form.useForm();
 
@@ -55,7 +55,7 @@ export const AddSchemaTypePropertyForm = () => {
 
   const { mutate: mutateDelete } = useDeleteTypeProperty(port?.portId, {
     onSuccess: () => {
-      finishPort();
+      finishTypePort();
     },
   });
 
@@ -74,7 +74,7 @@ export const AddSchemaTypePropertyForm = () => {
     });
     form.resetFields();
 
-    finishPort();
+    finishTypePort();
   };
 
   useEffect(() => {
@@ -160,7 +160,7 @@ export const AddSchemaTypePropertyForm = () => {
                 Delete
               </Button>
             ) : (
-              <Button block type="text" onClick={finishPort}>
+              <Button block type="text" onClick={finishTypePort}>
                 Cancel
               </Button>
             )}

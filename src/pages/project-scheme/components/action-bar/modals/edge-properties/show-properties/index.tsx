@@ -9,30 +9,25 @@ import { Props } from '../types/property';
 const MODAL_WIDTH = 232;
 
 export const ShowPropertyModal: Props = ({ setOpenCreateProperty }) => {
-  const { openLinkPropertyModal, setOpenLinkPropertyModal } = useSchema() || {};
+  const { edge_port, finishEdgePort } = useSchema() || {};
 
   const position: CSSProperties = useMemo(
     () => ({
       position: 'fixed',
-      top: openLinkPropertyModal?.y ?? 0,
-      left: (openLinkPropertyModal?.x ?? 0) - MODAL_WIDTH / 2,
+      top: edge_port?.y ?? 0,
+      left: (edge_port?.x ?? 0) - MODAL_WIDTH / 2,
     }),
-    [openLinkPropertyModal?.x, openLinkPropertyModal?.y]
+    [edge_port?.x, edge_port?.y]
   );
 
   const props = {
     mask: false,
     closable: false,
     footer: false,
-    open: openLinkPropertyModal?.open,
-    onCancel: () => {
-      setOpenLinkPropertyModal({
-        ...openLinkPropertyModal,
-        open: false,
-      });
-    },
+    open: edge_port?.isOpened,
+    onCancel: finishEdgePort,
     width: `${MODAL_WIDTH}px`,
-    color: openLinkPropertyModal?.color ?? [],
+    color: edge_port?.color ?? [],
   };
 
   return (

@@ -3,12 +3,10 @@ import { Options } from '@antv/x6/lib/graph/options';
 
 import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
-import TerminalType = Edge.TerminalType;
-import TerminalData = Edge.TerminalData;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
-import {IEdgeState, IPortState, ITypeState, SchemaState} from './reducer/types';
+import { IEdgePortState, IEdgeState, ITypePortState, ITypeState, SchemaState } from './reducer/types';
 
 export interface IStroke {
   type: string;
@@ -111,74 +109,40 @@ export interface INode {
   zIndex?: number;
 }
 
-export type PortModal =
-  | undefined
-  | { node: Node<Node.Properties>; portId: string; isUpdate: boolean; x: number; y: number };
-
 export type SelectedNode = Node<Node.Properties> | string | undefined;
 
 export type LinkPropertyModal =
   | undefined
   | { id?: string; name?: string; open: boolean; x?: number; y?: number; color?: string[] };
 
-export type OpenAddType = undefined | number[];
-
 export type Graph = GraphX6;
 
 export interface SchemaContextType extends SchemaState {
   startEdgeType: (edge?: IEdgeState) => void;
   startType: (type?: ITypeState) => void;
-  startPort: (port?: IPortState) => void;
+  startTypePort: (port?: ITypePortState) => void;
+  startEdgePort: (port?: IEdgePortState) => void;
   finishEdgeType: VoidFunction;
   finishType: VoidFunction;
-  finishPort: VoidFunction;
+  finishTypePort: VoidFunction;
+  finishEdgePort: VoidFunction;
 
   graph: GraphX6;
   selectedNode: SelectedNode | string | undefined;
   nodes: IProjectType[];
   edges: ProjectEdgeResponse[];
-  openLinkPropertyModal: LinkPropertyModal;
+
   setGraph: (item: Graph) => void;
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
   setNodes: Dispatch<SetStateAction<IProjectType[]>>;
   setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
   setSelectedNode: (item: SelectedNode | undefined) => void;
 }
 
-export interface ClientRect {
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-}
-
-export type BoundingEvent = EventTarget & {
-  tagName: string;
-  previousElementSibling: { firstChild: HTMLElement };
-  getBoundingClientRect: () => ClientRect;
-};
-
-export type OnEdgeLabelRendered = (
-  args: Options.OnEdgeLabelRenderedArgs,
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
-  nodes: Node<Node.Properties>[]
-) => void;
-
-export interface EdgeCreate {
-  edge: Edge<Properties>;
-  type: TerminalType;
-  previous: TerminalData;
-}
+export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => void;
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  | 'openLinkPropertyModal'
-  | 'selectedNode'
-  | 'startType'
-  | 'startPort'
-  | 'startEdgeType'
-  | 'setSelectedNode'
-  | 'setOpenLinkPropertyModal'
+  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'selectedNode' | 'setSelectedNode'
 >;
 
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;

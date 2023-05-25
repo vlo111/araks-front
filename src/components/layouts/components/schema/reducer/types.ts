@@ -16,7 +16,7 @@ export interface ITypeState extends IIsOpen {
   y?: number;
 }
 
-export interface IPortState extends IIsOpen {
+export interface ITypePortState extends IIsOpen {
   portId?: string;
   isUpdate?: boolean;
   node?: Node<Node.Properties>;
@@ -24,13 +24,22 @@ export interface IPortState extends IIsOpen {
   y?: number;
 }
 
+export interface IEdgePortState extends IIsOpen {
+  id?: string;
+  name?: string;
+  x?: number;
+  y?: number;
+  color?: string[];
+}
+
 export type SchemaState = {
   edge?: IEdgeState;
   type?: ITypeState;
-  port?: IPortState
+  type_port?: ITypePortState;
+  edge_port?: IEdgePortState;
 };
 
-export type Item = 'port' | 'type' | 'edge'
+export type Item = 'edge_port' | 'type_port' | 'type' | 'edge';
 
 export interface DataSheetAction {
   type: SchemaAction;

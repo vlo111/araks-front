@@ -10,18 +10,18 @@ type EdgePropertyProp = {
 };
 
 export const EdgePropertyTools: React.FC<EdgePropertyProp> = ({ openEditModal }) => {
-  const { openLinkPropertyModal, startEdgeType } = useSchema() || {};
+  const { edge_port, startEdgeType } = useSchema() || {};
 
   return (
     <div className="name">
       <div className="icon">
         <ArrowsSVG />
       </div>
-      <span className="text">{openLinkPropertyModal?.name}</span>
+      <span className="text">{edge_port?.name}</span>
       <div
         className="edit-property-icon"
         onClick={() => {
-          startEdgeType({ id: openLinkPropertyModal?.id });
+          startEdgeType({ id: edge_port?.id });
         }}
       >
         <EditSVG />

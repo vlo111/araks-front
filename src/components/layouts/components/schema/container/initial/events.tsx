@@ -6,7 +6,7 @@ import { ElementStyle, InitEvents } from '../../types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { startPort, setSelectedNode, startType, setOpenLinkPropertyModal, startEdgeType }
+  { startTypePort, setSelectedNode, startType, startEdgePort, startEdgeType }
 ) => {
   graph.on('node:port:click', ({ node, port, view: { container } }) => {
     if (port === 'connector') return;
@@ -23,14 +23,14 @@ export const initSchemaEvents: InitEvents = (
       };
 
       if (port === 'add') {
-        startPort({
+        startTypePort({
           ...props,
           portId: 'add',
           isUpdate: false,
         });
       } else {
         /** Edit type property */
-        startPort({
+        startTypePort({
           ...props,
           portId: port as string,
           isUpdate: true,
@@ -45,7 +45,7 @@ export const initSchemaEvents: InitEvents = (
     if (target.closest('.x6-port-body')) return;
 
     if (target.id === SELECTORS.NODE_SETTING_CIRCLE || target.id === SELECTORS.NODE_SETTING_ARROW_PATH) {
-      startType({x, y});
+      startType({ x, y });
     }
 
     if (!container.classList.contains('selected-node')) {
@@ -61,10 +61,9 @@ export const initSchemaEvents: InitEvents = (
     if (iconElement !== null) {
       const { x, y, height, width } = iconElement.getBoundingClientRect();
 
-      setOpenLinkPropertyModal({
+      startEdgePort({
         id: edge.id,
         name: edge.attr('name'),
-        open: true,
         x: x + width / 2,
         y: y + height,
         color: getTypeColors(edge),
@@ -79,7 +78,7 @@ export const initSchemaEvents: InitEvents = (
 
     setSelectedNode(undefined);
 
-    if (graph.container.style.cursor === 'crosshair') startType({x, y});
+    if (graph.container.style.cursor === 'crosshair') startType({ x, y });
   });
 
   graph.on('node:mouseup', ({ node: { id }, x, y }) => changeTypePosition(id, x, y));

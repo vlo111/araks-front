@@ -6,7 +6,7 @@ import { selectNode } from '../../helpers/selection';
 import { getTypeColors } from '../../helpers/utils';
 import { PATH } from 'helpers/constants';
 
-const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkPropertyModal, nodes) => {
+const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }) => {
   if (!edge.attr(PATH.EDGE_CREATOR)) {
     /** This label is svg foreign object that is rendered on chart as edge property icon */
     const label = selectors['foContent'] as HTMLDivElement;
@@ -32,11 +32,11 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
   }
 };
 
-export const initNodes: InitNodes = (graph, cells, { setOpenLinkPropertyModal, selectedNode, setSelectedNode }) => {
+export const initNodes: InitNodes = (graph, cells, { selectedNode, setSelectedNode }) => {
   if (cells.length > 0) {
     graph.resetCells(cells);
 
-    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args, setOpenLinkPropertyModal, graph.getNodes());
+    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
 
     graph.zoomToFit({ padding: 10, maxScale: 1 });
   }

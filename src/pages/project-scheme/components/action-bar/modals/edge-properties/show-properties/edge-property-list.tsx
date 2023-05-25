@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spin } from 'antd';
 import styled from 'styled-components';
-import { COLORS } from "helpers/constants";
+import { COLORS } from 'helpers/constants';
 import { OpenEditModal } from '../types/property';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
@@ -45,10 +45,10 @@ const Section = styled.div`
 `;
 
 export const EdgePropertyList: EdgePropertyProps = ({ openEditModal }) => {
-  const { openLinkPropertyModal } = useSchema() || {};
+  const { edge_port } = useSchema() || {};
 
-  const { data, isInitialLoading: loading } = useGetProjectsEdgeTypeProperties(openLinkPropertyModal?.id, {
-    enabled: !!openLinkPropertyModal?.id,
+  const { data, isInitialLoading: loading } = useGetProjectsEdgeTypeProperties(edge_port?.id, {
+    enabled: !!edge_port?.id,
   });
 
   return (
