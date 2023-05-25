@@ -7,7 +7,6 @@ export const GET_TYPES = '/projects/:project_id/node-types';
 type GetProjectParam = {
   id?: string;
   projectId: string;
-  url: string;
 };
 
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
@@ -24,8 +23,8 @@ type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
 
 type Result = { nodes: IProjectType[], isInitialLoading: boolean };
 
-export const useGetTypes = ({ url, ...params }: GetProjectParam, options: Options = { enabled: true }): Result => {
-  const urlNodes = url.replace(':project_id', params?.projectId || '');
+export const useGetTypes = ({ ...params }: GetProjectParam, options: Options = { enabled: true }): Result => {
+  const urlNodes = GET_TYPES.replace(':project_id', params?.projectId || '');
   const result = useQuery({
     queryKey: [urlNodes, params],
     queryFn: () => client.get(urlNodes, { params }),
@@ -33,7 +32,7 @@ export const useGetTypes = ({ url, ...params }: GetProjectParam, options: Option
   });
   const { data, isSuccess } = result;
 
-  const nodes = isSuccess ? data.data.projectsNodeTypes : ({} as IProjectType[]);
+  const nodes = isSuccess ? data.data.projectsNodeTypes : undefined;
 
   return {
     ...result,

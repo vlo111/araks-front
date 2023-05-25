@@ -28,23 +28,31 @@ export const AddSchemaEdgeForm = () => {
   const {
     nodes,
     edge: { id, source, target, isUpdate, isConnector },
-    finishType,
+    finishEdgeType,
   } = useSchema() || {};
 
   const { mutate: createEdge } = useCreateEdge(id);
 
   const { mutate: mutateDelete } = useDeleteEdge({
     onSuccess: () => {
-      finishType();
+      finishEdgeType();
     },
   });
 
-  const { data, isInitialLoading } = useGetEdge(isUpdate ? id : undefined);
+  const { isInitialLoading } = useGetEdge(id as string, {
+    onSuccess: (data) => {
+      form.setFieldsValue({
+        ...data,
+        source: data?.source?.name,
+        target: data?.target?.name,
+      });
+    },
+  });
 
   const onFinish = async (values: ProjectEdgeForm) => {
     try {
       await createEdgeWithTypeProperty(values);
-      finishType();
+      finishEdgeType();
       form.resetFields();
     } catch (e) {
       throw e;
@@ -74,14 +82,6 @@ export const AddSchemaEdgeForm = () => {
   };
 
   useEffect(() => {
-    if (isUpdate) {
-      form.setFieldsValue({
-        ...data,
-        source: data?.source?.name,
-        target: data?.target?.name,
-      });
-    }
-
     if (isConnector) {
       form.setFieldsValue({
         source: nodes.find((n) => n.id === source)?.name,
@@ -89,7 +89,7 @@ export const AddSchemaEdgeForm = () => {
       });
     }
     return () => form.resetFields();
-  }, [id, isUpdate, isConnector, source, target, form, nodes, data]);
+  }, [isConnector, source, target, form, nodes]);
 
   const onHandleDelete = () => {
     mutateDelete(id || '');
@@ -159,7 +159,7 @@ export const AddSchemaEdgeForm = () => {
                   Delete
                 </Button>
               ) : (
-                <Button block type="text" onClick={finishType}>
+                <Button block type="text" onClick={finishEdgeType}>
                   Cancel
                 </Button>
               )}
