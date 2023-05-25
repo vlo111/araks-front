@@ -1,37 +1,33 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Checkbox, Form, Space, Spin, Tooltip } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
-import styled from 'styled-components';
-
-import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
+import { InfoCircleFilled } from '@ant-design/icons';
 import { FormItem } from 'components/form/form-item';
-import { Button } from 'components/button';
+import { FormInput } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { Button } from 'components/button';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { EdgeDataTypeSelect } from 'components/select/edge-data-type-select';
-import { AddEdgeType } from 'components/layouts/components/schema/types';
-
-import { useCreateEdge } from 'api/schema/edge/use-create-edge';
-import { ProjectEdgeForm } from 'types/project-edge';
-import { useGetEdge } from 'api/schema/edge/use-get-edge';
+import styled from 'styled-components';
 import { useDeleteEdge } from 'api/schema/edge/use-delete-edge';
+import { useGetEdge } from 'api/schema/edge/use-get-edge';
+import { ProjectEdgeForm } from 'types/project-edge';
+import { AddEdgeType } from 'components/layouts/components/schema/types';
+import { useCreateEdge } from 'api/schema/edge/use-create-edge';
+import { EdgeDataTypeSelect } from 'components/select/edge-data-type-select';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
   width: 422px;
 `;
 
-export const AddSchemaEdgeForm = () => {
+export const AddSchemaEdgeForm: React.FC = () => {
   const [form] = Form.useForm();
 
   const {
     nodes,
-    edge: { id, source, target, isUpdate, isConnector },
+    edge: { id, isUpdate, isConnector, source, target },
     finishEdgeType,
   } = useSchema() || {};
-
-  const { mutate: createEdge } = useCreateEdge(id);
 
   const { mutate: mutateDelete } = useDeleteEdge({
     onSuccess: () => {
@@ -39,7 +35,12 @@ export const AddSchemaEdgeForm = () => {
     },
   });
 
+  const { mutate: createEdge } = useCreateEdge(id);
+
+  const addEdge: AddEdgeType = (item) => createEdge({ ...item });
+
   const { isInitialLoading } = useGetEdge(id as string, {
+    enabled: !!isUpdate,
     onSuccess: (data) => {
       form.setFieldsValue({
         ...data,
@@ -49,17 +50,38 @@ export const AddSchemaEdgeForm = () => {
     },
   });
 
-  const onFinish = async (values: ProjectEdgeForm) => {
-    try {
-      await createEdgeWithTypeProperty(values);
-      finishEdgeType();
-      form.resetFields();
-    } catch (e) {
-      throw e;
+  useEffect(() => {
+    form.resetFields();
+  }, [form, isUpdate]);
+
+  useEffect(() => {
+    if (isConnector) {
+      form.setFieldsValue({
+        source: nodes.find((n) => n.id === source)?.name,
+        target: nodes.find((n) => n.id === target)?.name,
+      });
     }
+    return () => form.resetFields();
+  }, [isConnector, source, target, form, nodes]);
+
+  const onHandleCancel = () => {
+    form.resetFields();
+    finishEdgeType();
   };
 
-  const addEdge: AddEdgeType = (item) => createEdge({ ...item });
+  const onHandleDelete = async () => {
+    mutateDelete(id || '');
+    form.resetFields();
+    finishEdgeType();
+  };
+
+  const onFinish = async ({ ...values }: ProjectEdgeForm) => {
+    await createEdgeWithTypeProperty(values);
+
+    finishEdgeType();
+
+    if (!isUpdate) form.resetFields();
+  };
 
   const createEdgeWithTypeProperty = async ({ name, inverse, multiple, source, target }: ProjectEdgeForm) => {
     const sourceType = nodes.find((n) => n.name === source);
@@ -79,20 +101,6 @@ export const AddSchemaEdgeForm = () => {
       target_attribute_id: edge_target?.properties?.find((p) => p.default_proprty)?.id,
       ...edge,
     });
-  };
-
-  useEffect(() => {
-    if (isConnector) {
-      form.setFieldsValue({
-        source: nodes.find((n) => n.id === source)?.name,
-        target: nodes.find((n) => n.id === target)?.name,
-      });
-    }
-    return () => form.resetFields();
-  }, [isConnector, source, target, form, nodes]);
-
-  const onHandleDelete = () => {
-    mutateDelete(id || '');
   };
 
   return (
@@ -159,7 +167,7 @@ export const AddSchemaEdgeForm = () => {
                   Delete
                 </Button>
               ) : (
-                <Button block type="text" onClick={finishEdgeType}>
+                <Button block type="text" onClick={onHandleCancel}>
                   Cancel
                 </Button>
               )}
