@@ -73,7 +73,7 @@ export const initGraph: InitGraph = (container, _params) => {
     enabled: true,
     zoomAtMousePosition: true,
     minScale: 0.2,
-    maxScale: 3,
+    maxScale: 5,
   };
 
   const options = {

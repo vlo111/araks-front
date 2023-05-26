@@ -91,6 +91,7 @@ const ports = {
           width: 150,
           height: 10,
           strokeWidth: 2,
+          filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.6))'
         },
         link_circle: {
           r: 16,

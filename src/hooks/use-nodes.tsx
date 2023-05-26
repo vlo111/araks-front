@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useParams } from 'react-router-dom';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { useGetTypes } from 'api/schema/type/use-get-types';

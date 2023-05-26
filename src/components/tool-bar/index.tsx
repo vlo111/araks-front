@@ -43,7 +43,7 @@ export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
     animateGraphFit(graph, '0.05s');
     graph.zoom(0.1, {
       minScale: 0.2,
-      maxScale: 3,
+      maxScale: 5,
     });
   }, [graph]);
 
@@ -51,7 +51,7 @@ export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
     animateGraphFit(graph, '0.05s');
     graph.zoom(-0.1, {
       minScale: 0.2,
-      maxScale: 3,
+      maxScale: 5,
     });
   }, [graph]);
 

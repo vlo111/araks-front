@@ -38,7 +38,7 @@ export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) =>
 
     graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
 
-    graph.zoomToFit({ padding: 10, maxScale: 1 });
+    graph.zoomToFit({ padding: 10, maxScale: 5 });
   }
 
   /** The Type need to be selected after create a type */

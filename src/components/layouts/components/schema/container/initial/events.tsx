@@ -55,6 +55,23 @@ export const initSchemaEvents: InitEvents = (
     }
   });
 
+  graph.on('node:mouseenter', ({ node }) => {
+    const ports = node.getPorts();
+
+    for (const { id } of ports)
+      node.setPortProp(id || '', 'attrs/portBody', {
+        filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.4))',
+      });
+  });
+
+  graph.on('node:mouseleave', (event) => {
+    event.cell.getPorts().forEach((p) => {
+      event.cell.setPortProp(p.id ?? '', 'attrs/portBody', {
+        filter: '',
+      });
+    });
+  });
+
   graph.on('edge:click', ({ edge, view: { container } }) => {
     const iconElement = container.querySelector('rect');
 
