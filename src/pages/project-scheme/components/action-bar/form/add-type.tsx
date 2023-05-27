@@ -11,7 +11,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useCreateType } from 'api/schema/type/use-create-types';
-import { SelectColor } from '../components/select/select-color';
+import { SelectColor } from '../components/select-color';
 import { useDeleteType } from 'api/schema/type/use-delete-type';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { PATH } from 'helpers/constants';

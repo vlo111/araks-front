@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { AddTypeModal } from './modals/add-type';
 import { AddTypePropertyModal } from './modals/add-type-property';
-import { ReactComponent as AddTypeSVG } from './icons/add.svg';
-import { ReactComponent as AddLinkSVG } from './icons/connection.svg';
-import { Search } from './search';
+import { ReactComponent as AddTypeSVG } from './components/icons/add.svg';
+import { ReactComponent as AddLinkSVG } from './components/icons/connection.svg';
+import { Search } from './components/search';
 import { AddEdgeModal } from './modals/add-edge';
 import { AddEdgePropertyModal } from './modals/edge-properties';
 
