@@ -1,10 +1,10 @@
-import { AnimateGraphFit, ChangeTypePosition, GetTypeColors, SwitchPermission, SwitchTypePermission } from '../types';
+import client from 'api/client';
 import { PATH } from 'helpers/constants';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
+import { TYPE_POSITION_URL } from 'api/schema/type/use-update-types-position';
 import { closePropertyEye, closeTypeEye, openPropertyEye, openTypeEye } from './constants';
-import client from 'api/client';
-import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
+import { AnimateGraphFit, ChangeTypePosition, GetTypeColors, SwitchPermission, SwitchTypePermission } from '../types';
 
 export const animateGraphFit: AnimateGraphFit = (graph, sec) => {
   const stage = graph.view.stage.parentElement as HTMLElement;
@@ -39,12 +39,8 @@ export const getProperties = (list: IProjectType[], edge: ProjectEdgeResponse) =
   };
 };
 
-export const changeTypePosition: ChangeTypePosition = (id, x, y) => {
-  client.put(`${process.env.REACT_APP_BASE_URL}${TYPE_POSITION_UPDATE_URL.replace(':id', id)}`, {
-    fx: x - 120,
-    fy: y - 20,
-  });
-};
+export const changeTypePosition: ChangeTypePosition = (id, { x, y }) =>
+  client.put(`${TYPE_POSITION_URL.replace(':id', id)}`, { fx: x, fy: y });
 
 export const switchPermission: SwitchPermission = (node, portId = '', isAllow) => {
   if (isAllow) node.setPortProp(portId, 'attrs', closePropertyEye);

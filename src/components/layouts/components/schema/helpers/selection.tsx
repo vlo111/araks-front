@@ -80,7 +80,7 @@ export const selectNode: SelectNode = (graph, container, node) => {
 
 export const selectNodeWithZoom: SelectNodeWithZoom = (id, graph, selected, setSelected) => {
 
-  if (!(id !== selected?.id && graph !== undefined)) return;
+  if (!(id !== selected?.node?.id && graph !== undefined)) return;
 
   animateGraphFit(graph, '0.4s');
 

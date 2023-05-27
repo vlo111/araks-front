@@ -55,23 +55,6 @@ export const initSchemaEvents: InitEvents = (
     }
   });
 
-  graph.on('node:mouseenter', ({ node }) => {
-    const ports = node.getPorts();
-
-    for (const { id } of ports)
-      node.setPortProp(id || '', 'attrs/portBody', {
-        filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.4))',
-      });
-  });
-
-  graph.on('node:mouseleave', (event) => {
-    event.cell.getPorts().forEach((p) => {
-      event.cell.setPortProp(p.id ?? '', 'attrs/portBody', {
-        filter: '',
-      });
-    });
-  });
-
   graph.on('edge:click', ({ edge, view: { container } }) => {
     const iconElement = container.querySelector('rect');
 
@@ -100,7 +83,27 @@ export const initSchemaEvents: InitEvents = (
     if (graph.container.style.cursor === 'crosshair') startType({ x, y });
   });
 
-  graph.on('node:mouseup', ({ node: { id }, x, y }) => changeTypePosition(id, x, y));
+  /** update position */
+  graph.on('node:mouseup', ({ node }) => changeTypePosition(node.id, node.position() || { x: 0, y: 0 }));
+
+  /** on hover */
+  graph.on('node:mouseenter', ({ node }) => {
+    const ports = node.getPorts();
+
+    for (const { id } of ports)
+      node.setPortProp(id || '', 'attrs/portBody', {
+        filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.2))',
+      });
+  });
+
+  graph.on('node:mouseleave', (event) => {
+    event.cell.getPorts().forEach((p) => {
+      event.cell.setPortProp(p.id ?? '', 'attrs/portBody', {
+        filter: '',
+      });
+    });
+  });
+  /** on hover */
 };
 
 /**

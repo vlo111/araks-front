@@ -1,4 +1,4 @@
-import { Graph, Node, Edge, Cell } from '@antv/x6';
+import {Graph, Node, Edge, Cell, Point} from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
 import Properties = Edge.Properties;
@@ -159,7 +159,7 @@ export type SwitchPermission = (node: Node<Node.Properties>, portId: string | un
 
 export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
 
-export type ChangeTypePosition = (id: string, x: number, y: number) => void;
+export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
 
 export type SchemaReducerState = {
   graph: Graph;
