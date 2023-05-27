@@ -11,6 +11,7 @@ export const removeSelected: RemoveElement = (chart, element) => {
   const type = chart.getCellById(element.dataset.cellId) as CellRemovePort;
 
   type.removePort('connector');
+  type.removePort('connector_select');
 
   type.attr(NODE_SETTING_ARROW_PATH, undefined);
   type.attr(NODE_SETTING_CIRCLE, undefined);
@@ -35,6 +36,22 @@ export const selectNode: SelectNode = (graph, container, node) => {
   const { height, width } = (container as ElementBox).getBBox();
 
   node.addPort({
+    id: 'connector_select',
+    zIndex: 0,
+    group: 'connector_select',
+    attrs: {
+      link_rect: {
+        stroke: color,
+        fill: 'none',
+        x: -1,
+        y: -2,
+        width: 152,
+        height: height + 3,
+      },
+    }
+  });
+
+  node.addPort({
     id: 'connector',
     group: 'connector',
     attrs: {
@@ -42,12 +59,6 @@ export const selectNode: SelectNode = (graph, container, node) => {
         fill: color,
         cx: 150,
         cy: height / 2,
-      },
-      link_rect: {
-        stroke: color,
-        x: 1,
-        width: 148,
-        height,
       },
       link_path: {
         transform: `matrix(1,0,0,1,${width - 16}, ${height / 2 - 16})`,

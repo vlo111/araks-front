@@ -13,6 +13,26 @@ const NODE_WIDTH = 150;
 
 const ports = {
   groups: {
+    connector_select: {
+      markup: [
+        {
+          tagName: 'rect',
+          selector: 'link_rect',
+        },
+      ],
+      attrs: {
+        link_rect: {
+          fill: 'none',
+          width: 150,
+          height: 10,
+          strokeWidth: 2,
+          filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.6))'
+        },
+      },
+      position: {
+        name: 'absolute',
+      },
+    },
     cell: {
       markup: [
         {
