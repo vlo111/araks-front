@@ -14,7 +14,7 @@ export const AddTypeModal: React.FC = () => {
 
   return (
     <Modal {...props}>
-      <AddSchemaTypeForm onCancel={onCancel} />
+      <AddSchemaTypeForm />
     </Modal>
   );
 };

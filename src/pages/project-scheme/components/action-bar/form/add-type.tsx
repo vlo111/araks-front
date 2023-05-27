@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import styled from 'styled-components';
@@ -21,15 +21,14 @@ const Wrapper = styled.div`
   width: 422px;
 `;
 
-type Props = FC<{ onCancel: VoidFunction }>;
-
-export const AddSchemaTypeForm: Props = ({ onCancel }) => {
+export const AddSchemaTypeForm = () => {
   const [form] = Form.useForm();
 
   const {
     nodes,
     setSelected,
     selected,
+      finishType,
     type: { x, y },
   } = useSchema() || {};
 
@@ -53,7 +52,7 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
       selected: false,
     });
 
-    onCancel();
+    finishType();
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
@@ -63,7 +62,7 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
       ...values,
     });
 
-    onCancel();
+    finishType();
   };
 
   useEffect(() => {
@@ -146,7 +145,7 @@ export const AddSchemaTypeForm: Props = ({ onCancel }) => {
                 Delete
               </Button>
             ) : (
-              <Button block type="text" onClick={onCancel}>
+              <Button block type="text" onClick={finishType}>
                 Cancel
               </Button>
             )}

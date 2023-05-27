@@ -50,7 +50,7 @@ export const ActionBar: React.FC = () => {
       <ToolStyle>
         <Search />
         <AddTypeSVG className="add-type" onClick={addType} />
-        <AddLinkSVG className="add-link" onClick={() => startEdgeType({ isUpdate: false, id: 'add'})} />
+        <AddLinkSVG className="add-link" onClick={() => startEdgeType({ isUpdate: false, id: undefined})} />
       </ToolStyle>
       <AddEdgeModal />
       <AddEdgePropertyModal />

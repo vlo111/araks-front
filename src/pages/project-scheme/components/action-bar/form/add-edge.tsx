@@ -162,7 +162,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
               <Button block type="primary" htmlType="submit">
                 Save
               </Button>
-              {id ? (
+              {isUpdate ? (
                 <Button block onClick={onHandleDelete} type="text">
                   Delete
                 </Button>
