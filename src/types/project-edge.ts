@@ -20,8 +20,8 @@ export type ProjectEdgeResponse = {
 
 export type ProjectEdgeForm = {
   name: string;
-  source: string;
-  target: string;
+  source_id: string;
+  target_id: string;
   inverse: boolean;
   multiple: boolean;
 };

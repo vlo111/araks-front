@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Modal } from 'components/modal';
 
 export const WrapperModal = styled(Modal)<{ color: string[] }>`
-  z-index: 0;
-  
   .ant-modal-content {
     background: linear-gradient(95.36deg, ${({ color }) => color[0]}BA 5.15%, ${({ color }) => color[1]}33 100%);
     box-shadow: 0 4px 4px rgba(111, 111, 111, 0.3);

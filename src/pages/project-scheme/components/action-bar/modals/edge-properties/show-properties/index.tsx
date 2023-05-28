@@ -9,29 +9,32 @@ import { Props } from '../types/property';
 const MODAL_WIDTH = 232;
 
 export const ShowPropertyModal: Props = ({ setOpenCreateProperty }) => {
-  const { edge_port, finishEdgePort } = useSchema() || {};
+  const {
+    edge_port: { x, y, isOpened, color },
+    finishEdgePort,
+  } = useSchema() || {};
 
   const position: CSSProperties = useMemo(
     () => ({
       position: 'fixed',
-      top: edge_port?.y ?? 0,
-      left: (edge_port?.x ?? 0) - MODAL_WIDTH / 2,
+      top: y ?? 0,
+      left: (x ?? 0) - MODAL_WIDTH / 2,
     }),
-    [edge_port?.x, edge_port?.y]
+    [x, y]
   );
 
   const props = {
     mask: false,
     closable: false,
     footer: false,
-    open: edge_port?.isOpened,
+    open: isOpened,
     onCancel: finishEdgePort,
     width: `${MODAL_WIDTH}px`,
-    color: edge_port?.color ?? [],
+    color: color ?? [],
   };
 
   return (
-    <WrapperModal style={{ ...position }} {...props}>
+    <WrapperModal style={{ ...position }} {...props} zIndex={5}>
       <EdgePropertyTools openEditModal={setOpenCreateProperty} />
       <EdgePropertyList openEditModal={setOpenCreateProperty} />
     </WrapperModal>

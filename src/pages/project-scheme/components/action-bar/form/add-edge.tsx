@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Checkbox, Form, Space, Spin, Tooltip } from 'antd';
 import { Text } from 'components/typography';
 import { InfoCircleFilled } from '@ant-design/icons';
@@ -13,7 +13,8 @@ import { useGetEdge } from 'api/schema/edge/use-get-edge';
 import { ProjectEdgeForm } from 'types/project-edge';
 import { AddEdgeType } from 'components/layouts/components/schema/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
-import { EdgeDataTypeSelect } from 'components/select/edge-data-type-select';
+import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { TreeSelect } from 'components/select';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -30,6 +31,8 @@ export const AddSchemaEdgeForm: React.FC = () => {
     edge_port: { isOpened },
     startEdgePort,
   } = useSchema() || {};
+
+  const treeNodes = useMemo(() => createNodesTree(nodes), [nodes]);
 
   const { mutate: mutateDelete } = useDeleteEdge({
     onSuccess: () => {
@@ -78,32 +81,24 @@ export const AddSchemaEdgeForm: React.FC = () => {
   };
 
   const onFinish = async ({ ...values }: ProjectEdgeForm) => {
-    await createEdgeWithTypeProperty(values);
+    const find = (id: string) =>
+      nodes.find((n) => n.id === id)?.properties.find((p) => p.default_proprty) ?? { id: '' };
+
+    const { id: source_attribute_id } = find(values.source_id);
+
+    const { id: target_attribute_id } = find(values.target_id);
+
+    addEdge({
+      source_attribute_id,
+      target_attribute_id,
+      ...values,
+    });
+
     if (isOpened) startEdgePort({ name: values.name });
 
     finishEdgeType();
 
     if (!isUpdate) form.resetFields();
-  };
-
-  const createEdgeWithTypeProperty = async ({ name, inverse, multiple, source, target }: ProjectEdgeForm) => {
-    const sourceType = nodes.find((n) => n.name === source);
-
-    const edge_target = nodes.find((n) => n.name === target);
-
-    const edge = {
-      source_id: sourceType?.id || '',
-      target_id: edge_target?.id ?? '',
-      name,
-      inverse,
-      multiple,
-    };
-
-    addEdge({
-      source_attribute_id: sourceType?.properties?.find((p) => p.default_proprty)?.id,
-      target_attribute_id: edge_target?.properties?.find((p) => p.default_proprty)?.id,
-      ...edge,
-    });
   };
 
   return (
@@ -134,12 +129,32 @@ export const AddSchemaEdgeForm: React.FC = () => {
           >
             <FormInput placeholder="Connection name" />
           </FormItem>
-          <FormItem name="source" label="Source" rules={[{ required: true, message: 'Source type most be selected' }]}>
-            <EdgeDataTypeSelect />
+
+          <FormItem name="source_id" label="Source" rules={[{ required: true, message: 'Source is required' }]}>
+            <TreeSelect
+              treeData={treeNodes}
+              showSearch
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="Please select"
+              allowClear
+              treeDefaultExpandAll
+              fieldNames={{ value: 'key' }}
+            />
           </FormItem>
-          <FormItem name="target" label="Target" rules={[{ required: true, message: 'Target type most be selected' }]}>
-            <EdgeDataTypeSelect />
+          <FormItem name="target_id" label="Target" rules={[{ required: true, message: 'Target is required' }]}>
+            <TreeSelect
+              treeData={treeNodes}
+              showSearch
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              placeholder="Please select"
+              allowClear
+              treeDefaultExpandAll
+              fieldNames={{ value: 'key' }}
+            />
           </FormItem>
+
           <FormItem name="inverse" valuePropName="checked" initialValue={false}>
             <Checkbox>
               <Space>
