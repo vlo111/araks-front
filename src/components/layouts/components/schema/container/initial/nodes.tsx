@@ -37,8 +37,6 @@ export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) =>
     graph.resetCells(cells);
 
     graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
-
-    graph.zoomToFit({ padding: 10, maxScale: 3 });
   } else {
     graph.resetCells([]);
   }
