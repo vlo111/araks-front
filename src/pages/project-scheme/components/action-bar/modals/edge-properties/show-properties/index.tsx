@@ -10,9 +10,11 @@ const MODAL_WIDTH = 232;
 
 export const ShowPropertyModal: Props = ({ setOpenCreateProperty }) => {
   const {
-    edge_port: { x, y, isOpened, color },
+    edge_port,
     finishEdgePort,
   } = useSchema() || {};
+
+  const { x, y, isOpened, color } = edge_port ?? {};
 
   const position: CSSProperties = useMemo(
     () => ({
