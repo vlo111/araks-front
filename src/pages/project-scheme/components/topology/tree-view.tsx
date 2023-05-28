@@ -5,10 +5,11 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/selection';
 import { Tree } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
-import { COLORS, PATH } from "helpers/constants";
+import { COLORS } from "helpers/constants";
 import { EventDataNode } from 'antd/es/tree';
 import { TreeNodeType } from '../../../data-sheet/types';
 import { IProjectType } from 'api/types';
+import { PATH } from "components/layouts/components/schema/helpers/constants";
 
 type Props = React.FC<{ nodes: IProjectType[] }>;
 

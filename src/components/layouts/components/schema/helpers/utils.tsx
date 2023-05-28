@@ -1,9 +1,8 @@
 import client from 'api/client';
-import { PATH } from 'helpers/constants';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { TYPE_POSITION_URL } from 'api/schema/type/use-update-types-position';
-import { closePropertyEye, closeTypeEye, openPropertyEye, openTypeEye } from './constants';
+import { closePropertyEye, closeTypeEye, openPropertyEye, openTypeEye, PATH } from './constants';
 import { AnimateGraphFit, ChangeTypePosition, GetTypeColors, SwitchPermission, SwitchTypePermission } from '../types';
 
 export const animateGraphFit: AnimateGraphFit = (graph, sec) => {

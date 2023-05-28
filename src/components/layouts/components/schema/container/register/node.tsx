@@ -1,7 +1,7 @@
 import { Graph } from '@antv/x6';
 import { ArrowD } from '../../helpers/svg/path-d';
 import { antTheme } from 'helpers/ant-theme';
-import { SELECTORS } from 'helpers/constants';
+import { SELECTORS } from '../../helpers/constants';
 
 const { colorDefaultProperty, colorPropertyText, colorPropertyType } = antTheme.components.Schema;
 const { NODE_SETTING_CIRCLE, NODE_SETTING_ARROW_PATH, PORT_EYE_PATH, PORT_NAME_TEXT, PORT_TYPE_TEXT, PORT_BODY_RECT } =
@@ -110,7 +110,7 @@ const ports = {
           width: 150,
           height: 10,
           strokeWidth: 2,
-          filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.6))'
+          filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.6))',
         },
         link_circle: {
           r: 16,

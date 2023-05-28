@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { COLORS } from 'helpers/constants';
 import { Text } from 'components/typography';
+import { ReactComponent as AddSvg } from './icons/add.svg';
+import { ReactComponent as DuplicateSvg } from './icons/duplicate.svg';
 
 const PerspectivePanelStyle = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 12px;
   position: fixed;
   right: 0;
@@ -21,10 +22,10 @@ const PerspectivePanelStyle = styled.div`
 
 export const Perspectives = () => {
   return (
-    <>
-      <PerspectivePanelStyle>
-        <Text style={{ fontSize: '20px' }}>Perspectives</Text>
-      </PerspectivePanelStyle>
-    </>
+    <PerspectivePanelStyle>
+      <Text style={{ fontSize: '20px' }}>Perspectives</Text>
+      <AddSvg />
+      <DuplicateSvg />
+    </PerspectivePanelStyle>
   );
 };

@@ -1,9 +1,9 @@
 import { CellRemovePort, ElementBox, ElementStyle, RemoveElement, SelectNode, SelectNodeWithZoom } from '../types';
-import { PATH, SELECTORS } from 'helpers/constants';
 import { TypeSettingD } from './svg/path-d';
 import { Node } from '@antv/x6';
 import { LINE_HEIGHT } from '../container/register/node';
 import { animateGraphFit } from './utils';
+import { PATH, SELECTORS } from "./constants";
 
 const { NODE_SETTING_CIRCLE, NODE_SETTING_ARROW_PATH } = SELECTORS;
 

@@ -1,8 +1,8 @@
 import { Graph } from '@antv/x6';
 import { removeSelected, selectNode } from '../../helpers/selection';
 import { changeTypePosition, getTypeColors, switchPermission, switchTypePermission } from '../../helpers/utils';
-import { PATH, SELECTORS } from 'helpers/constants';
 import { ElementStyle, InitEvents } from '../../types';
+import { PATH, SELECTORS } from "../../helpers/constants";
 
 export const initSchemaEvents: InitEvents = (
   graph,

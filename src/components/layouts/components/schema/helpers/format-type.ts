@@ -5,7 +5,7 @@ import { INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } fro
 import { antTheme } from 'helpers/ant-theme';
 import { isPerspective } from './utils';
 import { EyeD } from './svg/path-d';
-import { SELECTORS } from 'helpers/constants';
+import { SELECTORS } from "./constants";
 
 const { colorDefaultProperty, colorAddProperty, colorPropertyType } = antTheme.components.Schema;
 const { PORT_NAME_TEXT, PORT_BODY_RECT, PORT_TYPE_TEXT, PORT_EYE_PATH } = SELECTORS;

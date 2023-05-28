@@ -13,12 +13,12 @@ import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property
 import { useCallback, useEffect, useMemo } from 'react';
 import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
 import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
-import { SELECTORS } from 'helpers/constants';
 import { NodeEdgeTypesForm, PortAttributes } from 'components/layouts/components/schema/types';
 import { PropertyBasicDetails } from 'components/form/property/property-basic-details';
 import { PropertyConnectionDetailsSchema } from './property-connection-details';
 import { PropertyTypes } from 'components/form/property/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
+import { SELECTORS } from 'components/layouts/components/schema/helpers/constants';
 
 type InitEditForm = (attrs: PortAttributes) => void;
 

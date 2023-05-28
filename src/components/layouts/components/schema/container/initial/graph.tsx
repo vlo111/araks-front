@@ -1,13 +1,13 @@
-import { InitGraph } from '../../types';
 import { antTheme } from 'helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 import { Snapline } from '@antv/x6-plugin-snapline';
+import { initPerspectiveEvents, initSchemaEvents } from './events';
+import { isPerspective } from '../../helpers/utils';
+import { InitGraph } from '../../types';
 
 import Connecting = Options.Connecting;
-import { initPerspectiveEvents, initSchemaEvents } from './events';
-import { PATH } from 'helpers/constants';
-import { isPerspective } from '../../helpers/utils';
+import { PATH } from "../../helpers/constants";
 
 export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {

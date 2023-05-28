@@ -1,6 +1,6 @@
 import { Graph } from '@antv/x6';
-import { PATH } from 'helpers/constants';
 import { Highlighter } from '../../types';
+import { PATH } from '../../helpers/constants';
 
 export const outline: Highlighter = {
   highlight(cellView) {

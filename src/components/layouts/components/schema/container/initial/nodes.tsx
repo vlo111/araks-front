@@ -4,7 +4,7 @@ import { InitNodes, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
 import { selectNode } from '../../helpers/selection';
 import { getTypeColors } from '../../helpers/utils';
-import { PATH } from 'helpers/constants';
+import { PATH } from "../../helpers/constants";
 
 const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }) => {
   if (!edge.attr(PATH.EDGE_CREATOR)) {
