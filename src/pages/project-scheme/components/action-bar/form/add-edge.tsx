@@ -27,7 +27,8 @@ export const AddSchemaEdgeForm: React.FC = () => {
     nodes,
     edge: { id, isUpdate, isConnector, source, target },
     finishEdgeType,
-    startEdgePort
+    edge_port: { isOpened },
+    startEdgePort,
   } = useSchema() || {};
 
   const { mutate: mutateDelete } = useDeleteEdge({
@@ -78,8 +79,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
 
   const onFinish = async ({ ...values }: ProjectEdgeForm) => {
     await createEdgeWithTypeProperty(values);
-
-    startEdgePort({ name: values.name });
+    if (isOpened) startEdgePort({ name: values.name });
 
     finishEdgeType();
 
