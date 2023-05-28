@@ -24,7 +24,13 @@ const Wrapper = styled.div`
 export const AddSchemaTypeForm = () => {
   const [form] = Form.useForm();
 
-  const { nodes, setSelected, selected, finishType } = useSchema() || {};
+  const {
+    nodes,
+    setSelected,
+    selected,
+    finishType,
+    type: { x: fx, y: fy },
+  } = useSchema() || {};
 
   const isEdit = useMemo(() => selected.node, [selected]);
 
@@ -50,7 +56,8 @@ export const AddSchemaTypeForm = () => {
   };
 
   const onFinish = (values: ProjectNodeTypeSubmit) => {
-    createType({ ...values });
+    if (isEdit) createType({ ...values });
+    else createType({ fx, fy, ...values });
 
     finishType();
   };

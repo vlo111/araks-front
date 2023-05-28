@@ -25,7 +25,7 @@ export const initSchemaEvents: InitEvents = (
       if (port === 'add') {
         startTypePort({
           ...props,
-          portId: 'add',
+          portId: undefined,
           isUpdate: false,
         });
       } else {
