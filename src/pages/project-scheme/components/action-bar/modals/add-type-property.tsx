@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { AddSchemaTypePropertyForm } from '../form/add-property-type';
+import { AddSchemaTypePropertyForm } from '../form/add-type-property/add-type-property';
 import { Modal } from 'components/modal';
 
 export const AddTypePropertyModal: React.FC = () => {

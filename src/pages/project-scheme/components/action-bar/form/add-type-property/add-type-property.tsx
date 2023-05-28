@@ -6,17 +6,19 @@ import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
 import { Button } from 'components/button';
-
 import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { Checkbox } from 'components/checkbox';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useCreateTypeProperty } from 'api/schema/type-property/use-create-type-ptoperty';
 import { useDeleteTypeProperty } from 'api/schema/type-property/use-delete-type-property';
 import { SELECTORS } from 'helpers/constants';
-import { PortAttributes } from 'components/layouts/components/schema/types';
+import { NodeEdgeTypesForm, PortAttributes } from 'components/layouts/components/schema/types';
+import { PropertyBasicDetails } from 'components/form/property/property-basic-details';
+import { PropertyConnectionDetailsSchema } from './property-connection-details';
+import { PropertyTypes } from 'components/form/property/types';
+import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 
 type InitEditForm = (attrs: PortAttributes) => void;
 
@@ -29,6 +31,7 @@ export const AddSchemaTypePropertyForm = () => {
   const {
     type_port: { node, portId, isUpdate },
     finishTypePort,
+    nodes,
   } = useSchema() || {};
 
   const [form] = Form.useForm();
@@ -56,6 +59,8 @@ export const AddSchemaTypePropertyForm = () => {
 
   const { mutate } = useCreateTypeProperty({}, portId);
 
+  const { mutate: mutateConnection } = useCreateEdge(undefined);
+
   const { mutate: mutateDelete } = useDeleteTypeProperty(portId, {
     onSuccess: () => {
       finishTypePort();
@@ -66,19 +71,35 @@ export const AddSchemaTypePropertyForm = () => {
     mutateDelete();
   };
 
-  const onFinish = (values: ProjectNodeTypePropertySubmit) => {
-    mutate(
-      isUpdate
-        ? {
-            ...values,
-            project_type_id: type.id,
-            propertyId: portId,
-          }
-        : {
-            ...values,
-            project_type_id: type.id,
-          }
-    );
+  const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesForm) => {
+    if (ref_property_type_id === PropertyTypes.Connection) {
+      const { source_id, target_id } = values as NodeEdgeTypesForm;
+
+      const find = (id: string) =>
+        nodes.find((n) => n.id === id)?.properties.find((p) => p.default_proprty) ?? { id: '' };
+
+      const { id: source_attribute_id } = find(source_id);
+
+      const { id: target_attribute_id } = find(target_id);
+
+      mutateConnection({
+        source_attribute_id,
+        target_attribute_id,
+        ...values,
+      } as NodeEdgeTypesForm);
+    } else {
+      const args = {
+        ...values,
+        ref_property_type_id,
+        project_type_id: type.id,
+        propertyId: portId,
+      };
+
+      if (isUpdate) args.propertyId = portId;
+
+      mutate(args as ProjectNodeTypePropertySubmit);
+    }
+
     form.resetFields();
 
     finishTypePort();
@@ -124,36 +145,8 @@ export const AddSchemaTypePropertyForm = () => {
         >
           <PropertyDataTypeSelect />
         </FormItem>
-        <FormItem name="required_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Required
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Multiple
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
-        <FormItem name="unique_type" valuePropName="checked" initialValue={false}>
-          <Checkbox>
-            <Space>
-              Set field as unique
-              <Tooltip title="Useful information" placement="right">
-                <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-              </Tooltip>
-            </Space>
-          </Checkbox>
-        </FormItem>
+        <PropertyConnectionDetailsSchema typeId={type.id} />
+        <PropertyBasicDetails />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

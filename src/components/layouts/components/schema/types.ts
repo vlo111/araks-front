@@ -6,6 +6,7 @@ import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
 import { IEdgePortState, IEdgeState, ISelectNode, ITypePortState, ITypeState } from "./reducer/types";
+import {PropertyTypes} from "../../../form/property/types";
 
 export interface IStroke {
   type: string;
@@ -196,3 +197,16 @@ export type PickSchemaContextType = Pick<
   SchemaContextType,
   'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
 >;
+
+export type NodeEdgeTypesForm = {
+  project_id: string;
+  name: string;
+  target_id: string;
+  source_id: string;
+  source_attribute_id: string;
+  target_attribute_id: string;
+  inverse: boolean;
+  multiple: boolean;
+  ref_property_type_id?: PropertyTypes.Connection;
+  propertyId?: string;
+};
