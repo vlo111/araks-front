@@ -8,6 +8,7 @@ export const PATHS = {
   PROJECT_UPDATE: '/projects/update/:id',
   PROJECT_CREATE: '/projects/create',
   PROJECT_SCHEME: '/projects/scheme/:id',
+  PROJECT_PERSPECTIVES: '/projects/perspectives/:id',
   DATA_SHEET: '/projects/data-sheet/:id',
   PUBLIC: '/public',
   FOLDER: '/folder/:id',
@@ -71,14 +72,6 @@ export const screenSize = {
   lg: '992px',
   xl: '1200px',
   xxl: '1600px',
-};
-
-export const PATH = {
-  NODE_COLOR: 'body/stroke',
-  NODE_TEXT: 'text/text',
-  EDGE_SOURCE_COLOR: 'line/stroke/stops/0/color',
-  EDGE_TARGET_COLOR: 'line/stroke/stops/1/color',
-  EDGE_CREATOR: 'line/creator',
 };
 
 export const VALIDATE_MESSAGES = {

@@ -1,15 +1,12 @@
-import { Graph as GraphX6, Node, Edge, Cell } from '@antv/x6';
+import {Graph, Node, Edge, Cell, Point} from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
-import { Dispatch, SetStateAction } from 'react';
 import Properties = Edge.Properties;
-import TerminalType = Edge.TerminalType;
-import TerminalData = Edge.TerminalData;
-import { IProjectType, ITypeProperty } from '../../../../api/types';
-import { ProjectEdgeResponse } from '../../../../types/project-edge';
-import { AxiosResponse } from 'axios';
-import { FormInstance } from 'antd';
+import { IProjectType, ITypeProperty } from 'api/types';
+import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
+import { IEdgePortState, IEdgeState, ISelectNode, ITypePortState, ITypeState } from "./reducer/types";
+import {PropertyTypes} from "../../../form/property/types";
 
 export interface IStroke {
   type: string;
@@ -28,6 +25,8 @@ interface ILine {
 
 interface IBody {
   stroke: string;
+  cursor: string;
+  allow: boolean;
 }
 
 interface IPosition {
@@ -58,22 +57,24 @@ export interface IPortFill {
   stops: Array<{ offset: string; color: string }>;
 }
 
-export interface IPortAttribute {
+interface IPortAttribute {
   required_type?: boolean;
-  multiple_type?: string;
+  multiple_type?: boolean;
   unique_type?: boolean;
-  portBody: {
+}
+
+export type PortAttributes = {
+  [key: string]: {
     fill: IPortFill | string;
     strokeWidth?: number;
-  };
-  portNameLabel: {
+  } & {
     fill?: string;
     text: string;
-  };
-  portTypeLabel: {
+  } & {
     text: string;
+    refX?: number;
   };
-}
+} & IPortAttribute;
 
 export interface IPort {
   id?: string;
@@ -97,6 +98,7 @@ export interface INode {
     line?: ILine;
     body?: IBody;
     parentId?: string;
+    allow?: boolean;
   };
   tools?: {
     name: string;
@@ -106,80 +108,6 @@ export interface INode {
   target?: IConnection;
   zIndex?: number;
 }
-
-export type PortModal =
-  | undefined
-  | { node: Node<Node.Properties>; portId: string; isUpdate: boolean; x: number; y: number };
-
-export type SelectedNode = Node<Node.Properties> | string | undefined;
-
-export type LinkPropertyModal =
-  | undefined
-  | { id?: string; name?: string; open: boolean; x?: number; y?: number; color?: string[] };
-
-export type OpenAddType = undefined | number[];
-
-export type AddLinkModal = undefined | boolean | { id?: string; source?: string; target?: string };
-
-export type Graph = GraphX6;
-
-export interface SchemaContextType {
-  graph: GraphX6;
-  selectedNode: SelectedNode | string | undefined;
-  nodes: IProjectType[];
-  edges: ProjectEdgeResponse[];
-  addPortModal: PortModal;
-  addTypeModal: OpenAddType;
-  addLinkModal: AddLinkModal;
-  openLinkPropertyModal: LinkPropertyModal;
-
-  setAddTypeModal: OpenTypeModal;
-  setGraph: (item: Graph) => void;
-  setAddPortModal: Dispatch<SetStateAction<PortModal>>;
-  setAddLinkModal: Dispatch<SetStateAction<AddLinkModal>>;
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>;
-  setNodes: Dispatch<SetStateAction<IProjectType[]>>;
-  setEdges: Dispatch<SetStateAction<ProjectEdgeResponse[]>>;
-  setSelectedNode: (item: SelectedNode | undefined) => void;
-}
-
-export interface ClientRect {
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-}
-
-export type BoundingEvent = EventTarget & {
-  tagName: string;
-  previousElementSibling: { firstChild: HTMLElement };
-  getBoundingClientRect: () => ClientRect;
-};
-
-export type OnEdgeLabelRendered = (
-  args: Options.OnEdgeLabelRenderedArgs,
-  setOpenLinkPropertyModal: Dispatch<SetStateAction<LinkPropertyModal>>,
-  nodes: Node<Node.Properties>[]
-) => void;
-
-export interface EdgeCreate {
-  edge: Edge<Properties>;
-  type: TerminalType;
-  previous: TerminalData;
-}
-
-export type PickSchemaContextType = Pick<
-  SchemaContextType,
-  | 'addPortModal'
-  | 'openLinkPropertyModal'
-  | 'selectedNode'
-  | 'addTypeModal'
-  | 'setAddPortModal'
-  | 'setAddLinkModal'
-  | 'setSelectedNode'
-  | 'setAddTypeModal'
-  | 'setOpenLinkPropertyModal'
->;
 
 export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
 
@@ -203,11 +131,9 @@ export type CellRemovePort = Cell<Cell.Properties> & {
   removePort: (id: string) => void;
 };
 
-export type SetPropertyColor = (property: ITypeProperty, color: string) => { fill: IPortFill } | { fill: string };
+export type SetPropertyColor = (ref_property_type_id: string, color: string) => { fill: IPortFill } | { fill: string };
 
 export type InsertAddProperty = () => IPort;
-
-export type OpenTypeModal = (param: OpenAddType) => void;
 
 export type Highlighter = Highlighter.Definition<unknown>;
 
@@ -215,22 +141,72 @@ export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Prop
 
 export type SelectNodeWithZoom = (
   id: string,
-  graph: Graph,
-  selectedNode: Node<Node.Properties> | undefined | string,
-  setSelectedNode: (item: SelectedNode | undefined) => void
+  graph: Graph | undefined,
+  selected: ISelectNode,
+  setSelected: (item: ISelectNode) => void
 ) => void;
 
 export type PropsAddEdge = {
-  form: FormInstance;
   onCancel: VoidFunction;
 };
 
 export type AddEdgeType = (item: ProjectEdgeResponse) => void;
 
-export type AddProperty = (
-  id: string,
-  name: string,
-  multiple: boolean
-) => Promise<AxiosResponse<{ id: string }, never>>;
-
 export type GetTypeColors = (edge: Edge<Properties>) => string[];
+
+export type InsertProperty = (prop: ITypeProperty & { color: string; allow: boolean }) => IPort;
+
+export type SwitchPermission = (node: Node<Node.Properties>, portId: string | undefined, isAllow: boolean) => void;
+
+export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
+
+export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
+
+export type SchemaReducerState = {
+  graph: Graph;
+  nodes: IProjectType[];
+  edges: ProjectEdgeResponse[];
+  selected: ISelectNode;
+  edge: IEdgeState;
+  type: ITypeState;
+  type_port: ITypePortState;
+  edge_port: IEdgePortState;
+};
+
+export type SchemaReducerSetState = {
+  setGraph: (graph: Graph) => void;
+  setNodes: (nodes: IProjectType[]) => void;
+  setEdges: (nodes: ProjectEdgeResponse[]) => void;
+  setSelected: (selectData: ISelectNode) => void;
+
+  startEdgeType: (edge?: IEdgeState) => void;
+  startType: (type?: ITypeState) => void;
+  startTypePort: (port?: ITypePortState) => void;
+  startEdgePort: (port?: IEdgePortState) => void;
+  finishEdgeType: VoidFunction;
+  finishType: VoidFunction;
+  finishTypePort: VoidFunction;
+  finishEdgePort: VoidFunction;
+};
+
+export interface SchemaContextType extends SchemaReducerSetState, SchemaReducerState {}
+
+export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => void;
+
+export type PickSchemaContextType = Pick<
+  SchemaContextType,
+  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
+>;
+
+export type NodeEdgeTypesForm = {
+  project_id: string;
+  name: string;
+  target_id: string;
+  source_id: string;
+  source_attribute_id: string;
+  target_attribute_id: string;
+  inverse: boolean;
+  multiple: boolean;
+  ref_property_type_id?: PropertyTypes.Connection;
+  propertyId?: string;
+};

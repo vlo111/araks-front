@@ -1,68 +1,69 @@
+import { Graph } from '@antv/x6';
+import { removeSelected, selectNode } from '../../helpers/selection';
+import { changeTypePosition, getTypeColors, switchPermission, switchTypePermission } from '../../helpers/utils';
 import { ElementStyle, InitEvents } from '../../types';
-import { getTypeColors, removeSelected, selectNode } from '../../helpers/utils';
-import client from 'api/client';
-import { TYPE_POSITION_UPDATE_URL } from 'api/schema/type/use-update-types-position';
+import { PATH, SELECTORS } from "../../helpers/constants";
 
-export const initEvents: InitEvents = (
+export const initSchemaEvents: InitEvents = (
   graph,
-  { setAddPortModal, setSelectedNode, setAddTypeModal, setOpenLinkPropertyModal }
+  { startTypePort, setSelected, startType, startEdgePort, startEdgeType }
 ) => {
-  graph.on('node:port:click', (event) => {
-    if (event.port === 'connector') return;
-    const { x, y, height, width } = event.view.container.getBoundingClientRect();
+  graph.on('node:port:click', ({ node, port, view: { container } }) => {
+    if (port === 'connector') return;
 
-    const bottomX = x + width;
-    const bottomY = y + height - 30;
+    const isEdge = node.getPortProp(port || '', PATH.PROPERTY_REF_TYPE) === 'connection';
 
-    if (event.port === 'add') {
-      setAddPortModal({
-        node: event.node,
-        portId: 'add',
-        isUpdate: false,
-        x: bottomX,
-        y: bottomY,
-      });
+    if (!isEdge) {
+      const { x, y, height, width } = container.getBoundingClientRect();
+
+      const props = {
+        node: node,
+        x: x + width,
+        y: y + height - 30,
+      };
+
+      if (port === 'add') {
+        startTypePort({
+          ...props,
+          portId: undefined,
+          isUpdate: false,
+        });
+      } else {
+        /** Edit type property */
+        startTypePort({
+          ...props,
+          portId: port as string,
+          isUpdate: true,
+        });
+      }
     } else {
-      // edit
-      setAddPortModal({
-        node: event.node,
-        portId: event.port as string,
-        isUpdate: true,
-        x: bottomX,
-        y: bottomY,
-      });
+      startEdgeType({ id: port, isUpdate: true });
     }
   });
 
-  graph.on('node:click', (event) => {
-    const {
-      view: { container },
-      node,
-    } = event;
+  graph.on('node:click', ({ x, y, e: { target }, node, view: { container } }) => {
+    if (target.closest('.x6-port-body')) return;
 
-    if (event.e.target.id === 'setting_circle' || event.e.target.id === 'setting_path') {
-      setAddTypeModal([event.x, event.y]);
+    if (target.id === SELECTORS.NODE_SETTING_CIRCLE || target.id === SELECTORS.NODE_SETTING_ARROW_PATH) {
+      startType({ x, y });
     }
 
     if (!container.classList.contains('selected-node')) {
       selectNode(graph, container, node);
 
-      setSelectedNode(node);
+      setSelected({ node });
     }
   });
 
-  graph.on('edge:click', (event) => {
-    const { edge, view } = event;
-
-    const iconElement = view.container.querySelector('rect');
+  graph.on('edge:click', ({ edge, view: { container } }) => {
+    const iconElement = container.querySelector('rect');
 
     if (iconElement !== null) {
       const { x, y, height, width } = iconElement.getBoundingClientRect();
 
-      setOpenLinkPropertyModal({
+      startEdgePort({
         id: edge.id,
         name: edge.attr('name'),
-        open: true,
         x: x + width / 2,
         y: y + height,
         color: getTypeColors(edge),
@@ -70,23 +71,68 @@ export const initEvents: InitEvents = (
     }
   });
 
-  graph.on('blank:click', (event) => {
-    const selectedNode: ElementStyle = event.e.target.querySelector('.selected-node');
+  graph.on('blank:click', ({ x, y, e: { target } }) => {
+    const selectedNode: ElementStyle = target.querySelector('.selected-node');
 
-    if (selectedNode !== null) {
-      removeSelected(graph, selectedNode);
-      setSelectedNode(undefined);
-    }
+    if (selectedNode !== null) removeSelected(graph, selectedNode);
 
-    if (graph.container.style.cursor === 'crosshair') {
-      setAddTypeModal([event.x, event.y]);
-    }
+    setSelected({
+      selected: false,
+    });
+
+    if (graph.container.style.cursor === 'crosshair') startType({ x, y });
   });
 
-  graph.on('node:mouseup', (event) => {
-    client.put(`${process.env.REACT_APP_BASE_URL}${TYPE_POSITION_UPDATE_URL.replace(':id', event.node.id)}`, {
-      fx: event.x - 120,
-      fy: event.y - 20,
+  /** update position */
+  graph.on('node:mouseup', ({ node }) => changeTypePosition(node.id, node.position() || { x: 0, y: 0 }));
+
+  /** on hover */
+  graph.on('node:mouseenter', ({ node }) => {
+    const ports = node.getPorts();
+
+    for (const { id } of ports)
+      node.setPortProp(id || '', 'attrs/portBody', {
+        filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.2))',
+      });
+  });
+
+  graph.on('node:mouseleave', (event) => {
+    event.cell.getPorts().forEach((p) => {
+      event.cell.setPortProp(p.id ?? '', 'attrs/portBody', {
+        filter: '',
+      });
     });
+  });
+  /** on hover */
+};
+
+/**
+ * The Events are provides perspective permission switchers
+ * @param graph
+ */
+export const initPerspectiveEvents = (graph: Graph) => {
+  graph.on('node:port:click', ({ node, port: portId }) => {
+    const { eye, allow } = node.getPort(portId || '')?.attrs || {};
+
+    /** return for edge property */
+    if (eye === undefined) return;
+
+    switchPermission(node, portId, allow as unknown as boolean);
+
+    const ports = node.getPorts().find((g) => g.attrs?.eye && g.attrs.allow);
+
+    switchTypePermission(node, !ports);
+  });
+
+  graph.on('node:click', ({ node, e: { target } }) => {
+    if (target.closest('.x6-port-body')) return;
+
+    const ports = node.getPorts().filter((g) => g.attrs?.eye);
+
+    const isAllow = node?.attrs?.body.allow as boolean;
+
+    switchTypePermission(node, isAllow);
+
+    for (const { id } of ports) switchPermission(node, id, isAllow);
   });
 };

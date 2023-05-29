@@ -2,10 +2,11 @@ import { createRoot } from 'react-dom/client';
 import { Node } from '@antv/x6';
 import { InitNodes, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
-import { getTypeColors, selectNode } from '../../helpers/utils';
-import { PATH } from 'helpers/constants';
+import { selectNode } from '../../helpers/selection';
+import { getTypeColors } from '../../helpers/utils';
+import { PATH } from "../../helpers/constants";
 
-const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkPropertyModal, nodes) => {
+const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }) => {
   if (!edge.attr(PATH.EDGE_CREATOR)) {
     /** This label is svg foreign object that is rendered on chart as edge property icon */
     const label = selectors['foContent'] as HTMLDivElement;
@@ -31,31 +32,31 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }, setOpenLinkProper
   }
 };
 
-export const initNodes: InitNodes = (graph, cells, { setOpenLinkPropertyModal, selectedNode, setSelectedNode }) => {
+export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) => {
   if (cells.length > 0) {
     graph.resetCells(cells);
 
-    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args, setOpenLinkPropertyModal, graph.getNodes());
-
-    graph.zoomToFit({ padding: 10, maxScale: 1 });
+    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
+  } else {
+    graph.resetCells([]);
   }
 
   /** The Type need to be selected after create a type */
   /** Set Select Type the last created type */
-  if (typeof selectedNode === 'string') {
+  if (selected.id) {
     setTimeout(() => {
       const nodes = graph.view.stage.querySelectorAll('.x6-cell.x6-node');
 
       const container: Element = Array.from(nodes).find(
         (n) =>
-          (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === selectedNode
+          (n as ChildNode & { getAttribute: (item: string) => string }).getAttribute('data-cell-id') === selected.id
       ) as Element;
 
-      const node = graph.getNodes().find((n) => n.id === selectedNode) as Node<Node.Properties>;
+      const node = graph.getNodes().find((n) => n.id === selected.id) as Node<Node.Properties>;
 
       selectNode(graph, container, node);
 
-      setSelectedNode(node);
+      setSelected({ node });
     }, 100);
   }
 };

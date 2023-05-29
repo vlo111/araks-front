@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/utils';
+import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/selection';
 import { Tree } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
-import { COLORS, PATH } from "helpers/constants";
+import { COLORS } from "helpers/constants";
 import { EventDataNode } from 'antd/es/tree';
 import { TreeNodeType } from '../../../data-sheet/types';
-import { Node } from '@antv/x6';
 import { IProjectType } from 'api/types';
+import { PATH } from "components/layouts/components/schema/helpers/constants";
 
 type Props = React.FC<{ nodes: IProjectType[] }>;
 
@@ -43,22 +43,22 @@ const StyledTree = styled(({ color, ...props }) => <Tree {...props} />)`
 `;
 
 export const TreeView: Props = ({ nodes }) => {
-  const { graph, selectedNode, setSelectedNode } = useSchema() ?? {};
+  const { graph, selected, setSelected } = useSchema() ?? {};
 
   const onSelect: OnSelect = (selectedKeys, e) => {
-    selectNodeWithZoom(e.node.id, graph, selectedNode, setSelectedNode);
+    selectNodeWithZoom(e.node.id, graph, selected, setSelected);
   };
 
   return (
     <StyledTree
       onSelect={onSelect}
       switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
-      selectedKeys={[(selectedNode as Node<Node.Properties>)?.id]}
+      selectedKeys={[selected?.node?.id ?? '']}
       treeData={createNodesTree(nodes)}
       autoExpandParent
       blockNode
       defaultExpandAll
-      color={selectedNode === undefined || typeof selectedNode === 'string' ? '' : selectedNode.attr(PATH.NODE_COLOR)}
+      color={selected?.node?.attr(PATH.NODE_COLOR)}
     />
   );
 };

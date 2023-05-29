@@ -1,70 +1,36 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
-
-import {
-  AddLinkModal,
-  Graph,
-  LinkPropertyModal,
-  OpenAddType,
-  OpenTypeModal,
-  PortModal,
-  SchemaContextType,
-  SelectedNode,
-} from './types';
+import { SchemaContextType } from './types';
 import { IProjectType } from 'api/types';
+import { Graph } from '@antv/x6';
 import { ProjectEdgeResponse } from 'types/project-edge';
+import { SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
+import { IEdgePortState, IEdgeState, ITypePortState, ITypeState } from './reducer/types';
 
 export const SchemaWrapper: React.FC = () => {
-  const [graph, setGraph] = useState<Graph>();
-  /** String Type ID. Set the selected type that was created */
-  const [selectedNode, setSelectedNode] = useState<SelectedNode>();
-  const [nodes, setNodes] = useState<IProjectType[]>();
-  const [edges, setEdges] = useState<ProjectEdgeResponse[]>();
+  const [state, dispatch] = useReducer(schemaReducer, schemaInitialState);
 
-  const [addPortModal, setAddPortModal] = useState<PortModal>();
-  const [addTypeModal, openTypeModal] = useState<OpenAddType>();
-  const [addLinkModal, setAddLinkModal] = useState<AddLinkModal>();
-  const [openLinkPropertyModal, setOpenLinkPropertyModal] = useState<LinkPropertyModal>();
+  const handleAction = useCallback((type: SchemaAction, payload = {}) => dispatch({ type, payload }), [dispatch]);
 
-  const setAddTypeModal: OpenTypeModal = useCallback(
-    (param) => {
-      openTypeModal(param);
-      if (graph !== undefined) graph.container.style.cursor = '';
-    },
-    [graph]
-  );
-
-  const context = useMemo(
+  const callbacks = useMemo(
     () => ({
-      graph,
-      selectedNode,
-      nodes,
-      edges,
-      addLinkModal,
-      addPortModal,
-      addTypeModal,
-      openLinkPropertyModal,
-      setGraph,
-      setSelectedNode,
-      setNodes,
-      setEdges,
-      setAddTypeModal,
-      setAddPortModal,
-      setAddLinkModal,
-      setOpenLinkPropertyModal,
+      setGraph: (payload: Graph) => handleAction(SchemaAction.SET_GRAPH, payload),
+      setNodes: (payload: IProjectType[]) => handleAction(SchemaAction.SET_NODES, payload),
+      setEdges: (payload: ProjectEdgeResponse[]) => handleAction(SchemaAction.SET_EDGES, payload),
+      setSelected: (payload: ProjectEdgeResponse[]) => handleAction(SchemaAction.SET_SELECT_NODE, payload),
+      startEdgeType: (payload: IEdgeState) => handleAction(SchemaAction.ADD_EDGE_START, payload),
+      startType: (payload: ITypeState) => handleAction(SchemaAction.ADD_TYPE_START, payload),
+      startTypePort: (payload: ITypePortState) => handleAction(SchemaAction.ADD_TYPE_PORT_START, payload),
+      startEdgePort: (payload: IEdgePortState) => handleAction(SchemaAction.ADD_EDGE_PORT_START, payload),
+      finishEdgeType: () => handleAction(SchemaAction.ADD_EDGE_FINISH),
+      finishType: () => handleAction(SchemaAction.ADD_TYPE_FINISH),
+      finishTypePort: () => handleAction(SchemaAction.ADD_TYPE_PORT_FINISH),
+      finishEdgePort: () => handleAction(SchemaAction.ADD_EDGE_PORT_FINISH),
     }),
-    [
-      graph,
-      selectedNode,
-      nodes,
-      edges,
-      addLinkModal,
-      addPortModal,
-      addTypeModal,
-      openLinkPropertyModal,
-      setAddTypeModal,
-    ]
+    [handleAction]
   );
+
+  const context = useMemo(() => ({ ...callbacks, ...state }), [callbacks, state]);
 
   return <Outlet context={context} />;
 };

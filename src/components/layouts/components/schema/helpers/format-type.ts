@@ -1,10 +1,16 @@
 import { Cell, Edge, Graph, Node } from '@antv/x6';
-import { IProjectType } from '../../../../../api/types';
-import { ProjectEdgeResponse } from '../../../../../types/project-edge';
-import { INode, InsertAddProperty, IPort, SetPropertyColor } from '../types';
-import { antTheme } from '../../../../../helpers/ant-theme';
+import { IProjectType } from 'api/types';
+import { ProjectEdgeResponse } from 'types/project-edge';
+import { INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } from '../types';
+import { antTheme } from 'helpers/ant-theme';
+import { isPerspective } from './utils';
+import { EyeD } from './svg/path-d';
+import { SELECTORS } from "./constants";
 
-const setPropertyColor: SetPropertyColor = (property, color) => {
+const { colorDefaultProperty, colorAddProperty, colorPropertyType } = antTheme.components.Schema;
+const { PORT_NAME_TEXT, PORT_BODY_RECT, PORT_TYPE_TEXT, PORT_EYE_PATH } = SELECTORS;
+
+const setPropertyColor: SetPropertyColor = (ref_property_type_id, color) => {
   const gradient = {
     fill: {
       type: 'linearGradient',
@@ -15,27 +21,37 @@ const setPropertyColor: SetPropertyColor = (property, color) => {
     },
   };
 
-  const fill = {
-    fill: antTheme.components.Schema.colorDefaultProperty,
-  };
+  const isConnection = ref_property_type_id === 'connection' ? gradient : '';
 
-  const isConnection = property.ref_property_type_id === 'connection' ? gradient : '';
-
-  return isConnection ? gradient : fill;
+  return isConnection ? gradient : { fill: colorDefaultProperty };
 };
 
 const insertAddProperty: InsertAddProperty = () => ({
   id: 'add',
   group: 'cell',
   attrs: {
-    portBody: {
-      fill: antTheme.components.Schema.colorAddProperty,
-    },
-    portNameLabel: {
-      fill: antTheme.components.Schema.colorPropertyText,
+    [PORT_BODY_RECT]: { fill: colorAddProperty },
+    [PORT_NAME_TEXT]: {
+      fill: colorPropertyType,
       text: '+ Add property',
     },
-    portTypeLabel: { text: '' },
+    [PORT_TYPE_TEXT]: { text: '' },
+  },
+});
+
+const insertProperty: InsertProperty = ({ id, color, name, ref_property_type_id, ...props }) => ({
+  id,
+  group: 'cell',
+  zIndex: 0,
+  attrs: {
+    [PORT_TYPE_TEXT]: { text: ref_property_type_id, refX: isPerspective() ? 85 : 95 },
+    [PORT_BODY_RECT]: setPropertyColor(ref_property_type_id, color),
+    [PORT_EYE_PATH]: props.allow
+      ? { d: EyeD, refX: 130, refY: 11, fill: colorPropertyType, cursor: 'pointer' }
+      : undefined,
+    [PORT_NAME_TEXT]: { text: name },
+    ref_property_type_id,
+    ...props,
   },
 });
 
@@ -82,28 +98,31 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
     const { properties } = node;
 
     for (const property of properties) {
-      const color = setPropertyColor(property, node.color);
-
-      formattedProperties.push({
-        id: property.id,
-        group: 'cell',
-        attrs: {
-          portBody: color,
-          portNameLabel: {
-            text: property.name,
-          },
-          portTypeLabel: {
-            text: property.ref_property_type_id,
-          },
-          required_type: property.required_type,
-          multiple_type: property.multiple_type,
-          unique_type: property.unique_type,
-        },
-        zIndex: 0,
-      });
+      const props = {
+        allow: isPerspective(),
+        color: node.color,
+      };
+      formattedProperties.push(insertProperty({ ...props, ...property }));
     }
 
-    formattedProperties.push(insertAddProperty());
+    const edgeProperties = edges.filter((e) => e.source_id === node.id || e.target_id === node.id);
+
+    for (const { id, name, inverse, multiple, source_id } of edgeProperties) {
+      if (inverse || (source_id === node.id)) {
+        formattedProperties.push(
+          insertProperty({
+            id: id || '',
+            name,
+            allow: false,
+            color: node.color,
+            ref_property_type_id: 'connection',
+            multiple_type: multiple,
+          })
+        );
+      }
+    }
+
+    if (!isPerspective()) formattedProperties.push(insertAddProperty());
 
     formattedNode = {
       id: node.id,
@@ -116,8 +135,13 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       attrs: {
         body: {
           stroke: node.color,
+          cursor: 'pointer',
+          allow: isPerspective(),
         },
         parentId: node.parent_id,
+        [PORT_EYE_PATH]: isPerspective()
+          ? { d: EyeD, refX: 130, refY: 17, fill: colorPropertyType, cursor: 'pointer' }
+          : undefined,
       },
       ports: formattedProperties,
     };
@@ -127,44 +151,35 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
     cells.push(cell);
   }
 
-  for (const edge of edges) {
-    const source = nodesList.find((n) => n.id === edge.source_id);
-    const target = nodesList.find((n) => n.id === edge.target_id);
-
-    const sourceColor = source?.color;
-    const targetColor = target?.color;
-
-    const s_prop = source?.properties.find((a) => a.id === edge.source_attribute_id);
-    const t_prop = target?.properties.find((a) => a.id === edge.target_attribute_id);
-
+  for (const { id, name, source, source_id, target, target_id, inverse } of edges) {
     const formattedEdge = {
-      id: edge.id,
+      id: id,
       shape: 'er-edge',
       source: {
-        cell: edge.source_id,
-        port: s_prop?.default_proprty ? undefined : edge.source_attribute_id,
+        cell: source_id,
+        port: id,
       },
       target: {
-        cell: edge.target_id,
-        port: t_prop?.default_proprty ? undefined : edge.target_attribute_id,
+        cell: target_id,
+        port: source_id === target_id ? target_id : id,
       },
       attrs: {
         line: {
           stroke: {
             type: 'linearGradient',
             stops: [
-              { offset: '50%', color: `${sourceColor}` },
-              { offset: '50%', color: `${edge.inverse ? targetColor : sourceColor}` },
+              { offset: '50%', color: `${source?.color}` },
+              { offset: '50%', color: `${inverse ? target?.color : source?.color}` },
             ],
           },
           sourceMarker: {
-            fill: sourceColor,
+            fill: source?.color,
           },
           targetMarker: {
-            fill: targetColor,
+            fill: target?.color,
           },
         },
-        name: s_prop?.name || t_prop?.name,
+        name: name,
       },
     };
 
