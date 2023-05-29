@@ -7,7 +7,7 @@ const background = `linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, r
 export const PerspectiveWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1.6rem;
   position: fixed;
   right: 0;
   top: 152px;
@@ -20,22 +20,49 @@ export const PerspectiveWrapper = styled.div`
   z-index: 1;
 
   .ant-collapse {
-    .ant-collapse-item {
+    &-item {
       .ant-collapse-header {
         background: rgba(65, 65, 65, 0.1);
         font-weight: 600;
         letter-spacing: 0.07em;
-      }
-    }
+        padding: 6px 15px !important;
+        align-items: center;
 
-    .ant-collapse-item-active {
-      .ant-collapse-header {
-        background: #414141;
-        color: white;
+        &:hover {
+          background: rgba(65, 65, 65, 0.2);
+        }
       }
 
-      ellipse {
-        fill: white;
+      svg {
+        &:hover {
+          background: rgba(35, 47, 106, 0.2);
+          border-radius: 10px;
+        }
+      }
+
+      &-active {
+        .ant-collapse-header {
+          background: #414141;
+          color: white;
+
+          &:hover {
+            background: #414141;
+          }
+        }
+
+        ellipse {
+          fill: white;
+        }
+
+        svg {
+          &:hover {
+            background: white;
+
+            ellipse {
+              fill: #232f6a;
+            }
+          }
+        }
       }
     }
 
