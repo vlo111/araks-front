@@ -25,6 +25,7 @@ export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button 
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  gap: 16px;
 
   .property-text {
     display: none;

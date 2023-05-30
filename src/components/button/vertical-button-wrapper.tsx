@@ -31,6 +31,7 @@ export const VerticalButtonWrapper = styled(
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    gap: 16px;
     padding-top: 30px;
 
     .property-text {
