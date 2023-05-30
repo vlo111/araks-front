@@ -19,13 +19,13 @@ export const SiderCollapse = ({ panels, defaultActiveKey }: Props) => {
       expandIcon={({ isActive }) => (
         <CaretRightOutlined rotate={isActive ? 90 : 0} style={{ color: COLORS.PRIMARY.GRAY }} />
       )}
-      style={{ background: 'transparent', margin: '0 16px' }}
+      style={{ background: 'transparent', margin: '0 16px', maxHeight: '10vh' }}
       bordered={false}
       defaultActiveKey={defaultActiveKey}
     >
       {panels.map((panelProps) => (
         // eslint-disable-next-line react/jsx-key
-        <Panel {...panelProps} />
+        <Panel {...panelProps} style={{ maxHeight: '30vh', overflowY: 'auto' }} />
       ))}
     </Collapse>
   );
