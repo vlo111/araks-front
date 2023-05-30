@@ -5,7 +5,7 @@ import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query
 import client from '../client';
 import { useMemo } from 'react';
 
-export const URL_GET_NODE_EDGE_TYPES_LIST = '/projects-edge-type/:project_id';
+export const URL_GET_NODE_EDGE_TYPES_LIST = '/projects-edge-type/list/:project_id';
 
 type GetProjectParam = {
   id?: string;
