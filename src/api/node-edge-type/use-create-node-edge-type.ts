@@ -26,7 +26,7 @@ export const useCreateNodeEdgeType = (propertyId?: string, options?: Options) =>
       const type = propertyId ? RequestTypes.Put : RequestTypes.Post;
       const body = {
         ...values,
-        project_id: params.id,
+        ...(propertyId ? {} : { project_id: params.id }),
       };
       return client[type](url, body);
     },
