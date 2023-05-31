@@ -85,25 +85,6 @@ export const initSchemaEvents: InitEvents = (
 
   /** update position */
   graph.on('node:mouseup', ({ node }) => changeTypePosition(node.id, node.position() || { x: 0, y: 0 }));
-
-  /** on hover */
-  graph.on('node:mouseenter', ({ node }) => {
-    const ports = node.getPorts();
-
-    for (const { id } of ports)
-      node.setPortProp(id || '', 'attrs/portBody', {
-        filter: 'drop-shadow(0 4px 4px rgb(0 0 0 / 0.2))',
-      });
-  });
-
-  graph.on('node:mouseleave', (event) => {
-    event.cell.getPorts().forEach((p) => {
-      event.cell.setPortProp(p.id ?? '', 'attrs/portBody', {
-        filter: '',
-      });
-    });
-  });
-  /** on hover */
 };
 
 /**
