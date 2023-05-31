@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from '../../../../helpers/constants';
 
 const background = `linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.4) 99.26%),
     linear-gradient(0deg, ${COLORS.PRIMARY.WHITE}, ${COLORS.PRIMARY.WHITE})`;
@@ -27,6 +27,15 @@ export const PerspectiveWrapper = styled.div`
         letter-spacing: 0.07em;
         padding: 6px 15px !important;
         align-items: center;
+
+        .ant-collapse-expand-icon {
+          position: absolute;
+          left: -15px;
+          scale: 1.5;
+          path {
+            fill: rgb(65, 65, 65);
+          }
+        }
 
         &:hover {
           background: rgba(65, 65, 65, 0.2);
@@ -68,6 +77,30 @@ export const PerspectiveWrapper = styled.div`
 
     &-content-box {
       padding-bottom: 0 !important;
+    }
+
+    .add-panel {
+      .ant-collapse-header {
+        background: rgb(65, 65, 65);
+      }
+
+      .add-perspective {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 26px;
+        letter-spacing: 0.07em;
+        color: #ffffff;
+        background: #95a2e1;
+        border-radius: 0;
+        width: 40%;
+        height: 21px;
+        
+        &:focus {
+          >> {
+          background: red;
+          }
+        }
+      }
     }
   }
 `;

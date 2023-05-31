@@ -1,11 +1,12 @@
-import { RenderSchema } from './render';
-import { Wrapper } from './wrapper';
+import { RenderSchema } from './components/graph';
 import { Toolbar } from "../../components/tool-bar";
+import { Perspectives } from "./perspective";
 
 export const ProjectPerspectives = () => {
+
   return (
     <>
-      <Wrapper />
+      <Perspectives />
       <RenderSchema />
       <Toolbar position="left" />
     </>
