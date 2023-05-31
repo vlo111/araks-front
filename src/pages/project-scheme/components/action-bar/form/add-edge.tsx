@@ -62,8 +62,8 @@ export const AddSchemaEdgeForm: React.FC = () => {
   useEffect(() => {
     if (isConnector) {
       form.setFieldsValue({
-        source: nodes.find((n) => n.id === source)?.name,
-        target: nodes.find((n) => n.id === target)?.name,
+        source_id: nodes.find((n) => n.id === source)?.id,
+        target_id: nodes.find((n) => n.id === target)?.id,
       });
     }
     return () => form.resetFields();
