@@ -31,7 +31,7 @@ type Props = {
 };
 
 export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) => {
-  const { dispatch: dispatchDataSheet } = useDataSheetWrapper();
+  const { dispatch: dispatchDataSheet, dataList } = useDataSheetWrapper();
   const { dispatch } = useTypeProperty();
 
   const [form] = Form.useForm();
@@ -61,6 +61,12 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
   const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
     mutateConnection({
       ...values,
+      target_attribute_id: dataList
+        ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+        ?.properties?.find((property) => property.default_proprty === true)?.id,
+      source_attribute_id: dataList
+        ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+        ?.properties?.find((property) => property.default_proprty === true)?.id,
     } as NodeEdgeTypesSubmit);
   };
 

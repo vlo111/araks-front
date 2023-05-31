@@ -1,5 +1,5 @@
 import { TreeSelect as TreeSelectComponent } from 'antd';
-import { COLORS, screenSize } from 'helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { changeHeight, placeholderSize } from 'helpers/styles';
 import styled, { css } from 'styled-components';
 
@@ -9,9 +9,7 @@ export const TreeSelect = styled(TreeSelectComponent)`
       background: linear-gradient(91.78deg, rgba(255, 255, 255, 0.64) 6.81%, rgba(255, 255, 255, 0.16) 100%);
       border: 1px solid ${COLORS.PRIMARY.GRAY};
 
-      @media (min-width: ${screenSize.xxl}) {
-        padding: 3px 11px;
-      }
+      padding: 3px 11px;
 
       ${(props) =>
         !props.size
