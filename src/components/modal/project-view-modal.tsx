@@ -135,23 +135,28 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
             ''
           )
         }
-        footer={false}
+        footer={
+          <FooterWrapper>
+            <Row justify="center">
+              <Col span={12}>
+                <Button
+                  block
+                  type="primary"
+                  onClick={() => navigate(PATHS.PROJECT_OVERVIEW.replace(':id', project.id))}
+                >
+                  <MenuText strong style={{ color: '#ffffff' }}>
+                    OPEN PROJECT
+                  </MenuText>
+                </Button>
+              </Col>
+            </Row>
+          </FooterWrapper>
+        }
         closable={false}
         placement="right"
         width="50vw"
       >
         <div className="project-content"></div>
-        <FooterWrapper>
-          <Row justify="center">
-            <Col span={12}>
-              <Button block type="primary" onClick={() => navigate(PATHS.PROJECT_OVERVIEW.replace(':id', project.id))}>
-                <MenuText strong style={{ color: '#ffffff' }}>
-                  OPEN PROJECT
-                </MenuText>
-              </Button>
-            </Col>
-          </Row>
-        </FooterWrapper>
       </ProjectWrapModal>
     </>
   );
