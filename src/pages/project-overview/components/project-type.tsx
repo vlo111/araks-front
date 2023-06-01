@@ -52,7 +52,7 @@ const RadioButton = styled(RadioComponent.Button)`
 
 export const ProjectType = () => {
   return (
-    <FormItem name="privacy" initialValue="public">
+    <FormItem name="privacy" initialValue="private">
       <RadioGroup buttonStyle="solid">
         <RadioButton value="public">
           <Space size={30}>
