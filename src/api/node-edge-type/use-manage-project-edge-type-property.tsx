@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import client from '../client';
 import { GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST } from './use-get-projects-edge-type-properties';
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
+import { errorMessage } from 'helpers/utils';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -41,6 +42,7 @@ export const useManageProjectNodeTypeProperty = (options?: Options) => {
       ]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

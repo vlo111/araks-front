@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { GET_PROJECT_NODE_TYPES_LIST } from 'api/project-node-types/use-get-project-note-types';
+import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 
 import client from '../client';
@@ -18,6 +19,7 @@ export const useDeleteProjectEdgeType = (edgeTypePropertyId: string, nodeTypeId:
 
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

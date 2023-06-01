@@ -4,6 +4,7 @@ import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-qu
 import client from '../client';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-node-type-properties';
 import { NodeTypePropertyDefault } from 'types/project-node-types-property';
+import { errorMessage } from 'helpers/utils';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -30,6 +31,7 @@ export const useSetPropertyDefault = (options?: Options) => {
       ]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

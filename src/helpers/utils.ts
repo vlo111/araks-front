@@ -1,5 +1,8 @@
 import { AUTH_KEYS, DEFAULT_ICON } from './constants';
 import { iconsList } from 'components/icon';
+import { AxiosError } from 'axios';
+import { Modal } from 'antd';
+import { CustomError } from 'api/types';
 
 export const noop = () => {
   return;
@@ -17,4 +20,13 @@ export const logedInUser = localStorage.getItem(AUTH_KEYS.USER)
 
 export const stripTrailingSlash = (str: string) => {
   return str.endsWith('/') ? str.slice(0, -1) : str;
+};
+
+export const errorMessage = (er: unknown) => {
+  Modal.error({
+    title: 'Error',
+    content: (er as AxiosError<CustomError>).response?.data.message,
+    footer: false,
+    closable: true,
+  });
 };

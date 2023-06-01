@@ -6,6 +6,7 @@ import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST } from './use-get-projects-edge-type-properties';
 import { URL_GET_NODE_EDGE_TYPES_LIST } from './use-get-node-edge-types';
 import { useParams } from 'react-router-dom';
+import { errorMessage } from 'helpers/utils';
 
 const URL_NODE_EDGE_TYPE_CREATE = '/projects-edge-type/create';
 const URL_NODE_EDGE_TYPE_UPDATE = '/projects-edge-type/update/:id';
@@ -36,6 +37,7 @@ export const useCreateNodeEdgeType = (propertyId?: string, options?: Options) =>
 
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };
