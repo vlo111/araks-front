@@ -15,11 +15,7 @@ export const URL_UPDATE_PROJECT = '/projects/update/:id';
 
 export type ManageProjectUrlProp = string;
 
-type ReturnData = {
-  data: ProjectFullInfo;
-};
-
-type Response = UseMutationResult<ReturnData, CreateOverviewFormData>;
+type Response = UseMutationResult<ProjectFullInfo, CreateOverviewFormData>;
 export const useManageProject = (url: ManageProjectUrlProp, type: RequestType = RequestTypes.Post) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -27,9 +23,9 @@ export const useManageProject = (url: ManageProjectUrlProp, type: RequestType = 
     mutationFn: (values: CreateOverviewFormData) => client[type](url, values),
     onSuccess: (data: Response, variables, context) => {
       queryClient.invalidateQueries([GET_PROJECTS_LIST]);
-      queryClient.invalidateQueries([GET_PROJECT_DATA.replace(':id', data?.data?.data?.id || '')]);
-      queryClient.invalidateQueries([GET_PROJECT_INFO_DATA.replace(':id', data?.data?.data?.id || '')]);
-      navigate(PATHS.PROJECT_OVERVIEW.replace(':id', data?.data?.data?.id || ''));
+      queryClient.invalidateQueries([GET_PROJECT_DATA.replace(':id', data?.data?.id || '')]);
+      queryClient.invalidateQueries([GET_PROJECT_INFO_DATA.replace(':id', data?.data?.id || '')]);
+      navigate(PATHS.PROJECT_OVERVIEW.replace(':id', data?.data?.id || ''));
     },
     onError: errorMessage,
   });
