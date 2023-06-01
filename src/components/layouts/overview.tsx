@@ -1,16 +1,13 @@
-import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { Layout as LayoutComponent, Tabs as TabsComponent } from 'antd';
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Layout as LayoutComponent } from 'antd';
+import { Navigate } from 'react-router-dom';
 
 import { PATHS } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
 import { HeaderSearch } from './components/header-search';
-import { OverviewWrapper } from './components/overview/wrapper';
 import { Logo } from 'components/logo';
-import { DataSheetWrapper } from './components/data-sheet/wrapper';
-import { SchemaWrapper } from './components/schema/wrapper';
-import { stripTrailingSlash } from 'helpers/utils';
+import { OverviewProvider } from 'context/overview-context';
+import { OverviewTabs } from 'components/tabs/overview-tabs';
 
 const Layout = styled(LayoutComponent)`
   background: #f2f2f2;
@@ -34,88 +31,8 @@ const Content = styled(ContentComponent)`
   padding: 0;
 `;
 
-const Tabs = styled(TabsComponent)`
-  .ant-tabs-nav-wrap {
-    justify-content: center;
-  }
-
-  .ant-tabs-nav {
-    box-shadow: 0px 10px 10px rgba(111, 111, 111, 0.16);
-    margin-bottom: 0;
-    z-index: 2;
-
-    &::before {
-      border-color: transparent;
-    }
-
-    .ant-tabs-tab {
-      height: 64px;
-
-      &:not(.ant-tabs-tab-active) {
-        border: none;
-        background-color: transparent;
-        background: transparent;
-      }
-
-      &.ant-tabs-tab-active {
-        background: #f2f2f2;
-        box-shadow: inset 3px 3px 9px rgba(111, 111, 111, 0.3);
-        border-radius: 4px 4px 0px 0px;
-      }
-    }
-  }
-`;
-
 export const Overview = () => {
   const { user } = useAuth();
-  const location = useLocation();
-  const params = useParams();
-  const navigate = useNavigate();
-
-  const items = useMemo(
-    () => [
-      {
-        key: PATHS.PROJECT_OVERVIEW,
-        label: 'Overview',
-      },
-      {
-        key: PATHS.PROJECT_SCHEME,
-        label: 'Scheme',
-      },
-      {
-        key: PATHS.PROJECT_PERSPECTIVES,
-        label: 'Perspectives',
-      },
-      {
-        key: PATHS.DATA_SHEET,
-        label: 'Data sheet',
-      },
-      {
-        key: '4',
-        label: 'Visualisation',
-        disabled: true,
-      },
-    ],
-    []
-  );
-
-  const handleTabClick = useCallback(
-    (key: string) => {
-      navigate(key.replace(':id', params.id || ''));
-    },
-    [navigate, params.id]
-  );
-
-  const activeItem = useMemo(
-    () =>
-      items.find((item) => {
-        return (
-          item.key.replace(':id', params.id || '').replace(':node_type_id', params.node_type_id || '') ===
-          stripTrailingSlash(location.pathname)
-        );
-      }),
-    [items, location.pathname, params.id, params.node_type_id]
-  );
 
   if (!user) {
     return <Navigate to={PATHS.SIGN_IN} />;
@@ -128,27 +45,9 @@ export const Overview = () => {
         <HeaderSearch />
       </Header>
       <Content>
-        <div className="overview-tabs">
-          <Tabs
-            destroyInactiveTabPane
-            defaultActiveKey={activeItem?.key}
-            activeKey={activeItem?.key}
-            type="card"
-            tabBarGutter={32}
-            onTabClick={handleTabClick}
-            items={items.map((item) => ({
-              ...item,
-              children: (
-                <div className="site-layout-content">
-                  {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-                  {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
-                  {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
-                  {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
-                </div>
-              ),
-            }))}
-          />
-        </div>
+        <OverviewProvider>
+          <OverviewTabs />
+        </OverviewProvider>
       </Content>
     </Layout>
   );

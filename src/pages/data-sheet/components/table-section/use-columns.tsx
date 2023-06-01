@@ -28,7 +28,10 @@ export const useColumns = () => {
     data?.map((item) => ({
       title:
         item.ref_property_type_id === PropertyTypes.Connection ? (
-          <>{`${item.name} (${item.ref_property_type_id})`}</>
+          <Space>
+            <Text color={COLORS.PRIMARY.BLUE}>{`${item.name}`}</Text>
+            <SecondaryText color={COLORS.PRIMARY.GRAY}>{`(${item.ref_property_type_id})`}</SecondaryText>
+          </Space>
         ) : (
           <ManageTypeProperty
             propertyId={item.id}
@@ -43,7 +46,7 @@ export const useColumns = () => {
             </Space>
           </ManageTypeProperty>
         ),
-      width: `${item.name} (${item.ref_property_type_id})`.length * 15,
+      width: `${item.name} (${item.ref_property_type_id})`.length * 13,
       className: 'node-property-column',
       dataIndex: item.name,
       key: item.id,

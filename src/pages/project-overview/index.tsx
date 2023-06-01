@@ -9,6 +9,8 @@ import { ViewColorIcon } from './components/view-color-icon';
 import { COLORS, PATHS, screenSize } from 'helpers/constants';
 import { Icon } from 'components/icon';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { useOverview } from 'context/overview-context';
+import { useEffect } from 'react';
 
 const ProjectInfo = styled.div`
   display: flex;
@@ -27,6 +29,7 @@ const ProjectInfo = styled.div`
 
 export const ProjectOverview = () => {
   const isXXl = useIsXXlScreen();
+  const { dispatch } = useOverview();
   const navigate = useNavigate();
   const params = useParams();
   const { data, isInitialLoading } = useGetProject(
@@ -35,6 +38,12 @@ export const ProjectOverview = () => {
       enabled: !!params.id,
     }
   );
+
+  useEffect(() => {
+    if (!params.id) {
+      dispatch('Untitled');
+    }
+  }, [dispatch, params.id]);
 
   return (
     <Spin spinning={isInitialLoading}>
