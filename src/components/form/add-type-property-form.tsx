@@ -135,16 +135,19 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isEdit ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{isConnectionType ? 'Connection type' : isEdit ? 'Edit type' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>
         </Space>
         <FormItem
           name="name"
-          label="Property name"
+          label={isConnectionType ? 'Connection name' : 'Property name'}
           rules={[
-            { required: true, message: 'Property name is required' },
+            {
+              required: true,
+              message: isConnectionType ? 'Connection name is required' : 'Property name is required',
+            },
             { min: 3, message: 'The minimum length for this field is 3 characters' },
             { max: 30, message: 'The maximum length for this field is 30 characters' },
             {
@@ -160,7 +163,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
             },
           ]}
         >
-          <FormInput placeholder="Property name" />
+          <FormInput placeholder={isConnectionType ? 'Connection name' : 'Property name'} />
         </FormItem>
         <FormItem
           name="ref_property_type_id"

@@ -38,6 +38,7 @@ type Props = {
   closeManageNodes: () => void;
 };
 
+/** @deprecated as connection edit functionality m,oved to setting icon on right side header */
 export const EditConnectionTypePropertyMenu = ({ connectionData, closeManageNodes }: Props) => {
   const { dispatch } = useTypeProperty();
   const [isEditOpened, setEditOpened] = useState(false);
