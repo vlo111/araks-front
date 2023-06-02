@@ -7,14 +7,15 @@ import { PropertyTypes } from './types';
 
 export const PropertyMultipleDetails = () => {
   const refPropertyType = Form.useWatch('ref_property_type_id');
+  const uniqueType = Form.useWatch('unique_type');
   const form = Form.useFormInstance();
 
   const disableMultiple = refPropertyType === PropertyTypes.RichText || refPropertyType === PropertyTypes.Boolean;
   useEffect(() => {
-    if (disableMultiple) {
+    if (disableMultiple || uniqueType) {
       form.setFieldValue('multiple_type', false);
     }
-  }, [disableMultiple, form]);
+  }, [disableMultiple, form, uniqueType]);
   return (
     <FormItem name="multiple_type" valuePropName="checked" initialValue={false}>
       <Checkbox disabled={disableMultiple}>

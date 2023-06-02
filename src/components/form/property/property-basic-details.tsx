@@ -8,14 +8,15 @@ import { PropertyMultipleDetails } from './property-multiple-details';
 
 export const PropertyBasicDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
+  const multipleType = Form.useWatch('multiple_type');
   const form = Form.useFormInstance();
 
   const disableUnique = dataType !== PropertyTypes.Text;
   useEffect(() => {
-    if (disableUnique) {
+    if (disableUnique || multipleType) {
       form.setFieldValue('unique_type', false);
     }
-  }, [disableUnique, form]);
+  }, [disableUnique, form, multipleType]);
   return (
     <>
       {dataType !== 'connection' && (
