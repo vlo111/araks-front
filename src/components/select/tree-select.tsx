@@ -9,8 +9,6 @@ export const TreeSelect = styled(TreeSelectComponent)`
       background: linear-gradient(91.78deg, rgba(255, 255, 255, 0.64) 6.81%, rgba(255, 255, 255, 0.16) 100%);
       border: 1px solid ${COLORS.PRIMARY.GRAY};
 
-      padding: 3px 11px;
-
       ${(props) =>
         !props.size
           ? css`
@@ -29,6 +27,7 @@ export const TreeSelect = styled(TreeSelectComponent)`
 
       .ant-select-selection-placeholder {
         ${placeholderSize}
+        padding-top: 4px;
       }
     }
   }
