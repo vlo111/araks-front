@@ -100,7 +100,8 @@ export interface IProjectTypeData extends ProjectFullInfo {
 
 export type ProjectTypePropertyReturnData = {
   created_at: string;
-  default_proprty: boolean;
+  default_property: boolean;
+  default_image?: boolean;
   id: string;
   multiple_type: boolean;
   name: string;
