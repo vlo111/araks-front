@@ -4,7 +4,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Datepicker } from '../../components/datepicker';
 import { Document } from '../../components/document';
 import { Input } from '../../components/input';
-import { Location } from '../../components/location';
 import { ImageUrl } from '../../components/image-url';
 import { VerticalSpace } from '../../components/space/vertical-space';
 import { Url } from '../../components/url';
@@ -67,9 +66,6 @@ export const UiComponents = () => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col span={12}>
-          <Location />
-        </Col>
         <Col span={12}>
           <Url />
         </Col>

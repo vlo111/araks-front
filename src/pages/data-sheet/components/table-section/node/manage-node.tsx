@@ -1,11 +1,13 @@
 import { Col, Drawer, Form, Row } from 'antd';
 import { useManageNodes } from 'api/node/use-manage-node';
+import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
-import { NodeBody, NodeDataSubmit } from 'types/node';
+import { NodeBody } from 'types/node';
 
 type Props = {
   tableHead: number;
@@ -13,7 +15,11 @@ type Props = {
 
 export const ManageNode = ({ tableHead }: Props) => {
   const [open, setOpen] = useState(false);
-  const { titleText, nodeTypeId } = useDataSheetWrapper();
+  const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
+
+  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
 
   const onClose = () => {
     setOpen(false);
@@ -31,7 +37,7 @@ export const ManageNode = ({ tableHead }: Props) => {
     height: '100%',
     width: '100%',
     right: 0,
-    top: `${tableHead}px`,
+    top: 0,
     overflow: 'hidden',
     textAlign: 'center',
     paddingLeft: '64px',
@@ -40,12 +46,15 @@ export const ManageNode = ({ tableHead }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
-    mutate({
-      nodes: values,
-      project_type_id: nodeTypeId || '',
-    } as NodeDataSubmit);
-    onClose();
+    // eslint-disable-next-line no-console
+    console.log('values', values, mutate, nodeTypeId, data);
+    // mutate({
+    //   nodes: values,
+    //   project_type_id: nodeTypeId || '',
+    // } as NodeDataSubmit);
+    // onClose();
   };
+
   return (
     <>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
@@ -81,7 +90,7 @@ export const ManageNode = ({ tableHead }: Props) => {
             layout="vertical"
             requiredMark={false}
           >
-            <AddNodeForm />
+            <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
           </Form>
         </Drawer>
       </div>

@@ -1,8 +1,9 @@
 import { Col, Row, Skeleton } from 'antd';
-import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+// import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { ProjectTypePropertyReturnData } from 'api/types';
+// import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { GoogleMapScript } from 'helpers/google-map-script';
+// import { GoogleMapScript } from 'helpers/google-map-script';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
 // import { ConnectionType } from './type/connection-type';
@@ -15,16 +16,12 @@ import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
 
-export const AddNodeForm = () => {
-  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
-  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
-    enabled: !!(nodeTypeId && isConnectionType === false),
-  });
+type Props = { data: ProjectTypePropertyReturnData[]; isInitialLoading: boolean };
 
+export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
-
   return (
     <VerticalSpace>
       <Row justify="center">
@@ -36,6 +33,7 @@ export const AddNodeForm = () => {
               case PropertyTypes.Location:
                 return <LocationType key={item.id} data={item} />;
               case PropertyTypes.URL:
+              case PropertyTypes.IMAGE_URL:
                 return <UrlType key={item.id} data={item} />;
               case PropertyTypes.Integer:
               case PropertyTypes.Decimal:
@@ -58,7 +56,7 @@ export const AddNodeForm = () => {
           })}
         </Col>
       </Row>
-      <GoogleMapScript />
+      {/* <GoogleMapScript /> */}
     </VerticalSpace>
   );
 };
