@@ -7,7 +7,8 @@ import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
-import { NodeBody } from 'types/node';
+import { NodeBody, NodeDataSubmit } from 'types/node';
+import { getNodesData } from './utils';
 
 type Props = {
   tableHead: number;
@@ -46,12 +47,17 @@ export const ManageNode = ({ tableHead }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
+    const dataToSubmit = data?.map((item) => ({
+      project_type_property_id: item.id,
+      project_type_property_name: item.ref_property_type_id,
+      nodes_data: [...getNodesData(values[item.name], item.ref_property_type_id, item.multiple_type)],
+    }));
     // eslint-disable-next-line no-console
-    console.log('values', values, mutate, nodeTypeId, data);
-    // mutate({
-    //   nodes: values,
-    //   project_type_id: nodeTypeId || '',
-    // } as NodeDataSubmit);
+    console.log('dataToSubmit', dataToSubmit);
+    mutate({
+      nodes: dataToSubmit,
+      project_type_id: nodeTypeId || '',
+    } as NodeDataSubmit);
     // onClose();
   };
 
