@@ -39,7 +39,7 @@ type Props = {
 /** This component used only for creating node type property, editing node type property and for creating type connection property */
 export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnectionType = false }: Props) => {
   const queryClient = useQueryClient();
-  const { nodeTypeId } = useDataSheetWrapper();
+  const { nodeTypeId, dataList } = useDataSheetWrapper();
   const { dispatch } = useTypeProperty();
 
   // create node type property
@@ -83,6 +83,12 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
     if (ref_property_type_id === PropertyTypes.Connection) {
       mutateConnection({
         ...values,
+        target_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+          ?.properties?.find((property) => property.default_proprty === true)?.id,
+        source_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+          ?.properties?.find((property) => property.default_proprty === true)?.id,
       } as NodeEdgeTypesSubmit);
     } else {
       mutate({
@@ -129,16 +135,19 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isEdit ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{isConnectionType ? 'Connection type' : isEdit ? 'Edit type' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>
         </Space>
         <FormItem
           name="name"
-          label="Property name"
+          label={isConnectionType ? 'Connection name' : 'Property name'}
           rules={[
-            { required: true, message: 'Property name is required' },
+            {
+              required: true,
+              message: isConnectionType ? 'Connection name is required' : 'Property name is required',
+            },
             { min: 3, message: 'The minimum length for this field is 3 characters' },
             { max: 30, message: 'The maximum length for this field is 30 characters' },
             {
@@ -154,7 +163,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
             },
           ]}
         >
-          <FormInput placeholder="Property name" />
+          <FormInput placeholder={isConnectionType ? 'Connection name' : 'Property name'} />
         </FormItem>
         <FormItem
           name="ref_property_type_id"

@@ -5,6 +5,7 @@ export type NodeEdgeTypesSubmit = {
   name: string;
   target_id: string;
   source_id: string;
+  target_attribute_id: string;
   source_attribute_id: string;
   inverse: boolean;
   multiple: boolean;

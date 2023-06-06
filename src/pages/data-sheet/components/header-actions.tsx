@@ -5,7 +5,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { COLORS } from 'helpers/constants';
 
 export const HeaderActions = () => {
-  const { startEditType, finishEditType, editTypeisOpened, nodeTypeId } = useDataSheetWrapper();
+  const { startEditType, finishEditType, editTypeisOpened, nodeTypeId, isConnectionType } = useDataSheetWrapper();
   const iconProps = nodeTypeId ? { style: { color: COLORS.PRIMARY.GRAY_DARK } } : {};
 
   const editTypeProps: EditTypeProps = nodeTypeId
@@ -21,7 +21,7 @@ export const HeaderActions = () => {
 
   return (
     <Space size={8}>
-      <UploadAction icon={iconProps} />
+      {!isConnectionType && <UploadAction icon={iconProps} />}
       <DownloadAction icon={iconProps} />
       <EditType icon={iconProps} {...editTypeProps} />
     </Space>

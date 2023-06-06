@@ -10,6 +10,7 @@ export enum PropertyTypes {
   RichText = 'rich_text',
   Text = 'text',
   URL = 'url',
+  IMAGE_URL = 'image_url',
 }
 
 export enum ConnectionPropertyTypes {

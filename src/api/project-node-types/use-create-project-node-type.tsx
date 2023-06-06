@@ -5,6 +5,7 @@ import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-no
 
 import client from '../client';
 import { GET_PROJECT_NODE_TYPES_LIST } from './use-get-project-note-types';
+import { errorMessage } from 'helpers/utils';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -42,6 +43,7 @@ export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string) 
       queryClient.invalidateQueries([GET_PROJECT_NODE_TYPES_LIST.replace(':project_id', params.id || '')]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

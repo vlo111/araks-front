@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { errorMessage } from 'helpers/utils';
 
 import client from '../client';
 import { GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST } from './use-get-projects-edge-type-properties';
@@ -17,6 +18,7 @@ export const useDeleteProjectEdgeTypeProperty = (
       queryClient.invalidateQueries([GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST.replace(':edge_type_id', nodeTypeId)]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

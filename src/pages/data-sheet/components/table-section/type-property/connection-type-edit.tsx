@@ -9,6 +9,7 @@ type Props = PopoverProps & {
   connectionData: EdgeTypePropertiesResponse;
 };
 
+/** @deprecated as connection edit functionality m,oved to setting icon on right side header */
 export const ConnectionTypeEdit = React.memo(({ children, connectionData, ...props }: Props) => {
   const [isManageOpened, setManageOpened] = useState(false);
 

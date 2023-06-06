@@ -13,7 +13,6 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
 import { Rule } from 'antd/es/form';
 import { PropertyDataConnectionTypeSelect } from 'components/select/property-data-connection-type-select';
-import { PropertyMultipleDetails } from './property/property-multiple-details';
 import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
 import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
 
@@ -128,7 +127,6 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId
         >
           <PropertyDataConnectionTypeSelect />
         </FormItem>
-        <PropertyMultipleDetails />
         <FormItem>
           <VerticalSpace>
             <Button block type="primary" htmlType="submit">

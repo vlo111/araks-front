@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
-import { GoogleMap, Marker } from '@react-google-maps/api';
-import { Modal } from 'antd';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { Modal, Skeleton } from 'antd';
 import { ReactComponent as MapPin } from 'components/icons/map-pin.svg';
 import { renderToString } from 'react-dom/server';
-
-interface Location {
-  lat?: number;
-  lng?: number;
-}
+import { Location, SelectedLocation } from './types';
 
 interface MapModalProps {
+  defaultCenter?: SelectedLocation;
   visible: boolean;
   onCancel: () => void;
   onSelectLocation: (location: Location) => void;
@@ -24,24 +21,43 @@ const markerOptions: google.maps.MarkerOptions = window.google
     }
   : {};
 
-export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps) => {
-  const [selectedLocation, setSelectedLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+export const MapModal = ({
+  visible,
+  onCancel,
+  onSelectLocation,
+  defaultCenter = { lat: 0, lng: 0 } as SelectedLocation,
+}: MapModalProps) => {
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
+  const [center, setCenter] = useState(defaultCenter);
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
+  });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setCenter({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-      });
+      } as SelectedLocation);
     });
   }, []);
 
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+  const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     const lat = event.latLng?.lat();
     const lng = event.latLng?.lng();
-    setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng });
-    onSelectLocation({ lat, lng });
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode(
+      { location: event.latLng },
+      (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+        if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+          const formattedAddress = results[0].formatted_address;
+          // eslint-disable-next-line no-console
+          console.log('results', results);
+          setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng, address: formattedAddress });
+        }
+      }
+    );
   };
 
   const onOk = () => {
@@ -54,14 +70,18 @@ export const MapModal = ({ visible, onCancel, onSelectLocation }: MapModalProps)
   return (
     <Modal title="Select Location" open={visible} onCancel={onCancel} onOk={onOk}>
       <div style={{ height: '400px', width: '100%' }}>
-        <GoogleMap
-          mapContainerStyle={{ width: '100%', height: '400px' }}
-          center={center}
-          zoom={12}
-          onClick={handleMapClick}
-        >
-          {selectedLocation && <Marker position={selectedLocation} options={markerOptions} />}
-        </GoogleMap>
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={{ width: '100%', height: '400px' }}
+            center={center}
+            zoom={12}
+            onClick={handleMapClick}
+          >
+            {selectedLocation && <Marker position={selectedLocation} options={markerOptions} />}
+          </GoogleMap>
+        ) : (
+          <Skeleton />
+        )}
       </div>
     </Modal>
   );

@@ -2,6 +2,7 @@ import { Form, Space } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { AddNewFieldButton } from 'components/button/add-new-field-button';
 import { LocationInput as Location } from 'components/location';
+import { Location as LocationPropType } from 'components/modal/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
@@ -12,12 +13,33 @@ type Props = {
 };
 
 export const LocationType = ({ data }: Props) => {
+  const form = Form.useFormInstance();
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
       <SecondaryText color={COLORS.PRIMARY.GRAY}>{`(${data.ref_property_type_id})`}</SecondaryText>
     </Space>
   );
+
+  const onChangeValue = ({ address, ...location }: LocationPropType, fieldName?: number) => {
+    if (fieldName) {
+      form.setFieldsValue({
+        [(data.name, fieldName, 'address')]: address,
+        [(data.name, fieldName, 'location')]: {
+          latitude: location.lat,
+          longitude: location.lng,
+        },
+      });
+      return;
+    }
+    form.setFieldValue(data.name, {
+      address,
+      location: {
+        latitude: location.lat,
+        longitude: location.lng,
+      },
+    });
+  };
 
   return (
     <div style={{ textAlign: 'left' }}>
@@ -30,11 +52,11 @@ export const LocationType = ({ data }: Props) => {
                   {fields.map((field) => (
                     <FormItem
                       noStyle
-                      name={[field.name, 'name']}
+                      name={[field.name, 'address']}
                       key={field.key}
                       rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
                     >
-                      <Location />
+                      <Location onChangeValue={(location: LocationPropType) => onChangeValue(location, field.name)} />
                     </FormItem>
                   ))}
                 </VerticalSpace>
@@ -50,7 +72,7 @@ export const LocationType = ({ data }: Props) => {
           label={label}
           rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
         >
-          <Location />
+          <Location onChangeValue={onChangeValue} />
         </FormItem>
       )}
     </div>

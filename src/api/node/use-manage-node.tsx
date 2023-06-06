@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import client from '../client';
 import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from './constants';
 import { NodeDataResponse, NodeDataSubmit } from 'types/node';
+import { errorMessage } from 'helpers/utils';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -39,6 +40,7 @@ export const useManageNodes = (options?: Options) => {
       ]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

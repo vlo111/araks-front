@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Skeleton } from 'antd';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
@@ -7,8 +6,6 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { ManageConnectionTypeProperty } from '../table-section/type-property/manage-connection-type-property';
-import { ConnectionTypeEdit } from '../table-section/type-property/connection-type-edit';
-import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -51,8 +48,6 @@ export const useColumns = () => {
     enabled: !!(nodeTypeId && isConnectionType === true),
   });
 
-  const connectionData = useMemo(() => data as EdgeTypePropertiesResponse, [data]);
-
   if (isInitialLoading) {
     return [
       {
@@ -66,25 +61,23 @@ export const useColumns = () => {
   const columns = [
     {
       title: () => (
-        <ConnectionTypeEdit connectionData={connectionData}>
-          <StyledCustomColumn>
-            <VerticalSpace className="left">
-              <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
-              <div className="text">{data?.source.name}</div>
-            </VerticalSpace>
-            <div className="center">
-              {data?.inverse === true ? (
-                <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-              ) : (
-                <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-              )}
-            </div>
-            <VerticalSpace className="right">
-              <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
-              <div className="text">{data?.target.name}</div>
-            </VerticalSpace>
-          </StyledCustomColumn>
-        </ConnectionTypeEdit>
+        <StyledCustomColumn>
+          <VerticalSpace className="left">
+            <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
+            <div className="text">{data?.source.name}</div>
+          </VerticalSpace>
+          <div className="center">
+            {data?.inverse === true ? (
+              <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+            ) : (
+              <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+            )}
+          </div>
+          <VerticalSpace className="right">
+            <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
+            <div className="text">{data?.target.name}</div>
+          </VerticalSpace>
+        </StyledCustomColumn>
       ),
       dataIndex: 'label',
       className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this

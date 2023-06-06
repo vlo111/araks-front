@@ -28,11 +28,19 @@ export const useColumns = () => {
     data?.map((item) => ({
       title:
         item.ref_property_type_id === PropertyTypes.Connection ? (
-          <>{`${item.name} (${item.ref_property_type_id})`}</>
+          <Space>
+            <Text color={COLORS.PRIMARY.BLUE}>{`${item.name}`}</Text>
+            <SecondaryText color={COLORS.PRIMARY.GRAY}>{`(${item.ref_property_type_id})`}</SecondaryText>
+          </Space>
+        ) : item.default_image === true ? (
+          <Space>
+            <Text color={COLORS.PRIMARY.BLUE}>{`${item.name}`}</Text>
+            <SecondaryText color={COLORS.PRIMARY.GRAY}>{`(${item.ref_property_type_id})`}</SecondaryText>
+          </Space>
         ) : (
           <ManageTypeProperty
             propertyId={item.id}
-            isDefault={item.default_proprty}
+            isDefault={item.default_property}
             canSetDefault={
               item.ref_property_type_id === 'text' && item.required_type === true && item.unique_type === true
             }
@@ -43,11 +51,11 @@ export const useColumns = () => {
             </Space>
           </ManageTypeProperty>
         ),
-      width: `${item.name} (${item.ref_property_type_id})`.length * 15,
+      width: `${item.name} (${item.ref_property_type_id})`.length * 13,
       className: 'node-property-column',
       dataIndex: item.name,
       key: item.id,
-      ...(item.default_proprty ? { fixed: 'left' } : {}),
+      ...(item.default_property ? { fixed: 'left' } : {}),
     })) || ([] as ColumnsType<DataType>);
 
   return columns;

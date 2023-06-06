@@ -1,11 +1,14 @@
 import { Col, Drawer, Form, Row } from 'antd';
 import { useManageNodes } from 'api/node/use-manage-node';
+import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
+import { getNodesData } from './utils';
 
 type Props = {
   tableHead: number;
@@ -13,7 +16,11 @@ type Props = {
 
 export const ManageNode = ({ tableHead }: Props) => {
   const [open, setOpen] = useState(false);
-  const { titleText, nodeTypeId } = useDataSheetWrapper();
+  const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
+
+  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
 
   const onClose = () => {
     setOpen(false);
@@ -31,7 +38,7 @@ export const ManageNode = ({ tableHead }: Props) => {
     height: '100%',
     width: '100%',
     right: 0,
-    top: `${tableHead}px`,
+    top: 0,
     overflow: 'hidden',
     textAlign: 'center',
     paddingLeft: '64px',
@@ -40,12 +47,20 @@ export const ManageNode = ({ tableHead }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
+    const dataToSubmit = data?.map((item) => ({
+      project_type_property_id: item.id,
+      project_type_property_name: item.ref_property_type_id,
+      nodes_data: [...getNodesData(values[item.name], item.ref_property_type_id, item.multiple_type)],
+    }));
+    // eslint-disable-next-line no-console
+    console.log('dataToSubmit', dataToSubmit);
     mutate({
-      nodes: values,
+      nodes: dataToSubmit,
       project_type_id: nodeTypeId || '',
     } as NodeDataSubmit);
-    onClose();
+    // onClose();
   };
+
   return (
     <>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
@@ -81,7 +96,7 @@ export const ManageNode = ({ tableHead }: Props) => {
             layout="vertical"
             requiredMark={false}
           >
-            <AddNodeForm />
+            <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
           </Form>
         </Drawer>
       </div>
