@@ -1,12 +1,12 @@
 import { RenderSchema } from './components/graph';
 import { Toolbar } from "../../components/tool-bar";
-import { Perspectives } from "./perspective";
+import { Section } from "./components/section";
 
 export const ProjectPerspectives = () => {
 
   return (
     <>
-      <Perspectives />
+      <Section />
       <RenderSchema />
       <Toolbar position="left" />
     </>

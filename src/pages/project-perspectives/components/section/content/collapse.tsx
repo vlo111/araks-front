@@ -6,12 +6,10 @@ interface PropsPanel extends CollapsePanelProps {
   children: React.ReactNode;
 }
 
-type Props = React.FC<{ panels: Array<PropsPanel>; isNewPerspective: boolean }>;
+type Props = React.FC<{ panels: Array<PropsPanel> }>;
 
-export const Content: Props = ({ panels, isNewPerspective }) => {
-  return (
-    <Space>
-      <PerspectiveCollapse defaultActiveKey="1" panels={panels} isNewPerspective={isNewPerspective} />
-    </Space>
-  );
-};
+export const Content: Props = ({ panels }) => (
+  <Space>
+    <PerspectiveCollapse defaultActiveKey="1" panels={panels} />
+  </Space>
+);

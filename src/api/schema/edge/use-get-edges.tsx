@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import client from '../../client';
-import { ProjectEdgeResponse } from '../../../types/project-edge';
+import client from 'api/client';
+import { ProjectEdgeResponse } from 'types/project-edge';
+import { errorMessage } from "helpers/utils";
 
 export const GET_EDGES = '/projects-edge-type/list/:project_id';
 
@@ -29,6 +30,7 @@ export const useGetEdges = ({ ...params }: GetProjectParam, options: Options = {
     queryKey: [urlNodes, params],
     queryFn: () => client.get(urlNodes, { params }),
     ...options,
+    onError: errorMessage,
   });
   const { data, isSuccess, isInitialLoading } = result;
 

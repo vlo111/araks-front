@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { RequestTypes } from '../../types';
-import client from '../../client';
-import { ProjectEdgeResponse } from '../../../types/project-edge';
+import { RequestTypes } from 'api/types';
+import client from 'api/client';
+import { ProjectEdgeResponse } from 'types/project-edge';
 import { GET_EDGES } from './use-get-edges';
 import { GET_TYPES } from '../type/use-get-types';
+import { errorMessage } from 'helpers/utils';
 
 const URL_PROJECT_EDGE_CREATE = '/projects-edge-type/create';
 const URL_PROJECT_EDGE_UPDATE = '/projects-edge-type/update/:id';
@@ -30,6 +31,7 @@ export const useCreateEdge = (id?: string) => {
       queryClient.invalidateQueries([GET_TYPES.replace(':project_id', params.id || '')]);
       queryClient.invalidateQueries([GET_EDGES.replace(':project_id', params.id || '')]);
     },
+    onError: errorMessage,
   });
   return mutation;
 };
