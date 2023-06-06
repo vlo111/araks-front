@@ -55,7 +55,7 @@ export const useColumns = () => {
       className: 'node-property-column',
       dataIndex: item.name,
       key: item.id,
-      ...(item.default_property ? { fixed: 'left' } : {}),
+      ...(item.default_property || item.default_image ? { fixed: 'left' } : {}),
     })) || ([] as ColumnsType<DataType>);
 
   return columns;

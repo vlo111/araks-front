@@ -50,15 +50,14 @@ export const ManageNode = ({ tableHead }: Props) => {
     const dataToSubmit = data?.map((item) => ({
       project_type_property_id: item.id,
       project_type_property_name: item.ref_property_type_id,
-      nodes_data: [...getNodesData(values[item.name], item.ref_property_type_id, item.multiple_type)],
+      nodes_data: [...getNodesData(values[item.name as string], item.ref_property_type_id, item.multiple_type)],
     }));
-    // eslint-disable-next-line no-console
-    console.log('dataToSubmit', dataToSubmit);
+
     mutate({
       nodes: dataToSubmit,
       project_type_id: nodeTypeId || '',
     } as NodeDataSubmit);
-    // onClose();
+    onClose();
   };
 
   return (

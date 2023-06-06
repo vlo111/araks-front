@@ -52,8 +52,7 @@ export const MapModal = ({
       (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
           const formattedAddress = results[0].formatted_address;
-          // eslint-disable-next-line no-console
-          console.log('results', results);
+
           setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng, address: formattedAddress });
         }
       }

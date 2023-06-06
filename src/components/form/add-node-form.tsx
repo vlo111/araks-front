@@ -34,6 +34,7 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
                 return <LocationType key={item.id} data={item} />;
               case PropertyTypes.URL:
               case PropertyTypes.IMAGE_URL:
+              case PropertyTypes.Document: // KEEP UNTIL FILE UPLOAD IS READY
                 return <UrlType key={item.id} data={item} />;
               case PropertyTypes.Integer:
               case PropertyTypes.Decimal:
