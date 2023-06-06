@@ -82,7 +82,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
 
   const onFinish = async ({ ...values }: ProjectEdgeForm) => {
     const find = (id: string) =>
-      nodes.find((n) => n.id === id)?.properties.find((p) => p.default_proprty) ?? { id: '' };
+      nodes.find((n) => n.id === id)?.properties.find((p) => p.default_property) ?? { id: '' };
 
     const { id: source_attribute_id } = find(values.source_id);
 
