@@ -6,6 +6,8 @@ import { Button } from '.';
 
 const StyledButton = styled(Button)`
   padding: 0;
+  height: auto;
+  border: 0;
 
   span {
     text-decoration: underline;

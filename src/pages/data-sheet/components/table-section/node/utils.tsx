@@ -83,13 +83,15 @@ const showText = (propertyType: PropertyTypes, text: string) => {
         </Button>
       );
     case PropertyTypes.RichText:
-      return text.replace(/<[^>]+>/g, '');
+      return text.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ');
     case PropertyTypes.Date:
       return dayjs(text).format('YYYY-MM-DD');
     case PropertyTypes.DateTime:
       return dayjs(text).format('YYYY-MM-DD HH:mm:ss');
     case PropertyTypes.Boolean:
       return text === 'true' ? 'Yes' : 'No';
+    case PropertyTypes.Text:
+      return <span className="table-row-height">{text}</span>;
     default:
       return text;
   }
@@ -121,20 +123,40 @@ export function getColumnValue(item: NodePropertiesValues) {
     >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
   ) : showTextCondition(
       item.project_type_property_name as PropertyTypes,
-      item.nodes_data?.filter(Boolean)?.join('') as string
+      (item.nodes_data?.[0] as ResponseLocationType)?.address
+        ? (item.nodes_data?.[0] as ResponseLocationType).address
+        : (item.nodes_data?.filter(Boolean)?.join('') as string)
     ) ? (
-    showText(
-      item.project_type_property_name as PropertyTypes,
-      item.nodes_data?.join('').replace(/<[^>]+>/g, '') as string
+    (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
+      (item.nodes_data?.[0] as ResponseLocationType).address
+    ) : (
+      showText(
+        item.project_type_property_name as PropertyTypes,
+        item.nodes_data
+          ?.join('')
+          .replace(/<[^>]+>/g, '')
+          .replace(/&nbsp;/g, ' ') as string
+      )
     )
   ) : item.project_type_property_name === PropertyTypes.IMAGE_URL ? (
-    <Avatar src={item.nodes_data?.join('') as string} />
+    <Avatar src={item.nodes_data?.join('') as string} size="large" />
   ) : (
     <LongTitle
       style={{ maxWidth: '500px' }}
       className="button-content__text"
-      name={item.nodes_data?.join('').replace(/<[^>]+>/g, '') as string}
-      titleContent={showText(item.project_type_property_name as PropertyTypes, item.nodes_data?.join('') as string)}
+      name={
+        (item.nodes_data?.[0] as ResponseLocationType)?.address
+          ? (item.nodes_data?.[0] as ResponseLocationType).address
+          : (item.nodes_data
+              ?.join('')
+              .replace(/<[^>]+>/g, '')
+              .replace(/&nbsp;/g, ' ') as string)
+      }
+      titleContent={
+        (item.nodes_data?.[0] as ResponseLocationType)?.address
+          ? (item.nodes_data?.[0] as ResponseLocationType).address
+          : showText(item.project_type_property_name as PropertyTypes, item.nodes_data?.join('') as string)
+      }
     />
   );
 }

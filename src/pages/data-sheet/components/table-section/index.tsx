@@ -59,12 +59,16 @@ export const TableSection = () => {
   useEffect(() => {
     if (columns.length) {
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
-      if (data && data.length) {
-        summaryHeight += data.length * 60;
-      }
+      const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
+
+      const firstFourElements = Array.from(columnsProperty).slice(0, data?.length ?? 0);
+      firstFourElements.forEach((column: Element) => {
+        summaryHeight += column.clientHeight || 0;
+      });
+
       setTableHead(summaryHeight);
     }
-  }, [columns.length, data]);
+  }, [columns, data]);
 
   return (
     <div style={{ position: 'relative' }}>
