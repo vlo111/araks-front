@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Avatar, Button, Space } from 'antd';
 import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
@@ -74,6 +74,7 @@ const showText = (propertyType: PropertyTypes, text: string) => {
   }
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
+      return <Avatar src={text} />;
     case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
@@ -99,21 +100,23 @@ export function getColumnValue(item: NodePropertiesValues) {
     <ManageNodeTypePopover
       trigger="hover"
       content={
-        <VerticalSpace>
-          {item.nodes_data.map((node) => {
-            // eslint-disable-next-line no-console
-            console.log(
-              'node',
-              (node as ResponseLocationType).address ??
-                (node ? showText(item.project_type_property_name as PropertyTypes, node as string) : '')
-            );
-            return (node as ResponseLocationType).address
-              ? (node as ResponseLocationType).address
-              : node
-              ? showText(item.project_type_property_name as PropertyTypes, node as string)
-              : '';
-          })}
-        </VerticalSpace>
+        item.project_type_property_name === PropertyTypes.IMAGE_URL ? (
+          <Space>
+            {item.nodes_data.map((node) => {
+              return node ? showText(item.project_type_property_name as PropertyTypes, node as string) : '';
+            })}
+          </Space>
+        ) : (
+          <VerticalSpace>
+            {item.nodes_data.map((node) => {
+              return (node as ResponseLocationType).address
+                ? (node as ResponseLocationType).address
+                : node
+                ? showText(item.project_type_property_name as PropertyTypes, node as string)
+                : '';
+            })}
+          </VerticalSpace>
+        )
       }
     >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
   ) : showTextCondition(
@@ -124,6 +127,8 @@ export function getColumnValue(item: NodePropertiesValues) {
       item.project_type_property_name as PropertyTypes,
       item.nodes_data?.join('').replace(/<[^>]+>/g, '') as string
     )
+  ) : item.project_type_property_name === PropertyTypes.IMAGE_URL ? (
+    <Avatar src={item.nodes_data?.join('') as string} />
   ) : (
     <LongTitle
       style={{ maxWidth: '500px' }}
