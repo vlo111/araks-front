@@ -15,13 +15,13 @@ type LocationValue = {
   address: Location;
 };
 
-export function getLocation(locationValue: LocationValue) {
+export function getLocation(locationValue: Location) {
   return {
     location: {
-      latitude: locationValue.address.lat,
-      longitude: locationValue.address.lng,
+      latitude: locationValue.lat,
+      longitude: locationValue.lng,
     },
-    address: locationValue.address.address,
+    address: locationValue.address,
   };
 }
 
@@ -29,10 +29,11 @@ export function getNodesData(value: unknown, refPropertyType: string, isMultiple
   switch (refPropertyType) {
     case PropertyTypes.Text:
       return isMultiple ? (value as ValueNamed[]).map((item) => item.name) : [value];
-    case PropertyTypes.Location:
+    case PropertyTypes.Location: {
       return isMultiple
-        ? (value as LocationValue[]).map((item) => getLocation(item))
-        : [getLocation(value as LocationValue)];
+        ? (value as LocationValue[]).map((item) => getLocation(item.address))
+        : [getLocation(value as Location)];
+    }
     case PropertyTypes.URL:
     case PropertyTypes.IMAGE_URL:
     case PropertyTypes.Document: // KEEP UNTIL FILE UPLOAD IS READY
