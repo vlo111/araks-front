@@ -1,6 +1,7 @@
+import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   .box {
     margin-left: -1px;
     background: rgba(35, 47, 106, 0.3);
@@ -36,3 +37,22 @@ export const Wrapper = styled.div`
     }
   }
 `;
+
+export const PanelFooter = () => {
+  return (
+    <Wrapper>
+      <Row gutter={30}>
+        <Col className="box" span={12}>
+          <Space className="text" align={'center'}>
+            Visualization
+          </Space>
+        </Col>
+        <Col className="box" span={12} style={{ marginLeft: '1px' }}>
+          <Space className="text" align={'center'}>
+            Share
+          </Space>
+        </Col>
+      </Row>
+    </Wrapper>
+  );
+};

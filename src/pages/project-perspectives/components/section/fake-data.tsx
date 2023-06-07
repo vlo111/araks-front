@@ -1,5 +1,5 @@
-import { ReactComponent as MoreSvg } from './content/icons/more.svg';
-import { Share } from './content/footers/share';
+import { ReactComponent as MoreSvg } from './collapse/icons/more.svg';
+import { PanelFooter } from './collapse/panel-footer';
 
 const text = `
   A dog is a type of domesticated animal.
@@ -12,7 +12,7 @@ const genExtra = () => <MoreSvg style={{ display: 'flex' }} onClick={(event) => 
 const children = (
   <>
     <span>{text}</span>
-    <Share />
+    <PanelFooter />
   </>
 );
 

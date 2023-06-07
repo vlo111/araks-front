@@ -1,6 +1,6 @@
 import { Text } from 'components/typography';
-import { ReactComponent as AddSvg } from './content/icons/add.svg';
-import { ReactComponent as DuplicateSvg } from './content/icons/duplicate.svg';
+import { ReactComponent as AddSvg } from './collapse/icons/add.svg';
+import { ReactComponent as DuplicateSvg } from './collapse/icons/duplicate.svg';
 import { Col, Row } from 'antd';
 import styled from 'styled-components';
 import { Tooltip } from 'components/tool-tip';
