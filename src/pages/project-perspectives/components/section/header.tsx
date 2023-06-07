@@ -4,6 +4,8 @@ import { ReactComponent as DuplicateSvg } from './collapse/icons/duplicate.svg';
 import { Col, Row } from 'antd';
 import styled from 'styled-components';
 import { Tooltip } from 'components/tool-tip';
+import { EditPerspectiveModal } from './collapse/modals/edit-perspective';
+import { useState } from 'react';
 
 const centerStyle = { display: 'flex', alignItems: 'center' };
 
@@ -25,6 +27,8 @@ const Wrapper = styled.div`
 `;
 
 export const Header = () => {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <Wrapper>
       <Row style={{ width: '100%' }} gutter={12}>
@@ -33,7 +37,7 @@ export const Header = () => {
         </Col>
         <Col style={centerStyle} className="action">
           <Tooltip title="Add Perspective">
-            <AddSvg />
+            <AddSvg onClick={() => setOpenModal(true)} />
           </Tooltip>
         </Col>
         <Col style={centerStyle} className="action">
@@ -42,6 +46,7 @@ export const Header = () => {
           </Tooltip>
         </Col>
       </Row>
+      {openModal && <EditPerspectiveModal open={openModal} onCancel={() => setOpenModal(false)} />}
     </Wrapper>
   );
 };

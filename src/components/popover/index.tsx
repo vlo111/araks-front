@@ -35,3 +35,14 @@ export const ManageNodeTypePopover = (props: PopoverProps) => (
 export const SelectColorPopover = (props: PopoverProps) => (
   <PopoverComponent placement="right" trigger="click" {...props} overlayClassName="project-popover-color" />
 );
+
+export const PerspectiveActionPopover = (props: PopoverProps) => (
+  <PopoverComponent
+    placement="bottomRight"
+    overlayClassName="perspective-popover"
+    trigger="click"
+    destroyTooltipOnHide
+    zIndex={1}
+    {...props}
+  />
+);

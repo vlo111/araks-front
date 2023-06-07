@@ -1,5 +1,5 @@
-import React, { CSSProperties, useState } from 'react';
-import { CollapsePanelProps } from 'antd';
+import React, { CSSProperties } from 'react';
+import { CollapsePanelProps } from "antd";
 import { CaretRightOutlined } from '@ant-design/icons';
 import { COLORS } from '../../helpers/constants';
 import { StyledCollapse } from './style';
@@ -9,6 +9,8 @@ const { Panel } = StyledCollapse;
 interface Props {
   panels: Array<PropsPanel>;
   defaultActiveKey?: string | string[];
+  activeKey: string,
+  onChange: (key: string | string[]) => void,
 }
 
 interface PropsPanel extends CollapsePanelProps {
@@ -24,31 +26,23 @@ const panelStyle = {
 
 const collapseStyle: CSSProperties = {
   width: '100%',
-  position: 'absolute',
   alignItems: 'center',
   backgroundColor: '#f4f5fb',
   color: COLORS.PRIMARY.BLUE,
 };
 
-export const PerspectiveCollapse = ({ panels, defaultActiveKey }: Props) => {
-  const [activeKey, setKey] = useState('1');
-
-  const onChange = (key: string | string[]) => {
-    if (key.length) setKey(key[0]);
-  };
+export const PerspectiveCollapse = ({ ...props }: Props) => {
 
   return (
     <StyledCollapse
       accordion
-      onChange={onChange}
       bordered={false}
-      activeKey={activeKey}
-      defaultActiveKey={defaultActiveKey}
       expandIcon={() => <CaretRightOutlined rotate={180} />}
       style={collapseStyle}
+      {...props}
     >
-      {panels.map(({ key, ...panelProps }) => (
-        <Panel key={key} showArrow={activeKey === key} style={panelStyle} {...panelProps} />
+      {props.panels.map(({ key, ...panelProps }) => (
+        <Panel key={key} showArrow={props.activeKey === key} style={panelStyle} {...panelProps} />
       ))}
     </StyledCollapse>
   );

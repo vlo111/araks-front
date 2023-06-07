@@ -59,7 +59,11 @@ export const StyledCollapse = styled(Collapse)`
   }
 
   .ant-collapse-content-box {
+    min-height: 8rem;
     padding-bottom: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
   }
 
   .ant-collapse-arrow:hover {
