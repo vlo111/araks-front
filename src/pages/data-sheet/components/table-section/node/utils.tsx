@@ -101,7 +101,15 @@ export function getColumnValue(item: NodePropertiesValues) {
       content={
         <VerticalSpace>
           {item.nodes_data.map((node) => {
-            return (node as ResponseLocationType).address ?? node
+            // eslint-disable-next-line no-console
+            console.log(
+              'node',
+              (node as ResponseLocationType).address ??
+                (node ? showText(item.project_type_property_name as PropertyTypes, node as string) : '')
+            );
+            return (node as ResponseLocationType).address
+              ? (node as ResponseLocationType).address
+              : node
               ? showText(item.project_type_property_name as PropertyTypes, node as string)
               : '';
           })}
