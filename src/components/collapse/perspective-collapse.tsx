@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { CollapsePanelProps } from "antd";
 import { CaretRightOutlined } from '@ant-design/icons';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { StyledCollapse } from './style';
 
 const { Panel } = StyledCollapse;

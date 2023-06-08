@@ -1,7 +1,7 @@
 import { IProjectType, IProjectTypeData } from 'api/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from '../../client';
-import { errorMessage } from "../../../helpers/utils";
+import { errorMessage } from "helpers/utils";
 
 export const GET_TYPES = '/projects/:project_id/node-types';
 

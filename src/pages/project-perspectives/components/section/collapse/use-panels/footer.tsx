@@ -1,6 +1,6 @@
 import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
-import { useSchema } from "../../../../../../components/layouts/components/schema/wrapper";
+import { useSchema } from "components/layouts/components/schema/wrapper";
 
 const Wrapper = styled.div`
   .box {

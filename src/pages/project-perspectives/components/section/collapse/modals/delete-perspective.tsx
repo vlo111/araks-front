@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from 'components/typography';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Button } from 'components/button';
-import { useDeletePerspective } from '../../../../../../api/perspective/use-delete-perspective';
+import { useDeletePerspective } from 'api/perspective/use-delete-perspective';
 
 type DeletePerspective = React.FC<{ id: string; open: boolean; onCancel: VoidFunction }>;
 

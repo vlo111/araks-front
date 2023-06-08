@@ -5,7 +5,7 @@ import { ProjectNodeTypeResponse, ProjectNodeTypeSubmit } from 'types/project-no
 
 import client from '../../client';
 import { GET_TYPES } from './use-get-types';
-import { errorMessage } from "../../../helpers/utils";
+import { errorMessage } from "helpers/utils";
 
 const URL_PROJECT_NODE_TYPES_CREATE = '/projects-node-types/create';
 const URL_PROJECT_NODE_TYPES_UPDATE = '/projects-node-types/update/:id';
