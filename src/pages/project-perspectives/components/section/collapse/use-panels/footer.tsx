@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export const FooterPanel = ({ description }: { description: string }) => {
+export const FooterPanel = ({ description, shared }: { description: string, shared: number }) => {
   const { perspective, startPerspectiveShare } = useSchema() || {};
 
   return (
@@ -54,7 +54,7 @@ export const FooterPanel = ({ description }: { description: string }) => {
           </Col>
           <Col className="box" span={12} style={{ marginLeft: '1px' }}>
             <Space className="text" align={'center'} onClick={() => startPerspectiveShare({ openShare: !(perspective?.openShare ?? false) })}>
-              Share
+              Share <p>({shared})</p>
             </Space>
           </Col>
         </Row>

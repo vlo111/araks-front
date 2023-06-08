@@ -9,6 +9,17 @@ export type ResponsePerspectiveData = {
   project_id: string;
   status: string;
   title: string;
+  shared: {
+    created_at: string
+    id: string
+    perspective_id: string
+    perspective_user_id: string
+    project_id: string
+    role: string
+    status: string
+    updated_at: string
+    user_id: string
+  }[];
 };
 
 type GetProjectParam = {
