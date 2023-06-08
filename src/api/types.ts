@@ -61,7 +61,7 @@ export type ProjectReturnData = ProjectFullInfo & {
 type ProjectTreeProperties = {
   id: string;
   name: string;
-  default_proprty?: boolean;
+  default_property?: boolean;
 };
 
 export type ProjectTreeReturnData = {
