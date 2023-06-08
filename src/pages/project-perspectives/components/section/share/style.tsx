@@ -17,6 +17,7 @@ export const maskStyle: CSSProperties = {
 };
 
 export const contentStyle: CSSProperties = {
+  width: '32rem',
   border: '1px solid #FFFFFF',
   boxShadow: '0px 10px 10px rgba(141, 143, 166, 0.2)',
 };
