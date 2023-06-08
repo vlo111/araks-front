@@ -22,7 +22,7 @@ const getSingleData = (nodeData: NodeDataTypes | undefined) => {
   if (!nodeData) {
     return '';
   }
-  if (typeof nodeData[0] === 'string') {
+  if (typeof nodeData[0] === 'string' || typeof nodeData[0] === 'number' || typeof nodeData[0] === 'boolean') {
     return nodeData.join('');
   } else {
     return (nodeData[0] as ResponseLocationType)?.address;
@@ -31,14 +31,15 @@ const getSingleData = (nodeData: NodeDataTypes | undefined) => {
 
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   let text;
-  if (typeof nodeData === 'string' || typeof nodeData === 'number') {
+
+  if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
     text = nodeData as string;
   } else {
     text = nodeData?.address;
   }
 
   if (!text) {
-    return '';
+    return <Text color={COLORS.PRIMARY.GRAY}>(No Value)</Text>;
   }
 
   const sanitizedHTML = DOMPurify.sanitize(text);
@@ -86,12 +87,15 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
 };
 
 const getRowData = (item: NodePropertiesValues) => {
-  // eslint-disable-next-line no-console
-  console.log('item', item);
   if (!item?.nodes_data) {
     return '';
   }
   const isMultiple = item.nodes_data && item.nodes_data.length > 1;
+
+  //   if (item.nodeType.default_image) {
+  //     return <Avatar src={dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)} />;
+  //   }
+
   switch (item.project_type_property_name) {
     case PropertyTypes.IMAGE_URL:
       return (
@@ -130,12 +134,13 @@ const getRowData = (item: NodePropertiesValues) => {
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.DateTime)
       );
-    case PropertyTypes.Boolean:
+    case PropertyTypes.Boolean: {
       return isMultiple ? (
         <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Boolean))}</Space>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Boolean)
       );
+    }
     case PropertyTypes.Text:
       return isMultiple ? (
         <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
@@ -159,6 +164,11 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
   const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedView }), [selectedView]);
 
+  const defaultProperty = React.useMemo(
+    () => selectedView?.properties?.find((property) => property.nodeType.default_property),
+    [selectedView?.properties]
+  );
+
   const onClose = () => {
     setSelectedView(undefined);
   };
@@ -170,7 +180,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           <>
             <MenuText strong>{state}</MenuText>
             {' / '}
-            <Text></Text>
+            <Text>{getSingleData(defaultProperty?.nodes_data)}</Text>
           </>
         }
         mask={false}

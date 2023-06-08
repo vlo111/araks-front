@@ -35,6 +35,9 @@ export type NodePropertiesValues = {
   nodes_data?: NodeDataTypes;
   nodeType: {
     name: string;
+    default_image: boolean;
+    default_property: boolean;
+    multiple_type: boolean;
   };
   project_type_id: string;
   user_id: string;
