@@ -30,11 +30,15 @@ const getSingleData = (nodeData: NodeDataTypes | undefined) => {
 };
 
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
-  let text: string;
-  if (typeof nodeData === 'string') {
-    text = nodeData;
+  let text;
+  if (typeof nodeData === 'string' || typeof nodeData === 'number') {
+    text = nodeData as string;
   } else {
     text = nodeData?.address;
+  }
+
+  if (!text) {
+    return '';
   }
 
   const sanitizedHTML = DOMPurify.sanitize(text);
@@ -73,6 +77,8 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     case PropertyTypes.Boolean:
       return text === 'true' ? 'Yes' : 'No';
     case PropertyTypes.Text:
+    case PropertyTypes.Integer:
+    case PropertyTypes.Decimal:
       return <span>{text}</span>;
     default:
       return text;
@@ -80,6 +86,8 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
 };
 
 const getRowData = (item: NodePropertiesValues) => {
+  // eslint-disable-next-line no-console
+  console.log('item', item);
   if (!item?.nodes_data) {
     return '';
   }
@@ -134,6 +142,13 @@ const getRowData = (item: NodePropertiesValues) => {
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
       );
+    case PropertyTypes.Integer:
+    case PropertyTypes.Decimal:
+      return isMultiple ? (
+        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
+      ) : (
+        dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
+      );
     default:
       return getSingleData(item.nodes_data);
   }
@@ -160,7 +175,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         }
         mask={false}
         placement="top"
-        closable={false}
+        // closable={false}
         onClose={onClose}
         afterOpenChange={(open) => {
           !open && setSelectedView(undefined);

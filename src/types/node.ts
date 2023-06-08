@@ -23,9 +23,9 @@ export type ResponseLocationType = {
   };
 };
 
-export type NodeDataType = ResponseLocationType | string;
+export type NodeDataType = ResponseLocationType | string | number;
 
-export type NodeDataTypes = (string | ResponseLocationType)[];
+export type NodeDataTypes = NodeDataType[];
 
 export type NodePropertiesValues = {
   id: string;
