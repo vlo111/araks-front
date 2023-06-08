@@ -9,6 +9,7 @@ export enum ITEM {
   NODES = 'nodes',
   SET_EDGES = 'edges',
   SELECT_NODE = 'selected',
+  PERSPECTIVE = 'perspective',
 }
 
 interface Param { isConnector: boolean}
@@ -26,6 +27,8 @@ export enum SchemaAction {
   SET_NODES = 'SET_NODES',
   SET_EDGES = 'SET_EDGES',
   SET_SELECT_NODE = 'SET_SELECT_NODE',
+  SET_PERSPECTIVE_SHARE_START = 'SET_PERSPECTIVE_SHARE_START',
+  SET_PERSPECTIVE_SHARE_FINISH = 'SET_PERSPECTIVE_SHARE_FINISH',
 }
 
 const initState = {
@@ -59,6 +62,9 @@ export const schemaInitialState: SchemaState = {
   selected: {
     selected: false,
   },
+  perspective: {
+    openShare: false
+  }
 };
 
 export function schemaReducer(state: SchemaState, action: DataSheetAction) {
@@ -112,6 +118,10 @@ export function schemaReducer(state: SchemaState, action: DataSheetAction) {
       return insert(ITEM.SET_EDGES);
     case SchemaAction.SET_SELECT_NODE:
       return insert(ITEM.SELECT_NODE);
+    case SchemaAction.SET_PERSPECTIVE_SHARE_START:
+      return start(ITEM.PERSPECTIVE);
+    case SchemaAction.SET_PERSPECTIVE_SHARE_FINISH:
+      return end(ITEM.PERSPECTIVE);
     default:
       return state;
   }

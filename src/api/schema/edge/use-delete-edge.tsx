@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
-
-import client from '../../client';
+import client from 'api/client';
 import { useParams } from "react-router-dom";
 import { GET_EDGES } from "./use-get-edges";
+import { errorMessage } from "helpers/utils";
 
 const URL_PROJECT_NODE_TYPES_DELETE = '/projects-edge-type/delete/:id';
 
@@ -16,6 +16,7 @@ export const useDeleteEdge = (options: UseQueryOptions) => {
       options?.onSuccess?.(data);
       queryClient.invalidateQueries([GET_EDGES.replace(':project_id', params.id || '')]);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

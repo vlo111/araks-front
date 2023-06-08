@@ -2,9 +2,10 @@ import { ProjectTypePropertyReturnData, RequestTypes } from 'api/types';
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 
-import client from '../../client';
+import client from 'api/client';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { GET_TYPES } from '../type/use-get-types';
+import { errorMessage } from "helpers/utils";
 
 export const NODE_TYPE_PROPERTY_CREATE = `${process.env.REACT_APP_BASE_URL}node-type-property/create`;
 const URL_PROJECT_NODE_TYPE_PROPERTY_CREATE = '/node-type-property/create';
@@ -39,6 +40,7 @@ export const useCreateTypeProperty = (options: Options, nodeTypePropertyId?: str
       queryClient.invalidateQueries([GET_TYPES.replace(':project_id', params.id || '')]);
       options?.onSuccess?.(data);
     },
+    onError: errorMessage,
   });
   return mutation;
 };

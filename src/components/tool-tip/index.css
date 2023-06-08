@@ -1,0 +1,11 @@
+.project-tooltip .ant-tooltip-inner {
+  background: linear-gradient(95.36deg, rgba(35, 47, 106, 0.7) 7.46%, rgba(35, 47, 106, 0.4) 102.31%);
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 0.07em;
+  color: #ffffff;
+  box-shadow: 0 4px 4px rgba(111, 111, 111, 0.3);
+  backdrop-filter: blur(2px);
+  border-radius: 4px;
+}

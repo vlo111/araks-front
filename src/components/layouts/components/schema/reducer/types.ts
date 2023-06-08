@@ -34,6 +34,10 @@ export interface ITypePortState extends IIsOpen {
   y?: number;
 }
 
+export interface IPerspectiveState extends IIsOpen {
+  openShare: boolean
+}
+
 export interface IEdgePortState extends IIsOpen {
   id?: string;
   name?: string;
@@ -51,9 +55,11 @@ export type SchemaState = {
   type?: ITypeState;
   type_port?: ITypePortState;
   edge_port?: IEdgePortState;
+  perspective?: IPerspectiveState
 };
 
 export interface DataSheetAction {
   type: SchemaAction;
   payload: SchemaState;
 }
+
