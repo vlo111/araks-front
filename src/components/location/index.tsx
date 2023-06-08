@@ -33,7 +33,6 @@ export const LocationInput = forwardRef<InputRef, LocationInputProps>(
 
     return (
       <>
-        Hello Hello
         <Input prefix={prefix} value={value ? value.address : ''} onClick={onOpenModal} />
         <MapModal
           visible={modalVisible}

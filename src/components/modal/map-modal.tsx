@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Modal, Skeleton } from 'antd';
 import { ReactComponent as MapPin } from 'components/icons/map-pin.svg';
@@ -11,15 +11,6 @@ interface MapModalProps {
   onCancel: () => void;
   onSelectLocation: (location: Location) => void;
 }
-
-const markerOptions: google.maps.MarkerOptions = window.google
-  ? {
-      icon: {
-        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
-        scaledSize: new window.google.maps.Size(48, 48),
-      },
-    }
-  : {};
 
 export const MapModal = ({
   visible,
@@ -42,6 +33,19 @@ export const MapModal = ({
     });
   }, []);
 
+  const markerOptions: google.maps.MarkerOptions = useMemo(
+    () =>
+      window.google
+        ? {
+            icon: {
+              url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
+              scaledSize: new window.google.maps.Size(48, 48),
+            },
+          }
+        : {},
+    []
+  );
+
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     const lat = event.latLng?.lat();
     const lng = event.latLng?.lng();
@@ -52,8 +56,7 @@ export const MapModal = ({
       (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
           const formattedAddress = results[0].formatted_address;
-          // eslint-disable-next-line no-console
-          console.log('results', results);
+
           setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng, address: formattedAddress });
         }
       }
@@ -66,6 +69,9 @@ export const MapModal = ({
     }
     onCancel();
   };
+
+  // eslint-disable-next-line no-console
+  console.log('selectedLocation', selectedLocation, markerOptions);
 
   return (
     <Modal title="Select Location" open={visible} onCancel={onCancel} onOk={onOk}>

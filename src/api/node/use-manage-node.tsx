@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import client from '../client';
 import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from './constants';
-import { NodeDataResponse, NodeDataSubmit } from 'types/node';
+import { NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { errorMessage } from 'helpers/utils';
 
 export type MoveProjectToAllFormData = {
@@ -12,7 +12,7 @@ export type MoveProjectToAllFormData = {
 };
 
 type ReturnData = {
-  data: NodeDataResponse;
+  data: NodePropertiesValues;
 };
 
 type Options = UseQueryOptions<NodeDataSubmit, Error, ReturnData>;

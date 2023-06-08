@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const LocationType = ({ data }: Props) => {
-  const form = Form.useFormInstance();
+  // const form = Form.useFormInstance();
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
@@ -22,23 +22,23 @@ export const LocationType = ({ data }: Props) => {
   );
 
   const onChangeValue = ({ address, ...location }: LocationPropType, fieldName?: number) => {
-    if (fieldName) {
-      form.setFieldsValue({
-        [(data.name, fieldName, 'address')]: address,
-        [(data.name, fieldName, 'location')]: {
-          latitude: location.lat,
-          longitude: location.lng,
-        },
-      });
-      return;
-    }
-    form.setFieldValue(data.name, {
-      address,
-      location: {
-        latitude: location.lat,
-        longitude: location.lng,
-      },
-    });
+    // if (fieldName) {
+    //   form.setFieldsValue({
+    //     [(data.name, fieldName, 'address')]: address,
+    //     [(data.name, fieldName, 'location')]: {
+    //       latitude: location.lat,
+    //       longitude: location.lng,
+    //     },
+    //   });
+    //   return;
+    // }
+    // form.setFieldValue(data.name, {
+    //   address,
+    //   location: {
+    //     latitude: location.lat,
+    //     longitude: location.lng,
+    //   },
+    // });
   };
 
   return (
@@ -51,7 +51,7 @@ export const LocationType = ({ data }: Props) => {
                 <VerticalSpace>
                   {fields.map((field) => (
                     <FormItem
-                      noStyle
+                      style={{ marginBottom: 0 }}
                       name={[field.name, 'address']}
                       key={field.key}
                       rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}

@@ -15,10 +15,31 @@ export type NodeDataSubmit = {
   nodeId?: string;
 };
 
+export type ResponseLocationType = {
+  address: string;
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+};
+
+export type NodePropertiesValues = {
+  id: string;
+  dataset_id?: string;
+  project_type_property_id?: string;
+  project_type_property_name?: string;
+  nodes_data?: (string | ResponseLocationType)[];
+  nodeType: {
+    name: string;
+  };
+  project_type_id: string;
+  user_id: string;
+  project_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type NodeDataResponse = {
   id: string;
-  project_type_id: string;
-  project_id: string;
-  user_id: string;
-  nodes?: NodeBody;
+  properties?: NodePropertiesValues[];
 };

@@ -25,7 +25,7 @@ export const TextType = ({ data }: Props) => {
         <Form.List name={data.name} initialValue={[{}]}>
           {(fields, { add, remove }) => (
             <>
-              <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
+              <FormItem label={label} style={{ marginBottom: '0' }}>
                 <VerticalSpace>
                   {fields.map((field) => (
                     <FormItem

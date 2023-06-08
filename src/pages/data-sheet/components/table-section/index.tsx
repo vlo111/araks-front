@@ -8,6 +8,8 @@ import { VerticalButton } from 'components/button/vertical-button';
 import { ManageNode } from './node/manage-node';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { NodePropertiesValues } from 'types/node';
+import { getColumnValue } from './node/utils';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -24,9 +26,16 @@ export const TableSection = () => {
   const { data } = useGetTypeNodes(nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: (data) => {
-      const rows = data.map((item) => item.nodes);
-      // eslint-disable-next-line no-console
-      console.log('data.nodes', rows);
+      const rows = data.map((row) =>
+        row.properties?.reduce((curr: DataType, item: NodePropertiesValues) => {
+          return {
+            ...curr,
+            key: row.id,
+            [item.nodeType.name]: getColumnValue(item),
+          };
+        }, {} as DataType)
+      );
+
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },
   });
@@ -50,12 +59,16 @@ export const TableSection = () => {
   useEffect(() => {
     if (columns.length) {
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
-      if (data && data.length) {
-        summaryHeight += data.length * 60;
-      }
+      const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
+
+      const firstFourElements = Array.from(columnsProperty).slice(0, data?.length ?? 0);
+      firstFourElements.forEach((column: Element) => {
+        summaryHeight += column.clientHeight || 0;
+      });
+
       setTableHead(summaryHeight);
     }
-  }, [columns.length, data]);
+  }, [columns, data]);
 
   return (
     <div style={{ position: 'relative' }}>

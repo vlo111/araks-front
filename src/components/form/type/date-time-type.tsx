@@ -32,7 +32,7 @@ export const DateTimeType = ({ data }: Props) => {
                 <VerticalSpace>
                   {fields.map((field) => (
                     <FormItem
-                      noStyle
+                      style={{ marginBottom: 0 }}
                       name={[field.name, 'name']}
                       key={field.key}
                       rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}

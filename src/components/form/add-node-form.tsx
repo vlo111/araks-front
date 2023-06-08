@@ -26,34 +26,37 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
     <VerticalSpace>
       <Row justify="center">
         <Col xs={16} xl={12}>
-          {data?.map((item) => {
-            switch (item.ref_property_type_id) {
-              case PropertyTypes.Text:
-                return <TextType key={item.id} data={item} />;
-              case PropertyTypes.Location:
-                return <LocationType key={item.id} data={item} />;
-              case PropertyTypes.URL:
-              case PropertyTypes.IMAGE_URL:
-                return <UrlType key={item.id} data={item} />;
-              case PropertyTypes.Integer:
-              case PropertyTypes.Decimal:
-                return <NumericType key={item.id} data={item} />;
-              case PropertyTypes.Date:
-                return <DateType key={item.id} data={item} />;
-              case PropertyTypes.DateTime:
-                return <DateTimeType key={item.id} data={item} />;
-              case PropertyTypes.Boolean:
-                return <BooleanType key={item.id} data={item} />;
-              case PropertyTypes.RichText:
-                return <RichTextType key={item.id} data={item} />;
-              // case PropertyTypes.Document:
-              //   return <DocumentType key={item.id} data={item} />;
-              // case PropertyTypes.Connection:
-              //   return <ConnectionType key={item.id} data={item} />;
-              default:
-                return <></>;
-            }
-          })}
+          <VerticalSpace>
+            {data?.map((item) => {
+              switch (item.ref_property_type_id) {
+                case PropertyTypes.Text:
+                  return <TextType key={item.id} data={item} />;
+                case PropertyTypes.Location:
+                  return <LocationType key={item.id} data={item} />;
+                case PropertyTypes.URL:
+                case PropertyTypes.IMAGE_URL:
+                case PropertyTypes.Document: // KEEP UNTIL FILE UPLOAD IS READY
+                  return <UrlType key={item.id} data={item} />;
+                case PropertyTypes.Integer:
+                case PropertyTypes.Decimal:
+                  return <NumericType key={item.id} data={item} />;
+                case PropertyTypes.Date:
+                  return <DateType key={item.id} data={item} />;
+                case PropertyTypes.DateTime:
+                  return <DateTimeType key={item.id} data={item} />;
+                case PropertyTypes.Boolean:
+                  return <BooleanType key={item.id} data={item} />;
+                case PropertyTypes.RichText:
+                  return <RichTextType key={item.id} data={item} />;
+                // case PropertyTypes.Document:
+                //   return <DocumentType key={item.id} data={item} />;
+                // case PropertyTypes.Connection:
+                //   return <ConnectionType key={item.id} data={item} />;
+                default:
+                  return <></>;
+              }
+            })}
+          </VerticalSpace>
         </Col>
       </Row>
       {/* <GoogleMapScript /> */}
