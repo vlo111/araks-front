@@ -23,7 +23,7 @@ export type ResponseLocationType = {
   };
 };
 
-export type NodeDataType = ResponseLocationType | string | number;
+export type NodeDataType = ResponseLocationType | string | number | boolean;
 
 export type NodeDataTypes = NodeDataType[];
 
