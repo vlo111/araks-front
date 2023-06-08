@@ -1,5 +1,6 @@
 import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
+import { useSchema } from "../../../../../../components/layouts/components/schema/wrapper";
 
 const Wrapper = styled.div`
   .box {
@@ -39,6 +40,8 @@ const Wrapper = styled.div`
 `;
 
 export const FooterPanel = ({ description }: { description: string }) => {
+  const { perspective: { openShare }, startPerspectiveShare } = useSchema() || {};
+
   return (
     <>
       <span>{description}</span>
@@ -50,7 +53,7 @@ export const FooterPanel = ({ description }: { description: string }) => {
             </Space>
           </Col>
           <Col className="box" span={12} style={{ marginLeft: '1px' }}>
-            <Space className="text" align={'center'}>
+            <Space className="text" align={'center'} onClick={() => startPerspectiveShare({ openShare: !openShare })}>
               Share
             </Space>
           </Col>

@@ -60,7 +60,7 @@ export const AddForm: Props = ({ onCancel, id }) => {
             name="title"
             label="Name"
             rules={[
-              { required: true, message: 'Node type name is required' },
+              { required: true, message: 'Perspective name is required' },
               { min: 3, message: 'The minimum length for this field is 3 characters' },
               { max: 30, message: 'The maximum length for this field is 30 characters' },
             ]}
@@ -72,7 +72,6 @@ export const AddForm: Props = ({ onCancel, id }) => {
             name="description"
             label="Description"
             rules={[
-              { required: true, message: 'Node type name is required' },
               { min: 1, message: 'The minimum length for this field is 3 characters' },
               { max: 250, message: 'The maximum length for this field is 30 characters' },
             ]}

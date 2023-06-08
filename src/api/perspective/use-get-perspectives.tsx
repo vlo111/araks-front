@@ -4,12 +4,12 @@ import client from '../client';
 export const GET_PERSPECTIVES_DATA = '/perspectives/list/:project_id';
 
 export type ResponsePerspectiveData = {
-  description: string
-  id: string
-  project_id: string
-  status: string
-  title: string
-}
+  description: string;
+  id: string;
+  project_id: string;
+  status: string;
+  title: string;
+};
 
 type GetProjectParam = {
   id?: string;
@@ -34,7 +34,6 @@ export const useGetPerspectives = (params: GetProjectParam, options: Options = {
     queryKey: [url, params],
     queryFn: () => client.get(url, { params }),
     ...options,
-    // select: (data): ReturnData => data.data,
   });
   const { data, isSuccess } = result;
   return {
