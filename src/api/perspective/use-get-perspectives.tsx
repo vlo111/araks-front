@@ -1,26 +1,8 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
+import { IResponsePerspectiveData } from "../types";
 
 export const GET_PERSPECTIVES_DATA = '/perspectives/list/:project_id';
-
-export type ResponsePerspectiveData = {
-  description: string;
-  id: string;
-  project_id: string;
-  status: string;
-  title: string;
-  shared: {
-    created_at: string
-    id: string
-    perspective_id: string
-    perspective_user_id: string
-    project_id: string
-    role: string
-    status: string
-    updated_at: string
-    user_id: string
-  }[];
-};
 
 type GetProjectParam = {
   id?: string;
@@ -29,7 +11,7 @@ type GetProjectParam = {
 type QueryKey = GetProjectParam | string;
 
 type ReturnData = {
-  data: ResponsePerspectiveData[];
+  data: IResponsePerspectiveData[];
 };
 
 type QueryResponse = {
@@ -37,7 +19,7 @@ type QueryResponse = {
 };
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
-type Result = UseQueryResult<ResponsePerspectiveData[]>;
+type Result = UseQueryResult<IResponsePerspectiveData[]>;
 
 export const useGetPerspectives = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
   const url = GET_PERSPECTIVES_DATA.replace(':project_id', params?.id || '');

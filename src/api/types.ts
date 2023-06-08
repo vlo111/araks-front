@@ -167,3 +167,24 @@ export type NodeEdgeTypesReturnData = {
 export interface CustomError {
   message: string;
 }
+
+export interface ISharedPerspectiveData {
+  created_at: string;
+  id: string;
+  perspective_id: string;
+  perspective_user_id: string;
+  project_id: string;
+  role: string;
+  status: string;
+  updated_at: string;
+  user_id: string;
+}
+
+export interface IResponsePerspectiveData {
+  description: string;
+  id: string;
+  project_id: string;
+  status: string;
+  title: string;
+  shared: ISharedPerspectiveData[];
+}

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Extra } from './extra';
 import { FooterPanel } from './footer';
-import { ResponsePerspectiveData } from 'api/perspective/use-get-perspectives';
+import { IResponsePerspectiveData } from "api/types";
 
 export type PanelList = {
   children: ReactNode;
@@ -10,7 +10,7 @@ export type PanelList = {
   key: string;
 }[];
 
-export const usePanels = (panels: ResponsePerspectiveData[]) => {
+export const usePanels = (panels: IResponsePerspectiveData[]) => {
   const [list, setList] = useState<PanelList>([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const usePanels = (panels: ResponsePerspectiveData[]) => {
       key: `${item.id}`,
       header: <div>{item.title}</div>,
       extra: item.status !== 'main' ? <Extra id={`${item.id}`} /> : undefined,
-      children: <FooterPanel description={item.description} shared={item.shared.length} />,
+      children: <FooterPanel description={item.description} shared={item.shared} />,
     }));
 
     setList(items);

@@ -1,6 +1,10 @@
 import { Col, Row, Space } from 'antd';
 import styled from 'styled-components';
-import { useSchema } from "components/layouts/components/schema/wrapper";
+import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { ISharedPerspectiveData } from 'api/types';
+import React from 'react';
+
+type Props = React.FC<{ description: string; shared: ISharedPerspectiveData[] }>;
 
 const Wrapper = styled.div`
   .box {
@@ -39,7 +43,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export const FooterPanel = ({ description, shared }: { description: string, shared: number }) => {
+export const FooterPanel: Props = ({ description, shared }) => {
   const { perspective, startPerspectiveShare } = useSchema() || {};
 
   return (
@@ -53,8 +57,12 @@ export const FooterPanel = ({ description, shared }: { description: string, shar
             </Space>
           </Col>
           <Col className="box" span={12} style={{ marginLeft: '1px' }}>
-            <Space className="text" align={'center'} onClick={() => startPerspectiveShare({ openShare: !(perspective?.openShare ?? false) })}>
-              Share <p>({shared})</p>
+            <Space
+              className="text"
+              align={'center'}
+              onClick={() => startPerspectiveShare({ openShare: !(perspective?.openShare ?? false), sharedUsers: shared })}
+            >
+              Share <p>({shared.length})</p>
             </Space>
           </Col>
         </Row>
