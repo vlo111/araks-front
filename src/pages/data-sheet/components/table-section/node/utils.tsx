@@ -72,7 +72,12 @@ const showTextCondition = (propertyType: PropertyTypes, text: string) =>
   !text ||
   text.length < 30;
 
-const showText = (propertyType: PropertyTypes, text: string, rowData?: NodeDataResponse) => {
+const showText = (
+  propertyType: PropertyTypes,
+  text: string,
+  col?: NodePropertiesValues,
+  rowData?: NodeDataResponse
+) => {
   if (!text) {
     return text;
   }
@@ -95,7 +100,7 @@ const showText = (propertyType: PropertyTypes, text: string, rowData?: NodeDataR
     case PropertyTypes.Boolean:
       return text === 'true' ? 'Yes' : 'No';
     case PropertyTypes.Text:
-      return <NodeViewButton text={text} rowData={rowData} />;
+      return col?.nodeType.default_property ? <NodeViewButton text={text} rowData={rowData} /> : text;
     default:
       return text;
   }
@@ -140,6 +145,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
           ?.join('')
           .replace(/<[^>]+>/g, '')
           .replace(/&nbsp;/g, ' ') as string,
+        item,
         row
       )
     )
