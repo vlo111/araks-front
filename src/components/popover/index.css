@@ -8,6 +8,7 @@
 }
 
 .project-popover-action .ant-popover-arrow,
+.perspective-popover .ant-popover-arrow,
 .project-popover-node-type .ant-popover-arrow,
 .project-popover-manage-property .ant-popover-arrow,
 .project-popover-color .ant-popover-arrow,
@@ -61,4 +62,18 @@
   background-color: transparent;
   padding: 0;
   width: 220px;
+}
+
+.perspective-popover .ant-popover-inner {
+  width: 180px;
+  height: 80px;
+  background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.4) 99.26%);
+}
+
+.perspective-popover .ant-popover-inner .ant-popover-inner-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  align-items: end;
 }

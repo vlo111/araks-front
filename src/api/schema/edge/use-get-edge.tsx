@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import client from '../../client';
-import { EdgeTypePropertiesResponse } from '../../node-edge-type/types';
+import client from 'api/client';
+import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
+import { errorMessage } from 'helpers/utils';
 
 export const GET_EDGE = '/projects-edge-type/:id';
 
@@ -17,6 +18,7 @@ export const useGetEdge = (edgeId?: string, options?: Options): Result => {
     queryKey: [urlNodes],
     queryFn: () => client.get(urlNodes),
     ...options,
+    onError: errorMessage,
     enabled: !!edgeId,
     select: (data) => data.data,
   });

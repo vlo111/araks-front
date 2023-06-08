@@ -24,8 +24,8 @@ export const getProperties = (list: IProjectType[], edge: ProjectEdgeResponse) =
   const { color, properties } = list.find((n) => n.id === edge.source_id) || {};
   const { color: targetColor, properties: targetProperties } = list.find((n) => n.id === edge.target_id) || {};
 
-  const { name, default_proprty } = properties?.find((a) => a.id === edge.source_attribute_id) || {};
-  const { name: targetName, default_proprty: targetDefault } =
+  const { name, default_property } = properties?.find((a) => a.id === edge.source_attribute_id) || {};
+  const { name: targetName, default_property: targetDefault } =
     targetProperties?.find((a) => a.id === edge.target_attribute_id) || {};
 
   return {
@@ -33,7 +33,7 @@ export const getProperties = (list: IProjectType[], edge: ProjectEdgeResponse) =
     targetColor,
     name,
     targetName,
-    default_proprty,
+    default_property,
     targetDefault,
   };
 };

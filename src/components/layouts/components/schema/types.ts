@@ -5,7 +5,14 @@ import Properties = Edge.Properties;
 import { IProjectType, ITypeProperty } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
-import { IEdgePortState, IEdgeState, ISelectNode, ITypePortState, ITypeState } from "./reducer/types";
+import {
+  IEdgePortState,
+  IEdgeState,
+  IPerspectiveState,
+  ISelectNode,
+  ITypePortState,
+  ITypeState
+} from "./reducer/types";
 import {PropertyTypes} from "../../../form/property/types";
 
 export interface IStroke {
@@ -171,6 +178,7 @@ export type SchemaReducerState = {
   type: ITypeState;
   type_port: ITypePortState;
   edge_port: IEdgePortState;
+  perspective: IPerspectiveState;
 };
 
 export type SchemaReducerSetState = {
@@ -187,6 +195,8 @@ export type SchemaReducerSetState = {
   finishType: VoidFunction;
   finishTypePort: VoidFunction;
   finishEdgePort: VoidFunction;
+  startPerspectiveShare: (port?: IPerspectiveState) => void;
+  finishPerspectiveShare: VoidFunction;
 };
 
 export interface SchemaContextType extends SchemaReducerSetState, SchemaReducerState {}

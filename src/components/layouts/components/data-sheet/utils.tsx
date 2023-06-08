@@ -26,7 +26,7 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: s
     ) {
       continue;
     }
-    const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_proprty === true)?.id || '';
+    const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_property === true)?.id || '';
     const key = nodesList[i].id;
     const treeNode: TreeNodeType = {
       title: (
