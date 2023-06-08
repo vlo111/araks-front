@@ -5,7 +5,8 @@ import { ManageNodeTypePopover } from 'components/popover';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { LongTitle } from 'components/typography';
 import dayjs from 'dayjs';
-import { NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { NodeDataResponse, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { NodeViewButton } from './node-view-button';
 
 type ValueNamed = {
   name: string;
@@ -32,7 +33,9 @@ export function getNodesData(value: unknown, refPropertyType: string, isMultiple
     case PropertyTypes.Location: {
       return isMultiple
         ? (value as LocationValue[]).map((item) => getLocation(item.address))
-        : [getLocation(value as Location)];
+        : value
+        ? [getLocation(value as Location)]
+        : [];
     }
     case PropertyTypes.URL:
     case PropertyTypes.IMAGE_URL:
@@ -69,7 +72,7 @@ const showTextCondition = (propertyType: PropertyTypes, text: string) =>
   !text ||
   text.length < 30;
 
-const showText = (propertyType: PropertyTypes, text: string) => {
+const showText = (propertyType: PropertyTypes, text: string, rowData?: NodeDataResponse) => {
   if (!text) {
     return text;
   }
@@ -88,17 +91,17 @@ const showText = (propertyType: PropertyTypes, text: string) => {
     case PropertyTypes.Date:
       return dayjs(text).format('YYYY-MM-DD');
     case PropertyTypes.DateTime:
-      return dayjs(text).format('YYYY-MM-DD HH:mm:ss');
+      return dayjs(text).format('YYYY-MM-DD HH:mm');
     case PropertyTypes.Boolean:
       return text === 'true' ? 'Yes' : 'No';
     case PropertyTypes.Text:
-      return <span className="table-row-height">{text}</span>;
+      return <NodeViewButton text={text} rowData={rowData} />;
     default:
       return text;
   }
 };
 
-export function getColumnValue(item: NodePropertiesValues) {
+export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
   return item.nodes_data && item.nodes_data.length > 1 ? (
     <ManageNodeTypePopover
       trigger="hover"
@@ -136,7 +139,8 @@ export function getColumnValue(item: NodePropertiesValues) {
         item.nodes_data
           ?.join('')
           .replace(/<[^>]+>/g, '')
-          .replace(/&nbsp;/g, ' ') as string
+          .replace(/&nbsp;/g, ' ') as string,
+        row
       )
     )
   ) : item.project_type_property_name === PropertyTypes.IMAGE_URL ? (

@@ -23,12 +23,16 @@ export type ResponseLocationType = {
   };
 };
 
+export type NodeDataType = ResponseLocationType | string;
+
+export type NodeDataTypes = (string | ResponseLocationType)[];
+
 export type NodePropertiesValues = {
   id: string;
   dataset_id?: string;
   project_type_property_id?: string;
   project_type_property_name?: string;
-  nodes_data?: (string | ResponseLocationType)[];
+  nodes_data?: NodeDataTypes;
   nodeType: {
     name: string;
   };
