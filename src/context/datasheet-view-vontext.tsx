@@ -9,7 +9,8 @@ import { COLORS } from 'helpers/constants';
 import { Button } from 'components/button';
 import { PropertyTypes } from 'components/form/property/types';
 import dayjs from 'dayjs';
-import { CalendarOutlined, EnvironmentOutlined, LinkOutlined } from '@ant-design/icons';
+import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
+import { LocationView } from 'components/location/location-view';
 
 type VIewDataType = NodeDataResponse | undefined;
 
@@ -55,12 +56,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
         </Button>
       );
     case PropertyTypes.Location:
-      return (
-        <Space>
-          <EnvironmentOutlined />
-          <span>{text}</span>
-        </Space>
-      );
+      return <LocationView text={text} location={nodeData as ResponseLocationType} />;
     case PropertyTypes.RichText:
       return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />;
     case PropertyTypes.Date:
@@ -115,11 +111,8 @@ const getRowData = (item: NodePropertiesValues) => {
         dataByType(getSingleData(item.nodes_data), PropertyTypes.URL)
       );
     case PropertyTypes.Location:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Location))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Location)
-      );
+      return <Space>{item?.nodes_data?.map((data) => dataByType(data, PropertyTypes.Location))}</Space>;
+
     case PropertyTypes.RichText:
       return dataByType(getSingleData(item.nodes_data), PropertyTypes.RichText);
     case PropertyTypes.Date:

@@ -33,18 +33,16 @@ export const MapModal = ({
     });
   }, []);
 
-  const markerOptions: google.maps.MarkerOptions = useMemo(
-    () =>
-      window.google
-        ? {
-            icon: {
-              url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
-              scaledSize: new window.google.maps.Size(48, 48),
-            },
-          }
-        : {},
-    []
-  );
+  const markerOptions: google.maps.MarkerOptions = useMemo(() => {
+    return window.google && selectedLocation
+      ? {
+          icon: {
+            url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(renderToString(<MapPin />))}`,
+            scaledSize: new window.google.maps.Size(48, 48),
+          },
+        }
+      : {};
+  }, [selectedLocation]);
 
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
     const lat = event.latLng?.lat();
@@ -69,9 +67,6 @@ export const MapModal = ({
     }
     onCancel();
   };
-
-  // eslint-disable-next-line no-console
-  console.log('selectedLocation', selectedLocation, markerOptions);
 
   return (
     <Modal title="Select Location" open={visible} onCancel={onCancel} onOk={onOk}>
