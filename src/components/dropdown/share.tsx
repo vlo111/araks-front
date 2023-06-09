@@ -14,7 +14,7 @@ const ShareSelect = styled(Select)`
       background-color: #ededf3;
 
       .ant-select-selection-item {
-        ${textStyles}
+        ${textStyles};
         padding: 3px 16px;
       }
 

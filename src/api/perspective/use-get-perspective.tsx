@@ -1,16 +1,16 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
-import { ResponsePerspectiveData } from './use-get-perspectives';
+import { IResponsePerspectiveData } from "../types";
 
 export const GET_PERSPECTIVE = '/perspectives/:id';
 
 type ReturnData = {
-  data: ResponsePerspectiveData;
+  data: IResponsePerspectiveData;
 };
 
-type Options = UseQueryOptions<ReturnData, Error, ResponsePerspectiveData>;
-type Result = UseQueryResult<ResponsePerspectiveData>;
+type Options = UseQueryOptions<ReturnData, Error, IResponsePerspectiveData>;
+type Result = UseQueryResult<IResponsePerspectiveData>;
 
 export const useGetPerspective = (id?: string, options?: Options): Result => {
   const urlNodes = GET_PERSPECTIVE.replace(':id', id || '');
@@ -26,6 +26,6 @@ export const useGetPerspective = (id?: string, options?: Options): Result => {
 
   return {
     ...result,
-    data: isSuccess ? data : ({} as ResponsePerspectiveData),
+    data: isSuccess ? data : ({} as IResponsePerspectiveData),
   } as Result;
 };

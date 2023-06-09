@@ -1,22 +1,48 @@
-import { Col, Divider, Drawer, Form, Row, Space } from 'antd';
+import { Col, Drawer, Form, Row, Select } from 'antd';
 import { containerStyle, contentStyle, drawerStyle, maskStyle } from './style';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { VerticalSpace } from 'components/space/vertical-space';
-import { FormItem } from 'components/form/form-item';
 import { Input } from 'components/input';
-import { Button } from 'components/button';
-import { Icon } from 'components/icon';
-import { Text } from 'components/typography';
-import { SharedWith } from '../../../../project-overview/components/share/shared-with';
+import { textStyles } from 'components/typography';
+import { CaretDownFilled } from '@ant-design/icons';
+import styled from 'styled-components';
+
+const ShareSelect = styled(Select)`
+  && {
+    .ant-select-selector {
+      background-color: #ededf3;
+
+      .ant-select-selection-item {
+        ${textStyles};
+        padding: 3px 16px;
+      }
+
+      &:active {
+        box-shadow: none;
+      }
+    }
+
+    &&.ant-select-focused .ant-select-selector {
+      box-shadow: none;
+    }
+  }
+`;
+
+export const SHARE_OPTIONS = [
+  {
+    label: 'Can Edit',
+    value: 'edit',
+  },
+  {
+    label: 'Can View',
+    value: 'view',
+  },
+];
 
 export const Share = () => {
-  const {
-    perspective,
-    startPerspectiveShare,
-  } = useSchema() || {};
+  const { perspective, startPerspectiveShare } = useSchema() || {};
 
   const onClose = () => {
-    startPerspectiveShare({ openShare: false });
+    startPerspectiveShare({ openShare: false, sharedUsers: [] });
   };
 
   const [form] = Form.useForm();
@@ -24,6 +50,8 @@ export const Share = () => {
   const onFinish = () => {
     // mutate(values);
   };
+
+  const list = SHARE_OPTIONS;
 
   return (
     <>
@@ -46,34 +74,21 @@ export const Share = () => {
             layout="vertical"
             requiredMark={false}
           >
-            <VerticalSpace size={48}>
-              <VerticalSpace size={19}>
-                <Row gutter={[37, 19]}>
-                  <Col xs={24} xxl={16}>
-                    <FormItem
-                      name="email"
-                      rules={[{ required: true, message: 'Perspectives is required' }]}
-                      style={{ marginBottom: '0' }}
-                    >
-                      <Input placeholder="Email" />
-                    </FormItem>
-                  </Col>
-                  <Col xs={24} xxl={8}>
-                    <Button block type="primary">
-                      Send Invite
-                    </Button>
-                  </Col>
-                </Row>
-              </VerticalSpace>
-              <VerticalSpace size={8}>
-                <Space size={9} style={{ lineHeight: 1 }}>
-                  <Icon color="#C5C5C5" icon="public" size={20} />
-                  <Text>Anyone with the link</Text>
-                </Space>
-                <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
-                <SharedWith />
-              </VerticalSpace>
-            </VerticalSpace>
+            <Row>
+              <Col span={24}>
+                <Input placeholder="Main" />
+              </Col>
+              <Col span={24} style={{ position: 'absolute', right: '50px' }}>
+                <ShareSelect
+                  value={list[0]}
+                  popupClassName="share-dropdown"
+                  style={{ width: 156 }}
+                  // onChange={handleOnChange}
+                  options={list}
+                  suffixIcon={<CaretDownFilled />}
+                />
+              </Col>
+            </Row>
           </Form>
         </Drawer>
       </div>
