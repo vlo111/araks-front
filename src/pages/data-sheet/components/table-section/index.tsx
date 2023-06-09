@@ -1,15 +1,16 @@
+import { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useColumns } from './use-columns';
 import { DataType } from './types';
 import { useActions } from './table-actions';
 import { getTableHeight } from './constants';
-import { useEffect, useState } from 'react';
 import { VerticalButton } from 'components/button/vertical-button';
 import { ManageNode } from './node/manage-node';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePropertiesValues } from 'types/node';
 import { getColumnValue } from './node/utils';
+import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -31,7 +32,7 @@ export const TableSection = () => {
           return {
             ...curr,
             key: row.id,
-            [item.nodeType.name]: getColumnValue(item),
+            [item.nodeType.name]: getColumnValue(item, row),
           };
         }, {} as DataType)
       );
@@ -73,17 +74,23 @@ export const TableSection = () => {
   return (
     <div style={{ position: 'relative' }}>
       <ManageNode tableHead={tableHead} />
-      <div id="container" style={{ overflow: 'auto', width: '100%', height: getTableHeight }}>
+      <div
+        id="container"
+        className="content-datasheet"
+        style={{ overflow: 'auto', width: '100%', height: getTableHeight }}
+      >
         <VerticalButton columnWidth={columnWidth} />
-        <Table
-          id="node-table"
-          size="large"
-          bordered
-          dataSource={rowData}
-          columns={[...columns, ...actions]}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
+        <ViewDatasheetProvider>
+          <Table
+            id="node-table"
+            size="large"
+            bordered
+            dataSource={rowData}
+            columns={[...columns, ...actions]}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        </ViewDatasheetProvider>
       </div>
     </div>
   );

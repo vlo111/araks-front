@@ -129,7 +129,7 @@ export type ProjectNodeTypePropertyReturnData = {
   id: string;
   name: string;
   multiple_type: boolean;
-  default_proprty: boolean;
+  default_property: boolean;
   unique_type: boolean;
   required_type: boolean;
   user_id: string;
