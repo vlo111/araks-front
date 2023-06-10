@@ -9,8 +9,10 @@ export const PropertyMultipleDetails = () => {
   const refPropertyType = Form.useWatch('ref_property_type_id');
   const uniqueType = Form.useWatch('unique_type');
   const form = Form.useFormInstance();
+  const isDefaultProprty = form.getFieldValue('default_property');
 
-  const disableMultiple = refPropertyType === PropertyTypes.RichText || refPropertyType === PropertyTypes.Boolean;
+  const disableMultiple =
+    refPropertyType === PropertyTypes.RichText || refPropertyType === PropertyTypes.Boolean || isDefaultProprty;
   useEffect(() => {
     if (disableMultiple || uniqueType) {
       form.setFieldValue('multiple_type', false);

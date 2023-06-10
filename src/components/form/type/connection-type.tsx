@@ -31,8 +31,6 @@ const WrapperConnection = styled(Space)`
 
 export const ConnectionType = ({ data }: Props) => {
   const { dataList } = useDataSheetWrapper();
-  // eslint-disable-next-line no-console
-  console.log('data', data, dataList);
   const label = (
     <Space style={{ width: '100%', justifyContent: 'space-between', display: 'flex' }}>
       <Space>

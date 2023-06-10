@@ -11,15 +11,13 @@ type Props = {
 };
 
 export const LocationView = ({ text, location }: Props) => {
-  // eslint-disable-next-line no-console
-  console.log('location', location);
   const [visible, setVisible] = useState(false);
   return (
     <>
       <Button type="text" onClick={() => setVisible(true)} icon={<EnvironmentOutlined />}>
         <span>{text}</span>
       </Button>
-      <Modal title="Selected Location" open={visible} onCancel={() => setVisible(false)} destroyOnClose>
+      <Modal title="Selected Location" open={visible} onCancel={() => setVisible(false)} destroyOnClose footer={false}>
         <MapView
           defaultCenter={
             {

@@ -24,9 +24,9 @@ export const TableSection = () => {
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0));
 
   const { nodeTypeId } = useDataSheetWrapper();
-  const { data } = useGetTypeNodes(nodeTypeId, {
+  const { count } = useGetTypeNodes(nodeTypeId, {
     enabled: !!nodeTypeId,
-    onSuccess: (data) => {
+    onSuccess: ({ count, rows: data }) => {
       const rows = data.map((row) =>
         row.properties?.reduce((curr: DataType, item: NodePropertiesValues) => {
           return {
@@ -62,14 +62,14 @@ export const TableSection = () => {
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
       const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
 
-      const firstFourElements = Array.from(columnsProperty).slice(0, data?.length ?? 0);
+      const firstFourElements = Array.from(columnsProperty).slice(0, (count > 20 ? 20 : count) ?? 0);
       firstFourElements.forEach((column: Element) => {
         summaryHeight += column.clientHeight || 0;
       });
 
       setTableHead(summaryHeight);
     }
-  }, [columns, data]);
+  }, [columns, count]);
 
   return (
     <div style={{ position: 'relative' }}>

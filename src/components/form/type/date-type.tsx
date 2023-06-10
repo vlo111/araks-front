@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { FormItem } from '../form-item';
+import { TypeWrapper } from './type-wrapper';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -30,19 +31,26 @@ export const DateType = ({ data }: Props) => {
               <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
                 <VerticalSpace>
                   {fields.map((field) => (
-                    <FormItem
-                      style={{ marginBottom: 0 }}
-                      name={[field.name, 'name']}
-                      key={field.key}
-                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                    <TypeWrapper
+                      key={field.name}
+                      fieldLength={fields.length}
+                      field={field}
+                      onRemove={() => remove(field.name)}
                     >
-                      <Datepicker
-                        picker="date"
-                        format={dateFormat}
-                        style={{ width: '100%' }}
-                        placeholder="DD/MM/YYYY"
-                      />
-                    </FormItem>
+                      <FormItem
+                        style={{ marginBottom: 0 }}
+                        name={[field.name, 'name']}
+                        key={field.key}
+                        rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                      >
+                        <Datepicker
+                          picker="date"
+                          format={dateFormat}
+                          style={{ width: '100%' }}
+                          placeholder="DD/MM/YYYY"
+                        />
+                      </FormItem>
+                    </TypeWrapper>
                   ))}
                 </VerticalSpace>
               </FormItem>

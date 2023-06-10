@@ -50,3 +50,8 @@ export type NodeDataResponse = {
   id: string;
   properties?: NodePropertiesValues[];
 };
+
+export type NodeDataListResponse = {
+  count: number;
+  rows: NodeDataResponse[];
+};

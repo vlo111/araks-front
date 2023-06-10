@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { FormItem } from '../form-item';
+import { TypeWrapper } from './type-wrapper';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -28,14 +29,21 @@ export const TextType = ({ data }: Props) => {
               <FormItem label={label} style={{ marginBottom: '0' }}>
                 <VerticalSpace>
                   {fields.map((field) => (
-                    <FormItem
-                      noStyle
-                      name={[field.name, 'name']}
-                      key={field.key}
-                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                    <TypeWrapper
+                      key={field.name}
+                      fieldLength={fields.length}
+                      field={field}
+                      onRemove={() => remove(field.name)}
                     >
-                      <Input />
-                    </FormItem>
+                      <FormItem
+                        noStyle
+                        name={[field.name, 'name']}
+                        key={field.key}
+                        rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                      >
+                        <Input />
+                      </FormItem>
+                    </TypeWrapper>
                   ))}
                 </VerticalSpace>
               </FormItem>

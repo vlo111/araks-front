@@ -1,4 +1,3 @@
-import { MinusCircleOutlined } from '@ant-design/icons';
 import { Form, Space } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { AddNewFieldButton } from 'components/button/add-new-field-button';
@@ -7,18 +6,8 @@ import { Location as LocationPropType } from 'components/modal/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
-import styled from 'styled-components';
 import { FormItem } from '../form-item';
-
-const Wrapper = styled.div`
-  position: relative;
-
-  .dynamic-delete-button {
-    position: absolute;
-    right: -30px;
-    top: 10px;
-  }
-`;
+import { TypeWrapper } from './type-wrapper';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -62,7 +51,12 @@ export const LocationType = ({ data }: Props) => {
               <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
                 <VerticalSpace>
                   {fields.map((field) => (
-                    <Wrapper key={field.name}>
+                    <TypeWrapper
+                      key={field.name}
+                      fieldLength={fields.length}
+                      field={field}
+                      onRemove={() => remove(field.name)}
+                    >
                       <FormItem
                         style={{ marginBottom: 0 }}
                         name={[field.name, 'address']}
@@ -71,10 +65,7 @@ export const LocationType = ({ data }: Props) => {
                       >
                         <Location onChangeValue={(location: LocationPropType) => onChangeValue(location, field.name)} />
                       </FormItem>
-                      {fields.length > 1 && field.name >= 1 ? (
-                        <MinusCircleOutlined className="dynamic-delete-button" onClick={() => remove(field.name)} />
-                      ) : null}
-                    </Wrapper>
+                    </TypeWrapper>
                   ))}
                 </VerticalSpace>
               </FormItem>

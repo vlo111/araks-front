@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { FormItem } from '../form-item';
+import { TypeWrapper } from './type-wrapper';
 // import { PropertyTypes } from '../property/types';
 
 type Props = {
@@ -59,17 +60,24 @@ export const NumericType = ({ data }: Props) => {
               <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
                 <VerticalSpace>
                   {fields.map((field) => (
-                    <FormItem
-                      style={{ marginBottom: 0 }}
-                      name={[field.name, 'name']}
-                      key={field.key}
-                      // rules={[
-                      //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
-                      //   { validator: validateInputValue },
-                      // ]}
+                    <TypeWrapper
+                      key={field.name}
+                      fieldLength={fields.length}
+                      field={field}
+                      onRemove={() => remove(field.name)}
                     >
-                      <InputNumber style={{ width: '100%' }} />
-                    </FormItem>
+                      <FormItem
+                        style={{ marginBottom: 0 }}
+                        name={[field.name, 'name']}
+                        key={field.key}
+                        // rules={[
+                        //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
+                        //   { validator: validateInputValue },
+                        // ]}
+                      >
+                        <InputNumber style={{ width: '100%' }} />
+                      </FormItem>
+                    </TypeWrapper>
                   ))}
                 </VerticalSpace>
               </FormItem>
