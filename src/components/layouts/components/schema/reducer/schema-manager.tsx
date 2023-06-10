@@ -63,7 +63,8 @@ export const schemaInitialState: SchemaState = {
     selected: false,
   },
   perspective: {
-    openShare: false
+    openShare: false,
+    sharedUsers: []
   }
 };
 

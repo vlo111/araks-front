@@ -1,15 +1,15 @@
 import client from 'api/client';
-import { RequestTypes } from 'api/types';
+import { IResponsePerspectiveData, RequestTypes } from "api/types";
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { errorMessage } from 'helpers/utils';
-import { GET_PERSPECTIVES_DATA, ResponsePerspectiveData } from './use-get-perspectives';
+import { GET_PERSPECTIVES_DATA } from './use-get-perspectives';
 
 const URL_PERSPECTIVE_CREATE = '/perspectives/create';
 const URL_PERSPECTIVE_UPDATE = '/perspectives/update/:id';
 
 type ReturnData = {
-  data: ResponsePerspectiveData;
+  data: IResponsePerspectiveData;
 };
 
 type RequestData = {

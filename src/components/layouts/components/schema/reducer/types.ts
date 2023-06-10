@@ -1,7 +1,7 @@
 import { Graph, Node } from '@antv/x6';
 import { SchemaAction } from './schema-manager';
-import { IProjectType } from '../../../../../api/types';
-import { ProjectEdgeResponse } from "../../../../../types/project-edge";
+import { IProjectType, ISharedPerspectiveData } from "api/types";
+import { ProjectEdgeResponse } from "types/project-edge";
 
 export interface IIsOpen {
   isOpened?: boolean;
@@ -35,7 +35,8 @@ export interface ITypePortState extends IIsOpen {
 }
 
 export interface IPerspectiveState extends IIsOpen {
-  openShare: boolean
+  openShare: boolean,
+  sharedUsers: ISharedPerspectiveData[]
 }
 
 export interface IEdgePortState extends IIsOpen {
