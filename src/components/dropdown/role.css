@@ -1,0 +1,26 @@
+.role-dropdown {
+    background: linear-gradient(127.79deg, rgba(255, 255, 255, 0.8) 2.11%, rgba(243, 244, 248, 0.2) 98.3%, rgba(255, 255, 255, 0.2) 98.3%);
+    box-shadow: rgba(195, 195, 195, 0.2) 0px 4px 4px;
+    backdrop-filter: blur(7px);
+    border: 1px solid #FFFFFF;
+}
+
+.role-dropdown .ant-select-item-option-content {
+    letter-spacing: 0.07em;
+    color: #808080;
+}
+
+.role-dropdown .ant-select-item {
+    background-color: transparent !important;
+}
+
+.role-dropdown .ant-select-item:hover {
+    background: linear-gradient(91.54deg, rgba(232, 235, 248, 0.7) 5.25%, rgba(232, 235, 248, 0.2) 97.48%);
+}
+
+.role-dropdown .ant-select-item-option-content {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 600;
+    font-family: Rajdhani, 'Helvetica Neue', sans-serif;
+}

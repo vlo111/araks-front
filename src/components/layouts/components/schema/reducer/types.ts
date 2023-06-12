@@ -35,8 +35,9 @@ export interface ITypePortState extends IIsOpen {
 }
 
 export interface IPerspectiveState extends IIsOpen {
+  id?: string,
   openShare: boolean,
-  sharedUsers: ISharedPerspectiveData[]
+  sharedUsers?: ISharedPerspectiveData[]
 }
 
 export interface IEdgePortState extends IIsOpen {
