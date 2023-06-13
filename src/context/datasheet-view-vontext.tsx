@@ -104,7 +104,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
-        title={<ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} />}
+        title={
+          <ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedView?.id as string} onClose={onClose} />
+        }
         mask={false}
         placement="top"
         onClose={onClose}
