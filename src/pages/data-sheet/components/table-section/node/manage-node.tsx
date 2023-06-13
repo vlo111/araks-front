@@ -5,10 +5,12 @@ import { ProjectTypePropertyReturnData } from 'api/types';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
+import { PropertyTypes } from 'components/form/property/types';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { Location } from 'components/modal/types';
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
-import { getNodesData } from './utils';
+import { getLocation } from './utils';
 
 type Props = {
   tableHead: number;
@@ -49,8 +51,14 @@ export const ManageNode = ({ tableHead }: Props) => {
   const onFinish = (values: NodeBody) => {
     const dataToSubmit = data?.map((item) => ({
       project_type_property_id: item.id,
-      project_type_property_name: item.ref_property_type_id,
-      nodes_data: [...getNodesData(values[item.name as string], item.ref_property_type_id, item.multiple_type)],
+      project_type_property_type: item.ref_property_type_id,
+      nodes_data: !!values[item.name]
+        ? item.ref_property_type_id === PropertyTypes.Location
+          ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
+          : Array.isArray(values[item.name])
+          ? (values[item.name] as unknown[])?.filter(Boolean)
+          : values[item.name]
+        : null,
     }));
 
     mutate({

@@ -22,45 +22,34 @@ export const TextType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      {data.multiple_type === true ? (
-        <Form.List name={data.name} initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <FormItem label={label} style={{ marginBottom: '0' }}>
-                <VerticalSpace>
-                  {fields.map((field) => (
-                    <TypeWrapper
-                      key={field.name}
-                      fieldLength={fields.length}
-                      field={field}
-                      onRemove={() => remove(field.name)}
+      <Form.List name={data.name} initialValue={[null]}>
+        {(fields, { add, remove }) => (
+          <>
+            <FormItem label={label} style={{ marginBottom: '0' }}>
+              <VerticalSpace>
+                {fields.map((field) => (
+                  <TypeWrapper
+                    key={field.name}
+                    fieldLength={fields.length}
+                    field={field}
+                    onRemove={() => remove(field.name)}
+                  >
+                    <FormItem
+                      noStyle
+                      name={[field.name]}
+                      key={field.key}
+                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
                     >
-                      <FormItem
-                        noStyle
-                        name={[field.name, 'name']}
-                        key={field.key}
-                        rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-                      >
-                        <Input />
-                      </FormItem>
-                    </TypeWrapper>
-                  ))}
-                </VerticalSpace>
-              </FormItem>
-              <AddNewFieldButton onClick={add} />
-            </>
-          )}
-        </Form.List>
-      ) : (
-        <FormItem
-          key={data.id}
-          name={data.name}
-          label={label}
-          rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-        >
-          <Input />
-        </FormItem>
-      )}
+                      <Input />
+                    </FormItem>
+                  </TypeWrapper>
+                ))}
+              </VerticalSpace>
+            </FormItem>
+            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+          </>
+        )}
+      </Form.List>
     </div>
   );
 };

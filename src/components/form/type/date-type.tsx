@@ -12,8 +12,6 @@ type Props = {
   data: ProjectTypePropertyReturnData;
 };
 
-const dateFormat = 'DD/MM/YYYY';
-
 export const DateType = ({ data }: Props) => {
   const label = (
     <Space>
@@ -24,50 +22,34 @@ export const DateType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      {data.multiple_type === true ? (
-        <Form.List name={data.name} initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
-                <VerticalSpace>
-                  {fields.map((field) => (
-                    <TypeWrapper
-                      key={field.name}
-                      fieldLength={fields.length}
-                      field={field}
-                      onRemove={() => remove(field.name)}
+      <Form.List name={data.name} initialValue={[null]}>
+        {(fields, { add, remove }) => (
+          <>
+            <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
+              <VerticalSpace>
+                {fields.map((field) => (
+                  <TypeWrapper
+                    key={field.name}
+                    fieldLength={fields.length}
+                    field={field}
+                    onRemove={() => remove(field.name)}
+                  >
+                    <FormItem
+                      style={{ marginBottom: 0 }}
+                      name={[field.name]}
+                      key={field.key}
+                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
                     >
-                      <FormItem
-                        style={{ marginBottom: 0 }}
-                        name={[field.name, 'name']}
-                        key={field.key}
-                        rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-                      >
-                        <Datepicker
-                          picker="date"
-                          format={dateFormat}
-                          style={{ width: '100%' }}
-                          placeholder="DD/MM/YYYY"
-                        />
-                      </FormItem>
-                    </TypeWrapper>
-                  ))}
-                </VerticalSpace>
-              </FormItem>
-              <AddNewFieldButton onClick={add} />
-            </>
-          )}
-        </Form.List>
-      ) : (
-        <FormItem
-          key={data.id}
-          name={data.name}
-          label={label}
-          rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-        >
-          <Datepicker style={{ width: '100%' }} />
-        </FormItem>
-      )}
+                      <Datepicker style={{ width: '100%' }} />
+                    </FormItem>
+                  </TypeWrapper>
+                ))}
+              </VerticalSpace>
+            </FormItem>
+            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+          </>
+        )}
+      </Form.List>
     </div>
   );
 };

@@ -7,14 +7,12 @@ import { SecondaryText, Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { FormItem } from '../form-item';
 import { TypeWrapper } from './type-wrapper';
-// import { PropertyTypes } from '../property/types';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
 };
 
 export const NumericType = ({ data }: Props) => {
-  // let propByType = {};
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
@@ -22,82 +20,31 @@ export const NumericType = ({ data }: Props) => {
     </Space>
   );
 
-  // const formatInputValue = (value: number | string | undefined) => {
-  //   if (value === '') {
-  //     return '';
-  //   }
-  //   return String(parseInt(String(value), 10));
-  // };
-
-  // const parseInputValue = (value: number | string | undefined) => {
-  //   if (isNaN(Number(value))) {
-  //     return undefined;
-  //   }
-  //   return parseInt(String(value), 10);
-  // };
-
-  // if (data.ref_property_type_id === PropertyTypes.Integer) {
-  //   propByType = {
-  //     formatter: formatInputValue,
-  //     parser: parseInputValue,
-  //   };
-  // }
-
-  // const validateInputValue = (rule: unknown, value: unknown, callback: (v: string) => void) => {
-  //   if (value && !Number.isInteger(value) && data.ref_property_type_id === PropertyTypes.Integer) {
-  //     callback('Please enter an integer');
-  //   } else {
-  //     callback('');
-  //   }
-  // };
-
   return (
     <div style={{ textAlign: 'left' }}>
-      {data.multiple_type === true ? (
-        <Form.List name={data.name} initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
-                <VerticalSpace>
-                  {fields.map((field) => (
-                    <TypeWrapper
-                      key={field.name}
-                      fieldLength={fields.length}
-                      field={field}
-                      onRemove={() => remove(field.name)}
-                    >
-                      <FormItem
-                        style={{ marginBottom: 0 }}
-                        name={[field.name, 'name']}
-                        key={field.key}
-                        // rules={[
-                        //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
-                        //   { validator: validateInputValue },
-                        // ]}
-                      >
-                        <InputNumber style={{ width: '100%' }} />
-                      </FormItem>
-                    </TypeWrapper>
-                  ))}
-                </VerticalSpace>
-              </FormItem>
-              <AddNewFieldButton onClick={add} />
-            </>
-          )}
-        </Form.List>
-      ) : (
-        <FormItem
-          key={data.id}
-          name={data.name}
-          label={label}
-          // rules={[
-          //   { required: data.required_type, message: VALIDATE_MESSAGES.required },
-          //   { validator: validateInputValue },
-          // ]}
-        >
-          <InputNumber style={{ width: '100%' }} />
-        </FormItem>
-      )}
+      <Form.List name={data.name} initialValue={[null]}>
+        {(fields, { add, remove }) => (
+          <>
+            <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>
+              <VerticalSpace>
+                {fields.map((field) => (
+                  <TypeWrapper
+                    key={field.name}
+                    fieldLength={fields.length}
+                    field={field}
+                    onRemove={() => remove(field.name)}
+                  >
+                    <FormItem style={{ marginBottom: 0 }} name={[field.name]} key={field.key}>
+                      <InputNumber style={{ width: '100%' }} />
+                    </FormItem>
+                  </TypeWrapper>
+                ))}
+              </VerticalSpace>
+            </FormItem>
+            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+          </>
+        )}
+      </Form.List>
     </div>
   );
 };

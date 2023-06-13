@@ -12,26 +12,26 @@ interface MapModalProps {
   onSelectLocation: (location: Location) => void;
 }
 
-export const MapModal = ({
-  visible,
-  onCancel,
-  onSelectLocation,
-  defaultCenter = { lat: 0, lng: 0 } as SelectedLocation,
-}: MapModalProps) => {
-  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
+export const MapModal = ({ visible, onCancel, onSelectLocation, defaultCenter }: MapModalProps) => {
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(defaultCenter || null);
   const [center, setCenter] = useState(defaultCenter);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
   });
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setCenter({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      } as SelectedLocation);
-    });
-  }, []);
+    if (!defaultCenter) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        } as SelectedLocation);
+      });
+    } else {
+      setCenter(defaultCenter);
+      setSelectedLocation(defaultCenter);
+    }
+  }, [defaultCenter]);
 
   const markerOptions: google.maps.MarkerOptions = useMemo(() => {
     return window.google && selectedLocation
@@ -55,7 +55,7 @@ export const MapModal = ({
         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
           const formattedAddress = results[0].formatted_address;
 
-          setSelectedLocation({ lat: lat ?? center.lat, lng: lng ?? center.lng, address: formattedAddress });
+          setSelectedLocation({ lat: lat ?? 0, lng: lng ?? 0, address: formattedAddress });
         }
       }
     );
