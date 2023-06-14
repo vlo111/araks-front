@@ -27,7 +27,7 @@ export const UserList = () => {
       <Space size={9} style={{ lineHeight: 1 }}>
         <Icon fillRule="evenodd" icon="public" size={25} />
         <Text style={{ fontWeight: 500 }} color="#C5C5C5">
-          Shared users
+          Shared with
         </Text>
       </Space>
       <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
