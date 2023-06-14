@@ -13,7 +13,7 @@ import { NodeDataResponse, NodeDataType, NodeDataTypes, NodePropertiesValues, Re
 import { NodeViewButton } from './node-view-button';
 
 export function getLocation(locationValue: Location) {
-  if (!locationValue.address) {
+  if (!locationValue?.address) {
     return null;
   }
   return {

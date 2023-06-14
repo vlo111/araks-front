@@ -23,6 +23,7 @@ const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch
 
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
+  const [drawerWidth, setDrawerWidth] = React.useState<number>(0);
 
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
   const [isEdit, setIsEdit] = React.useState(false);
@@ -36,6 +37,22 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     setSelectedView(undefined);
     setIsEdit(false);
   };
+
+  React.useEffect(() => {
+    if (selectedView) {
+      let calcWidth = 0;
+      const rightSideWidth = document.getElementById('datasheet-data');
+      const columnsProperty = document.querySelectorAll(
+        '.ant-table-thead .node-property-column.ant-table-cell-fix-left'
+      );
+
+      const firstFourElements = Array.from(columnsProperty);
+      firstFourElements.forEach((column: Element) => {
+        calcWidth += column.clientWidth || 0;
+      });
+      setDrawerWidth((rightSideWidth?.clientWidth ?? 0) - calcWidth);
+    }
+  }, [selectedView]);
 
   const { mutate } = useManageNodes();
 
@@ -108,13 +125,14 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           <ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedView?.id as string} onClose={onClose} />
         }
         mask={false}
-        placement="top"
+        placement="right"
         onClose={onClose}
         afterOpenChange={(open) => {
           !open && setSelectedView(undefined);
         }}
         open={!!selectedView}
         getContainer={false}
+        width={drawerWidth}
         footer={
           isEdit && (
             <Row gutter={16} justify="center">
@@ -131,7 +149,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             </Row>
           )
         }
-        contentWrapperStyle={{ marginLeft: '250px', height: '100%' }}
+        contentWrapperStyle={{ height: '100%' }}
       >
         {isEdit ? (
           <Form
