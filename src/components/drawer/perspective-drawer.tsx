@@ -1,6 +1,6 @@
-import { ReactNode , CSSProperties } from 'react';
-import { Drawer as DrawerWrapper } from "antd";
-import './perspective-drawer-style.css'
+import { ReactNode, CSSProperties } from 'react';
+import { Drawer as DrawerWrapper } from 'antd';
+import './perspective-drawer-style.css';
 export const maskStyle: CSSProperties = {
   background: 'linear-gradient(119.84deg, rgba(203, 203, 203, 0.5) 88.78%, rgba(255, 255, 255, 0.49) 165.43%)',
   border: '1px solid rgba(255, 255, 255, 0.5)',
@@ -21,13 +21,23 @@ export const drawerStyle: CSSProperties = {
   borderRadius: '4px',
 };
 
-export const Drawer = ({ children, ...props }: Partial<{ children: ReactNode; onClose: () => void; open: boolean; }>) => {
+export const bodyStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
+};
+
+export const Drawer = ({
+  children,
+  ...props
+}: Partial<{ children: ReactNode; onClose: () => void; open: boolean }>) => {
   return (
     <DrawerWrapper
       title="Share"
       placement="right"
       rootClassName="perspective-drawer"
       getContainer={false}
+      bodyStyle={bodyStyle}
       maskStyle={maskStyle}
       drawerStyle={drawerStyle}
       contentWrapperStyle={contentStyle}

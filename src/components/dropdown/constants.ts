@@ -33,14 +33,3 @@ export const SHARE_OPTIONS = [
     value: 'owner',
   },
 ];
-
-export const ROLE_OPTIONS = [
-  {
-    label: 'Can Edit',
-    value: 'edit',
-  },
-  {
-    label: 'Can View',
-    value: 'view',
-  }
-];

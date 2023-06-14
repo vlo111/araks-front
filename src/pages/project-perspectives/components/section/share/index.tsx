@@ -1,13 +1,13 @@
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { InputAddon } from 'components/form/input-addon';
 import { CSSProperties } from 'react';
 import { Drawer } from 'components/drawer/perspective-drawer';
-import { Col, Divider, Form, Row, Space } from "antd";
-import { Button } from '../../../../../components/button';
-import { VerticalSpace } from "../../../../../components/space/vertical-space";
-import { Icon } from "../../../../../components/icon";
-import { Text } from "../../../../../components/typography";
-import { SharedWith } from "../../../../project-overview/components/share/shared-with";
+import { UserForm } from './form';
+import { UserList } from './user-list';
+import { Icon } from 'components/icon';
+import { Col, Row } from 'antd';
+import { Text } from 'components/typography';
+import { PATHS } from 'helpers/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const containerStyle: CSSProperties = {
   position: 'fixed',
@@ -20,53 +20,33 @@ export const containerStyle: CSSProperties = {
 };
 
 export const Share = () => {
+  const params = useParams();
+
+  const navigate = useNavigate();
+
   const { perspective, startPerspectiveShare } = useSchema() || {};
+  const onClose = () => startPerspectiveShare({ openShare: false, sharedUsers: [] });
 
-  const onClose = () => {
-    startPerspectiveShare({ openShare: false, sharedUsers: [] });
-  };
-
-  const [form] = Form.useForm();
-
-  const onFinish = (values: { role: string, email: string }) => {
-    // eslint-disable-next-line no-console
-    console.log({
-      perspective_id: perspective.id,
-      ...values
-    });
-    // mutate(values);
-  };
+  const visibility = perspective?.openShare ? 'inherit' : 'hidden';
 
   return (
-    <div style={{ ...containerStyle, visibility: perspective?.openShare ? 'inherit' : 'hidden' }}>
-      <Drawer onClose={onClose} open={perspective?.openShare ?? false}>
-        <Form
-          name="share-perspective"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-          requiredMark={false}
+    <div style={{ ...containerStyle, visibility }}>
+      <Drawer onClose={onClose} open={perspective?.openShare}>
+        <UserForm />
+        <UserList />
+        <Row
+          style={{ marginTop: 'auto', cursor: 'pointer' }}
+          onClick={() => {
+            navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
+          }}
         >
-          <Row gutter={[10, 10]}>
-            <Col xs={24} xxl={18}>
-              <InputAddon />
-            </Col>
-            <Col xs={24} xxl={6}>
-              <Button block htmlType="submit" type="primary">
-                Send Invite
-              </Button>
-            </Col>
-          </Row>
-        </Form>
-        <VerticalSpace size={8}>
-          <Space size={9} style={{ lineHeight: 1 }}>
-            <Icon color="#C5C5C5" icon="public" size={20} />
-            <Text>Shared users</Text>
-          </Space>
-          <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
-          <SharedWith />
-        </VerticalSpace>
+          <Col offset={16} span={2}>
+            <Icon color="#353432" icon={'users'} size={25} />
+          </Col>
+          <Col span={6}>
+            <Text style={{ textDecoration: 'underline', color: '#232F6A' }}>Share members</Text>
+          </Col>
+        </Row>
       </Drawer>
     </div>
   );

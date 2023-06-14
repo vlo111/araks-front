@@ -188,3 +188,27 @@ export interface IResponsePerspectiveData {
   title: string;
   shared: ISharedPerspectiveData[];
 }
+
+export interface ISharedPerspectiveUser {
+  id: string;
+  avatar: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+export interface ISharedPerspectiveUserData {
+  perspective_id: string;
+  status: string;
+  role: string;
+  perspective_users: ISharedPerspectiveUser;
+}
+export interface IResponsePerspectiveUsers {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  project_id: string;
+  shared: ISharedPerspectiveUserData[];
+  nodeType: [];
+}
