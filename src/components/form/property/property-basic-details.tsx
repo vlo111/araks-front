@@ -9,7 +9,9 @@ import { PropertyMultipleDetails } from './property-multiple-details';
 export const PropertyBasicDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
   const multipleType = Form.useWatch('multiple_type');
+  const requiredType = Form.useWatch('required_type');
   const form = Form.useFormInstance();
+  const isDefaultProprty = form.getFieldValue('default_property');
 
   const disableUnique = dataType !== PropertyTypes.Text;
   useEffect(() => {
@@ -17,6 +19,14 @@ export const PropertyBasicDetails = () => {
       form.setFieldValue('unique_type', false);
     }
   }, [disableUnique, form, multipleType]);
+
+  useEffect(() => {
+    if (isDefaultProprty && !requiredType) {
+      form.setFieldValue('required_type', true);
+      form.setFieldValue('multiple_type', false);
+    }
+  }, [form, isDefaultProprty, requiredType]);
+
   return (
     <>
       {dataType !== 'connection' && (

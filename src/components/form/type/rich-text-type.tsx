@@ -40,7 +40,7 @@ export const RichTextType = ({ data }: Props) => {
     <div style={{ textAlign: 'left' }}>
       <FormItem
         key={data.id}
-        name={data.name}
+        name={[data.name, 0]}
         label={label}
         rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
       >

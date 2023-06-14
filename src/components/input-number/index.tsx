@@ -1,4 +1,5 @@
 import { InputNumber as InputComponent } from 'antd';
+import { screenSize } from 'helpers/constants';
 import { changeHeight, placeholderSize } from 'helpers/styles';
 import styled, { css } from 'styled-components';
 
@@ -8,7 +9,16 @@ export const InputNumber = styled(InputComponent)`
   ${(props) =>
     !props.size
       ? css`
-          ${changeHeight}
+          ${changeHeight};
+          @media (min-width: ${screenSize.xxl}) {
+            padding: 3px 11px;
+
+            && {
+              input {
+                padding: 0;
+              }
+            }
+          }
         `
       : ''}
 

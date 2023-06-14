@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { FormItem } from '../form-item';
+import { TypeWrapper } from './type-wrapper';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -21,38 +22,34 @@ export const TextType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      {data.multiple_type === true ? (
-        <Form.List name={data.name} initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <FormItem label={label} style={{ marginBottom: '0' }}>
-                <VerticalSpace>
-                  {fields.map((field) => (
+      <Form.List name={data.name} initialValue={[null]}>
+        {(fields, { add, remove }) => (
+          <>
+            <FormItem label={label} style={{ marginBottom: '0' }}>
+              <VerticalSpace>
+                {fields.map((field) => (
+                  <TypeWrapper
+                    key={field.name}
+                    fieldLength={fields.length}
+                    field={field}
+                    onRemove={() => remove(field.name)}
+                  >
                     <FormItem
                       noStyle
-                      name={[field.name, 'name']}
+                      name={[field.name]}
                       key={field.key}
                       rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
                     >
                       <Input />
                     </FormItem>
-                  ))}
-                </VerticalSpace>
-              </FormItem>
-              <AddNewFieldButton onClick={add} />
-            </>
-          )}
-        </Form.List>
-      ) : (
-        <FormItem
-          key={data.id}
-          name={data.name}
-          label={label}
-          rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-        >
-          <Input />
-        </FormItem>
-      )}
+                  </TypeWrapper>
+                ))}
+              </VerticalSpace>
+            </FormItem>
+            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+          </>
+        )}
+      </Form.List>
     </div>
   );
 };

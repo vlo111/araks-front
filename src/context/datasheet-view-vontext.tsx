@@ -1,16 +1,18 @@
-import { Drawer, Image, Space } from 'antd';
-import DOMPurify from 'dompurify';
+import { Col, Drawer, Form, Row } from 'antd';
 import * as React from 'react';
-import { NodeDataResponse, NodeDataType, NodeDataTypes, NodePropertiesValues, ResponseLocationType } from 'types/node';
-import { useOverview } from './overview-context';
-import { Text, MenuText } from 'components/typography';
-import { VerticalSpace } from 'components/space/vertical-space';
-import { COLORS } from 'helpers/constants';
+import { NodeBody, NodeDataResponse, NodeDataSubmit, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { VIewNode } from 'pages/data-sheet/components/table-section/node/view-node';
+import { ViewNodeTitle } from 'pages/data-sheet/components/table-section/node/view-node-title';
+import { AddNodeForm } from 'components/form/add-node-form';
+import { useManageNodes } from 'api/node/use-manage-node';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { getLocation } from 'pages/data-sheet/components/table-section/node/utils';
+import { ProjectTypePropertyReturnData } from 'api/types';
+import { useGetNode } from 'api/node/use-get-node';
 import { Button } from 'components/button';
 import { PropertyTypes } from 'components/form/property/types';
-import dayjs from 'dayjs';
-import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
-import { LocationView } from 'components/location/location-view';
+import { Location } from 'components/modal/types';
 
 type VIewDataType = NodeDataResponse | undefined;
 
@@ -19,189 +21,150 @@ type ViewDatasheetProviderProps = { children: React.ReactNode };
 
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
-const getSingleData = (nodeData: NodeDataTypes | undefined) => {
-  if (!nodeData) {
-    return '';
-  }
-  if (typeof nodeData[0] === 'string' || typeof nodeData[0] === 'number' || typeof nodeData[0] === 'boolean') {
-    return nodeData.join('');
-  } else {
-    return (nodeData[0] as ResponseLocationType)?.address;
-  }
-};
-
-const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
-  let text;
-
-  if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
-    text = nodeData as string;
-  } else {
-    text = nodeData?.address;
-  }
-
-  if (!text) {
-    return <Text color={COLORS.PRIMARY.GRAY}>(No Value)</Text>;
-  }
-
-  const sanitizedHTML = DOMPurify.sanitize(text);
-
-  switch (propertyType) {
-    case PropertyTypes.IMAGE_URL:
-      return <Image src={text} width={200} />;
-    case PropertyTypes.Document:
-    case PropertyTypes.URL:
-      return (
-        <Button type="link" href={text} target="_blank" icon={<LinkOutlined />}>
-          {text}
-        </Button>
-      );
-    case PropertyTypes.Location:
-      return <LocationView text={text} location={nodeData as ResponseLocationType} />;
-    case PropertyTypes.RichText:
-      return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />;
-    case PropertyTypes.Date:
-      return (
-        <Space>
-          <CalendarOutlined /> <span>{dayjs(text).format('YYYY-MM-DD')}</span>
-        </Space>
-      );
-    case PropertyTypes.DateTime:
-      return (
-        <Space>
-          <CalendarOutlined /> <span>{dayjs(text).format('YYYY-MM-DD HH:mm')}</span>
-        </Space>
-      );
-    case PropertyTypes.Boolean:
-      return text === 'true' ? 'Yes' : 'No';
-    case PropertyTypes.Text:
-    case PropertyTypes.Integer:
-    case PropertyTypes.Decimal:
-      return <span>{text}</span>;
-    default:
-      return text;
-  }
-};
-
-const getRowData = (item: NodePropertiesValues) => {
-  if (!item?.nodes_data) {
-    return '';
-  }
-  const isMultiple = item.nodes_data && item.nodes_data.length > 1;
-
-  //   if (item.nodeType.default_image) {
-  //     return <Avatar src={dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)} />;
-  //   }
-
-  switch (item.project_type_property_name) {
-    case PropertyTypes.IMAGE_URL:
-      return (
-        <Image.PreviewGroup>
-          <Space>
-            {isMultiple
-              ? item.nodes_data.map((data) => dataByType(data, PropertyTypes.IMAGE_URL))
-              : dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)}
-          </Space>
-        </Image.PreviewGroup>
-      );
-    case PropertyTypes.Document:
-    case PropertyTypes.URL:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.URL))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.URL)
-      );
-    case PropertyTypes.Location:
-      return <Space>{item?.nodes_data?.map((data) => dataByType(data, PropertyTypes.Location))}</Space>;
-
-    case PropertyTypes.RichText:
-      return dataByType(getSingleData(item.nodes_data), PropertyTypes.RichText);
-    case PropertyTypes.Date:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Date))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Date)
-      );
-    case PropertyTypes.DateTime:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.DateTime))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.DateTime)
-      );
-    case PropertyTypes.Boolean: {
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Boolean))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Boolean)
-      );
-    }
-    case PropertyTypes.Text:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
-      );
-    case PropertyTypes.Integer:
-    case PropertyTypes.Decimal:
-      return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
-      );
-    default:
-      return getSingleData(item.nodes_data);
-  }
-};
-
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
-  const { state } = useOverview();
+  const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
+  const [drawerWidth, setDrawerWidth] = React.useState<number>(0);
+
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
+  const [isEdit, setIsEdit] = React.useState(false);
   const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedView }), [selectedView]);
 
-  const defaultProperty = React.useMemo(
-    () => selectedView?.properties?.find((property) => property.nodeType.default_property),
-    [selectedView?.properties]
-  );
+  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
+    enabled: !!(nodeTypeId && isConnectionType === false),
+  });
 
   const onClose = () => {
     setSelectedView(undefined);
+    setIsEdit(false);
+  };
+
+  React.useEffect(() => {
+    if (selectedView) {
+      let calcWidth = 0;
+      const rightSideWidth = document.getElementById('datasheet-data');
+      const columnsProperty = document.querySelectorAll(
+        '.ant-table-thead .node-property-column.ant-table-cell-fix-left'
+      );
+
+      const firstFourElements = Array.from(columnsProperty);
+      firstFourElements.forEach((column: Element) => {
+        calcWidth += column.clientWidth || 0;
+      });
+      setDrawerWidth((rightSideWidth?.clientWidth ?? 0) - calcWidth);
+    }
+  }, [selectedView]);
+
+  const { mutate } = useManageNodes();
+
+  const [form] = Form.useForm();
+
+  const { data: nodeData } = useGetNode(selectedView?.id as string, {
+    enabled: !!(selectedView?.id && data?.length && isEdit),
+    onSuccess: (nodeData) => {
+      const initialAcc = data?.reduce(
+        (initAcc, initItem) => ({
+          ...initAcc,
+          [initItem.name]: [''],
+        }),
+        {} as NodeBody
+      );
+
+      const fieldsData = nodeData.properties?.reduce((acc, item) => {
+        if (!item.nodes_data?.length) {
+          return acc;
+        }
+
+        return {
+          ...acc,
+          [item.nodeType.name]:
+            item.project_type_property_type === PropertyTypes.Location
+              ? (item.nodes_data as ResponseLocationType[])?.map(
+                  (addr: ResponseLocationType) =>
+                    ({
+                      address: addr.address,
+                      lat: addr.location.latitude,
+                      lng: addr.location.longitude,
+                    } as Location)
+                )
+              : item.nodes_data,
+        } as NodePropertiesValues;
+      }, initialAcc);
+
+      form.setFieldsValue(fieldsData);
+    },
+  });
+
+  const onFinish = (values: NodeBody) => {
+    const dataToSubmit = data?.map((item) => ({
+      project_type_property_id: item.id,
+      project_type_property_type: item.ref_property_type_id,
+      id: nodeData?.properties?.find((prop) => prop.nodeType.name === item.name)?.id,
+      nodes_data: !!values[item.name]
+        ? item.ref_property_type_id === PropertyTypes.Location
+          ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
+          : Array.isArray(values[item.name])
+          ? (values[item.name] as unknown[])?.filter(Boolean)
+          : values[item.name]
+        : null,
+    }));
+
+    if (nodeData?.id) {
+      mutate({
+        nodes: dataToSubmit,
+        project_type_id: nodeTypeId || '',
+        nodeId: nodeData.id,
+      } as NodeDataSubmit);
+      onClose();
+    }
   };
   return (
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
         title={
-          <>
-            <MenuText strong>{state}</MenuText>
-            {' / '}
-            <Text>{getSingleData(defaultProperty?.nodes_data)}</Text>
-          </>
+          <ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedView?.id as string} onClose={onClose} />
         }
         mask={false}
-        placement="top"
-        // closable={false}
+        placement="right"
         onClose={onClose}
         afterOpenChange={(open) => {
           !open && setSelectedView(undefined);
         }}
         open={!!selectedView}
         getContainer={false}
-        footer={false}
-        contentWrapperStyle={{ marginLeft: '250px', height: '100%' }}
+        width={drawerWidth}
+        footer={
+          isEdit && (
+            <Row gutter={16} justify="center">
+              <Col span={4}>
+                <Button style={{ marginRight: 8 }} onClick={onClose} block>
+                  Cancel
+                </Button>
+              </Col>
+              <Col span={4}>
+                <Button type="primary" onClick={() => form.submit()} block>
+                  Save
+                </Button>
+              </Col>
+            </Row>
+          )
+        }
+        contentWrapperStyle={{ height: '100%' }}
       >
-        <VerticalSpace>
-          {selectedView?.properties ? (
-            selectedView.properties.map((data) => {
-              return (
-                <VerticalSpace key={data.id}>
-                  <Text color={COLORS.PRIMARY.BLUE}>{data.nodeType.name}</Text>
-                  {getRowData(data)}
-                </VerticalSpace>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </VerticalSpace>
+        {isEdit ? (
+          <Form
+            name="project-node-manage"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+            requiredMark={false}
+          >
+            <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+          </Form>
+        ) : (
+          <VIewNode />
+        )}
       </Drawer>
     </ViewDatasheetContext.Provider>
   );

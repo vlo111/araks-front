@@ -6,6 +6,7 @@ import client from '../client';
 import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from './constants';
 import { NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { errorMessage } from 'helpers/utils';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -18,13 +19,15 @@ type ReturnData = {
 type Options = UseQueryOptions<NodeDataSubmit, Error, ReturnData>;
 
 export const useManageNodes = (options?: Options) => {
+  const { nodeTypeId } = useDataSheetWrapper();
+
   const params = useParams();
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ReturnData, unknown, NodeDataSubmit>({
-    mutationFn: (values: NodeDataSubmit) => {
-      const url = values.nodeId ? URL_UPDATE_NODE.replace(':id', values.nodeId || '') : URL_CREATE_NODE;
-      const type = values.nodeId ? RequestTypes.Put : RequestTypes.Post;
+    mutationFn: ({ nodeId, ...values }: NodeDataSubmit) => {
+      const url = nodeId ? URL_UPDATE_NODE.replace(':id', nodeId || '') : URL_CREATE_NODE;
+      const type = nodeId ? RequestTypes.Put : RequestTypes.Post;
       const body = {
         ...values,
         project_id: params.id,
@@ -33,10 +36,7 @@ export const useManageNodes = (options?: Options) => {
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([
-        URL_NODES_LIST.replace(':project_type_id', data.data.project_type_id || '').replace(
-          ':project_id',
-          params.id || ''
-        ),
+        URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);
       options?.onSuccess?.(data);
     },

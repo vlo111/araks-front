@@ -4,7 +4,7 @@ export type NodeBody = {
 
 export type NodeBodySubmit = {
   project_type_property_id: string;
-  project_type_property_name: string;
+  project_type_property_type: string;
   nodes_data: (string | number)[];
 };
 
@@ -31,7 +31,7 @@ export type NodePropertiesValues = {
   id: string;
   dataset_id?: string;
   project_type_property_id?: string;
-  project_type_property_name?: string;
+  project_type_property_type?: string;
   nodes_data?: NodeDataTypes;
   nodeType: {
     name: string;
@@ -49,4 +49,9 @@ export type NodePropertiesValues = {
 export type NodeDataResponse = {
   id: string;
   properties?: NodePropertiesValues[];
+};
+
+export type NodeDataListResponse = {
+  count: number;
+  rows: NodeDataResponse[];
 };
