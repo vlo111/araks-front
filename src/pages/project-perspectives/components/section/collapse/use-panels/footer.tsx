@@ -46,6 +46,8 @@ const Wrapper = styled.div`
 export const FooterPanel: Props = ({ id, description, shared }) => {
   const { perspective, startPerspectiveShare } = useSchema() || {};
 
+  const share = () => startPerspectiveShare({ id, openShare: !(perspective?.openShare ?? false), sharedUsers: shared });
+
   return (
     <>
       <span>{description}</span>
@@ -57,13 +59,7 @@ export const FooterPanel: Props = ({ id, description, shared }) => {
             </Space>
           </Col>
           <Col className="box" span={12} style={{ marginLeft: '1px' }}>
-            <Space
-              className="text"
-              align={'center'}
-              onClick={() =>
-                startPerspectiveShare({ id, openShare: !(perspective?.openShare ?? false), sharedUsers: shared })
-              }
-            >
+            <Space className="text" align={'center'} onClick={share}>
               Share <p>({shared.length})</p>
             </Space>
           </Col>
