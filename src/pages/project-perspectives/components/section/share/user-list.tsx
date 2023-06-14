@@ -17,6 +17,7 @@ export const UserList = () => {
   const { shared } = useGetPerspectiveUsers({ id });
 
   const data = shared?.map(({ perspective_users: user, role }) => ({
+    id: user.id,
     title: user.email,
     value: role,
     avatar: user.avatar,

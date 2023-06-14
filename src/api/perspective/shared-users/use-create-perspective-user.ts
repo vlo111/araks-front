@@ -18,6 +18,7 @@ type RequestData = {
   role: string;
   email?: string;
   perspective_id?: string;
+  perspective_user_id?: string;
 };
 
 type QueryResponse = {

@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import React from 'react';
 import { useCreatePerspectiveUser } from 'api/perspective/shared-users/use-create-perspective-user';
 
-type Props = React.FC<{ id: string; index: number; user: { title: string; value: string; avatar: string } }>;
+type Props = React.FC<{
+  id: string;
+  index: number;
+  user: { id: string; title: string; value: string; avatar: string };
+}>;
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -45,7 +49,10 @@ export const UserListItem: Props = ({ id, index, user }) => {
   const value = user.value === 'owner' ? `Owner` : ROLE_OPTIONS.find((r) => r.value === user.value)?.value;
 
   const changeRole = (role: string) => {
-    mutate({ role });
+    mutate({
+      perspective_user_id: user.id,
+      role,
+    });
   };
 
   return (
