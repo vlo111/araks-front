@@ -11,6 +11,7 @@ import { DataSheetWrapper } from 'components/layouts/components/data-sheet/wrapp
 import { SchemaWrapper } from 'components/layouts/components/schema/wrapper';
 import { useOverview } from 'context/overview-context';
 import { useGetProject } from 'api/projects/use-get-project';
+import { VisualisationWrapper } from "../layouts/components/visualisation/wrapper";
 
 const Tabs = styled(TabsComponent)`
   .ant-tabs-nav-wrap {
@@ -62,9 +63,8 @@ const items = [
     label: 'Data sheet',
   },
   {
-    key: '4',
+    key: PATHS.PROJECT_VISUALISATION,
     label: 'Visualisation',
-    disabled: true,
   },
 ];
 
@@ -127,6 +127,7 @@ export const OverviewTabs = () => {
             {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
             {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
+            {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}
           </div>
         ),
       }))}

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import 'components/layouts/components/schema/container/register';
-import { useGraphRef } from 'hooks/use-graph';
+import { useSchemaRef } from 'hooks/use-schema';
 
 const Graph = styled.div`
   position: fixed;
@@ -10,4 +10,4 @@ const Graph = styled.div`
   z-index: 0;
 `;
 
-export const Schema: React.FC = () => <Graph ref={useGraphRef()} />;
+export const Schema: React.FC = () => <Graph ref={useSchemaRef()} />;

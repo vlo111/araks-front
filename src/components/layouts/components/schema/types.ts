@@ -1,4 +1,4 @@
-import {Graph, Node, Edge, Cell, Point} from '@antv/x6';
+import { Graph, Node, Edge, Cell, Point } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
 import Properties = Edge.Properties;
@@ -11,9 +11,9 @@ import {
   IPerspectiveState,
   ISelectNode,
   ITypePortState,
-  ITypeState
-} from "./reducer/types";
-import {PropertyTypes} from "../../../form/property/types";
+  ITypeState,
+} from './reducer/types';
+import { PropertyTypes } from '../../../form/property/types';
 
 export interface IStroke {
   type: string;
@@ -152,10 +152,6 @@ export type SelectNodeWithZoom = (
   selected: ISelectNode,
   setSelected: (item: ISelectNode) => void
 ) => void;
-
-export type PropsAddEdge = {
-  onCancel: VoidFunction;
-};
 
 export type AddEdgeType = (item: ProjectEdgeResponse) => void;
 
