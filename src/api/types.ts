@@ -5,6 +5,11 @@ export type GetProjectsParameters = {
   sortOrder?: string;
 };
 
+export type PageParameters = {
+  page: number;
+  size: number;
+};
+
 export enum RequestTypes {
   GET = 'get',
   Post = 'post',

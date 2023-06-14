@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import { GetProjectsParameters } from 'api/types';
+import { PageParameters } from 'api/types';
 import { useParams } from 'react-router-dom';
 import { NodeDataListResponse, NodeDataResponse } from 'types/node';
 import client from '../client';
@@ -17,7 +17,7 @@ type Result = UseQueryResult<NodeDataListResponse> & {
   count: number;
 };
 
-export const useGetTypeNodes = (queryParams: GetProjectsParameters, typeId?: string, options?: Options): Result => {
+export const useGetTypeNodes = (queryParams: PageParameters, typeId?: string, options?: Options): Result => {
   const params = useParams();
   const urlNodes = URL_NODES_LIST.replace(':project_type_id', typeId || '').replace(':project_id', params.id || '');
   const result = useQuery({
