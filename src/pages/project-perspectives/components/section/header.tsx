@@ -1,6 +1,5 @@
 import { Text } from 'components/typography';
 import { ReactComponent as AddSvg } from './collapse/icons/add.svg';
-import { ReactComponent as DuplicateSvg } from './collapse/icons/duplicate.svg';
 import { Col, Row } from 'antd';
 import styled from 'styled-components';
 import { Tooltip } from 'components/tool-tip';
@@ -38,11 +37,6 @@ export const Header = () => {
         <Col style={centerStyle} className="action">
           <Tooltip title="Add Perspective">
             <AddSvg onClick={() => setOpenModal(true)} />
-          </Tooltip>
-        </Col>
-        <Col style={centerStyle} className="action">
-          <Tooltip title="Duplicate">
-            <DuplicateSvg />
           </Tooltip>
         </Col>
       </Row>

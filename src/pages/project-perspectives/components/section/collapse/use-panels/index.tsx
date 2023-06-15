@@ -18,7 +18,7 @@ export const usePanels = (panels: IResponsePerspectiveData[]) => {
       key: `${item.id}`,
       header: <div>{item.title}</div>,
       extra: item.status !== 'main' ? <Extra id={`${item.id}`} /> : undefined,
-      children: <FooterPanel description={item.description} shared={item.shared} />,
+      children: <FooterPanel {...item} />,
     }));
 
     setList(items);

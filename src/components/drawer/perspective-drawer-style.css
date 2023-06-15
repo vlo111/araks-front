@@ -1,0 +1,11 @@
+.perspective-drawer .ant-drawer-content-wrapper {
+  transition: .5s;
+}
+
+.perspective-drawer .ant-drawer-header-title {
+  flex-direction: row-reverse;
+}
+
+.perspective-drawer .ant-drawer-close {
+  margin-inline-end: 0;
+}
