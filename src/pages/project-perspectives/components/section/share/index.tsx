@@ -1,97 +1,53 @@
-import { Col, Drawer, Form, Row, Select } from 'antd';
-import { containerStyle, contentStyle, drawerStyle, maskStyle } from './style';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { Input } from 'components/input';
-import { textStyles } from 'components/typography';
-import { CaretDownFilled } from '@ant-design/icons';
-import styled from 'styled-components';
+import { CSSProperties } from 'react';
+import { Drawer } from 'components/drawer/perspective-drawer';
+import { UserForm } from './form';
+import { UserList } from './user-list';
+import { Icon } from 'components/icon';
+import { Col, Row } from 'antd';
+import { Text } from 'components/typography';
+import { PATHS } from 'helpers/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const ShareSelect = styled(Select)`
-  && {
-    .ant-select-selector {
-      background-color: #ededf3;
-
-      .ant-select-selection-item {
-        ${textStyles};
-        padding: 3px 16px;
-      }
-
-      &:active {
-        box-shadow: none;
-      }
-    }
-
-    &&.ant-select-focused .ant-select-selector {
-      box-shadow: none;
-    }
-  }
-`;
-
-export const SHARE_OPTIONS = [
-  {
-    label: 'Can Edit',
-    value: 'edit',
-  },
-  {
-    label: 'Can View',
-    value: 'view',
-  },
-];
+export const containerStyle: CSSProperties = {
+  position: 'fixed',
+  height: 'calc(100% - 9.5rem)',
+  width: '100%',
+  right: '600px',
+  top: '9.5rem',
+  overflow: 'hidden',
+  zIndex: -1,
+};
 
 export const Share = () => {
+  const params = useParams();
+
+  const navigate = useNavigate();
+
   const { perspective, startPerspectiveShare } = useSchema() || {};
+  const onClose = () => startPerspectiveShare({ openShare: false, sharedUsers: [] });
 
-  const onClose = () => {
-    startPerspectiveShare({ openShare: false, sharedUsers: [] });
-  };
-
-  const [form] = Form.useForm();
-
-  const onFinish = () => {
-    // mutate(values);
-  };
-
-  const list = SHARE_OPTIONS;
+  const visibility = perspective?.openShare ? 'inherit' : 'hidden';
 
   return (
-    <>
-      <div style={{ ...containerStyle, visibility: perspective?.openShare ? 'inherit' : 'hidden' }}>
-        <Drawer
-          title="Share"
-          placement="right"
-          onClose={onClose}
-          open={perspective?.openShare ?? false}
-          getContainer={false}
-          contentWrapperStyle={contentStyle}
-          drawerStyle={drawerStyle}
-          maskStyle={maskStyle}
+    <div style={{ ...containerStyle, visibility }}>
+      <Drawer onClose={onClose} open={perspective?.openShare}>
+        <UserForm />
+        <UserList />
+        <Row
+          style={{ marginTop: 'auto', cursor: 'pointer' }}
+          onClick={() => {
+            navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
+          }}
         >
-          <Form
-            name="share-perspective"
-            form={form}
-            onFinish={onFinish}
-            autoComplete="off"
-            layout="vertical"
-            requiredMark={false}
-          >
-            <Row>
-              <Col span={24}>
-                <Input placeholder="Main" />
-              </Col>
-              <Col span={24} style={{ position: 'absolute', right: '50px' }}>
-                <ShareSelect
-                  value={list[0]}
-                  popupClassName="share-dropdown"
-                  style={{ width: 156 }}
-                  // onChange={handleOnChange}
-                  options={list}
-                  suffixIcon={<CaretDownFilled />}
-                />
-              </Col>
-            </Row>
-          </Form>
-        </Drawer>
-      </div>
-    </>
+          <Col offset={16} span={2}>
+            <Icon color="#353432" icon={'users'} size={25} />
+          </Col>
+          <Col span={6}>
+            <Text style={{ textDecoration: 'underline', color: '#232F6A' }}>Share members</Text>
+          </Col>
+        </Row>
+      </Drawer>
+    </div>
   );
 };

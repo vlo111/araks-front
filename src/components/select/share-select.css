@@ -1,0 +1,33 @@
+.role-dropdown {
+  background: linear-gradient(
+    127.79deg,
+    rgba(255, 255, 255, 0.8) 2.11%,
+    rgba(243, 244, 248, 0.2) 98.3%,
+    rgba(255, 255, 255, 0.2) 98.3%
+  );
+  box-shadow: -3px 5px 3px 0 rgba(195, 195, 195, 0.3), inset -1px 4px 4px 0 rgba(195, 195, 195, 0.3);
+  backdrop-filter: blur(7px);
+  border: 1px solid #ffffff;
+  border-top: 0 solid;
+  border-radius: 0 0 4px 4px;
+}
+
+.role-dropdown .ant-select-item-option-content {
+  letter-spacing: 0.07em;
+  color: #808080;
+}
+
+.role-dropdown .ant-select-item {
+  background-color: transparent !important;
+}
+
+.role-dropdown .ant-select-item:hover {
+  background: linear-gradient(91.54deg, rgba(232, 235, 248, 0.7) 5.25%, rgba(232, 235, 248, 0.2) 97.48%);
+}
+
+.role-dropdown .ant-select-item-option-content {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  font-family: Rajdhani, 'Helvetica Neue', sans-serif;
+}
