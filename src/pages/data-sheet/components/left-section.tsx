@@ -25,13 +25,16 @@ export const LeftSection = () => {
       defaultActiveKey="1"
       items={items.map((item) => ({
         ...item,
-        children: (
-            item.key === '1' && (
-              <>
-                <TabTables />
-              </>
-            )
-        ),
+        children:
+          item.key === '1' ? (
+            <>
+              <TabTables />
+            </>
+          ) : (
+            <>
+              <TabTables isCheckable noColors />
+            </>
+          ),
       }))}
       onChange={onChange}
     />

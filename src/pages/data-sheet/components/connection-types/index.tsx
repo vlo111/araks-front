@@ -2,7 +2,7 @@ import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { PropsSetState, TreeConnectionType } from '../../types';
+import { PropsSetState, TableStyleBasedOnTab, TreeConnectionType } from '../../types';
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
@@ -15,7 +15,9 @@ import { DataSheetActionKind } from 'components/layouts/components/data-sheet/ho
 import { filterConnectionTreeData } from 'pages/data-sheet/utils';
 import { NodeEdgeTypesReturnData } from 'api/types';
 
-export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
+type Props = PropsSetState & TableStyleBasedOnTab;
+
+export const ConnectionTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
   const { dispatch, color, selectNodeTypeFinished, nodeTypeId } = useDataSheetWrapper();
@@ -81,6 +83,7 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible }: PropsSetSta
       )}
       <NodeTree
         onSelect={onSelect}
+        checkable={isCheckable}
         switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
         treeData={filteredData}
         blockNode

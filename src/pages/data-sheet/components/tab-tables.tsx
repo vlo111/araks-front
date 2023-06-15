@@ -10,8 +10,9 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 // import { useTypeProperty } from './table-section/table-context';
 // import { TypePropertyActionKind } from './table-section/types';
 import { AddNewConnection } from './connection-types/add-new-connection';
+import { TableStyleBasedOnTab } from '../types';
 
-export const TabTables = () => {
+export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleBasedOnTab) => {
   const { startAddType } = useDataSheetWrapper();
   // const { dispatch } = useTypeProperty();
   const [searchVisible, setSearchVisible] = useState(false);
@@ -33,7 +34,14 @@ export const TabTables = () => {
         {
           header: <NodesHeader setSearchVisible={setSearchVisible} />,
           key: '1',
-          children: <NodeTypes setSearchVisible={setSearchVisible} searchVisible={searchVisible} />,
+          children: (
+            <NodeTypes
+              isCheckable={isCheckable}
+              noColors={noColors}
+              setSearchVisible={setSearchVisible}
+              searchVisible={searchVisible}
+            />
+          ),
           extra: (
             <PlusOutlined style={{ cursor: 'pointer' }} onClick={(event) => handleExtraClick(event, startAddType)} />
           ),
@@ -42,7 +50,12 @@ export const TabTables = () => {
           header: <ConnectionHeader setSearchVisible={setSearchConnectionVisible} />,
           key: '2',
           children: (
-            <ConnectionTypes setSearchVisible={setSearchConnectionVisible} searchVisible={searchConnectionVisible} />
+            <ConnectionTypes
+              isCheckable={isCheckable}
+              noColors={noColors}
+              setSearchVisible={setSearchConnectionVisible}
+              searchVisible={searchConnectionVisible}
+            />
           ),
           extra: <AddNewConnection />,
         },

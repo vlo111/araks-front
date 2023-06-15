@@ -26,3 +26,8 @@ export type DataSheetState = {
 };
 
 export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;
+
+export type TableStyleBasedOnTab = {
+  isCheckable?: boolean;
+  noColors?: boolean;
+};
