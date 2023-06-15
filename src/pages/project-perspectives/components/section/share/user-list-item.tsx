@@ -1,9 +1,9 @@
+import React, { useMemo } from 'react';
 import { Avatar, List } from 'antd';
 import { Text } from 'components/typography';
 import { SelectItems } from 'components/select/share-select';
 import { ROLE_OPTIONS } from 'components/form/share-input-item';
 import styled from 'styled-components';
-import React from 'react';
 import { useCreatePerspectiveUser } from 'api/perspective/shared-users/use-create-perspective-user';
 
 type Props = React.FC<{
@@ -46,7 +46,10 @@ const Share = styled.div`
 export const UserListItem: Props = ({ id, index, user }) => {
   const { mutate } = useCreatePerspectiveUser({}, id);
 
-  const value = user.value === 'owner' ? `Owner` : ROLE_OPTIONS.find((r) => r.value === user.value)?.value;
+  const value = useMemo(
+    () => (user.value === 'owner' ? `Owner` : ROLE_OPTIONS.find((r) => r.value === user.value)?.value),
+    [user.value]
+  );
 
   const changeRole = (role: string) => {
     mutate({

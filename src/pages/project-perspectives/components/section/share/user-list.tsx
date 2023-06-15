@@ -1,5 +1,6 @@
-import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { useMemo } from 'react';
 import { Divider, List, Space } from 'antd';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Icon } from 'components/icon';
 import { Text } from 'components/typography';
@@ -8,20 +9,22 @@ import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { UserListItem } from './user-list-item';
 
 export const UserList = () => {
-  const { perspective } = useSchema() || {};
-
-  const isXXl = useIsXXlScreen();
-
-  const { id } = perspective;
+  const { perspective: { id } = { id: '' } } = useSchema() || {};
 
   const { shared } = useGetPerspectiveUsers({ id });
 
-  const data = shared?.map(({ perspective_users: user, role }) => ({
-    id: user.id,
-    title: user.email,
-    value: role,
-    avatar: user.avatar,
-  }));
+  const isXXl = useIsXXlScreen();
+
+  const data = useMemo(
+    () =>
+      shared?.map(({ perspective_users: user, role }) => ({
+        id: user.id,
+        title: user.email,
+        value: role,
+        avatar: user.avatar,
+      })),
+    [shared]
+  );
 
   return (
     <VerticalSpace size={8}>
