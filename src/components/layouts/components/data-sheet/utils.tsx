@@ -16,7 +16,7 @@ const StyledBadge = styled(({ defaultProprtyId, ...props }) => <Badge {...props}
   }
 `;
 
-export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: string) => {
+export const createNodesTree = (nodesList: ProjectTreeReturnData[], noColors = false, parentId?: string) => {
   const list = [];
   for (let i = 0; i < nodesList.length; i += 1) {
     if (
@@ -29,7 +29,9 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: s
     const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_property === true)?.id || '';
     const key = nodesList[i].id;
     const treeNode: TreeNodeType = {
-      title: (
+      title: noColors ? (
+        <Text>{nodesList[i].name}</Text>
+      ) : (
         <StyledBadge
           color={nodesList[i].color}
           text={<Text>{nodesList[i].name}</Text>}
@@ -43,7 +45,7 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], parentId?: s
     };
 
     for (let j = 0; j < nodesList.length; j += 1) {
-      treeNode.children = createNodesTree(nodesList, nodesList[i].id);
+      treeNode.children = createNodesTree(nodesList, noColors, nodesList[i].id);
     }
 
     list.push(treeNode);

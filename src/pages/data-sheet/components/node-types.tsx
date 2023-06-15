@@ -41,7 +41,7 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
       enabled: !!(params.id && selectNodeType),
       onSuccess: (data) => {
         /** This condition sets selected fisr node type when first time enter to this page */
-        const nodesList = createNodesTree(data.data);
+        const nodesList = createNodesTree(data.data, noColors);
         if (data.data.length && !nodeTypeId) {
           selectNodeType?.({
             titleText: data.data[0].name,
@@ -59,7 +59,8 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
           nodesList,
         });
       },
-    }
+    },
+    noColors
   );
 
   useEffect(() => {

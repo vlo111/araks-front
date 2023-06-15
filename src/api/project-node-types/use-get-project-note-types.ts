@@ -29,7 +29,8 @@ type Result = UseQueryResult<ProjectTreeReturnData[]> & { formatted: TreeNodeTyp
 
 export const useGetProjectNoteTypes = (
   { url, ...params }: GetProjectParam,
-  options: Options = { enabled: true }
+  options: Options = { enabled: true },
+  noColors = false
 ): Result => {
   const urlNodes = url.replace(':id', params?.id || '').replace(':project_id', params?.projectId || '');
   const result = useQuery({
@@ -40,7 +41,10 @@ export const useGetProjectNoteTypes = (
   });
   const { data, isSuccess } = result;
 
-  const formatted = useMemo(() => (isSuccess ? createNodesTree(data.data) : []), [data?.data, isSuccess]);
+  const formatted = useMemo(
+    () => (isSuccess ? createNodesTree(data.data, noColors) : []),
+    [data?.data, isSuccess, noColors]
+  );
   return {
     ...result,
     data: isSuccess ? data.data : ([] as ProjectTreeReturnData[]),
