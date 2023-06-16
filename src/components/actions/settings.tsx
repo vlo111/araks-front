@@ -4,5 +4,5 @@ import { MainActionButton } from './main-action-button';
 import { ActionProps } from './type';
 
 export const SettingsAction = forwardRef<HTMLButtonElement, ActionProps>(({ icon, button }, ref) => (
-  <MainActionButton helpText="Import Data" {...button} icon={<SettingOutlined />} />
+  <MainActionButton helpText="Settings" {...button} icon={<SettingOutlined />} />
 ));
