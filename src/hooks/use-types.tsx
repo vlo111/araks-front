@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useParams } from 'react-router-dom';
+import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { useGetTypes } from 'api/schema/type/use-get-types';
+import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
+import { formattedTypes } from 'components/layouts/components/schema/helpers/format-type';
 import { IProjectType } from '../api/types';
 import { useGetEdges } from '../api/schema/edge/use-get-edges';
-import { useEffect } from 'react';
-import { useGraph } from '../components/layouts/components/visualisation/wrapper';
-import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
-import { formattedData } from '../components/layouts/components/visualisation/container/helpers/format-node';
+import { useEffect, useRef } from 'react';
 
-export const useNodes: () => { isInitialLoading: boolean; nodes: IProjectType[] } = () => {
+export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] } = () => {
   const { id } = useParams();
-  const { graph, ...params } = useGraph() ?? {};
+  const { graph, ...params } = useSchema() ?? {};
+  const isInitialMount = useRef(true);
 
   const { nodes, isInitialLoading } = useGetTypes(
     { projectId: id ?? '' },
@@ -31,8 +33,12 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
 
   useEffect(() => {
     if (nodes !== undefined && graph !== undefined && edges !== undefined) {
-      const data = formattedData(graph, nodes, edges);
-      initData(graph, data);
+      initNodes(graph, formattedTypes(graph, nodes, edges), params);
+
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        graph.zoomToFit({ padding: 10, maxScale: 3 });
+      }
     }
   }, [graph, nodes, edges]);
 

@@ -25,3 +25,7 @@ export type ProjectEdgeForm = {
   inverse: boolean;
   multiple: boolean;
 };
+
+export type INodeOpen = {
+  id: string
+};

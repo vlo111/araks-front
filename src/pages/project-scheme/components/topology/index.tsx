@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Skeleton } from 'antd';
 import { SecondaryText } from '../../../../components/typography';
 import { TreeView } from './tree-view';
-import { useNodes } from '../../../../hooks/use-nodes';
+import { useTypes } from '../../../../hooks/use-types';
 
 const TopologyPanelStyle = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ const NodeHeader = styled(SecondaryText)`
 `;
 
 export const Topology: React.FC = () => {
-  const { nodes, isInitialLoading } = useNodes();
+  const { nodes, isInitialLoading } = useTypes();
 
   return (
     <TopologyPanelStyle>
