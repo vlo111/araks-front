@@ -32,7 +32,7 @@ type Props = DropdownProps & {
 };
 
 export const AllDataSort = ({ sortItems, infoText, ...props }: Props) => {
-  const [text, setText] = useState('Connection Type');
+  const [text, setText] = useState(sortItems[0].label);
 
   const handleMenuClick: MenuProps['onClick'] = ({ key, keyPath, domEvent }) => {
     setText(key);

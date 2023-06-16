@@ -25,6 +25,7 @@ export const AllDataList = () => {
               avatar={<Avatar src={avatar?.nodes_data?.join('')} />}
               title={<a href="https://ant.design">{name?.nodes_data?.join('')}</a>}
             />
+            Text
           </List.Item>
         );
       }}
