@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 
 import { SiderCollapse } from 'components/collapse/sider-collapse';
 import { ConnectionTypes } from './connection-types';
@@ -7,23 +6,19 @@ import { ConnectionHeader } from './connection-types/connection-header';
 import { NodeTypes } from './node-types';
 import { NodesHeader } from './nodes-header';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-// import { useTypeProperty } from './table-section/table-context';
-// import { TypePropertyActionKind } from './table-section/types';
 import { AddNewConnection } from './connection-types/add-new-connection';
 import { TableStyleBasedOnTab } from '../types';
+import { AddAction } from 'components/actions/add';
 
 export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleBasedOnTab) => {
-  const { startAddType } = useDataSheetWrapper();
-  // const { dispatch } = useTypeProperty();
+  const { startAddType, allTypeSelected } = useDataSheetWrapper();
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
 
-  // const handlePropertyAddClick = useCallback(() => {
-  //   dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: { isConnectionType: true } });
-  // }, [dispatch]);
-
   const handleExtraClick = (event: React.MouseEvent<HTMLElement>, action: () => void) => {
     event.stopPropagation();
+    // eslint-disable-next-line no-console
+    console.log('Hello');
     action();
   };
 
@@ -42,8 +37,8 @@ export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleB
               searchVisible={searchVisible}
             />
           ),
-          extra: (
-            <PlusOutlined style={{ cursor: 'pointer' }} onClick={(event) => handleExtraClick(event, startAddType)} />
+          extra: !allTypeSelected && (
+            <AddAction onClick={(event) => handleExtraClick(event, startAddType)} helpText="Add Type" />
           ),
         },
         {
@@ -57,7 +52,7 @@ export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleB
               searchVisible={searchConnectionVisible}
             />
           ),
-          extra: <AddNewConnection />,
+          extra: !allTypeSelected && <AddNewConnection />,
         },
       ]}
     />

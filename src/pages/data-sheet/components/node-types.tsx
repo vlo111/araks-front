@@ -26,7 +26,7 @@ type Props = PropsSetState & TableStyleBasedOnTab;
 export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, allTypeSelected } = useDataSheetWrapper();
 
   const {
     formatted: nodesList,
@@ -38,9 +38,10 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
       projectId: params.id || '',
     },
     {
-      enabled: !!(params.id && selectNodeType),
+      enabled: !!(params.id && !!selectNodeType && !allTypeSelected),
       onSuccess: (data) => {
         /** This condition sets selected fisr node type when first time enter to this page */
+        /** WONT work wor all type as the data already exists */
         const nodesList = createNodesTree(data.data, noColors);
         if (data.data.length && !nodeTypeId) {
           selectNodeType?.({

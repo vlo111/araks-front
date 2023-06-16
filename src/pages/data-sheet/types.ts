@@ -10,6 +10,7 @@ export type TreeNodeType = ProjectTreeReturnData & DefaultOptionType;
 export type TreeConnectionType = NodeEdgeTypesReturnData & DefaultOptionType;
 
 export type DataSheetState = {
+  allTypeSelected?: boolean;
   addTypeisOpened?: boolean;
   editTypeisOpened?: boolean;
   color?: string;
