@@ -1,19 +1,19 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { PageParameters } from 'api/types';
 import { useParams } from 'react-router-dom';
-import { NodeDataListResponse, NodeDataResponse } from 'types/node';
+import { AllDataListResponse, AllDataResponse } from 'types/node';
 import client from '../client';
 import { URL_GET_PROJECT_ALL_DATA } from './constants';
 
 export const GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST = '/projects-edge-type/:edge_type_id/properties';
 
 type ReturnData = {
-  data: NodeDataListResponse;
+  data: AllDataListResponse[];
 };
 
-type Options = UseQueryOptions<ReturnData, Error, NodeDataListResponse>;
-type Result = UseQueryResult<NodeDataListResponse> & {
-  rowsData: NodeDataResponse[];
+type Options = UseQueryOptions<ReturnData[], Error, AllDataListResponse>;
+type Result = UseQueryResult<AllDataListResponse> & {
+  rowsData: AllDataResponse[];
   count: number;
 };
 
@@ -29,8 +29,8 @@ export const useGetProjectAllData = (queryParams: PageParameters, options?: Opti
 
   return {
     ...result,
-    data: (isSuccess ? data : {}) as NodeDataListResponse,
-    rowsData: (isSuccess ? data.rows : []) as NodeDataResponse[],
+    data: (isSuccess ? data : {}) as AllDataListResponse,
+    rowsData: (isSuccess ? data.rows : []) as AllDataResponse[],
     count: (isSuccess ? data.count : 0) as number,
   } as Result;
 };

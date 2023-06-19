@@ -7,21 +7,21 @@ import { ExpandableInput } from 'components/input/expandable-input';
 
 export const AllDataFilterSection = () => {
   return (
-    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }}>
-      <Col span={20}>
+    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
+      <Col xxl={20} xs={24}>
         <Row gutter={24}>
-          <Col span={8}>
+          <Col xxl={8}>
             <AllDataSort sortItems={ALL_DATA_SORT_BY} infoText="Sort by:" />
           </Col>
-          <Col span={8}>
+          <Col xxl={8}>
             <AllDataSort sortItems={SORT_DIRECTION} infoText="Sort direction::" />
           </Col>
-          <Col span={8}>
+          <Col xxl={8}>
             <ExpandableInput />
           </Col>
         </Row>
       </Col>
-      <Col span={4}>
+      <Col xxl={4} xs={24}>
         <Row gutter={24}>
           <Col span={12}>
             <DownloadAction />

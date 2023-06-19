@@ -1,4 +1,4 @@
-import { Dropdown, Button, Space, MenuProps, DropdownProps } from 'antd';
+import { Dropdown, Space, MenuProps, DropdownProps } from 'antd';
 import styled from 'styled-components';
 
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
@@ -7,6 +7,7 @@ import { COLORS } from '../../helpers/constants';
 
 import './sort.css';
 import { useState } from 'react';
+import { Button } from 'components/button';
 
 const DropdownButton = styled(Button)`
   width: 100%;

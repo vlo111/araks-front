@@ -1,34 +1,42 @@
-import { Button as ButtonComponent } from "antd"
-import { textSizeMedia } from "components/typography/text";
-import styled from "styled-components"
-import { COLORS } from "../../helpers/constants";
+import { Button as ButtonComponent } from 'antd';
+import { textSizeMedia } from 'components/typography/text';
+import { changeHeight } from 'helpers/styles';
+import styled, { css } from 'styled-components';
+import { COLORS } from '../../helpers/constants';
 
 export const Button = styled(ButtonComponent)`
-    ${textSizeMedia}
-    &.ant-btn-default {
-       span {
-        color: ${COLORS.PRIMARY.GRAY_DARK};
-       } 
+  ${(props) =>
+    !props.size
+      ? css`
+          ${changeHeight}
+        `
+      : ''}
+  ${textSizeMedia}
+  &.ant-btn-default {
+    span {
+      color: ${COLORS.PRIMARY.GRAY_DARK};
     }
+  }
 
-    &.ant-btn-default:disabled {
-        background-color: ${COLORS.PRIMARY.WHITE};
-        border-color: ${COLORS.PRIMARY.SILVER};
+  &.ant-btn-default:disabled {
+    background-color: ${COLORS.PRIMARY.WHITE};
+    border-color: ${COLORS.PRIMARY.SILVER};
 
-        span {
-            color: ${COLORS.PRIMARY.SILVER};
-        } 
+    span {
+      color: ${COLORS.PRIMARY.SILVER};
     }
+  }
 
-    &.ant-btn-default:not(:disabled) {
-        &:hover, &:active {
-            background: ${COLORS.PRIMARY.SILVER_LIGHT};
+  &.ant-btn-default:not(:disabled) {
+    &:hover,
+    &:active {
+      background: ${COLORS.PRIMARY.SILVER_LIGHT};
 
-            span {
-                color: ${COLORS.PRIMARY.BLUE};
-            }
-        }
+      span {
+        color: ${COLORS.PRIMARY.BLUE};
+      }
     }
+  }
 `;
 
 export { ButtonWithIcon } from './button-with-icon';

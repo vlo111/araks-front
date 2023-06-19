@@ -48,43 +48,27 @@ export const ConnectionType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      {data.multiple_type === true ? (
-        <Form.List name={data.name} initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <FormItem
-                labelCol={{ span: 24 }}
-                label={label}
-                required={data.required_type}
-                style={{ marginBottom: '0' }}
-              >
-                <VerticalSpace>
-                  {fields.map((field) => (
-                    <FormItem
-                      style={{ marginBottom: 0 }}
-                      name={[field.name, 'name']}
-                      key={field.key}
-                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-                    >
-                      <Url />
-                    </FormItem>
-                  ))}
-                </VerticalSpace>
-              </FormItem>
-              <AddNewFieldButton onClick={add} />
-            </>
-          )}
-        </Form.List>
-      ) : (
-        <FormItem
-          key={data.id}
-          name={data.name}
-          label={label}
-          rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-        >
-          <Url />
-        </FormItem>
-      )}
+      <Form.List name={data.name} initialValue={[{}]}>
+        {(fields, { add, remove }) => (
+          <>
+            <FormItem labelCol={{ span: 24 }} label={label} required={data.required_type} style={{ marginBottom: '0' }}>
+              <VerticalSpace>
+                {fields.map((field) => (
+                  <FormItem
+                    style={{ marginBottom: 0 }}
+                    name={[field.name, 'name']}
+                    key={field.key}
+                    rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                  >
+                    <Url />
+                  </FormItem>
+                ))}
+              </VerticalSpace>
+            </FormItem>
+            <AddNewFieldButton onClick={add} />
+          </>
+        )}
+      </Form.List>
     </div>
   );
 };
