@@ -22,7 +22,7 @@ export const useGetProjectAllData = (queryParams: PageParameters, options?: Opti
   const urlNodes = URL_GET_PROJECT_ALL_DATA.replace(':project_id', params.id || '');
   const result = useQuery({
     queryKey: [urlNodes, queryParams],
-    queryFn: () => client.get(urlNodes, { params: queryParams }).then((data) => data.data),
+    queryFn: () => client.post(urlNodes, { body: queryParams }).then((data) => data.data),
     ...options,
   });
   const { data, isSuccess } = result;

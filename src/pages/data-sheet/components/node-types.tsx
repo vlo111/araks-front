@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
-import { EventDataNode } from 'antd/es/tree';
+import { EventDataNode, TreeProps } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../types';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
@@ -100,6 +100,11 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
     setFilteredData(nodesList);
   }, [nodesList]);
 
+  const onCheck: TreeProps['onCheck'] = (checkedKeys, info) => {
+    // eslint-disable-next-line no-console
+    console.log('onCheck', checkedKeys, info);
+  };
+
   return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
@@ -116,6 +121,7 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
         onSelect={onSelect}
         showSearch
         checkable={isCheckable}
+        onCheck={onCheck}
         switcherIcon={switcherIcon}
         selectedKeys={[nodeTypeId]}
         defaultExpandedKeys={[nodeTypeId]}
