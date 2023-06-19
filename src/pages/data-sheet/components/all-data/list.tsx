@@ -2,6 +2,7 @@ import { Avatar, Col, List, Row } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { PageParameters } from 'api/types';
 import { Checkbox } from 'components/checkbox';
+import { NodePagination } from 'components/pagination';
 import { Text } from 'components/typography';
 import dayjs from 'dayjs';
 import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
@@ -52,62 +53,66 @@ export const AllDataList = () => {
     [checkedItems]
   );
 
-  const { rowsData } = useGetProjectAllData(pageData);
+  const { rowsData, count: pageCount } = useGetProjectAllData(pageData);
   // eslint-disable-next-line no-console
   console.log('rowsData', rowsData);
   return (
-    <List
-      pagination={{
-        position: 'bottom',
-        align: 'end',
-        onChange: (page) => {
-          setPageData({ page, size: DEFAULT_PAGE_SIZE });
-        },
-      }}
-      // grid={{
-      //   gutter: 8,
-      //   column: 2,
-      // }}
-      dataSource={rowsData}
-      renderItem={(item, index) => {
-        const avatar = item.properties?.find((item) => item.default_image);
-        const name = item.properties?.find((item) => item.default_property);
-        // eslint-disable-next-line no-console
-        console.log('avatar, name', avatar, name);
-        return (
-          <StyledListItem key={item.id} color={name?.type_color} onClick={() => handleItemClick(item)}>
-            <Checkbox
-              className="all-data-checkbox"
-              style={{ marginRight: '16px' }}
-              checked={checkedItems.includes(item.id)}
-            />
-            <List.Item.Meta
-              avatar={<Avatar src={avatar?.node_name as string} />}
-              title={
-                <Row>
-                  <Col span={6}>
-                    <Text color={COLORS.PRIMARY.GRAY}>{name?.node_name as string}</Text>
-                  </Col>
-                  <Col span={18}>
-                    <Row justify="end" align="middle" gutter={32}>
-                      <Col offset={6} span={6}>
-                        <TypeInfo color={name?.type_color} className="all-data-type-name">
-                          <Text color={COLORS.PRIMARY.GRAY_DARK}>{name?.type_name}</Text>
-                        </TypeInfo>
-                      </Col>
-                      <Col>
-                        <Text color={COLORS.PRIMARY.GRAY}>
-                          {name?.updated_at ? dayjs(name?.updated_at).format('DD MMMM [at] HH:mm') : ''}
-                        </Text>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              }
-            />
-          </StyledListItem>
-        );
-      }}
-    />
+    <>
+      <List
+        pagination={false}
+        dataSource={rowsData}
+        renderItem={(item, index) => {
+          const avatar = item.properties?.find((item) => item.default_image);
+          const name = item.properties?.find((item) => item.default_property);
+          // eslint-disable-next-line no-console
+          console.log('avatar, name', avatar, name);
+          return (
+            <StyledListItem key={item.id} color={name?.type_color} onClick={() => handleItemClick(item)}>
+              <Checkbox
+                className="all-data-checkbox"
+                style={{ marginRight: '16px' }}
+                checked={checkedItems.includes(item.id)}
+              />
+              <List.Item.Meta
+                avatar={<Avatar src={avatar?.node_name as string} />}
+                title={
+                  <Row>
+                    <Col span={6}>
+                      <Text color={COLORS.PRIMARY.GRAY}>{name?.node_name as string}</Text>
+                    </Col>
+                    <Col span={18}>
+                      <Row justify="end" align="middle" gutter={32}>
+                        <Col offset={6} span={6}>
+                          <TypeInfo color={name?.type_color} className="all-data-type-name">
+                            <Text color={COLORS.PRIMARY.GRAY_DARK}>{name?.type_name}</Text>
+                          </TypeInfo>
+                        </Col>
+                        <Col>
+                          <Text color={COLORS.PRIMARY.GRAY}>
+                            {name?.updated_at ? dayjs(name?.updated_at).format('DD MMMM [at] HH:mm') : ''}
+                          </Text>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                }
+              />
+            </StyledListItem>
+          );
+        }}
+      />
+      {pageCount && (
+        <NodePagination
+          total={pageCount}
+          defaultPageSize={initPageData.size}
+          pageSize={initPageData.size}
+          defaultCurrent={initPageData.page}
+          current={pageData.page}
+          onChange={(page) => {
+            setPageData({ page, size: DEFAULT_PAGE_SIZE });
+          }}
+        />
+      )}
+    </>
   );
 };
