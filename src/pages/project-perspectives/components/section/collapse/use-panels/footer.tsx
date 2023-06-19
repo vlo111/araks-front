@@ -4,7 +4,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ISharedPerspectiveData } from 'api/types';
 import React from 'react';
 
-type Props = React.FC<{ description: string; shared: ISharedPerspectiveData[] }>;
+type Props = React.FC<{ id: string; description: string; shared: ISharedPerspectiveData[] }>;
 
 const Wrapper = styled.div`
   .box {
@@ -43,8 +43,10 @@ const Wrapper = styled.div`
   }
 `;
 
-export const FooterPanel: Props = ({ description, shared }) => {
+export const FooterPanel: Props = ({ id, description, shared }) => {
   const { perspective, startPerspectiveShare } = useSchema() || {};
+
+  const share = () => startPerspectiveShare({ id, openShare: !(perspective?.openShare ?? false), sharedUsers: shared });
 
   return (
     <>
@@ -57,11 +59,7 @@ export const FooterPanel: Props = ({ description, shared }) => {
             </Space>
           </Col>
           <Col className="box" span={12} style={{ marginLeft: '1px' }}>
-            <Space
-              className="text"
-              align={'center'}
-              onClick={() => startPerspectiveShare({ openShare: !(perspective?.openShare ?? false), sharedUsers: shared })}
-            >
+            <Space className="text" align={'center'} onClick={share}>
               Share <p>({shared.length})</p>
             </Space>
           </Col>

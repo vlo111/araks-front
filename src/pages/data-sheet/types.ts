@@ -10,6 +10,7 @@ export type TreeNodeType = ProjectTreeReturnData & DefaultOptionType;
 export type TreeConnectionType = NodeEdgeTypesReturnData & DefaultOptionType;
 
 export type DataSheetState = {
+  allTypeSelected?: boolean;
   addTypeisOpened?: boolean;
   editTypeisOpened?: boolean;
   color?: string;
@@ -26,3 +27,8 @@ export type DataSheetState = {
 };
 
 export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;
+
+export type TableStyleBasedOnTab = {
+  isCheckable?: boolean;
+  noColors?: boolean;
+};

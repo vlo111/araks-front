@@ -19,6 +19,28 @@ export const PROJECT_SORT: SortItems[] = [
   },
 ];
 
+export const ALL_DATA_SORT_BY: SortItems[] = [
+  {
+    label: 'Connection Type',
+    key: 'Connection Type',
+  },
+  {
+    label: 'Node Type',
+    key: 'Node Type',
+  },
+];
+
+export const SORT_DIRECTION: SortItems[] = [
+  {
+    label: 'Ascending',
+    key: 'asc',
+  },
+  {
+    label: 'Descending',
+    key: 'desc',
+  },
+];
+
 export const SHARE_OPTIONS = [
   {
     label: 'Can Edit',

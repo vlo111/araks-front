@@ -1,4 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { AddAction } from 'components/actions/add';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ export const AddNewConnection = () => {
         return open;
       }}
     >
-      <PlusOutlined style={{ cursor: 'pointer' }} onClick={handleExtraClick} />
+      <AddAction onClick={handleExtraClick} helpText="Add Connection Type" />
     </AddNodeTypePopover>
   );
 };

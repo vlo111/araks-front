@@ -9,13 +9,10 @@ const Row = styled((props) => <RowComponent {...props} />)`
     height: calc(100vh - 152px);
 
     .ant-col.overview__section {
-      background: #f7f7f7;
-
-      box-shadow: -10px 0px 10px rgba(111, 111, 111, 0.1);
-
       &:first-child {
-        opacity: 1;
-        box-shadow: inset -10px 10px 10px rgba(111, 111, 111, 0.1);
+        /* opacity: 1; */
+        background: #f2f2f2;
+        box-shadow: 10px 0px 10px rgba(111, 111, 111, 0.1);
       }
     }
 

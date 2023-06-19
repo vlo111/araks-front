@@ -3,9 +3,7 @@ import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { PropsSetState, TreeNodeType } from '../types';
-import { CaretDownFilled } from '@ant-design/icons';
-import { COLORS } from 'helpers/constants';
+import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../types';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
@@ -13,11 +11,22 @@ import { useCallback, useEffect, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { filterTreeData } from '../utils';
 import { NodeTree } from 'components/tree/node-tree';
+import { ReactComponent as CaretDown } from 'components/icons/caret-down.svg';
+import { ReactComponent as CaretRight } from 'components/icons/caret-right.svg';
 
-export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) => {
+const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean }) => {
+  if (isLeaf) {
+    return null;
+  }
+  return expanded ? <CaretDown /> : <CaretRight />;
+};
+
+type Props = PropsSetState & TableStyleBasedOnTab;
+
+export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished } = useDataSheetWrapper();
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, allTypeSelected } = useDataSheetWrapper();
 
   const {
     formatted: nodesList,
@@ -29,10 +38,11 @@ export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) =>
       projectId: params.id || '',
     },
     {
-      enabled: !!(params.id && selectNodeType),
+      enabled: !!(params.id && !!selectNodeType && !allTypeSelected),
       onSuccess: (data) => {
         /** This condition sets selected fisr node type when first time enter to this page */
-        const nodesList = createNodesTree(data.data);
+        /** WONT work wor all type as the data already exists */
+        const nodesList = createNodesTree(data.data, noColors);
         if (data.data.length && !nodeTypeId) {
           selectNodeType?.({
             titleText: data.data[0].name,
@@ -50,7 +60,8 @@ export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) =>
           nodesList,
         });
       },
-    }
+    },
+    noColors
   );
 
   useEffect(() => {
@@ -104,7 +115,8 @@ export const NodeTypes = ({ searchVisible, setSearchVisible }: PropsSetState) =>
       <NodeTree
         onSelect={onSelect}
         showSearch
-        switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
+        checkable={isCheckable}
+        switcherIcon={switcherIcon}
         selectedKeys={[nodeTypeId]}
         defaultExpandedKeys={[nodeTypeId]}
         treeData={filteredData}
