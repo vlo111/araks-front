@@ -1,6 +1,6 @@
 import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
-import { EventDataNode } from 'antd/es/tree';
+import { EventDataNode, TreeProps } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeConnectionType } from '../../types';
 import { CaretDownFilled } from '@ant-design/icons';
@@ -69,6 +69,10 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible, isCheckable =
     setFilteredData(connectionList);
   }, [connectionList]);
 
+  const onCheck: TreeProps['onCheck'] = (checkedKeys, info) => {
+    dispatch({ type: DataSheetActionKind.ALL_DATA_TYPE_CHECK, payload: { allDataTypesList: checkedKeys as string[] } });
+  };
+
   return !selectNodeTypeFinished || isInitialLoading || !isFetched ? (
     <Skeleton />
   ) : (
@@ -89,6 +93,7 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible, isCheckable =
         blockNode
         color={color}
         selectedKeys={[nodeTypeId]}
+        onCheck={onCheck}
       />
     </>
   );

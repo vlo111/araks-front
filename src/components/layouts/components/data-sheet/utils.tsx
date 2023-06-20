@@ -90,6 +90,7 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
           <Text>{`${item.name} (${1})`}</Text>
         </Space>
       ),
+      disabled: true,
       value: item.id,
       key: `${item.id}-${item.id}`,
       selectable: false,
