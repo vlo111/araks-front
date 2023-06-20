@@ -24,19 +24,21 @@ export type SortItems = {
 const setItems = (sortItems: SortItems[]): MenuProps['items'] =>
   sortItems.map((item) => ({
     label: <Text style={{ color: COLORS.PRIMARY.GRAY }}>{item.label}</Text>,
-    key: `${item.label}-${item.key}`,
+    key: item.key,
   }));
 
 type Props = DropdownProps & {
   sortItems: SortItems[];
   infoText?: string;
+  handleMenuSelect: (key: string) => void;
 };
 
-export const AllDataSort = ({ sortItems, infoText, ...props }: Props) => {
+export const AllDataSort = ({ sortItems, infoText, handleMenuSelect, ...props }: Props) => {
   const [text, setText] = useState(sortItems[0].label);
 
   const handleMenuClick: MenuProps['onClick'] = ({ key, keyPath, domEvent }) => {
-    setText(key);
+    handleMenuSelect(key);
+    setText(sortItems.find((item) => item?.key === key)?.label || '');
   };
 
   return (

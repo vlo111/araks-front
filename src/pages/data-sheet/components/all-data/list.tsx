@@ -1,4 +1,4 @@
-import { Avatar, Col, List, Row } from 'antd';
+import { Avatar, Col, List, Row, Skeleton } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { AllDataPageParameters } from 'api/types';
 import { Checkbox } from 'components/checkbox';
@@ -10,6 +10,7 @@ import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constant
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AllDataResponse } from 'types/node';
+import { defaultAllDataFilter } from '../right-section-all-data';
 
 type TypeInfoProps = {
   color?: string;
@@ -40,14 +41,18 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
 
 const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
-export const AllDataList = () => {
+type Props = {
+  filterValue: typeof defaultAllDataFilter;
+};
+
+export const AllDataList = ({ filterValue }: Props) => {
   const { allDataTypesList } = useDataSheetWrapper();
   const [pageData, setPageData] = useState(initPageData);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   useEffect(() => {
-    setPageData((prev) => ({ ...prev, project_type_list_id: allDataTypesList }));
-  }, [allDataTypesList]);
+    setPageData((prev) => ({ ...prev, project_type_list_id: allDataTypesList, ...filterValue }));
+  }, [allDataTypesList, filterValue]);
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -69,8 +74,7 @@ export const AllDataList = () => {
         renderItem={(item, index) => {
           const avatar = item.properties?.find((item) => item.default_image);
           const name = item.properties?.find((item) => item.default_property);
-          // eslint-disable-next-line no-console
-          console.log('avatar, name', avatar, name);
+
           return (
             <StyledListItem key={item.id} color={name?.type_color} onClick={() => handleItemClick(item)}>
               <Checkbox
@@ -106,7 +110,7 @@ export const AllDataList = () => {
           );
         }}
       />
-      {pageCount && (
+      {pageCount ? (
         <NodePagination
           total={pageCount}
           defaultPageSize={initPageData.size}
@@ -117,6 +121,8 @@ export const AllDataList = () => {
             setPageData({ page, size: DEFAULT_PAGE_SIZE });
           }}
         />
+      ) : (
+        <Skeleton />
       )}
     </>
   );
