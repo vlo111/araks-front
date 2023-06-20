@@ -22,7 +22,7 @@ export const useGetProjectAllData = (queryParams: PageParameters, options?: Opti
   const urlNodes = URL_GET_PROJECT_ALL_DATA.replace(':project_id', params.id || '');
   const result = useQuery({
     queryKey: [urlNodes, queryParams],
-    queryFn: () => client.post(urlNodes, { body: queryParams }).then((data) => data.data),
+    queryFn: () => client.post(urlNodes, queryParams).then((data) => data.data),
     ...options,
   });
   const { data, isSuccess } = result;
@@ -30,7 +30,7 @@ export const useGetProjectAllData = (queryParams: PageParameters, options?: Opti
   return {
     ...result,
     data: (isSuccess ? data : {}) as AllDataListResponse,
-    rowsData: (isSuccess ? data.rows : []) as AllDataResponse[],
+    rowsData: (isSuccess ? data.rows || [] : []) as AllDataResponse[],
     count: (isSuccess ? data.count : 0) as number,
   } as Result;
 };
