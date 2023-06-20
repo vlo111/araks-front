@@ -1,12 +1,13 @@
 import { Avatar, Col, List, Row } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
-import { PageParameters } from 'api/types';
+import { AllDataPageParameters } from 'api/types';
 import { Checkbox } from 'components/checkbox';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePagination } from 'components/pagination';
 import { Text } from 'components/typography';
 import dayjs from 'dayjs';
 import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AllDataResponse } from 'types/node';
 
@@ -37,11 +38,16 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
   }
 `;
 
-const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
+const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 export const AllDataList = () => {
+  const { allDataTypesList } = useDataSheetWrapper();
   const [pageData, setPageData] = useState(initPageData);
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    setPageData((prev) => ({ ...prev, project_type_list_id: allDataTypesList }));
+  }, [allDataTypesList]);
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -53,9 +59,8 @@ export const AllDataList = () => {
     [checkedItems]
   );
 
-  const { rowsData, count: pageCount } = useGetProjectAllData(pageData);
-  // eslint-disable-next-line no-console
-  console.log('rowsData', rowsData);
+  const { rowsData, count: pageCount } = useGetProjectAllData(pageData, { enabled: !!pageData.project_type_list_id });
+
   return (
     <>
       <List
