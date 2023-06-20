@@ -30,7 +30,7 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
     background: linear-gradient(90.12deg, rgba(255, 255, 255, 0.7) 1.63%, rgba(255, 255, 255, 0.2) 100%);
 
     &:hover {
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 
       .all-data-type-name {
         background-color: ${(props) => `${props.color}`};

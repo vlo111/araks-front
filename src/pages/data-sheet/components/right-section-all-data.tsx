@@ -16,7 +16,11 @@ export const RightSectionAllData = () => {
 
   return (
     <VerticalSpace>
-      <AllDataFilterSection setFilterValue={setFilterValue} checkedItems={checkedItems} />
+      <AllDataFilterSection
+        setFilterValue={setFilterValue}
+        checkedItems={checkedItems}
+        setCheckedItems={setCheckedItems}
+      />
       <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
     </VerticalSpace>
   );

@@ -8,15 +8,17 @@ import { useState } from 'react';
 
 type Props = {
   checkedItems: string[];
+  setCheckedItems: (checkedItems: string[]) => void;
 };
 
-export const DeleteAllDataModal = ({ checkedItems }: Props) => {
+export const DeleteAllDataModal = ({ checkedItems, setCheckedItems }: Props) => {
   const [isDeleteStart, setDeleteStart] = useState(false);
   const { mutate } = useDeleteAllDataChecked(checkedItems);
 
   const handleDelete = async () => {
     await mutate();
     setDeleteStart(false);
+    setCheckedItems([]);
   };
 
   return (
@@ -43,7 +45,7 @@ export const DeleteAllDataModal = ({ checkedItems }: Props) => {
           </Button>
         </VerticalSpace>
       </Modal>
-      <DeleteAction onClick={() => setDeleteStart(true)} disabled={isDeleteStart || !checkedItems.length} />
+      {!!checkedItems.length && <DeleteAction onClick={() => setDeleteStart(true)} disabled={isDeleteStart} />}
     </>
   );
 };

@@ -10,11 +10,12 @@ import { defaultAllDataFilter } from '../right-section-all-data';
 
 type Props = {
   checkedItems: string[];
+  setCheckedItems: (checkedItems: string[]) => void;
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
-export const AllDataFilterSection = ({ setFilterValue, checkedItems }: Props) => {
+export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
   const setSearchText = useCallback(
     (text: string) => {
       setFilterValue((prevValue) => ({ ...prevValue, search: text }));
@@ -58,7 +59,7 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems }: Props) =>
       <Col xxl={4} xs={24}>
         <Row gutter={24} justify="end">
           <Col span={4}>
-            <DeleteAllDataModal checkedItems={checkedItems} />
+            <DeleteAllDataModal checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
           </Col>
           <Col span={4}>
             <DownloadAction />
