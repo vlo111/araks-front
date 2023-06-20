@@ -13,7 +13,7 @@ const DotsWrapper = styled(({ fullWidth, ...props }) => <Button type="text" {...
         : css`
             height: 30px;
             width: 15px;
-            padding: 5px;
+            padding: 3px;
             border-radius: 8px;
           `}
 
