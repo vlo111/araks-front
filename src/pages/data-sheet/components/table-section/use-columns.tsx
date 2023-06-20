@@ -39,7 +39,7 @@ export const useColumns = () => {
             propertyId={item.id}
             isDefault={item.default_property}
             canSetDefault={
-              item.ref_property_type_id === 'text' && item.required_type === true && item.unique_type === true
+              item.ref_property_type_id === PropertyTypes.Text && item.required_type === true && !item.multiple_type
             }
           >
             <Space>

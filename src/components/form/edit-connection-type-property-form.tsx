@@ -83,7 +83,7 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>Edit type</Text>
+          <Text>Edit Property</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>

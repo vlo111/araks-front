@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { FullWidth } from 'types/project';
 
 const DotsWrapper = styled(({ fullWidth, ...props }) => <Button type="text" {...props} />)`
-  & {
+  && {
     position: relative;
 
     ${(props) =>
