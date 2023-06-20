@@ -43,12 +43,13 @@ const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: D
 
 type Props = {
   filterValue: typeof defaultAllDataFilter;
+  checkedItems: string[];
+  setCheckedItems: (values: string[]) => void;
 };
 
-export const AllDataList = ({ filterValue }: Props) => {
+export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Props) => {
   const { allDataTypesList } = useDataSheetWrapper();
   const [pageData, setPageData] = useState(initPageData);
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   useEffect(() => {
     setPageData((prev) => ({ ...prev, project_type_list_id: allDataTypesList, ...filterValue }));
@@ -61,7 +62,7 @@ export const AllDataList = ({ filterValue }: Props) => {
         : [...checkedItems, item.id];
       setCheckedItems(updatedCheckedItems);
     },
-    [checkedItems]
+    [checkedItems, setCheckedItems]
   );
 
   const { rowsData, count: pageCount } = useGetProjectAllData(pageData, { enabled: !!pageData.project_type_list_id });

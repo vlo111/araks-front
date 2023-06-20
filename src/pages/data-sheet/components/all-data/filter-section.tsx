@@ -4,15 +4,17 @@ import { QueriesButton } from 'components/button/queries-button';
 import { AllDataSort } from 'components/dropdown';
 import { ALL_DATA_SORT_BY, SORT_DIRECTION } from 'components/dropdown/constants';
 import { ExpandableInput } from 'components/input/expandable-input';
+import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useCallback } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
 type Props = {
+  checkedItems: string[];
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
-export const AllDataFilterSection = ({ setFilterValue }: Props) => {
+export const AllDataFilterSection = ({ setFilterValue, checkedItems }: Props) => {
   const setSearchText = useCallback(
     (text: string) => {
       setFilterValue((prevValue) => ({ ...prevValue, search: text }));
@@ -54,11 +56,14 @@ export const AllDataFilterSection = ({ setFilterValue }: Props) => {
         </Row>
       </Col>
       <Col xxl={4} xs={24}>
-        <Row gutter={24}>
-          <Col span={12}>
+        <Row gutter={24} justify="end">
+          <Col span={4}>
+            <DeleteAllDataModal checkedItems={checkedItems} />
+          </Col>
+          <Col span={4}>
             <DownloadAction />
           </Col>
-          <Col span={12}>
+          <Col>
             <QueriesButton />
           </Col>
         </Row>

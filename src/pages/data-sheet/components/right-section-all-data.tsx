@@ -12,11 +12,12 @@ export const defaultAllDataFilter = {
 
 export const RightSectionAllData = () => {
   const [filterValue, setFilterValue] = useState(defaultAllDataFilter); // state to store the input value
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   return (
     <VerticalSpace>
-      <AllDataFilterSection setFilterValue={setFilterValue} />
-      <AllDataList filterValue={filterValue} />
+      <AllDataFilterSection setFilterValue={setFilterValue} checkedItems={checkedItems} />
+      <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
     </VerticalSpace>
   );
 };
