@@ -30,6 +30,7 @@ export const ALL_DATA_SORT_BY: SortItems[] = [
   },
 ];
 
+/** @deprecated not used */
 export const SORT_DIRECTION: SortItems[] = [
   {
     label: 'Ascending',

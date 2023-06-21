@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react';
 import { Avatar, Col, List, Row, Skeleton } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { AllDataPageParameters } from 'api/types';
@@ -5,9 +6,9 @@ import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePagination } from 'components/pagination';
 import { Text } from 'components/typography';
+import { useSort } from 'context/sort-context';
 import dayjs from 'dayjs';
 import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
-import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AllDataResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
@@ -48,12 +49,20 @@ type Props = {
 };
 
 export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Props) => {
+  const { state } = useSort();
   const { allDataTypesList } = useDataSheetWrapper();
   const [pageData, setPageData] = useState(initPageData);
 
+  const defaultSort = state?.split(' ');
+
   useEffect(() => {
-    setPageData((prev) => ({ ...prev, project_type_list_id: allDataTypesList, ...filterValue }));
-  }, [allDataTypesList, filterValue]);
+    setPageData((prev) => ({
+      ...prev,
+      project_type_list_id: allDataTypesList,
+      ...filterValue,
+      ...(defaultSort ? { sortOrder: defaultSort[1], sortField: defaultSort[0] } : {}),
+    }));
+  }, [allDataTypesList, defaultSort, filterValue, state]);
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {

@@ -31,7 +31,7 @@ type Props = {
 };
 
 export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) => {
-  const { dispatch: dispatchDataSheet } = useDataSheetWrapper();
+  const { dispatch: dispatchDataSheet, dataList } = useDataSheetWrapper();
   const { dispatch } = useTypeProperty();
 
   const [form] = Form.useForm();
@@ -59,7 +59,15 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
   }, [connectionData, form]);
 
   const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
-    mutateConnection(values as NodeEdgeTypesSubmit);
+    mutateConnection({
+      ...values,
+      target_attribute_id: dataList
+        ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+        ?.properties?.find((property) => property.default_property === true)?.id,
+      source_attribute_id: dataList
+        ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+        ?.properties?.find((property) => property.default_property === true)?.id,
+    } as NodeEdgeTypesSubmit);
   };
 
   /** this action works only for edit */
@@ -83,7 +91,7 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>Edit Property</Text>
+          <Text>Edit Connection Property</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>

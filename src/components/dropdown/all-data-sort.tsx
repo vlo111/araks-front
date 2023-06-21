@@ -29,12 +29,13 @@ const setItems = (sortItems: SortItems[]): MenuProps['items'] =>
 
 type Props = DropdownProps & {
   sortItems: SortItems[];
+  defaultSelected?: string;
   infoText?: string;
   handleMenuSelect: (key: string) => void;
 };
 
-export const AllDataSort = ({ sortItems, infoText, handleMenuSelect, ...props }: Props) => {
-  const [text, setText] = useState(sortItems[0].label);
+export const AllDataSort = ({ sortItems, defaultSelected, infoText, handleMenuSelect, ...props }: Props) => {
+  const [text, setText] = useState(defaultSelected || sortItems[0].label);
 
   const handleMenuClick: MenuProps['onClick'] = ({ key, keyPath, domEvent }) => {
     handleMenuSelect(key);

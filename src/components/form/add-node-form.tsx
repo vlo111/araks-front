@@ -6,7 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 // import { GoogleMapScript } from 'helpers/google-map-script';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
-// import { ConnectionType } from './type/connection-type';
+import { ConnectionType } from './type/connection-type';
 import { DateTimeType } from './type/date-time-type';
 import { DateType } from './type/date-type';
 // import { DocumentType } from './type/document-type';
@@ -50,8 +50,8 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
                   return <RichTextType key={item.id} data={item} />;
                 // case PropertyTypes.Document:
                 //   return <DocumentType key={item.id} data={item} />;
-                // case PropertyTypes.Connection:
-                //   return <ConnectionType key={item.id} data={item} />;
+                case PropertyTypes.Connection:
+                  return <ConnectionType key={item.id} data={item} />;
                 default:
                   return <></>;
               }
