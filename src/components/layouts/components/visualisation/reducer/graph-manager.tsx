@@ -16,6 +16,7 @@ export enum GraphAction {
   SET_NODES = 'SET_NODES',
   SET_EDGES = 'SET_EDGES',
   OPEN_NODE_START = 'OPEN_NODE_START',
+  OPEN_NODE_FINISH = 'OPEN_NODE_FINISH',
 }
 
 export const graphInitialState: GraphState = {
@@ -33,6 +34,20 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     [item]: payload,
   });
 
+  const start: (item: ITEM) => GraphState = (item: ITEM) => ({
+    ...state,
+    [item]: {
+      ...state[item],
+      ...payload,
+      isOpened: true,
+    },
+  });
+
+  const end = (item: ITEM) => ({
+    ...state,
+    [item]: { ...state[item], isOpened: false },
+  });
+
   switch (type) {
     case GraphAction.SET_GRAPH:
       return insert(ITEM.GRAPH) as GraphState;
@@ -41,7 +56,9 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     case GraphAction.SET_EDGES:
       return insert(ITEM.SET_EDGES);
     case GraphAction.OPEN_NODE_START:
-      return insert(ITEM.OPEN_NODE);
+      return start(ITEM.OPEN_NODE);
+    case GraphAction.OPEN_NODE_FINISH:
+      return end(ITEM.OPEN_NODE);
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import G6, { Graph, IG6GraphEvent } from "@antv/g6";
+import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { InitGraph } from '../../types';
 
 const defaultEdge = {
@@ -44,15 +44,13 @@ const defaultNode = {
 };
 
 export const initGraph: InitGraph = (container, { startOpenNode }) => {
-
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
     const isCanvas = target && target.isCanvas && target.isCanvas();
 
-    const isNode = evt?.item?.getType().toUpperCase() === 'NODE';
+    const isNode = evt?.item?.getType() === 'node';
 
     const nodeContext = `<div class="menu">
-          <span>Open</span>
           <span>Focus on node</span>
           <span>Expand</span>
           <span class="delete">Delete</span>
@@ -63,24 +61,27 @@ export const initGraph: InitGraph = (container, { startOpenNode }) => {
         </div>`;
 
     const edgeContext = `<div class="menu">
-          <span>Open</span>
           <span class="delete">Delete</span>
         </div>`;
 
     return isCanvas ? canvasContext : isNode ? nodeContext : edgeContext;
-  }
+  };
 
   const contextMenu = new G6.Menu({
     getContent,
     handleMenuClick: (target, item) => {
-      // eslint-disable-next-line no-console
-      console.log(target, item);
+      if (item?._cfg?.type === 'node') {
+        startOpenNode({
+          id: item.getID(),
+        });
+      } else if (item?._cfg?.type === 'edge') {
+      } else {
+      }
     },
     offsetX: 16 + 10,
     offsetY: 0,
     itemTypes: ['node', 'edge', 'canvas'],
   });
-
 
   const graph = new Graph({
     container: container,

@@ -30,7 +30,7 @@ export const bodyStyle: CSSProperties = {
 export const Drawer = ({
   children,
   ...props
-}: Partial<{ children: ReactNode; onClose: () => void; open: boolean }>) => {
+}: Partial<{ children: ReactNode; onClose: () => void; open: boolean, footer: ReactNode }>) => {
   return (
     <DrawerWrapper
       title="Share"

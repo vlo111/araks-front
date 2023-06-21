@@ -1,19 +1,21 @@
 import { Graph } from '@antv/g6';
 import { IProjectType } from 'api/types';
-import { INodeOpen, ProjectEdgeResponse } from 'types/project-edge';
+import { ProjectEdgeResponse } from 'types/project-edge';
+import { IOpenNodeState } from './reducer/types';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
   setNodes: (nodes: IProjectType[]) => void;
   setEdges: (nodes: ProjectEdgeResponse[]) => void;
-  startOpenNode: (node?: INodeOpen) => void;
+  startOpenNode: (node?: IOpenNodeState) => void;
+  finishOpenNode: VoidFunction;
 };
 
 export type VisualisationReducerState = {
   graph: Graph;
   nodes: IProjectType[];
   edges: ProjectEdgeResponse[];
-  openNode: INodeOpen;
+  openNode: IOpenNodeState;
 };
 
 export interface VisualisationContextType extends VisualisationReducerSetState, VisualisationReducerState {}
