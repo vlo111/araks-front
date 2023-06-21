@@ -80,7 +80,7 @@ export const ManageNode = ({ tableHead }: Props) => {
 
     mutate({
       nodes: dataToSubmit,
-      edges: dataToSubmitEdges?.[0],
+      edges: dataToSubmitEdges?.flat() || [],
       project_type_id: nodeTypeId || '',
     } as NodeDataSubmit);
     onClose();
