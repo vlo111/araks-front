@@ -17,8 +17,6 @@ export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleB
 
   const handleExtraClick = (event: React.MouseEvent<HTMLElement>, action: () => void) => {
     event.stopPropagation();
-    // eslint-disable-next-line no-console
-    console.log('Hello');
     action();
   };
 

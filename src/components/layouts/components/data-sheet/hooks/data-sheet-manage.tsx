@@ -12,6 +12,7 @@ export enum DataSheetActionKind {
   DELETE_TYPE = 'DELETE_TYPE',
   CONNECTION_SELECTED = 'CONNECTION_SELECTED',
   ALL_TYPE_SELECTED = 'ALL_TYPE_SELECTED',
+  ALL_DATA_TYPE_CHECK = 'ALL_DATA_TYPE_CHECK',
   TABLES_SELECTED = 'TABLES_SELECTED',
 }
 
@@ -34,6 +35,7 @@ export const dataSheetInitialState: DataSheetState = {
   nodesList: undefined,
   dataList: undefined,
   isConnectionType: false,
+  allDataTypesList: [],
 };
 
 export function dataSheetReducer(state: DataSheetState, action: DataSheetAction) {
@@ -132,6 +134,11 @@ export function dataSheetReducer(state: DataSheetState, action: DataSheetAction)
         dataList,
         selectNodeTypeFinished: true,
         allTypeSelected: true,
+      };
+    case DataSheetActionKind.ALL_DATA_TYPE_CHECK:
+      return {
+        ...state,
+        allDataTypesList: [...(payload?.allDataTypesList || [])],
       };
     case DataSheetActionKind.TABLES_SELECTED:
       return {

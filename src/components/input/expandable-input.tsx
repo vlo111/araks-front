@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AutoComplete, Button } from 'antd';
+import { Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 // import { CSSTransition } from 'react-transition-group';
 
@@ -7,6 +7,7 @@ import { Input } from '.';
 import styled from 'styled-components';
 import './expandable-input.css';
 import { COLORS } from 'helpers/constants';
+import debounce from 'lodash.debounce';
 
 const StyleInput = styled(Input)`
   .ant-input-affix-wrapper {
@@ -28,17 +29,15 @@ const StyleButton = styled(Button)`
   }
 `;
 
-export const ExpandableInput = () => {
+type Props = {
+  setSearchText: (text: string) => void;
+};
+
+export const ExpandableInput = ({ setSearchText }: Props) => {
   const [open, setOpen] = useState(false); // state to control the open state of autocomplete
-  const [value, setValue] = useState(''); // state to store the input value
 
   const handleSearch = (value: string) => {
-    setValue(value); // update the input value
-    // do some other logic here
-  };
-
-  const handleSelect = (value: string) => {
-    setValue(value); // update the input value
+    setSearchText(value); // update the input value
     // do some other logic here
   };
 
@@ -50,21 +49,16 @@ export const ExpandableInput = () => {
     setOpen(false); // close the autocomplete when input is blurred
   };
 
-  const options = [
-    // some mock options for demonstration
-    { value: 'Ant Design' },
-    { value: 'React' },
-    { value: 'Bing' },
-  ];
-
   const handlePrefixClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     handleClose();
   };
 
+  const debouncedSearch = debounce(handleSearch, 300);
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      {/* <CSSTransition in={true} timeout={500} classNames="my-node" unmountOnExit> */}
+      {/* <CSSTransition in={true} timeout={500} classNames="my-node" unmountOnExit>
       <AutoComplete
         style={{ display: open ? 'block' : 'none' }} // set width to 0 when closed
         value={value} // controlled input value
@@ -72,12 +66,14 @@ export const ExpandableInput = () => {
         onSearch={handleSearch} // handle search event
         onSelect={handleSelect} // handle select event
         onBlur={handleClose} // handle blur event
-      >
-        <StyleInput
-          prefix={<SearchOutlined onClick={handlePrefixClick} style={{ color: COLORS.PRIMARY.GRAY }} />}
-          placeholder="search"
-        />
-      </AutoComplete>
+      > */}
+      <StyleInput
+        prefix={<SearchOutlined onClick={handlePrefixClick} style={{ color: COLORS.PRIMARY.GRAY }} />}
+        style={{ display: open ? '' : 'none' }}
+        placeholder="search"
+        onChange={(e) => debouncedSearch(e.target.value)}
+      />
+      {/* </AutoComplete> */}
       {/* </CSSTransition> */}
       {!open && <StyleButton icon={<SearchOutlined style={{ color: COLORS.PRIMARY.GRAY }} />} onClick={handleClick} />}
     </div>

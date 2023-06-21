@@ -10,6 +10,15 @@ export type PageParameters = {
   size: number;
 };
 
+export type AllDataPageParameters = {
+  page: number;
+  size: number;
+  sortField?: string;
+  sortOrder?: string;
+  search?: string;
+  project_type_list_id?: string[];
+};
+
 export enum RequestTypes {
   GET = 'get',
   Post = 'post',

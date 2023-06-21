@@ -1,3 +1,5 @@
+import { PropertyName } from 'typescript';
+
 export type NodeBody = {
   [x: string]: unknown;
 };
@@ -54,4 +56,25 @@ export type NodeDataResponse = {
 export type NodeDataListResponse = {
   count: number;
   rows: NodeDataResponse[];
+};
+
+export type AllDataNodeResponse = {
+  default_image: boolean;
+  default_property: boolean;
+  node_name: NodeDataType;
+  property_name: PropertyName;
+  type_color: string;
+  type_id: string;
+  type_name: string;
+  updated_at: string;
+};
+
+export type AllDataResponse = {
+  id: string;
+  properties?: AllDataNodeResponse[];
+};
+
+export type AllDataListResponse = {
+  count: number;
+  rows: AllDataResponse[];
 };

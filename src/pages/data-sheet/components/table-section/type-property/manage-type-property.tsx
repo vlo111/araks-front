@@ -34,7 +34,7 @@ export const ManageTypeProperty = React.memo(({ children, propertyId, isDefault,
         {...props}
       >
         <ActionDots
-          style={{ position: 'absolute', right: '5px', top: '30%', cursor: 'pointer' }}
+          style={{ position: 'absolute', right: '5px', top: '15px', cursor: 'pointer' }}
           onClick={() => setManageOpened(true)}
         />
       </ManageNodeTypePopover>

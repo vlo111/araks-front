@@ -1,5 +1,6 @@
-import { Button, Col, Drawer, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row } from 'antd';
 import { useState } from 'react';
+import { Button } from '.';
 
 export const QueriesButton = () => {
   const [open, setOpen] = useState(false);

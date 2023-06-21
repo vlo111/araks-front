@@ -33,11 +33,11 @@ export const ALL_DATA_SORT_BY: SortItems[] = [
 export const SORT_DIRECTION: SortItems[] = [
   {
     label: 'Ascending',
-    key: 'asc',
+    key: 'ASC',
   },
   {
     label: 'Descending',
-    key: 'desc',
+    key: 'DESC',
   },
 ];
 

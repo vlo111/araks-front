@@ -4,29 +4,67 @@ import { QueriesButton } from 'components/button/queries-button';
 import { AllDataSort } from 'components/dropdown';
 import { ALL_DATA_SORT_BY, SORT_DIRECTION } from 'components/dropdown/constants';
 import { ExpandableInput } from 'components/input/expandable-input';
+import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
+import { useCallback } from 'react';
+import { defaultAllDataFilter } from '../right-section-all-data';
 
-export const AllDataFilterSection = () => {
+type Props = {
+  checkedItems: string[];
+  setCheckedItems: (checkedItems: string[]) => void;
+  setFilterValue: (
+    filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
+  ) => void;
+};
+export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
+  const setSearchText = useCallback(
+    (text: string) => {
+      setFilterValue((prevValue) => ({ ...prevValue, search: text }));
+    },
+    [setFilterValue]
+  );
+
+  const handleSortBySelect = useCallback(
+    (key: string) => {
+      setFilterValue((prevValue) => ({ ...prevValue, sortField: key }));
+    },
+    [setFilterValue]
+  );
+
+  const handleSortByDirection = useCallback(
+    (key: string) => {
+      setFilterValue((prevValue) => ({ ...prevValue, sortOrder: key }));
+    },
+    [setFilterValue]
+  );
+
   return (
-    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }}>
-      <Col span={20}>
+    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
+      <Col xxl={20} xs={24}>
         <Row gutter={24}>
-          <Col span={8}>
-            <AllDataSort sortItems={ALL_DATA_SORT_BY} infoText="Sort by:" />
+          <Col xxl={8}>
+            <AllDataSort sortItems={ALL_DATA_SORT_BY} infoText="Sort by:" handleMenuSelect={handleSortBySelect} />
           </Col>
-          <Col span={8}>
-            <AllDataSort sortItems={SORT_DIRECTION} infoText="Sort direction::" />
+          <Col xxl={8}>
+            <AllDataSort
+              sortItems={SORT_DIRECTION}
+              infoText="Sort direction:"
+              handleMenuSelect={handleSortByDirection}
+            />
           </Col>
-          <Col span={8}>
-            <ExpandableInput />
+          <Col xxl={8}>
+            <ExpandableInput setSearchText={setSearchText} />
           </Col>
         </Row>
       </Col>
-      <Col span={4}>
-        <Row gutter={24}>
-          <Col span={12}>
+      <Col xxl={4} xs={24}>
+        <Row gutter={24} justify="end">
+          <Col span={4}>
+            <DeleteAllDataModal checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+          </Col>
+          <Col span={4}>
             <DownloadAction />
           </Col>
-          <Col span={12}>
+          <Col>
             <QueriesButton />
           </Col>
         </Row>

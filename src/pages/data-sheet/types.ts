@@ -24,6 +24,7 @@ export type DataSheetState = {
   selectNodeTypeFinished?: boolean; //Runs onece , on page load
   searchText?: string;
   isConnectionType?: boolean;
+  allDataTypesList?: string[];
 };
 
 export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'nodeTypeId' | 'parentId'>;

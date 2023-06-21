@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
-import { EventDataNode } from 'antd/es/tree';
+import { EventDataNode, TreeProps } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../types';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
@@ -13,6 +13,7 @@ import { filterTreeData } from '../utils';
 import { NodeTree } from 'components/tree/node-tree';
 import { ReactComponent as CaretDown } from 'components/icons/caret-down.svg';
 import { ReactComponent as CaretRight } from 'components/icons/caret-right.svg';
+import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
 
 const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean }) => {
   if (isLeaf) {
@@ -26,7 +27,8 @@ type Props = PropsSetState & TableStyleBasedOnTab;
 export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, allTypeSelected } = useDataSheetWrapper();
+  const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, allTypeSelected, dispatch } =
+    useDataSheetWrapper();
 
   const {
     formatted: nodesList,
@@ -100,6 +102,10 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
     setFilteredData(nodesList);
   }, [nodesList]);
 
+  const onCheck: TreeProps['onCheck'] = (checkedKeys, info) => {
+    dispatch({ type: DataSheetActionKind.ALL_DATA_TYPE_CHECK, payload: { allDataTypesList: checkedKeys as string[] } });
+  };
+
   return !selectNodeTypeFinished || isInitialLoading ? (
     <Skeleton />
   ) : (
@@ -116,6 +122,7 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
         onSelect={onSelect}
         showSearch
         checkable={isCheckable}
+        onCheck={onCheck}
         switcherIcon={switcherIcon}
         selectedKeys={[nodeTypeId]}
         defaultExpandedKeys={[nodeTypeId]}

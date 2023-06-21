@@ -25,8 +25,9 @@ const Row = styled((props) => <RowComponent {...props} />)`
 export const DataSheet = () => {
   return (
     <TypePropertyProvider>
-      <Row className="overview">
-        <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list">
+      <Row className="overview" gutter={1}>
+        {/* zIndex greated than table on right side and lower than header has */}
+        <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list" style={{ zIndex: 3 }}>
           <LeftSection />
         </Col>
         <Col xs={18} xxl={18} className="overview__section project-share" id="datasheet-data">

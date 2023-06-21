@@ -13,6 +13,11 @@ export const NodeTree = styled(({ color, ...props }) => <Tree {...props} />)`
           background-color: transparent;
         }
       }
+
+      .ant-tree-checkbox-inner {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     .ant-tree-treenode-selected {
