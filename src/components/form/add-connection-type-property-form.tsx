@@ -122,8 +122,8 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId
         </FormItem>
         <FormItem
           name="ref_property_type_id"
-          label="Data type"
-          rules={[{ required: true, message: 'Connection property data type is required' }]}
+          label="Date type"
+          rules={[{ required: true, message: 'Connection property date type is required' }]}
         >
           <PropertyDataConnectionTypeSelect />
         </FormItem>
