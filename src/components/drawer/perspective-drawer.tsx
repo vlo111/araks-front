@@ -1,4 +1,4 @@
-import { ReactNode, CSSProperties } from 'react';
+import { ReactNode, CSSProperties, FC } from 'react';
 import { Drawer as DrawerWrapper } from 'antd';
 import './perspective-drawer-style.css';
 export const maskStyle: CSSProperties = {
@@ -27,10 +27,7 @@ export const bodyStyle: CSSProperties = {
   gap: '1rem',
 };
 
-export const Drawer = ({
-  children,
-  ...props
-}: Partial<{ children: ReactNode; onClose: () => void; open: boolean, footer: ReactNode }>) => {
+export const Drawer: FC<{ children: ReactNode }> = ({ children, ...props }) => {
   return (
     <DrawerWrapper
       title="Share"
