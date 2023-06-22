@@ -10,6 +10,8 @@ const initConnector: (edges: Edge[]) => void = (edges) => {
   G6.Util.processParallelEdges(edges, offsetDiff, multiEdgeType, singleEdgeType, loopEdgeType);
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const initData: InitNodes = (graph, data: GraphData) => {
   graph.data(data);
 

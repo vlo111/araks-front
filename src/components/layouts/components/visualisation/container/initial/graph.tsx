@@ -96,5 +96,12 @@ export const initGraph: InitGraph = (container, { startOpenNode }) => {
     defaultNode,
     plugins: [contextMenu],
   });
+
+  graph.on('dblclick', (evt) => {
+    startOpenNode({
+      id: evt.item?.getID() ?? '',
+    });
+  });
+
   return graph;
 };

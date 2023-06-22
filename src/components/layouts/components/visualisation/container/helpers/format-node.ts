@@ -1,25 +1,30 @@
 import { Graph } from '@antv/g6';
-import { IProjectType } from 'api/types';
+import { GraphData } from '../../types';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { GraphData } from "../../types";
 
-export const formattedData = (graph: Graph, nodesList: IProjectType[], edges: ProjectEdgeResponse[]) => {
+export const formattedData = (
+  graph: Graph,
+  nodesList: { node_id: string; node_name: string; type_color: string }[],
+  edgeList: ProjectEdgeResponse[]
+) => {
+  if (nodesList === undefined) return [];
+
   const data: GraphData = {
     nodes: nodesList.map((n) => ({
-      id: n.id,
-      label: n.name,
+      id: n.node_id,
+      label: n.node_name,
       size: 60,
       style: {
         lineWidth: 10,
         fill: '#808080',
-        stroke: n.color,
+        stroke: n.type_color,
       },
     })),
-    edges: edges.map((e) => ({
+    edges: edgeList.map((e) => ({
       id: e.id,
       source: e.source_id,
       target: e.target_id,
-      label: e.name,
+      label: e.ProjectsEdgeType?.name ?? '',
     })),
   };
   return data;

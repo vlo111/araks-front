@@ -1,8 +1,7 @@
-
 interface IEdgeType {
   id: string;
   name: string;
-  color: string
+  color: string;
 }
 
 export type ProjectEdgeResponse = {
@@ -14,8 +13,9 @@ export type ProjectEdgeResponse = {
   source_attribute_id?: string;
   inverse: boolean;
   multiple: boolean;
-  target?: IEdgeType
-  source?: IEdgeType
+  target?: IEdgeType;
+  source?: IEdgeType;
+  ProjectsEdgeType?: { name: string };
 } & { project_id?: string };
 
 export type ProjectEdgeForm = {
@@ -27,5 +27,5 @@ export type ProjectEdgeForm = {
 };
 
 export type INodeOpen = {
-  id: string
+  id: string;
 };
