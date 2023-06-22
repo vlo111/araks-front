@@ -26,7 +26,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
   const [debouncedSearchValue] = useDebounce(searchValue, 500);
 
   useGetConnectionSourceSearch({ ...pageData, search: debouncedSearchValue }, targetId, {
-    enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 3),
+    enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 2),
     onSuccess: (data) => {
       setOptions(data);
     },
