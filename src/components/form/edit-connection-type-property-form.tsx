@@ -19,6 +19,7 @@ import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { PropertyTypes } from './property/types';
 import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
+import { DeleteConnectionTypeModal } from 'components/modal/delete-connection-type-modal';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -70,11 +71,6 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
     } as NodeEdgeTypesSubmit);
   };
 
-  /** this action works only for edit */
-  const onHandleDelete = () => {
-    dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: {} });
-    hide?.();
-  };
   const handlePopoverClick = (e: React.MouseEvent<HTMLElement>) => {
     // Prevent the click event from bubbling up to the Collapse component
     e.stopPropagation();
@@ -124,9 +120,7 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
             <Button block type="primary" htmlType="submit">
               Save
             </Button>
-            <Button block type="text" onClick={onHandleDelete}>
-              Delete
-            </Button>
+            <DeleteConnectionTypeModal id={connectionData.id} hide={hide} />
           </VerticalSpace>
         </FormItem>
       </Form>

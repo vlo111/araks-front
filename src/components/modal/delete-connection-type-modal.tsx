@@ -4,28 +4,29 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
-import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
-import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
+import { useState } from 'react';
 
 type Props = {
   id: string;
+  hide?: () => void;
 };
 
-export const DeleteConnectionTypeModal = ({ id }: Props) => {
+export const DeleteConnectionTypeModal = ({ id, hide }: Props) => {
   const { nodeTypeId, deleteEditType } = useDataSheetWrapper();
-  const {
-    state: { deleteTypeisOpened },
-    dispatch,
-  } = useTypeProperty();
+
+  const [isDeleteStart, setDeleteStart] = useState(false);
+
   const { mutate } = useDeleteProjectEdgeType(id, nodeTypeId || '');
 
   const handleCancel = () => {
-    dispatch({ type: TypePropertyActionKind.DELETE_TYPE_FINISH, payload: {} });
+    setDeleteStart(false);
   };
 
   const deleteFolder = () => {
     mutate();
-    dispatch({ type: TypePropertyActionKind.DELETE_TYPE_FINISH, payload: {} });
+    setDeleteStart(false);
+    hide?.();
+    // call this just to close everything and go to default node type
     deleteEditType();
   };
 
@@ -35,7 +36,7 @@ export const DeleteConnectionTypeModal = ({ id }: Props) => {
         title={
           <Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this type property?</Text>
         }
-        open={deleteTypeisOpened}
+        open={isDeleteStart}
         footer={false}
         closable={false}
         className="project-modal"
@@ -49,6 +50,9 @@ export const DeleteConnectionTypeModal = ({ id }: Props) => {
           </Button>
         </VerticalSpace>
       </Modal>
+      <Button block type="text" onClick={() => setDeleteStart(true)}>
+        Delete
+      </Button>
     </>
   );
 };
