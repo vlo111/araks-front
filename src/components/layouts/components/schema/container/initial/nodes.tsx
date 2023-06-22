@@ -34,16 +34,19 @@ const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }) => {
 
 export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) => {
   if (cells.length > 0) {
-    graph.resetCells(cells);
+    if (graph.resetCells !== undefined) {
+      graph.resetCells(cells);
 
-    graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
+      graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
+    }
   } else {
+    if (graph.resetCells !== undefined)
     graph.resetCells([]);
   }
 
   /** The Type need to be selected after create a type */
   /** Set Select Type the last created type */
-  if (selected.id) {
+  if (selected?.id) {
     setTimeout(() => {
       const nodes = graph.view.stage.querySelectorAll('.x6-cell.x6-node');
 
