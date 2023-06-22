@@ -1,19 +1,17 @@
-import { AutoComplete, Col, Form, Row, Space } from 'antd';
-import { ProjectTypePropertyReturnData, SearchPageParameters } from 'api/types';
+import { Col, Form, Row, Space } from 'antd';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
-import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, VALIDATE_MESSAGES } from 'helpers/constants';
+import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import styled from 'styled-components';
 import { FormItem } from '../form-item';
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
 
 import { Input } from 'components/input';
-import { useState } from 'react';
-import { useGetConnectionSourceSearch } from 'api/node/use-get-connection-sources-search';
 import useFormInstance from 'antd/es/form/hooks/useFormInstance';
 import { ConnectionSourcesSearchResult } from 'types/node';
 import { CloseOutlined } from '@ant-design/icons';
-import { useDebounce } from 'use-debounce';
+import { ConnectionAutocomplete } from 'components/input/connection-autocomplete';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -68,28 +66,10 @@ const ResultFormItem = styled(({ backgroundColor, ...props }) => <FormItem {...p
   }
 `;
 
-const initPageData: SearchPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
-
 export const ConnectionType = ({ data }: Props) => {
   const form = useFormInstance();
-  const [pageData] = useState(initPageData);
-  const [searchValue, setSearchValue] = useState('');
-  const [options, setOptions] = useState<ConnectionSourcesSearchResult[]>([]);
 
-  const handleSearch = (value: string) => {
-    setSearchValue(value);
-  };
-
-  const [debouncedSearchValue] = useDebounce(searchValue, 500);
-
-  useGetConnectionSourceSearch({ ...pageData, search: debouncedSearchValue }, data.target_id, {
-    enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 3),
-    onSuccess: (data) => {
-      setOptions(data);
-    },
-  });
-
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: string, options: ConnectionSourcesSearchResult[]) => {
     const selectedRow = options?.find((row) => row.dataset_id === value);
     if (selectedRow) {
       form.setFieldValue(data.name, [
@@ -101,8 +81,6 @@ export const ConnectionType = ({ data }: Props) => {
           id: data.id,
         },
       ]);
-      setSearchValue('');
-      setOptions([]);
     }
   };
 
@@ -132,17 +110,7 @@ export const ConnectionType = ({ data }: Props) => {
           required={data.required_type}
           style={{ marginBottom: '0' }}
         >
-          <AutoComplete
-            options={options?.map((row) => ({ value: row.dataset_id, label: row.node_name.join(',') }))}
-            onSearch={handleSearch}
-            value={searchValue}
-            open={!!options.length}
-            onSelect={handleSelect}
-            key={options?.length + debouncedSearchValue}
-            notFoundContent="No Connection data found"
-          >
-            <Input />
-          </AutoComplete>
+          <ConnectionAutocomplete targetId={data.target_id || ''} handleSelect={handleSelect} />
         </StyledFormItem>
         <Form.List name={data.name}>
           {(fields, { add, remove }) => (

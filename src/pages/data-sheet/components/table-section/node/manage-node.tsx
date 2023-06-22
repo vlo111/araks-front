@@ -69,7 +69,7 @@ export const ManageNode = ({ tableHead }: Props) => {
     const dataToSubmitEdges = data
       ?.map((item) => {
         return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[item.name] as NodeDataConnectionToSave[]).map((itemConn) => ({
+          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
               source_id: itemConn.source_id,
               source_type_id: itemConn.source_type_id,
               project_edge_type_id: itemConn.id,
