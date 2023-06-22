@@ -10,7 +10,14 @@ import { LongTitle, Text } from 'components/typography';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import { COLORS } from 'helpers/constants';
-import { NodeBody, NodeDataResponse, NodeDataType, NodeDataTypes, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import {
+  NodeBody,
+  NodeDataResponse,
+  NodeDataType,
+  NodeDataTypes,
+  NodePropertiesValues,
+  ResponseLocationType,
+} from 'types/node';
 import { NodeViewButton } from './node-view-button';
 
 export function getLocation(locationValue: Location) {
@@ -278,9 +285,9 @@ export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: No
     return (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
   }
   if (Array.isArray(values[item.name])) {
-    if (item.ref_property_type_id === PropertyTypes.Date) {
-      return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
-    }
+    // if (item.ref_property_type_id === PropertyTypes.Date) {
+    //   return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
+    // }
     return (values[item.name] as unknown[])?.filter(Boolean);
   }
 
