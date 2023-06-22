@@ -1,13 +1,12 @@
 import { useNodes } from 'hooks/use-nodes';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { Col, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row } from "antd";
 import { Button } from 'components/button';
 import { MenuText, Text } from 'components/typography';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { COLORS } from 'helpers/constants';
 import { getRowData } from '../../data-sheet/components/table-section/node/utils';
 import { useGetNode } from 'api/node/use-get-node';
-import { Drawer } from "../../../components/drawer/perspective-drawer";
 
 export const NodeView = () => {
   const [form] = Form.useForm();
