@@ -7,12 +7,13 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
-import { getLocation } from 'pages/data-sheet/components/table-section/node/utils';
-import { ProjectTypePropertyReturnData } from 'api/types';
+import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetNode } from 'api/node/use-get-node';
 import { Button } from 'components/button';
 import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
+import dayjs from 'dayjs';
 
 type VIewDataType = NodeDataResponse | undefined;
 
@@ -58,6 +59,25 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
 
   const [form] = Form.useForm();
 
+  const getValue = (item: NodePropertiesValues) => {
+    switch (item.project_type_property_type) {
+      case PropertyTypes.Location:
+        return (item.nodes_data as ResponseLocationType[])?.map(
+          (addr: ResponseLocationType) =>
+            ({
+              address: addr.address,
+              lat: addr.location.latitude,
+              lng: addr.location.longitude,
+            } as Location)
+        );
+      case PropertyTypes.DateTime:
+      case PropertyTypes.Date:
+        return item.nodes_data?.map((rec) => dayjs(rec as string));
+      default:
+        return item.nodes_data;
+    }
+  };
+
   const { data: nodeData } = useGetNode(selectedView?.id as string, {
     enabled: !!(selectedView?.id && data?.length && isEdit),
     onSuccess: (nodeData) => {
@@ -74,19 +94,22 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           return acc;
         }
 
+        // eslint-disable-next-line no-console
+        console.log('getValue(item)', getValue(item));
+
         return {
           ...acc,
-          [item.nodeType.name]:
-            item.project_type_property_type === PropertyTypes.Location
-              ? (item.nodes_data as ResponseLocationType[])?.map(
-                  (addr: ResponseLocationType) =>
-                    ({
-                      address: addr.address,
-                      lat: addr.location.latitude,
-                      lng: addr.location.longitude,
-                    } as Location)
-                )
-              : item.nodes_data,
+          [item.nodeType.name]: getValue(item),
+          // item.project_type_property_type === PropertyTypes.Location
+          //   ? (item.nodes_data as ResponseLocationType[])?.map(
+          //       (addr: ResponseLocationType) =>
+          //         ({
+          //           address: addr.address,
+          //           lat: addr.location.latitude,
+          //           lng: addr.location.longitude,
+          //         } as Location)
+          //     )
+          //   : item.nodes_data,
         } as NodePropertiesValues;
       }, initialAcc);
 
@@ -95,22 +118,34 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   });
 
   const onFinish = (values: NodeBody) => {
-    const dataToSubmit = data?.map((item) => ({
-      project_type_property_id: item.id,
-      project_type_property_type: item.ref_property_type_id,
-      id: nodeData?.properties?.find((prop) => prop.nodeType.name === item.name)?.id,
-      nodes_data: !!values[item.name]
-        ? item.ref_property_type_id === PropertyTypes.Location
-          ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
-          : Array.isArray(values[item.name])
-          ? (values[item.name] as unknown[])?.filter(Boolean)
-          : values[item.name]
-        : null,
-    }));
+    const dataToSubmit = data
+      ?.map((item) => {
+        return item.ref_property_type_id !== PropertyTypes.Connection
+          ? {
+              project_type_property_id: item.id,
+              project_type_property_type: item.ref_property_type_id,
+              nodes_data: setNodeDataValue(item, values),
+            }
+          : null;
+      })
+      .filter(Boolean);
+
+    const dataToSubmitEdges = data
+      ?.map((item) => {
+        return item.ref_property_type_id === PropertyTypes.Connection
+          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
+              project_edge_type_id: itemConn.id,
+            }))
+          : null;
+      })
+      .filter(Boolean);
 
     if (nodeData?.id) {
       mutate({
         nodes: dataToSubmit,
+        edges: dataToSubmitEdges?.flat() || [],
         project_type_id: nodeTypeId || '',
         nodeId: nodeData.id,
       } as NodeDataSubmit);

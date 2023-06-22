@@ -7,10 +7,9 @@ import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { PropertyTypes } from 'components/form/property/types';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { Location } from 'components/modal/types';
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
-import { getLocation } from './utils';
+import { setNodeDataValue } from './utils';
 
 type Props = {
   tableHead: number;
@@ -55,13 +54,7 @@ export const ManageNode = ({ tableHead }: Props) => {
           ? {
               project_type_property_id: item.id,
               project_type_property_type: item.ref_property_type_id,
-              nodes_data: !!values[item.name]
-                ? item.ref_property_type_id === PropertyTypes.Location
-                  ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
-                  : Array.isArray(values[item.name])
-                  ? (values[item.name] as unknown[])?.filter(Boolean)
-                  : values[item.name]
-                : null,
+              nodes_data: setNodeDataValue(item, values),
             }
           : null;
       })

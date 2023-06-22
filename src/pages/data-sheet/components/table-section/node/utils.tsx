@@ -1,5 +1,6 @@
 import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
 import { Avatar, Button, Image, Space } from 'antd';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
 import { LocationView } from 'components/location/location-view';
 import { Location } from 'components/modal/types';
@@ -9,7 +10,7 @@ import { LongTitle, Text } from 'components/typography';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
 import { COLORS } from 'helpers/constants';
-import { NodeDataResponse, NodeDataType, NodeDataTypes, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { NodeBody, NodeDataResponse, NodeDataType, NodeDataTypes, NodePropertiesValues, ResponseLocationType } from 'types/node';
 import { NodeViewButton } from './node-view-button';
 
 export function getLocation(locationValue: Location) {
@@ -267,4 +268,21 @@ export const getRowData = (item: NodePropertiesValues) => {
     default:
       return getSingleData(item.nodes_data);
   }
+};
+
+export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: NodeBody) => {
+  if (!values[item.name]) {
+    return null;
+  }
+  if (item.ref_property_type_id === PropertyTypes.Location) {
+    return (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
+  }
+  if (Array.isArray(values[item.name])) {
+    if (item.ref_property_type_id === PropertyTypes.Date) {
+      return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
+    }
+    return (values[item.name] as unknown[])?.filter(Boolean);
+  }
+
+  return values[item.name];
 };
