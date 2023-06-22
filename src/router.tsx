@@ -15,6 +15,7 @@ import { Projects } from './pages/projects';
 import { SignIn } from './pages/sign-in';
 import { Profile } from './pages/profile';
 import { ProjectPerspectives } from "./pages/project-perspectives";
+import { ProjectVisualisation } from "./pages/project-visualisation";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PROJECT_PERSPECTIVES,
             element: <ProjectPerspectives />,
+          },
+          {
+            path: PATHS.PROJECT_VISUALISATION,
+            element: <ProjectVisualisation />,
           },
           {
             path: PATHS.DATA_SHEET,

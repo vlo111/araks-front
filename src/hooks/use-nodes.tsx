@@ -1,46 +1,43 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useParams } from 'react-router-dom';
-import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { useGetTypes } from 'api/schema/type/use-get-types';
-import { initNodes } from 'components/layouts/components/schema/container/initial/nodes';
-import { formattedTypes } from 'components/layouts/components/schema/helpers/format-type';
-import { IProjectType } from '../api/types';
-import { useGetEdges } from '../api/schema/edge/use-get-edges';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useGraph } from '../components/layouts/components/visualisation/wrapper';
+import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
+import { formattedData } from '../components/layouts/components/visualisation/container/helpers/format-node';
+import { useGetProjectAllData } from '../api/all-data/use-get-project-all-data';
+import { AllDataResponse } from '../types/node';
+import { useGetVEdges } from '../api/visualisation/use-get-edges';
 
-export const useNodes: () => { isInitialLoading: boolean; nodes: IProjectType[] } = () => {
-  const { id } = useParams();
-  const { graph, ...params } = useSchema() ?? {};
-  const isInitialMount = useRef(true);
+export const useNodes: () => { isInitialLoading: boolean; rowsData: AllDataResponse[] } = () => {
+  const { graph, ...params } = useGraph() ?? {};
 
-  const { nodes, isInitialLoading } = useGetTypes(
-    { projectId: id ?? '' },
+  const { rowsData, isInitialLoading } = useGetProjectAllData(
+    { page: 1, size: 100 },
     {
-      onSuccess: ({ data: { projectsNodeTypes } }) => {
-        params.setNodes(projectsNodeTypes);
+      onSuccess: (data) => {
+        const row: unknown =
+          data.rows
+            .map((a) => a.properties)
+            .flat()
+            .filter((a) => a?.default_property === true) ?? [];
+
+        if (row !== undefined) {
+          params.setNodes(row);
+        }
       },
     }
   );
 
-  const { edges } = useGetEdges(
-    { projectId: id ?? '' },
-    {
-      onSuccess: ({ data }) => {
-        params.setEdges(data);
-      },
-    }
-  );
+  useGetVEdges({
+    onSuccess: (edges) => {
+      params.setEdges(edges.data);
+    },
+  });
 
   useEffect(() => {
-    if (nodes !== undefined && graph !== undefined && edges !== undefined) {
-      initNodes(graph, formattedTypes(graph, nodes, edges), params);
-
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-        graph.zoomToFit({ padding: 10, maxScale: 3 });
-      }
+    if (rowsData !== undefined && graph !== undefined && params.nodes !== undefined && params.edges) {
+      const data = formattedData(graph, params.nodes, params.edges);
+      if (data !== undefined) initData(graph, data);
     }
-  }, [graph, nodes, edges]);
+  }, [graph, params.edges, params.nodes, rowsData]);
 
-  return { nodes, isInitialLoading };
+  return { rowsData, isInitialLoading };
 };

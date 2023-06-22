@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useGraphRef } from 'hooks/use-graph';
-import { useNodes } from 'hooks/use-nodes';
+import { useSchemaRef } from 'hooks/use-schema';
+import { useTypes } from 'hooks/use-types';
 import { Spin } from "antd";
 
 const Graph = styled.div`
@@ -15,9 +15,9 @@ const Spinner = styled(Spin)`
 `
 
 export const RenderSchema = () => {
-  const ref = useGraphRef();
+  const ref = useSchemaRef();
 
-   const { isInitialLoading } = useNodes();
+   const { isInitialLoading } = useTypes();
 
   return <Spinner spinning={isInitialLoading}> <Graph ref={ref} /></Spinner>;
 };

@@ -1,4 +1,4 @@
-import { DataSheetAction, SchemaState } from './types';
+import { SchemaState, SchemaActionType } from './types';
 
 export enum ITEM {
   GRAPH = 'graph',
@@ -68,7 +68,7 @@ export const schemaInitialState: SchemaState = {
   }
 };
 
-export function schemaReducer(state: SchemaState, action: DataSheetAction) {
+export function schemaReducer(state: SchemaState, action: SchemaActionType) {
   const { type, payload } = action;
 
   const insert = (item: ITEM) => ({

@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { initGraph } from 'components/layouts/components/schema/container/initial/graph';
-import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { initGraph } from 'components/layouts/components/visualisation/container/initial/graph';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
-  const { graph, setGraph, ...params } = useSchema() ?? {};
+  const { graph, setGraph, ...params } = useGraph() ?? {};
 
   const ref: GraphRef = React.useRef(null);
 
@@ -13,7 +14,7 @@ export const useGraphRef = () => {
     if (graph === undefined && setGraph !== undefined) {
       setGraph(initGraph(ref.current as HTMLDivElement, params));
     }
-  }, [graph, setGraph, params]);
+  }, [graph, setGraph]);
 
   return ref;
 };

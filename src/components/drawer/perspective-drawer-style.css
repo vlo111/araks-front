@@ -1,5 +1,5 @@
-.perspective-drawer .ant-drawer-content-wrapper {
-  transition: .5s;
+.perspective-drawer {
+  overflow: hidden;
 }
 
 .perspective-drawer .ant-drawer-header-title {

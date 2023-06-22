@@ -60,7 +60,7 @@ export type SchemaState = {
   perspective?: IPerspectiveState
 };
 
-export interface DataSheetAction {
+export interface SchemaActionType {
   type: SchemaAction;
   payload: SchemaState;
 }
