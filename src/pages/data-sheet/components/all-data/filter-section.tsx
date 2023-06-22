@@ -1,8 +1,8 @@
 import { Col, Row } from 'antd';
 import { DownloadAction } from 'components/actions';
 import { QueriesButton } from 'components/button/queries-button';
-import { AllDataSort } from 'components/dropdown';
-import { ALL_DATA_SORT_BY, SORT_DIRECTION } from 'components/dropdown/constants';
+import { Sort } from 'components/dropdown';
+import { PROJECT_SORT } from 'components/dropdown/constants';
 import { ExpandableInput } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useCallback } from 'react';
@@ -23,33 +23,12 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
     [setFilterValue]
   );
 
-  const handleSortBySelect = useCallback(
-    (key: string) => {
-      setFilterValue((prevValue) => ({ ...prevValue, sortField: key }));
-    },
-    [setFilterValue]
-  );
-
-  const handleSortByDirection = useCallback(
-    (key: string) => {
-      setFilterValue((prevValue) => ({ ...prevValue, sortOrder: key }));
-    },
-    [setFilterValue]
-  );
-
   return (
     <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
       <Col xxl={20} xs={24}>
         <Row gutter={24}>
           <Col xxl={8}>
-            <AllDataSort sortItems={ALL_DATA_SORT_BY} infoText="Sort by:" handleMenuSelect={handleSortBySelect} />
-          </Col>
-          <Col xxl={8}>
-            <AllDataSort
-              sortItems={SORT_DIRECTION}
-              infoText="Sort direction:"
-              handleMenuSelect={handleSortByDirection}
-            />
+            <Sort prefix="Sort By:" sortItems={PROJECT_SORT} fullWidth />
           </Col>
           <Col xxl={8}>
             <ExpandableInput setSearchText={setSearchText} />

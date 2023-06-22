@@ -1,13 +1,16 @@
-import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
+import { PROJECT_SORT } from 'components/dropdown/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { SortProvider } from 'context/sort-context';
 import { useState } from 'react';
 import { AllDataFilterSection } from './all-data/filter-section';
 import { AllDataList } from './all-data/list';
 
+const defaultSort = PROJECT_SORT[2].key.split(' ');
+
 export const defaultAllDataFilter = {
   search: '',
-  sortOrder: 'asc',
-  sortField: ALL_DATA_SORT_BY[0].key,
+  sortOrder: defaultSort[1],
+  sortField: defaultSort[0],
 };
 
 export const RightSectionAllData = () => {
@@ -15,13 +18,15 @@ export const RightSectionAllData = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   return (
-    <VerticalSpace>
-      <AllDataFilterSection
-        setFilterValue={setFilterValue}
-        checkedItems={checkedItems}
-        setCheckedItems={setCheckedItems}
-      />
-      <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
-    </VerticalSpace>
+    <SortProvider defaultValue={PROJECT_SORT[2].key}>
+      <VerticalSpace>
+        <AllDataFilterSection
+          setFilterValue={setFilterValue}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+        />
+        <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+      </VerticalSpace>
+    </SortProvider>
   );
 };

@@ -1,5 +1,5 @@
 import { Dropdown, Button, Space, MenuProps, DropdownProps } from 'antd';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { ReactComponent as SortIcon } from '../icons/sort.svg';
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
@@ -10,8 +10,16 @@ import { useSort } from '../../context/sort-context';
 import './sort.css';
 import { useState } from 'react';
 
-const DropdownButton = styled(Button)`
-  width: 232px;
+const DropdownButton = styled(({ fullWidth, ...props }) => <Button {...props} />)`
+  ${(props) =>
+    props.fullWidth
+      ? css`
+          width: 100%;
+        `
+      : css`
+          width: 232px;
+        `}
+
   padding: 7px 16px;
   border: 1px solid #dee1e8;
   background-color: #ededf3;
@@ -30,9 +38,11 @@ const setItems = (sortItems: SortItems[]): MenuProps['items'] =>
 
 type Props = DropdownProps & {
   sortItems: SortItems[];
+  prefix?: string;
+  fullWidth?: boolean;
 };
 
-export const Sort = ({ sortItems, ...props }: Props) => {
+export const Sort = ({ sortItems, prefix, fullWidth, ...props }: Props) => {
   const { dispatch, state } = useSort();
   const [text, setText] = useState(() => sortItems.find((item) => item.key === state)?.label || 'Custom');
 
@@ -49,10 +59,10 @@ export const Sort = ({ sortItems, ...props }: Props) => {
       {...props}
       overlayClassName="sort-dropdown"
     >
-      <DropdownButton>
+      <DropdownButton fullWidth={fullWidth}>
         <Space align="center" style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Space>
-            <SortIcon />
+            {prefix || <SortIcon />}
             <Text style={{ color: COLORS.PRIMARY.GRAY, marginLeft: '16px' }}>{text}</Text>
           </Space>
           <Polygon />

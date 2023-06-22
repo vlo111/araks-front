@@ -18,13 +18,14 @@ type Props = {
     name: number;
   };
   onRemove: () => void;
+  startToRempove?: number;
 };
 
-export const TypeWrapper = ({ children, fieldLength, field, onRemove }: Props) => {
+export const TypeWrapper = ({ children, fieldLength, field, onRemove, startToRempove = 1 }: Props) => {
   return (
     <Wrapper>
       {children}
-      {fieldLength > 1 && field.name >= 1 ? (
+      {fieldLength > startToRempove && field.name >= startToRempove ? (
         <MinusCircleOutlined className="dynamic-delete-button" onClick={onRemove} />
       ) : null}
     </Wrapper>

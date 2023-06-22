@@ -78,3 +78,15 @@ export type AllDataListResponse = {
   count: number;
   rows: AllDataResponse[];
 };
+
+export type ConnectionSourcesSearchResult = {
+  dataset_id: string;
+  default_image: boolean;
+  default_property: boolean;
+  node_name: string[];
+  property_name: string;
+  type_color: string;
+  type_id: string;
+  type_name: string;
+  updated_at: string;
+};

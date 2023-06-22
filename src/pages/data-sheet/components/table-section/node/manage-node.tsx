@@ -1,7 +1,7 @@
 import { Col, Drawer, Form, Row } from 'antd';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
-import { ProjectTypePropertyReturnData } from 'api/types';
+import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -49,20 +49,38 @@ export const ManageNode = ({ tableHead }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
-    const dataToSubmit = data?.map((item) => ({
-      project_type_property_id: item.id,
-      project_type_property_type: item.ref_property_type_id,
-      nodes_data: !!values[item.name]
-        ? item.ref_property_type_id === PropertyTypes.Location
-          ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
-          : Array.isArray(values[item.name])
-          ? (values[item.name] as unknown[])?.filter(Boolean)
-          : values[item.name]
-        : null,
-    }));
+    const dataToSubmit = data
+      ?.map((item) => {
+        return item.ref_property_type_id !== PropertyTypes.Connection
+          ? {
+              project_type_property_id: item.id,
+              project_type_property_type: item.ref_property_type_id,
+              nodes_data: !!values[item.name]
+                ? item.ref_property_type_id === PropertyTypes.Location
+                  ? (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean)
+                  : Array.isArray(values[item.name])
+                  ? (values[item.name] as unknown[])?.filter(Boolean)
+                  : values[item.name]
+                : null,
+            }
+          : null;
+      })
+      .filter(Boolean);
+    const dataToSubmitEdges = data
+      ?.map((item) => {
+        return item.ref_property_type_id === PropertyTypes.Connection
+          ? (values[item.name] as NodeDataConnectionToSave[]).map((itemConn) => ({
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
+              project_edge_type_id: itemConn.id,
+            }))
+          : null;
+      })
+      .filter(Boolean);
 
     mutate({
       nodes: dataToSubmit,
+      edges: dataToSubmitEdges?.flat() || [],
       project_type_id: nodeTypeId || '',
     } as NodeDataSubmit);
     onClose();
