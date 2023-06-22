@@ -35,7 +35,7 @@ export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
     if (nodes !== undefined && graph !== undefined && edges !== undefined) {
       initNodes(graph, formattedTypes(graph, nodes, edges), params);
 
-      if (isInitialMount.current) {
+      if (isInitialMount.current && graph.zoomToFit !== undefined) {
         isInitialMount.current = false;
         graph.zoomToFit({ padding: 10, maxScale: 3 });
       }

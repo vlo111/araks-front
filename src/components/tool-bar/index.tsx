@@ -35,8 +35,10 @@ export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
   }, [graph, selected]);
 
   const onCenterContent = useCallback(() => {
-    animateGraphFit(graph, '0.4s');
-    graph.zoomToFit({ padding: 10, maxScale: 1 });
+    if (graph.zoomToFit !== undefined) {
+      animateGraphFit(graph, '0.4s');
+      graph.zoomToFit({ padding: 10, maxScale: 1 });
+    }
   }, [graph]);
 
   const onZoomIn = useCallback(() => {
