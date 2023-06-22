@@ -15,7 +15,7 @@ export enum PropertyTypes {
 
 export enum ConnectionPropertyTypes {
   TEXT = 'text',
-  DATE = 'data',
+  DATE = 'date',
   DATETIME = 'datetime',
   INTEGER = 'integer',
   DECIMAL = 'decimal',
