@@ -39,7 +39,7 @@ type Props = {
 /** This component used only for creating node type property, editing node type property and for creating type connection property */
 export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnectionType = false }: Props) => {
   const queryClient = useQueryClient();
-  const { nodeTypeId } = useDataSheetWrapper();
+  const { nodeTypeId, dataList } = useDataSheetWrapper();
   const { dispatch } = useTypeProperty();
 
   // create node type property
@@ -81,7 +81,15 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
 
   const onFinish = ({ ref_property_type_id, ...values }: ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) => {
     if (ref_property_type_id === PropertyTypes.Connection) {
-      mutateConnection(values as NodeEdgeTypesSubmit);
+      mutateConnection({
+        ...values,
+        target_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+          ?.properties?.find((property) => property.default_property === true)?.id,
+        source_attribute_id: dataList
+          ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+          ?.properties?.find((property) => property.default_property === true)?.id,
+      } as NodeEdgeTypesSubmit);
     } else {
       mutate({
         ...values,

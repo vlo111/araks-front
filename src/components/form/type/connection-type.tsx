@@ -82,16 +82,12 @@ export const ConnectionType = ({ data }: Props) => {
 
   const [debouncedSearchValue] = useDebounce(searchValue, 500);
 
-  const { isInitialLoading } = useGetConnectionSourceSearch(
-    { ...pageData, search: debouncedSearchValue },
-    data.target_id,
-    {
-      enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 3),
-      onSuccess: (data) => {
-        setOptions(data);
-      },
-    }
-  );
+  useGetConnectionSourceSearch({ ...pageData, search: debouncedSearchValue }, data.target_id, {
+    enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 3),
+    onSuccess: (data) => {
+      setOptions(data);
+    },
+  });
 
   const handleSelect = (value: string) => {
     const selectedRow = options?.find((row) => row.dataset_id === value);
@@ -142,8 +138,8 @@ export const ConnectionType = ({ data }: Props) => {
             value={searchValue}
             open={!!options.length}
             onSelect={handleSelect}
-            disabled={isInitialLoading}
             key={options?.length + debouncedSearchValue}
+            notFoundContent="No Connection data found"
           >
             <Input />
           </AutoComplete>
