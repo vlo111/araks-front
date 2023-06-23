@@ -1,6 +1,6 @@
 import { Graph } from './components/graph';
 import { useNodes } from 'hooks/use-nodes';
-import { NodeView } from './components/node-view';
+import { NodeView } from './components/drawers/node-view';
 
 export const ProjectVisualisation = () => {
   useNodes();

@@ -1,5 +1,5 @@
-import { ReactNode, CSSProperties } from 'react';
-import { Drawer as DrawerWrapper } from 'antd';
+import { CSSProperties } from 'react';
+import { Drawer as DrawerWrapper, DrawerProps } from "antd";
 import './perspective-drawer-style.css';
 export const maskStyle: CSSProperties = {
   background: 'linear-gradient(119.84deg, rgba(203, 203, 203, 0.5) 88.78%, rgba(255, 255, 255, 0.49) 165.43%)',
@@ -30,7 +30,7 @@ export const bodyStyle: CSSProperties = {
 export const Drawer = ({
   children,
   ...props
-}: Partial<{ children: ReactNode; onClose: () => void; open: boolean, footer: ReactNode }>) => {
+}: Partial<DrawerProps>) => {
   return (
     <DrawerWrapper
       title="Share"
