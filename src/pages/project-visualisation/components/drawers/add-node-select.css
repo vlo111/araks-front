@@ -1,0 +1,20 @@
+.node-type-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem !important;
+}
+
+.node-type-select .ant-select-selector {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.node-type-select .ant-select-arrow {
+  position: relative !important;
+}
+
+.node-type-popup-select {
+    background: red;
+}

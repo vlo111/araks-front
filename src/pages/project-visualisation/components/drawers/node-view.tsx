@@ -1,5 +1,4 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { Form } from 'antd';
 import { MenuText, Text } from 'components/typography';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { COLORS } from 'helpers/constants';
@@ -8,16 +7,9 @@ import { useGetNode } from 'api/node/use-get-node';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 
 export const NodeView = () => {
-  const [form] = Form.useForm();
-
   const { nodes, openNode, finishOpenNode } = useGraph() ?? {};
 
   const node = nodes?.find((n: { node_id: string }) => n?.node_id === openNode?.id);
-
-  const onClose = () => {
-    finishOpenNode();
-    form.resetFields();
-  };
 
   const { data } = useGetNode(node?.node_id ?? '', { enabled: !!node?.node_id });
 
@@ -26,7 +18,7 @@ export const NodeView = () => {
       headerStyle={{
         borderTop: `6px solid ${node?.type_color}`,
       }}
-      onClose={onClose}
+      onClose={finishOpenNode}
       title={<MenuText strong>{node?.node_name}</MenuText>}
       open={openNode?.isOpened}
     >

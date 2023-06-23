@@ -43,7 +43,7 @@ const defaultNode = {
   },
 };
 
-export const initGraph: InitGraph = (container, { startOpenNode }) => {
+export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCreate }) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
     const isCanvas = target && target.isCanvas && target.isCanvas();
@@ -76,6 +76,9 @@ export const initGraph: InitGraph = (container, { startOpenNode }) => {
         });
       } else if (item?._cfg?.type === 'edge') {
       } else {
+        startOpenNodeCreate({
+          isOpened: true
+        });
       }
     },
     offsetX: 16 + 10,
