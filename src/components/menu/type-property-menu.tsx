@@ -1,7 +1,6 @@
 import { MenuProps } from 'antd';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
 import { ReactComponent as Edit } from 'components/icons/edit-pencil.svg';
-import { ReactComponent as SetAsDefault } from 'components/icons/set-as-default.svg';
 import { MenuText } from 'components/typography';
 import { DeleteTypePropertyModal } from 'components/modal/delete-type-property-modal';
 
@@ -24,12 +23,13 @@ export enum FolderType {
 
 const menuItems = (isDefault: boolean, canSetDefault: boolean) =>
   [
-    {
-      key: 'default',
-      icon: <SetAsDefault />,
-      label: <MenuText>Set as default property</MenuText>,
-      disabled: isDefault || !canSetDefault,
-    },
+    // TODO: no need for now
+    // {
+    //   key: 'default',
+    //   icon: <SetAsDefault />,
+    //   label: <MenuText>Set as default property</MenuText>,
+    //   disabled: isDefault || !canSetDefault,
+    // },
     {
       key: 'edit',
       icon: <Edit />,
