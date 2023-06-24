@@ -86,33 +86,30 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
         pagination={false}
         dataSource={rowsData}
         renderItem={(item, index) => {
-          const avatar = item.properties?.find((item) => item.default_image);
-          const name = item.properties?.find((item) => item.default_property);
-
           return (
-            <StyledListItem key={item.id} color={name?.type_color} onClick={() => handleItemClick(item)}>
+            <StyledListItem key={item.id} color={item.nodeType?.name} onClick={() => handleItemClick(item)}>
               <Checkbox
                 className="all-data-checkbox"
                 style={{ marginRight: '16px' }}
                 checked={checkedItems.includes(item.id)}
               />
               <List.Item.Meta
-                avatar={<Avatar src={avatar?.node_name as string} />}
+                avatar={<Avatar src={item.default_image} />}
                 title={
                   <Row>
                     <Col span={6}>
-                      <Text color={COLORS.PRIMARY.GRAY}>{name?.node_name as string}</Text>
+                      <Text color={COLORS.PRIMARY.GRAY}>{item.name}</Text>
                     </Col>
                     <Col span={18}>
                       <Row justify="end" align="middle" gutter={32}>
                         <Col offset={6} span={6}>
-                          <TypeInfo color={name?.type_color} className="all-data-type-name">
-                            <Text color={COLORS.PRIMARY.GRAY_DARK}>{name?.type_name}</Text>
+                          <TypeInfo color={item.nodeType?.color} className="all-data-type-name">
+                            <Text color={COLORS.PRIMARY.GRAY_DARK}>{item.nodeType?.name}</Text>
                           </TypeInfo>
                         </Col>
                         <Col>
                           <Text color={COLORS.PRIMARY.GRAY}>
-                            {name?.updated_at ? dayjs(name?.updated_at).format('DD MMMM [at] HH:mm') : ''}
+                            {item?.updated_at ? dayjs(item?.updated_at).format('DD MMMM [at] HH:mm') : ''}
                           </Text>
                         </Col>
                       </Row>

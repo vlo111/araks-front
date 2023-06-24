@@ -9,11 +9,12 @@ import { ManageNode } from './node/manage-node';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePropertiesValues } from 'types/node';
-import { getColumnValue } from './node/utils';
+import { getColumnValue, showAvatar } from './node/utils';
 import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 import { NodePagination } from 'components/pagination';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { PageParameters } from 'api/types';
+import { NodeViewButton } from './node/node-view-button';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -34,13 +35,19 @@ export const TableSection = () => {
     enabled: !!nodeTypeId,
     onSuccess: ({ rows: data }) => {
       const rows = data.map((row) =>
-        row.properties?.reduce((curr: DataType, item: NodePropertiesValues) => {
-          return {
-            ...curr,
-            key: row.id,
-            [item.nodeType.name]: getColumnValue(item, row),
-          };
-        }, {} as DataType)
+        row.properties?.reduce(
+          (curr: DataType, item: NodePropertiesValues) => {
+            return {
+              ...curr,
+              key: row.id,
+              [item.nodeTypeProperty.name]: getColumnValue(item, row),
+            };
+          },
+          {
+            name: <NodeViewButton text={row.name} rowData={row} />,
+            node_icon: showAvatar(row.default_image),
+          } as DataType
+        )
       );
 
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
@@ -98,7 +105,7 @@ export const TableSection = () => {
           />
         </ViewDatasheetProvider>
       </div>
-      {pageCount && (
+      {pageCount ? (
         <NodePagination
           total={pageCount}
           defaultPageSize={initPageData.size}
@@ -109,6 +116,8 @@ export const TableSection = () => {
             setPageData({ page, size: DEFAULT_PAGE_SIZE });
           }}
         />
+      ) : (
+        <></>
       )}
     </div>
   );

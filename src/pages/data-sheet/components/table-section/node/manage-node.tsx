@@ -48,8 +48,17 @@ export const ManageNode = ({ tableHead }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
+    const mainData = { name: '', default_image: '' };
     const dataToSubmit = data
       ?.map((item) => {
+        if (item.name === 'name') {
+          mainData.name = (values.name as string[]).join('');
+          return;
+        }
+        if (item.name === 'node_icon') {
+          mainData.default_image = (values.node_icon as string[]).join('');
+          return;
+        }
         return item.ref_property_type_id !== PropertyTypes.Connection
           ? {
               project_type_property_id: item.id,
@@ -72,6 +81,7 @@ export const ManageNode = ({ tableHead }: Props) => {
       .filter(Boolean);
 
     mutate({
+      ...mainData,
       nodes: dataToSubmit,
       edges: dataToSubmitEdges?.flat() || [],
       project_type_id: nodeTypeId || '',

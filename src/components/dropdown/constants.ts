@@ -21,12 +21,20 @@ export const PROJECT_SORT: SortItems[] = [
 
 export const ALL_DATA_SORT_BY: SortItems[] = [
   {
-    label: 'Connection Type',
-    key: 'Connection Type',
+    label: 'A to Z',
+    key: 'name ASC',
   },
   {
-    label: 'Node Type',
-    key: 'Node Type',
+    label: 'Z to A',
+    key: 'name DESC',
+  },
+  {
+    label: 'Newest First',
+    key: 'updated_at DESC',
+  },
+  {
+    label: 'Oldest First',
+    key: 'updated_at ASC',
   },
 ];
 
