@@ -40,7 +40,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
 
   return (
     <AutoComplete
-      options={options?.map((row) => ({ value: row.dataset_id, label: row.node_name.join(',') }))}
+      options={options?.map((row) => ({ value: row.node_id, label: row.node_name.join(',') }))}
       onSearch={handleSearch}
       value={searchValue}
       open={!!options.length}

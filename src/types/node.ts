@@ -31,7 +31,7 @@ export type NodeDataTypes = NodeDataType[];
 
 export type NodePropertiesValues = {
   id: string;
-  dataset_id?: string;
+  node_id?: string;
   project_type_property_id?: string;
   project_type_property_type?: string;
   nodes_data?: NodeDataTypes;
@@ -80,7 +80,7 @@ export type AllDataListResponse = {
 };
 
 export type ConnectionSourcesSearchResult = {
-  dataset_id: string;
+  node_id: string;
   default_image: boolean;
   default_property: boolean;
   node_name: string[];

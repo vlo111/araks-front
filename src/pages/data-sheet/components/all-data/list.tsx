@@ -74,7 +74,11 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
     [checkedItems, setCheckedItems]
   );
 
-  const { rowsData, count: pageCount } = useGetProjectAllData(pageData, { enabled: !!pageData.project_type_list_id });
+  const {
+    rowsData,
+    count: pageCount,
+    isInitialLoading,
+  } = useGetProjectAllData(pageData, { enabled: !!pageData.project_type_list_id });
 
   return (
     <>
@@ -132,7 +136,7 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
           }}
         />
       ) : (
-        <Skeleton />
+        isInitialLoading && <Skeleton />
       )}
     </>
   );
