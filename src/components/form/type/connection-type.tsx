@@ -70,14 +70,14 @@ export const ConnectionType = ({ data }: Props) => {
   const form = useFormInstance();
 
   const handleSelect = (value: string, options: ConnectionSourcesSearchResult[]) => {
-    const selectedRow = options?.find((row) => row.node_id === value);
+    const selectedRow = options?.find((row) => row.id === value);
     if (selectedRow) {
       form.setFieldValue(data.name, [
         ...(form.getFieldValue(data.name) || []),
         {
-          source_type_id: selectedRow.type_id,
-          source_id: selectedRow.node_id,
-          name: selectedRow.node_name.join(', '),
+          source_type_id: selectedRow.project_type_id,
+          source_id: selectedRow.id,
+          name: selectedRow.name,
           id: data.id,
         },
       ]);

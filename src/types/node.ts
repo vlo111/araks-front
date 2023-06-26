@@ -38,6 +38,8 @@ export type NodeDataTypes = NodeDataType[];
 export type NodePropertiesValues = {
   id: string;
   node_id?: string;
+  name: string[];
+  node_icon: string[];
   project_type_property_id?: string;
   project_type_property_type?: string;
   nodes_data?: NodeDataTypes;
@@ -95,13 +97,13 @@ export type AllDataListResponse = {
 };
 
 export type ConnectionSourcesSearchResult = {
-  node_id: string;
-  default_image: boolean;
-  default_property: boolean;
-  node_name: string[];
-  property_name: string;
-  type_color: string;
-  type_id: string;
-  type_name: string;
-  updated_at: string;
+  id: string;
+  default_image: string;
+  name: string;
+  project_type_id: string;
+};
+
+export type ConnectionSourcesSearchResponse = {
+  count: number;
+  rows: ConnectionSourcesSearchResult[];
 };

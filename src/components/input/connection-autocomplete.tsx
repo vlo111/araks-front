@@ -28,7 +28,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
   useGetConnectionSourceSearch({ ...pageData, search: debouncedSearchValue }, targetId, {
     enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 2),
     onSuccess: (data) => {
-      setOptions(data);
+      setOptions(data.rows);
     },
   });
 
@@ -40,7 +40,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
 
   return (
     <AutoComplete
-      options={options?.map((row) => ({ value: row.node_id, label: row.node_name.join(',') }))}
+      options={options?.map((row) => ({ value: row.id, label: row.name }))}
       onSearch={handleSearch}
       value={searchValue}
       open={!!options.length}

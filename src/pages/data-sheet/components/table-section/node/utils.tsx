@@ -298,3 +298,20 @@ export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: No
 
   return values[item.name];
 };
+
+export const setNodeDataUpdateValue = (item: NodePropertiesValues, values: NodeBody) => {
+  if (!values[item.nodeTypeProperty.name]) {
+    return null;
+  }
+  if (item.project_type_property_type === PropertyTypes.Location) {
+    return (values[item.nodeTypeProperty.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
+  }
+  if (Array.isArray(values[item.nodeTypeProperty.name])) {
+    // if (item.ref_property_type_id === PropertyTypes.Date) {
+    //   return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
+    // }
+    return (values[item.nodeTypeProperty.name] as unknown[])?.filter(Boolean);
+  }
+
+  return values[item.nodeTypeProperty.name];
+};

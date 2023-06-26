@@ -7,7 +7,7 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
-import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetNode } from 'api/node/use-get-node';
 import { Button } from 'components/button';
@@ -30,7 +30,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const [isEdit, setIsEdit] = React.useState(false);
   const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedView }), [selectedView]);
 
-  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
+  const { data } = useGetProjectNodeTypeProperties(nodeTypeId, {
     enabled: !!(nodeTypeId && isConnectionType === false),
   });
 
@@ -78,16 +78,13 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     }
   };
 
-  const { data: nodeData } = useGetNode(selectedView?.id as string, {
-    enabled: !!(selectedView?.id && data?.length && isEdit),
+  const { data: nodeData, isInitialLoading } = useGetNode(selectedView?.id as string, {
+    enabled: !!(selectedView?.id && isEdit),
     onSuccess: (nodeData) => {
-      const initialAcc = data?.reduce(
-        (initAcc, initItem) => ({
-          ...initAcc,
-          [initItem.name]: initItem.ref_property_type_id === PropertyTypes.Connection ? null : [''],
-        }),
-        {} as NodeBody
-      );
+      const initialAcc = {
+        name: [nodeData.name],
+        node_icon: [nodeData.default_image],
+      };
 
       const fieldsData = nodeData.properties?.reduce((acc, item) => {
         if (!item.nodes_data?.length) {
@@ -115,31 +112,28 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   });
 
   const onFinish = (values: NodeBody) => {
-    const mainData = { name: '', default_image: '' };
-    const dataToSubmit = data
+    const mainData = {
+      name: (values.name as string[]).join(''),
+      default_image: (values.node_icon as string[]).join(''),
+    };
+
+    const dataToSubmit = nodeData?.properties
       ?.map((item) => {
-        if (item.name === 'name') {
-          mainData.name = (values.name as string[]).join('');
-          return;
-        }
-        if (item.name === 'node_icon') {
-          mainData.default_image = (values.node_icon as string[]).join('');
-          return;
-        }
-        return item.ref_property_type_id !== PropertyTypes.Connection
+        return item.project_type_property_type !== PropertyTypes.Connection
           ? {
-              project_type_property_id: item.id,
-              project_type_property_type: item.ref_property_type_id,
-              nodes_data: setNodeDataValue(item, values),
+              id: item.id,
+              project_type_property_id: item.project_type_property_id,
+              project_type_property_type: item.project_type_property_type,
+              nodes_data: setNodeDataUpdateValue(item, values),
             }
           : null;
       })
       .filter(Boolean);
 
-    const dataToSubmitEdges = data
+    const dataToSubmitEdges = nodeData?.properties
       ?.map((item) => {
-        return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+        return item.project_type_property_type === PropertyTypes.Connection
+          ? (values[item.nodeTypeProperty.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
               source_id: itemConn.source_id,
               source_type_id: itemConn.source_type_id,
               project_edge_type_id: itemConn.id,
@@ -156,7 +150,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         project_type_id: nodeTypeId || '',
         nodeId: nodeData.id,
       } as NodeDataSubmit);
-      // onClose();
+      onClose();
     }
   };
   return (
