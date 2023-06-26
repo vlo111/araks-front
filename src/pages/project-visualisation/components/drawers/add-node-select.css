@@ -13,8 +13,5 @@
 
 .node-type-select .ant-select-arrow {
   position: relative !important;
-}
-
-.node-type-popup-select {
-    background: red;
+  margin-top: 0;
 }

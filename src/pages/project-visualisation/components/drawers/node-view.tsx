@@ -1,25 +1,25 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { MenuText, Text } from 'components/typography';
+import { MenuText } from 'components/typography';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { COLORS } from 'helpers/constants';
 import { getRowData } from '../../../data-sheet/components/table-section/node/utils';
 import { useGetNode } from 'api/node/use-get-node';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
+import { COLORS } from "helpers/constants";
 
 export const NodeView = () => {
   const { nodes, openNode, finishOpenNode } = useGraph() ?? {};
 
-  const node = nodes?.find((n: { node_id: string }) => n?.node_id === openNode?.id);
+  const node = nodes?.find((n) => n?.id === openNode?.id);
 
-  const { data } = useGetNode(node?.node_id ?? '', { enabled: !!node?.node_id });
+  const { data } = useGetNode(node?.id ?? '', { enabled: !!node?.id });
 
   return (
     <Drawer
       headerStyle={{
-        borderTop: `6px solid ${node?.type_color}`,
+        borderTop: `6px solid ${node?.nodeType.color}`,
       }}
       onClose={finishOpenNode}
-      title={<MenuText strong>{node?.node_name}</MenuText>}
+      title={<MenuText strong>{node?.name}</MenuText>}
       open={openNode?.isOpened}
     >
       <VerticalSpace>
@@ -27,7 +27,7 @@ export const NodeView = () => {
           data.properties.map((d) => {
             return (
               <VerticalSpace key={d.id}>
-                <Text color={COLORS.PRIMARY.BLUE}>{d.nodeType.name}</Text>
+                <div color={COLORS.PRIMARY.BLUE}>{d.nodeTypeProperty.name}</div>
                 {getRowData(d)}
               </VerticalSpace>
             );

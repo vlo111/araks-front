@@ -2,29 +2,17 @@ import { useEffect } from 'react';
 import { useGraph } from '../components/layouts/components/visualisation/wrapper';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
 import { formattedData } from '../components/layouts/components/visualisation/container/helpers/format-node';
-import { useGetProjectAllData } from '../api/all-data/use-get-project-all-data';
 import { AllDataResponse } from '../types/node';
 import { useGetVEdges } from '../api/visualisation/use-get-edges';
+import { useGetNodes } from "../api/visualisation/use-get-nodes";
 
-export const useNodes: () => { isInitialLoading: boolean; rowsData: AllDataResponse[] } = () => {
+export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse[] } = () => {
   const { graph, ...params } = useGraph() ?? {};
 
-  const { rowsData, isInitialLoading } = useGetProjectAllData(
-    { page: 1, size: 100 },
+  const { nodes, isInitialLoading } = useGetNodes(
     {
       onSuccess: (data) => {
-        // TODO: fix this
-        // const row: unknown =
-        //   data.rows
-        //     .map((a) => a.properties)
-        //     .flat()
-        //     .filter((a) => a?.default_property === true) ?? [];
-
-        const row: unknown = [];
-
-        if (row !== undefined) {
-          params.setNodes(row);
-        }
+        params.setNodes(data.rows);
       },
     }
   );
@@ -36,11 +24,12 @@ export const useNodes: () => { isInitialLoading: boolean; rowsData: AllDataRespo
   });
 
   useEffect(() => {
-    if (rowsData !== undefined && graph !== undefined && params.nodes !== undefined && params.edges) {
+    if (nodes !== undefined && graph !== undefined && params.nodes !== undefined && params.edges !== undefined) {
       const data = formattedData(graph, params.nodes, params.edges);
+
       if (data !== undefined) initData(graph, data);
     }
-  }, [graph, params.edges, params.nodes, rowsData]);
+  }, [graph, params.edges, params.nodes, nodes]);
 
-  return { rowsData, isInitialLoading };
+  return { nodes, isInitialLoading };
 };
