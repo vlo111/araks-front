@@ -7,7 +7,7 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
-import { setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetNode } from 'api/node/use-get-node';
 import { Button } from 'components/button';
@@ -106,8 +106,26 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           //   : item.nodes_data,
         } as NodePropertiesValues;
       }, initialAcc);
+      const groupList = groupedData(nodeData.edges);
 
-      form.setFieldsValue({ ...fieldsData, name: [nodeData.name], node_icon: [nodeData.default_image] });
+      const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
+        return {
+          ...acc,
+          [key]: item.map((row) => ({
+            id: row.id,
+            name: row.nodes.name,
+            source_id: row.source_id,
+            source_type_id: row.source_type_id,
+          })),
+        };
+      }, {});
+
+      form.setFieldsValue({
+        ...fieldsData,
+        name: [nodeData.name],
+        node_icon: [nodeData.default_image],
+        ...connectionFieldsData,
+      });
     },
   });
 
