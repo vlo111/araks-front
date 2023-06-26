@@ -3,10 +3,10 @@ import { GridConnectionPopover } from 'components/popover';
 import { VerticalSpace } from 'components/space/vertical-space';
 
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
-import { NodeDataResponse, NodeEdges } from 'types/node';
+import { NodeDataResponse } from 'types/node';
 
 type Props = {
-  item: NodeEdges;
+  itemName: string;
   row: NodeDataResponse;
 };
 
@@ -14,8 +14,8 @@ const getPopupContainer = (triggerNode: HTMLElement) => {
   return document.getElementById('custom-popup-container') as HTMLElement;
 };
 
-export const ConnectionColumnValue = ({ item, row }: Props) => {
-  const filteredData = row.edges.filter((edge) => edge.edgeTypes.name === item.edgeTypes.name);
+export const ConnectionColumnValue = ({ itemName, row }: Props) => {
+  const filteredData = row.edges.filter((edge) => edge.edgeTypes.name === itemName);
 
   return (
     <div id="custom-popup-container">

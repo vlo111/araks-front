@@ -155,7 +155,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
 /**
  * this is for grouping edges based on their column name
  * @param data
- * @returns @deprecated not used for now
+ * @returns NodeEdges grouped by name
  */
 export const groupedData = (data: NodeEdges[]) =>
   data.reduce((result, item) => {

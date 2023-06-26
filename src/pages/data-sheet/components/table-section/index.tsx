@@ -52,7 +52,7 @@ export const TableSection = () => {
         ...row.edges?.reduce((curr: DataType, item) => {
           return {
             ...curr,
-            [item.edgeTypes.name]: <ConnectionColumnValue item={item} row={row} />,
+            [item.edgeTypes.name]: <ConnectionColumnValue itemName={item.edgeTypes.name} row={row} />,
           };
         }, {} as DataType),
       }));
