@@ -1,4 +1,4 @@
-import { Image } from 'antd';
+import { Col, Image, Row, Space } from 'antd';
 import { GridConnectionButton } from 'components/button';
 
 import { Text } from 'components/typography';
@@ -15,8 +15,6 @@ export const VIewNode = () => {
     () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
     [selectedView?.edges]
   );
-  // eslint-disable-next-line no-console
-  console.log('groupedDataList', groupedDataList);
 
   return (
     <VerticalSpace>
@@ -41,19 +39,29 @@ export const VIewNode = () => {
       )}
       {groupedDataList.map(([index, item]) => (
         <VerticalSpace key={index}>
-          <Text color={COLORS.PRIMARY.BLUE}>{index}</Text>
-          {item.map((row) => (
-            <GridConnectionButton
-              key={row.id}
-              type="text"
-              size="small"
-              backgroundColor={row.nodes.nodeType.color}
-              block
-              icon={<Connection />}
-            >
-              {row.nodes.nodeType.name}
-            </GridConnectionButton>
-          ))}
+          <Row>
+            <Col>
+              <Text color={COLORS.PRIMARY.BLUE}>{index}</Text>
+            </Col>
+            <Col span={8} offset={1}>
+              <GridConnectionButton
+                type="text"
+                size="small"
+                backgroundColor={item[0].nodes.nodeType.color}
+                block
+                icon={<Connection />}
+              >
+                {item[0].nodes.nodeType.name}
+              </GridConnectionButton>
+            </Col>
+          </Row>
+          <Space size="large">
+            {item.map((row) => (
+              <Text underline key={row.id} color={COLORS.PRIMARY.BLUE}>
+                {row.nodes.name}
+              </Text>
+            ))}
+          </Space>
         </VerticalSpace>
       ))}
     </VerticalSpace>

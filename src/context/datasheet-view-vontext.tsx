@@ -25,6 +25,7 @@ const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
   const [drawerWidth, setDrawerWidth] = React.useState<number>(0);
+  const [form] = Form.useForm();
 
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
   const [isEdit, setIsEdit] = React.useState(false);
@@ -37,6 +38,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const onClose = () => {
     setSelectedView(undefined);
     setIsEdit(false);
+    form.resetFields();
   };
 
   React.useEffect(() => {
@@ -56,8 +58,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   }, [selectedView]);
 
   const { mutate } = useManageNodes();
-
-  const [form] = Form.useForm();
 
   const getValue = (item: NodePropertiesValues) => {
     switch (item.project_type_property_type) {
@@ -112,10 +112,11 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         return {
           ...acc,
           [key]: item.map((row) => ({
-            id: row.id,
+            rowId: row.id,
+            id: row.edgeTypes.id,
             name: row.nodes.name,
-            source_id: row.source_id,
-            source_type_id: row.source_type_id,
+            target_id: row.target_id,
+            target_type_id: row.target_type_id,
           })),
         };
       }, {});
@@ -148,12 +149,17 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       })
       .filter(Boolean);
 
-    const dataToSubmitEdges = nodeData?.properties
+    const dataToSubmitEdges = data
       ?.map((item) => {
-        return item.project_type_property_type === PropertyTypes.Connection
-          ? (values[item.nodeTypeProperty.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
-              source_id: itemConn.source_id,
-              source_type_id: itemConn.source_type_id,
+        // eslint-disable-next-line no-console
+        console.log('item, nodesData', nodeData);
+        // eslint-disable-next-line no-console
+        console.log('item, values', values);
+        return item.ref_property_type_id === PropertyTypes.Connection
+          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+              id: itemConn.rowId,
+              target_id: itemConn.target_id,
+              target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,
             }))
           : null;

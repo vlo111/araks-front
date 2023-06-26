@@ -72,8 +72,8 @@ export const ManageNode = ({ tableHead }: Props) => {
       ?.map((item) => {
         return item.ref_property_type_id === PropertyTypes.Connection
           ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
-              source_id: itemConn.source_id,
-              source_type_id: itemConn.source_type_id,
+              target_id: itemConn.target_id,
+              target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,
             }))
           : null;

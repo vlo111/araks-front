@@ -145,10 +145,11 @@ export type ProjectTypePropertyReturnData = {
 };
 
 export type NodeDataConnectionToSave = {
-  source_id: string;
-  source_type_id: string;
+  target_id: string;
+  target_type_id: string;
   name: string;
   id: string;
+  rowId?: string; // used only for save, assign id to him then pass to packend
 };
 
 /** Folder types */
