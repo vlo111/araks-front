@@ -2,7 +2,7 @@ export type NodeBody = {
   [x: string]: unknown;
 };
 
-interface EdgeType {
+export interface EdgeType {
   id: string;
   name: string;
   color: string;
@@ -56,12 +56,39 @@ export type NodePropertiesValues = {
   updated_at: string;
 };
 
+export type NodeEdges = {
+  edgeTypes: {
+    id: string;
+    name: string;
+  };
+  id: string;
+  source_id: string;
+  source_type_id: string;
+  target_id: string;
+  target_type_id: string;
+  nodes: {
+    created_at: string;
+    default_image: string;
+    id: string;
+    name: string;
+    project_type_id: string;
+    updated_at: string;
+    nodeType: EdgeType;
+  };
+};
+
+export type NodeEdgesGrouped = {
+  [x: string]: NodeEdges[];
+};
+
 export type NodeDataResponse = {
   id: string;
   default_image: string;
   name: string;
   updated_at: string;
   properties?: NodePropertiesValues[];
+  edges: NodeEdges[];
+  nodeType: EdgeType;
 };
 
 export type NodeDataListResponse = {

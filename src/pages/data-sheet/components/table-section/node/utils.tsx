@@ -15,6 +15,8 @@ import {
   NodeDataResponse,
   NodeDataType,
   NodeDataTypes,
+  NodeEdges,
+  NodeEdgesGrouped,
   NodePropertiesValues,
   ResponseLocationType,
 } from 'types/node';
@@ -83,6 +85,7 @@ export function showAvatar(imageUrl: string) {
   return <Avatar src={imageUrl} size="large" />;
 }
 
+/** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
   return item.nodes_data && item.nodes_data.length > 1 ? (
     <ManageNodeTypePopover
@@ -148,6 +151,24 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
     />
   );
 }
+
+/**
+ * this is for grouping edges based on their column name
+ * @param data
+ * @returns @deprecated not used for now
+ */
+export const groupedData = (data: NodeEdges[]) =>
+  data.reduce((result, item) => {
+    const edgeTypeName = item.edgeTypes.name;
+
+    if (!result[edgeTypeName]) {
+      result[edgeTypeName] = [];
+    }
+
+    result[edgeTypeName].push(item);
+
+    return result;
+  }, {} as NodeEdgesGrouped);
 
 export const getSingleData = (nodeData: NodeDataTypes | undefined) => {
   if (!nodeData) {

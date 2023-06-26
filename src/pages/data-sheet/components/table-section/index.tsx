@@ -15,6 +15,7 @@ import { NodePagination } from 'components/pagination';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { PageParameters } from 'api/types';
 import { NodeViewButton } from './node/node-view-button';
+import { ConnectionColumnValue } from './node/connection-column-value';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -34,22 +35,27 @@ export const TableSection = () => {
   const { rowsData: data, count: pageCount } = useGetTypeNodes(pageData, nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: ({ rows: data }) => {
-      const rows = data.map((row) =>
-        row.properties?.reduce(
+      const rows = data.map((row) => ({
+        ...row.properties?.reduce(
           (curr: DataType, item: NodePropertiesValues) => {
             return {
               ...curr,
-              key: row.id,
               [item.nodeTypeProperty.name]: getColumnValue(item, row),
             };
           },
           {
+            key: row.id,
             name: <NodeViewButton text={row.name} rowData={row} />,
             node_icon: showAvatar(row.default_image),
           } as DataType
-        )
-      );
-
+        ),
+        ...row.edges?.reduce((curr: DataType, item) => {
+          return {
+            ...curr,
+            [item.edgeTypes.name]: <ConnectionColumnValue item={item} row={row} />,
+          };
+        }, {} as DataType),
+      }));
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },
   });

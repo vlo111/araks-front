@@ -48,3 +48,4 @@ export { FolderButton } from './folder-button';
 export { LikeButton } from './like-button';
 export { IconButton } from './icon-button';
 export { AddType } from './add-type';
+export { GridConnectionButton } from './grid-connection-button';
