@@ -69,7 +69,7 @@ const AutoComplete = styled(AutoCompleteComponent)`
 export const Search = () => (
   <AutoComplete
     popupClassName="certain-category-search-dropdown"
-    dropdownMatchSelectWidth={500}
+    popupMatchSelectWidth={500}
     style={{ width: 456 }}
     options={options}
   >

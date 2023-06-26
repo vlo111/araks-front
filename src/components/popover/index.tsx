@@ -46,3 +46,7 @@ export const PerspectiveActionPopover = (props: PopoverProps) => (
     {...props}
   />
 );
+
+export const GridConnectionPopover = (props: PopoverProps) => (
+  <PopoverComponent placement="bottom" arrow={false} trigger="click" destroyTooltipOnHide {...props} />
+);
