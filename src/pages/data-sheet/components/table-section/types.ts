@@ -1,4 +1,8 @@
+import { ReactNode } from 'react';
+
 export interface DataType {
+  name?: ReactNode;
+  node_icon?: ReactNode;
   key: React.Key;
   column: string;
 }

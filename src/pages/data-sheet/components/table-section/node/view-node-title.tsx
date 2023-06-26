@@ -21,7 +21,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
   const { state: selectedView } = useViewDatasheet();
 
   const defaultProperty = useMemo(
-    () => selectedView?.properties?.find((property) => property.nodeType.default_property),
+    () => selectedView?.properties?.find((property) => property.nodeTypeProperty.default_property),
     [selectedView?.properties]
   );
   return (

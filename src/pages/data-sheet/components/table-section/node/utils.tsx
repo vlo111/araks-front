@@ -72,11 +72,16 @@ const showText = (
     case PropertyTypes.Boolean:
       return text === 'true' ? 'Yes' : 'No';
     case PropertyTypes.Text:
-      return col?.nodeType.default_property ? <NodeViewButton text={text} rowData={rowData} /> : text;
+      // @deprecated this might not be used
+      return col?.nodeTypeProperty.default_property ? <NodeViewButton text={text} rowData={rowData} /> : text;
     default:
       return text;
   }
 };
+
+export function showAvatar(imageUrl: string) {
+  return <Avatar src={imageUrl} size="large" />;
+}
 
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
   return item.nodes_data && item.nodes_data.length > 1 ? (
@@ -187,23 +192,23 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     case PropertyTypes.Date:
       return (
         <Space>
-          <CalendarOutlined /> <span>{dayjs(text).format('YYYY-MM-DD')}</span>
+          <CalendarOutlined /> <Text>{dayjs(text).format('YYYY-MM-DD')}</Text>
         </Space>
       );
     case PropertyTypes.DateTime:
       return (
         <Space>
-          <CalendarOutlined /> <span>{dayjs(text).format('YYYY-MM-DD HH:mm')}</span>
+          <CalendarOutlined /> <Text>{dayjs(text).format('YYYY-MM-DD HH:mm')}</Text>
         </Space>
       );
     case PropertyTypes.Boolean:
-      return text === 'true' ? 'Yes' : 'No';
+      return <Text>{text === 'true' ? 'Yes' : 'No'}</Text>;
     case PropertyTypes.Text:
     case PropertyTypes.Integer:
     case PropertyTypes.Decimal:
-      return <span>{text}</span>;
+      return <Text>{text}</Text>;
     default:
-      return text;
+      return <Text>{text}</Text>;
   }
 };
 
@@ -213,7 +218,7 @@ export const getRowData = (item: NodePropertiesValues) => {
   }
   const isMultiple = item.nodes_data && item.nodes_data.length > 1;
 
-  //   if (item.nodeType.default_image) {
+  //   if (item.nodeTypeProperty.default_image) {
   //     return <Avatar src={dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)} />;
   //   }
 

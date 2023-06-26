@@ -13,11 +13,14 @@ export const useNodes: () => { isInitialLoading: boolean; rowsData: AllDataRespo
     { page: 1, size: 100 },
     {
       onSuccess: (data) => {
-        const row: unknown =
-          data.rows
-            .map((a) => a.properties)
-            .flat()
-            .filter((a) => a?.default_property === true) ?? [];
+        // TODO: fix this
+        // const row: unknown =
+        //   data.rows
+        //     .map((a) => a.properties)
+        //     .flat()
+        //     .filter((a) => a?.default_property === true) ?? [];
+
+        const row: unknown = [];
 
         if (row !== undefined) {
           params.setNodes(row);

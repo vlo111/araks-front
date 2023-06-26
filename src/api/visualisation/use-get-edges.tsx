@@ -1,10 +1,10 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from 'api/client';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { errorMessage } from "helpers/utils";
-import { useParams } from "react-router-dom";
+import { errorMessage } from 'helpers/utils';
+import { useParams } from 'react-router-dom';
 
-export const GET_EDGES = '/projects-edge-dataset/list/:project_id';
+export const GET_EDGES = '/nodes/list/:project_id';
 
 type GetProjectParam = {
   id?: string;

@@ -1,11 +1,11 @@
-import { PROJECT_SORT } from 'components/dropdown/constants';
+import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SortProvider } from 'context/sort-context';
 import { useState } from 'react';
 import { AllDataFilterSection } from './all-data/filter-section';
 import { AllDataList } from './all-data/list';
 
-const defaultSort = PROJECT_SORT[2].key.split(' ');
+const defaultSort = ALL_DATA_SORT_BY[2].key.split(' ');
 
 export const defaultAllDataFilter = {
   search: '',
@@ -18,7 +18,7 @@ export const RightSectionAllData = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   return (
-    <SortProvider defaultValue={PROJECT_SORT[2].key}>
+    <SortProvider defaultValue={ALL_DATA_SORT_BY[2].key}>
       <VerticalSpace>
         <AllDataFilterSection
           setFilterValue={setFilterValue}

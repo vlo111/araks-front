@@ -37,7 +37,10 @@ export const UrlType = ({ data }: Props) => {
                     <FormItem
                       style={{ marginBottom: 0 }}
                       name={field.name}
-                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                      rules={[
+                        { required: data.required_type, message: VALIDATE_MESSAGES.required },
+                        { type: 'url', message: 'Please enter valid URL' },
+                      ]}
                     >
                       <Url />
                     </FormItem>

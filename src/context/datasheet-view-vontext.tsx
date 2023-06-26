@@ -84,7 +84,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       const initialAcc = data?.reduce(
         (initAcc, initItem) => ({
           ...initAcc,
-          [initItem.name]: [''],
+          [initItem.name]: initItem.ref_property_type_id === PropertyTypes.Connection ? null : [''],
         }),
         {} as NodeBody
       );
@@ -94,12 +94,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           return acc;
         }
 
-        // eslint-disable-next-line no-console
-        console.log('getValue(item)', getValue(item));
-
         return {
           ...acc,
-          [item.nodeType.name]: getValue(item),
+          [item.nodeTypeProperty.name]: getValue(item),
           // item.project_type_property_type === PropertyTypes.Location
           //   ? (item.nodes_data as ResponseLocationType[])?.map(
           //       (addr: ResponseLocationType) =>
@@ -113,13 +110,22 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         } as NodePropertiesValues;
       }, initialAcc);
 
-      form.setFieldsValue(fieldsData);
+      form.setFieldsValue({ ...fieldsData, name: [nodeData.name], node_icon: [nodeData.default_image] });
     },
   });
 
   const onFinish = (values: NodeBody) => {
+    const mainData = { name: '', default_image: '' };
     const dataToSubmit = data
       ?.map((item) => {
+        if (item.name === 'name') {
+          mainData.name = (values.name as string[]).join('');
+          return;
+        }
+        if (item.name === 'node_icon') {
+          mainData.default_image = (values.node_icon as string[]).join('');
+          return;
+        }
         return item.ref_property_type_id !== PropertyTypes.Connection
           ? {
               project_type_property_id: item.id,
@@ -144,12 +150,13 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
 
     if (nodeData?.id) {
       mutate({
+        ...mainData,
         nodes: dataToSubmit,
         edges: dataToSubmitEdges?.flat() || [],
         project_type_id: nodeTypeId || '',
         nodeId: nodeData.id,
       } as NodeDataSubmit);
-      onClose();
+      // onClose();
     }
   };
   return (

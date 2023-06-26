@@ -9,8 +9,15 @@ import { useSort } from '../../context/sort-context';
 
 import './sort.css';
 import { useState } from 'react';
+import { changeHeight } from 'helpers/styles';
 
 const DropdownButton = styled(({ fullWidth, ...props }) => <Button {...props} />)`
+  ${(props) =>
+    !props.size
+      ? css`
+          ${changeHeight}
+        `
+      : ''}
   ${(props) =>
     props.fullWidth
       ? css`
