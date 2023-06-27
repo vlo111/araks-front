@@ -24,6 +24,7 @@ export type GraphState = {
   nodes?: IProjectType
   edges?: ProjectEdgeResponse[];
   openNode?: IOpenNodeState
+  openNodeCreate?: IIsOpen
 };
 
 /*
