@@ -1,5 +1,5 @@
-import { Col, Form, Row, Space } from 'antd';
-import { ProjectTypePropertyReturnData } from 'api/types';
+import { Col, Form, message, Row, Space } from 'antd';
+import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
@@ -71,12 +71,18 @@ export const ConnectionType = ({ data }: Props) => {
 
   const handleSelect = (value: string, options: ConnectionSourcesSearchResult[]) => {
     const selectedRow = options?.find((row) => row.id === value);
+    const existingData = form.getFieldValue(data.name);
+
+    if (existingData?.length && existingData.find((data: NodeDataConnectionToSave) => data.target_id === value)) {
+      message.warning(`THe option is already selected`);
+      return;
+    }
     if (selectedRow) {
       form.setFieldValue(data.name, [
         ...(form.getFieldValue(data.name) || []),
         {
-          source_type_id: selectedRow.project_type_id,
-          source_id: selectedRow.id,
+          target_type_id: selectedRow.project_type_id,
+          target_id: selectedRow.id,
           name: selectedRow.name,
           id: data.id,
         },

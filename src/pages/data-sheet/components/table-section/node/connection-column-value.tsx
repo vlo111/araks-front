@@ -20,9 +20,9 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
   return (
     <div id="custom-popup-container">
       <GridConnectionPopover
-        overlayStyle={{ padding: '0 16px', width: '100%' }}
+        overlayStyle={{ padding: '0 16px', width: '100%', zIndex: '5' }}
         content={
-          <div style={{ margin: '16px' }}>
+          <div>
             <VerticalSpace>
               {filteredData.map((connection) => (
                 <GridConnectionButton
@@ -33,7 +33,7 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
                   block
                   icon={<Connection />}
                 >
-                  {connection.nodes.nodeType.name}
+                  {connection.nodes.name}
                 </GridConnectionButton>
               ))}
             </VerticalSpace>
@@ -41,10 +41,10 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
         }
         color={`${row.nodeType.color}20`}
         getPopupContainer={getPopupContainer}
-        align={{ offset: [0, -10] }}
+        align={{ offset: [0, 0] }}
       >
         <GridConnectionButton backgroundColor={row.nodeType.color} block icon={<Connection />} size="small">
-          {`Connection (${filteredData.length})`}
+          {`${filteredData[0].nodes.nodeType.name} (${filteredData.length})`}
         </GridConnectionButton>
       </GridConnectionPopover>
     </div>

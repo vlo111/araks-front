@@ -32,4 +32,5 @@ export type PrevDataSheetState = Pick<DataSheetState, 'color' | 'titleText' | 'n
 export type TableStyleBasedOnTab = {
   isCheckable?: boolean;
   noColors?: boolean;
+  hideConnection?: boolean;
 };

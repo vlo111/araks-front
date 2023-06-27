@@ -33,7 +33,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
   }, [form, nodeTypeId, isConnectionType]);
 
   useEffect(() => {
-    if (target === source && inverse) {
+    if (target !== source && inverse) {
       form.setFieldValue('inverse', false);
     }
   }, [form, source, target, inverse]);
@@ -68,7 +68,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
             />
           </FormItem>
           <FormItem name="inverse" valuePropName="checked" initialValue={false}>
-            <Checkbox disabled={target === source}>
+            <Checkbox disabled={target !== source}>
               <Space>
                 Inverse
                 <Tooltip title="Useful information" placement="right">
