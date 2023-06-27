@@ -10,7 +10,7 @@ import { AddNewConnection } from './connection-types/add-new-connection';
 import { TableStyleBasedOnTab } from '../types';
 import { AddAction } from 'components/actions/add';
 
-export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleBasedOnTab) => {
+export const TabTables = ({ isCheckable = false, noColors = false, hideConnection = false }: TableStyleBasedOnTab) => {
   const { startAddType, allTypeSelected } = useDataSheetWrapper();
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
@@ -39,19 +39,23 @@ export const TabTables = ({ isCheckable = false, noColors = false }: TableStyleB
             <AddAction onClick={(event) => handleExtraClick(event, startAddType)} helpText="Add Type" />
           ),
         },
-        {
-          header: <ConnectionHeader setSearchVisible={setSearchConnectionVisible} />,
-          key: '2',
-          children: (
-            <ConnectionTypes
-              isCheckable={isCheckable}
-              noColors={noColors}
-              setSearchVisible={setSearchConnectionVisible}
-              searchVisible={searchConnectionVisible}
-            />
-          ),
-          extra: !allTypeSelected && <AddNewConnection />,
-        },
+        ...(!hideConnection
+          ? [
+              {
+                header: <ConnectionHeader setSearchVisible={setSearchConnectionVisible} />,
+                key: '2',
+                children: (
+                  <ConnectionTypes
+                    isCheckable={isCheckable}
+                    noColors={noColors}
+                    setSearchVisible={setSearchConnectionVisible}
+                    searchVisible={searchConnectionVisible}
+                  />
+                ),
+                extra: !allTypeSelected && <AddNewConnection />,
+              },
+            ]
+          : []),
       ]}
     />
   );

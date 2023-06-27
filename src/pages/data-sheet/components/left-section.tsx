@@ -42,7 +42,7 @@ export const LeftSection = () => {
             </>
           ) : (
             <>
-              <TabTables isCheckable noColors />
+              <TabTables isCheckable noColors hideConnection />
             </>
           ),
       }))}
