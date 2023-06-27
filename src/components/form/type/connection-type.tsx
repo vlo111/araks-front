@@ -73,7 +73,7 @@ export const ConnectionType = ({ data }: Props) => {
     const selectedRow = options?.find((row) => row.id === value);
     const existingData = form.getFieldValue(data.name);
 
-    if (existingData.length && existingData.find((data: NodeDataConnectionToSave) => data.target_id === value)) {
+    if (existingData?.length && existingData.find((data: NodeDataConnectionToSave) => data.target_id === value)) {
       message.warning(`THe option is already selected`);
       return;
     }
