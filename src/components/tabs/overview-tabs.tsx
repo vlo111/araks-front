@@ -11,7 +11,7 @@ import { DataSheetWrapper } from 'components/layouts/components/data-sheet/wrapp
 import { SchemaWrapper } from 'components/layouts/components/schema/wrapper';
 import { useOverview } from 'context/overview-context';
 import { useGetProject } from 'api/projects/use-get-project';
-import { VisualisationWrapper } from "../layouts/components/visualisation/wrapper";
+import { VisualisationWrapper } from '../layouts/components/visualisation/wrapper';
 
 const Tabs = styled(TabsComponent)`
   .ant-tabs-nav-wrap {
@@ -121,6 +121,7 @@ export const OverviewTabs = () => {
       }}
       items={items.map((item) => ({
         ...item,
+        disabled: !params.id,
         children: (
           <div className="site-layout-content">
             {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
