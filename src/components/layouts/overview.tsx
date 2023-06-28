@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Layout as LayoutComponent } from 'antd';
 import { Navigate } from 'react-router-dom';
 
-import { PATHS } from 'helpers/constants';
+import { PATHS, screenSize } from 'helpers/constants';
 import { useAuth } from 'context/auth-context';
 import { HeaderSearch } from './components/header-search';
 import { Logo } from 'components/logo';
@@ -20,10 +20,14 @@ const { Header: HeaderComponent, Content: ContentComponent } = LayoutComponent;
 const Header = styled(HeaderComponent)`
   && {
     background: transparent;
-    padding: 32px 32px 15px;
+    padding: 12px;
+    @media (min-width: ${screenSize.xxl}) {
+      padding: 32px 32px 15px;
+    }
     height: 88px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 `;
 
@@ -41,7 +45,7 @@ export const Overview = () => {
   return (
     <Layout className="layout">
       <Header>
-        <Logo />
+        <Logo margin={screenSize.xxl ? '0' : '15px 0'} />
         <HeaderSearch />
       </Header>
       <Content>

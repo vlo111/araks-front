@@ -16,26 +16,33 @@ const initPageData: SearchPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DE
 
 export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
   const [pageData] = useState(initPageData);
+  const [initalRequest, setStartInitialRequest] = useState(false);
 
   const [options, setOptions] = useState<ConnectionSourcesSearchResult[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
+    initalRequest && setStartInitialRequest(false);
   };
   const [debouncedSearchValue] = useDebounce(searchValue, 500);
 
-  useGetConnectionSourceSearch({ ...pageData, search: debouncedSearchValue }, targetId, {
-    enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 2),
-    onSuccess: (data) => {
-      setOptions(data.rows);
-    },
-  });
+  useGetConnectionSourceSearch(
+    { ...pageData, search: debouncedSearchValue, ...(initalRequest ? { size: 5 } : {}) },
+    targetId,
+    {
+      enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 2) || initalRequest,
+      onSuccess: (data) => {
+        setOptions(data.rows);
+      },
+    }
+  );
 
   const handleSelectAction = (value: string) => {
     handleSelect(value, options);
     setSearchValue('');
     setOptions([]);
+    initalRequest && setStartInitialRequest(false);
   };
 
   return (
@@ -47,7 +54,10 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
       onSelect={handleSelectAction}
       notFoundContent="No Connection data found"
     >
-      <Input />
+      <Input
+        onFocus={() => !options.length && !debouncedSearchValue && setStartInitialRequest(true)}
+        placeholder="Search"
+      />
     </AutoComplete>
   );
 };

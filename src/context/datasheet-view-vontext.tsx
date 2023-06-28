@@ -151,10 +151,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
 
     const dataToSubmitEdges = data
       ?.map((item) => {
-        // eslint-disable-next-line no-console
-        console.log('item, nodesData', nodeData);
-        // eslint-disable-next-line no-console
-        console.log('item, values', values);
         return item.ref_property_type_id === PropertyTypes.Connection
           ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
               id: itemConn.rowId,

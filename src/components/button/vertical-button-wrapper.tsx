@@ -1,4 +1,5 @@
 import { ButtonProps, Button } from 'antd';
+import { screenSize } from 'helpers/constants';
 import styled, { css } from 'styled-components';
 
 type WrapperProps = ButtonProps & {
@@ -6,16 +7,31 @@ type WrapperProps = ButtonProps & {
   dataSheetTableSize: number;
   wrapperWidth?: number;
 };
+
 export const VerticalButtonWrapper = styled(
   ({ rowsCount, dataSheetTableSize, wrapperWidth, ...props }: WrapperProps) => <Button {...props} />
 )`
   & {
     height: 100%;
-    width: ${({ wrapperWidth }) => wrapperWidth ?? 64}px;
+    @media (min-width: ${screenSize.xxl}) {
+      width: ${({ wrapperWidth }) => wrapperWidth ?? 64}px;
+    }
+    width: ${({ wrapperWidth }) => wrapperWidth ?? 40}px;
     z-index: 5;
     position: absolute;
+    @media (min-width: ${screenSize.xxl}) {
+      ${(props) =>
+        props.rowsCount > props.dataSheetTableSize - 64
+          ? css`
+          right 0;
+        `
+          : css`
+              left: ${props.rowsCount}px;
+            `}
+    }
+
     ${(props) =>
-      props.rowsCount > props.dataSheetTableSize - 64
+      props.rowsCount > props.dataSheetTableSize - 40
         ? css`
         right 0;
       `

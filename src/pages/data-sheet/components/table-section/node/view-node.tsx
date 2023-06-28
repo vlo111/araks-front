@@ -3,7 +3,7 @@ import { GridConnectionButton } from 'components/button';
 
 import { Text } from 'components/typography';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
-import { COLORS } from 'helpers/constants';
+import { centerImageStyle, COLORS } from 'helpers/constants';
 import { useMemo } from 'react';
 import { VerticalSpace } from './../../../../../components/space/vertical-space';
 import { getRowData, groupedData } from './utils';
@@ -19,7 +19,12 @@ export const VIewNode = () => {
   return (
     <VerticalSpace>
       {selectedView?.default_image && (
-        <Image src={selectedView?.default_image} width={161} height={127} style={{ borderRadius: '4px' }} />
+        <Image
+          src={selectedView?.default_image}
+          width={161}
+          height={127}
+          style={{ borderRadius: '4px', ...centerImageStyle }}
+        />
       )}
       <VerticalSpace>
         <Text color={COLORS.PRIMARY.BLUE}>name</Text>

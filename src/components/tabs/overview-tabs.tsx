@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Tabs as TabsComponent } from 'antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { PATHS } from 'helpers/constants';
+import { PATHS, screenSize } from 'helpers/constants';
 import { stripTrailingSlash } from 'helpers/utils';
 import { ProjectBreadcrumb } from 'components/breadcrumb/project-breadcrumb';
 import { OverviewWrapper } from 'components/layouts/components/overview/wrapper';
@@ -28,7 +28,10 @@ const Tabs = styled(TabsComponent)`
     }
 
     .ant-tabs-tab {
-      height: 64px;
+      @media (min-width: ${screenSize.xxl}) {
+        height: 64px;
+      }
+      height: 40px;
 
       &:not(.ant-tabs-tab-active) {
         border: none;
