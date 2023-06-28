@@ -1,5 +1,5 @@
 import { Graph } from '@antv/g6';
-import { IIsOpen, IOpenNodeState } from "./reducer/types";
+import { IOpenNodeCreate, IOpenNodeState } from "./reducer/types";
 import { ProjectEdgeResponse } from "types/project-edge";
 import { Nodes } from "api/visualisation/use-get-nodes";
 
@@ -9,7 +9,7 @@ export type VisualisationReducerSetState = {
   setEdges: (nodes: ProjectEdgeResponse[]) => void;
   startOpenNode: (node?: IOpenNodeState) => void;
   finishOpenNode: VoidFunction;
-  startOpenNodeCreate: (item?: IIsOpen) => void;
+  startOpenNodeCreate: (item?: IOpenNodeCreate) => void;
   finishOpenNodeCreate: VoidFunction;
 };
 
@@ -18,7 +18,7 @@ export type VisualisationReducerState = {
   nodes: Nodes;
   edges: ProjectEdgeResponse[];
   openNode: IOpenNodeState;
-  openNodeCreate: IIsOpen
+  openNodeCreate: IOpenNodeCreate
 };
 
 export interface VisualisationContextType extends VisualisationReducerSetState, VisualisationReducerState {}

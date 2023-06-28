@@ -19,8 +19,26 @@ import { Button } from "components/button";
 
 export const NodeEdit: React.FC = () => {
   const [form] = Form.useForm();
+  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
 
-  const { mutate } = useManageNodes();
+  const { mutate } = useManageNodes({
+    onSuccess: ({ data }) => {
+      const node = {
+        id: data.id,
+        label: data.name as unknown as string,
+        size: 60,
+        x: openNodeCreate.x,
+        y: openNodeCreate.y,
+        style: {
+          lineWidth: 10,
+          fill: 'white',
+          stroke: nodes?.find((n) => n.id === parent_id)?.color,
+        },
+      };
+
+      graph.addItem('node', node);
+    }
+  });
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
 
@@ -33,8 +51,6 @@ export const NodeEdit: React.FC = () => {
   });
 
   const { id } = useParams();
-
-  const { openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
 
@@ -78,6 +94,7 @@ export const NodeEdit: React.FC = () => {
       project_type_id: parent_id || '',
     } as NodeDataSubmit);
 
+    form.resetFields()
     finishOpenNodeCreate()
   };
 

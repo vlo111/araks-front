@@ -50,6 +50,12 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
 
     const isNode = evt?.item?.getType() === 'node';
 
+    startOpenNodeCreate({
+      isOpened: false,
+      x: evt?.x ?? 0,
+      y: evt?.y ?? 0
+    });
+
     const nodeContext = `<div class="menu">
           <span>Focus on node</span>
           <span>Expand</span>
@@ -76,9 +82,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
         });
       } else if (item?._cfg?.type === 'edge') {
       } else {
-        startOpenNodeCreate({
-          isOpened: true
-        });
+        startOpenNodeCreate({ isOpened: true });
       }
     },
     offsetX: 16 + 10,
@@ -98,6 +102,15 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     defaultEdge,
     defaultNode,
     plugins: [contextMenu],
+    layout: {
+      type: "concentric",
+      maxLevelDiff: 0.5,
+      sortBy: 'degree',
+      edgeLength: 10,
+      preventOverlap: true,
+      nodeSize: 80,
+      center: [window.innerWidth / 2, window.innerHeight / 2],
+    },
   });
 
   graph.on('dblclick', (evt) => {

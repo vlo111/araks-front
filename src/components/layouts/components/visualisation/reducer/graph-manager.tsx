@@ -63,7 +63,13 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     case GraphAction.OPEN_NODE_FINISH:
       return end(ITEM.OPEN_NODE);
     case GraphAction.OPEN_CREATE_NODE_START:
-      return start(ITEM.OPEN_CREATE_NODE);
+      return {
+        ...state,
+        [ITEM.OPEN_CREATE_NODE]: {
+          ...state[ITEM.OPEN_CREATE_NODE],
+          ...payload,
+        },
+      };
     case GraphAction.OPEN_CREATE_NODE_FINISH:
       return end(ITEM.OPEN_CREATE_NODE);
     default:
