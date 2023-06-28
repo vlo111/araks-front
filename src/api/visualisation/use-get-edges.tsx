@@ -4,7 +4,7 @@ import { ProjectEdgeResponse } from 'types/project-edge';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 
-export const GET_EDGES = '/nodes/list/:project_id';
+export const GET_EDGES = '/edges/list/:project_id';
 
 type GetProjectParam = {
   id?: string;

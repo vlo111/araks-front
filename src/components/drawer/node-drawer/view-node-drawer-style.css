@@ -1,0 +1,16 @@
+.add-node-drawer {
+    overflow: hidden;
+}
+
+.add-node-drawer .ant-drawer-header {
+    box-shadow: 0px 10px 10px 0px rgba(111, 111, 111, 0.10);
+}
+
+.add-node-drawer .ant-drawer-header-title {
+    flex-direction: row-reverse;
+}
+
+.add-node-drawer .ant-drawer-footer {
+    box-shadow: 0px -10px 10px 0px rgba(111, 111, 111, 0.10);
+    height: 4rem;
+}

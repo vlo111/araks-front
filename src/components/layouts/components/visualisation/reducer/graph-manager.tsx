@@ -9,6 +9,7 @@ export enum ITEM {
   NODES = 'nodes',
   SET_EDGES = 'edges',
   OPEN_NODE = 'openNode',
+  OPEN_CREATE_NODE = 'openNodeCreate',
 }
 
 export enum GraphAction {
@@ -17,6 +18,8 @@ export enum GraphAction {
   SET_EDGES = 'SET_EDGES',
   OPEN_NODE_START = 'OPEN_NODE_START',
   OPEN_NODE_FINISH = 'OPEN_NODE_FINISH',
+  OPEN_CREATE_NODE_START = 'OPEN_CREATE_NODE_START',
+  OPEN_CREATE_NODE_FINISH = 'OPEN_CREATE_NODE_FINISH',
 }
 
 export const graphInitialState: GraphState = {
@@ -59,6 +62,10 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       return start(ITEM.OPEN_NODE);
     case GraphAction.OPEN_NODE_FINISH:
       return end(ITEM.OPEN_NODE);
+    case GraphAction.OPEN_CREATE_NODE_START:
+      return start(ITEM.OPEN_CREATE_NODE);
+    case GraphAction.OPEN_CREATE_NODE_FINISH:
+      return end(ITEM.OPEN_CREATE_NODE);
     default:
       return state;
   }
