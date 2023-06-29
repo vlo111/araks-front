@@ -11,7 +11,7 @@ import {
 } from "api/project-node-type-property/use-get-project-node-type-properties";
 import { AddNodeForm } from "components/form/add-node-form";
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from "api/types";
-import { NodeBody, NodeDataSubmit } from "types/node";
+import { NodeBody, NodeDataSubmit, NodePropertiesValues } from "types/node";
 import { PropertyTypes } from "components/form/property/types";
 import { setNodeDataValue } from "../../../data-sheet/components/table-section/node/utils";
 import { useManageNodes } from "api/node/use-manage-node";
@@ -23,16 +23,18 @@ export const NodeEdit: React.FC = () => {
 
   const { mutate } = useManageNodes({
     onSuccess: ({ data }) => {
+
+      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }, default_image: string };
+
       const node = {
-        id: data.id,
-        label: data.name as unknown as string,
-        size: 60,
+        id: nodeData.id,
+        label: nodeData.name as unknown as string,
+        img: nodeData.default_image,
+        type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,
         style: {
-          lineWidth: 10,
-          fill: 'white',
-          stroke: nodes?.find((n) => n.id === parent_id)?.color,
+          stroke: nodeData.nodeType?.color ?? '',
         },
       };
 

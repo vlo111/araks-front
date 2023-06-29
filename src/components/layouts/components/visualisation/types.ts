@@ -30,8 +30,7 @@ export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextTyp
 export type Node = {
   id: string;
   label: string;
-  size: number;
-  style: { lineWidth: number; fill: string; stroke: string };
+  style: { stroke: string };
 };
 
 export type Edge = { id: string | undefined; source: string; target: string; label: string };

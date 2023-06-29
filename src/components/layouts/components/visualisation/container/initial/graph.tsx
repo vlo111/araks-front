@@ -27,6 +27,21 @@ const defaultEdge = {
 };
 
 const defaultNode = {
+  style: {
+    lineWidth: 10,
+    fill: 'white',
+  },
+  clipCfg: {
+    show: true,
+    type: 'circle',
+    r: 30,
+    rx: 10,
+    ry: 15,
+    width: 15,
+    height: 15,
+    x: 0,
+    y: 0
+  },
   labelCfg: {
     style: {
       fontSize: 16,
@@ -41,6 +56,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
+  size: 60
 };
 
 export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCreate }) => {

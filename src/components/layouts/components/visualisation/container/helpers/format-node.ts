@@ -11,12 +11,11 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
     nodes: nodesList.map((n) => ({
       id: n.id,
       label: n.name,
-      size: 60,
       style: {
-        lineWidth: 10,
-        fill: 'white',
         stroke: n.nodeType?.color ?? '',
       },
+      img: n.default_image,
+      type: n.default_image ? 'image' : 'circle',
     })),
     edges: edgeList.map((e) => ({
       id: e.id,
