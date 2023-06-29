@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 // import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
-import { COLORS } from 'helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 
 type WrapperProps = ButtonProps & {
   position: number;
@@ -13,7 +13,10 @@ type WrapperProps = ButtonProps & {
 
 export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button {...props} />)`
   width: 100%;
-  height: 64px;
+  @media (min-width: ${screenSize.xxl}) {
+    height: 64px;
+  }
+  height: 40px;
   z-index: 4;
   position: absolute;
   top: ${(props) => `${props.position}px`};

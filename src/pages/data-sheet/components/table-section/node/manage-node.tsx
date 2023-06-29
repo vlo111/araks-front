@@ -13,9 +13,10 @@ import { setNodeDataValue } from './utils';
 
 type Props = {
   tableHead: number;
+  tableHeight: undefined | number;
 };
 
-export const ManageNode = ({ tableHead }: Props) => {
+export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
 
@@ -100,7 +101,7 @@ export const ManageNode = ({ tableHead }: Props) => {
         onClose={onClose}
         open={open}
         getContainer={false}
-        contentWrapperStyle={{ marginRight: '135px', marginLeft: '135px', height: '100%' }}
+        contentWrapperStyle={{ marginRight: '135px', marginLeft: '135px', height: `${tableHeight}px` }}
         footer={
           <Row gutter={16} justify="center">
             <Col span={4}>

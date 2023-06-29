@@ -81,3 +81,13 @@ export const VALIDATE_MESSAGES = {
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_NUMBER = 1;
+
+export const centerImageStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+};

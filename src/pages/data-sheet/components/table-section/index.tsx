@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Table } from 'antd';
 import { useColumns } from './use-columns';
 import { DataType } from './types';
@@ -30,6 +30,7 @@ export const TableSection = () => {
   const [columnWidth, setColumnWidth] = useState(0);
   const [tableHead, setTableHead] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0));
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const { nodeTypeId } = useDataSheetWrapper();
   const { rowsData: data, count: pageCount } = useGetTypeNodes(pageData, nodeTypeId, {
@@ -92,11 +93,12 @@ export const TableSection = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <ManageNode tableHead={tableHead} />
+      <ManageNode tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
       <div
         id="container"
         className="content-datasheet"
         style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
+        ref={tableRef}
       >
         <VerticalButton columnWidth={columnWidth} />
         <ViewDatasheetProvider>

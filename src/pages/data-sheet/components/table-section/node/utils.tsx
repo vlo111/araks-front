@@ -9,7 +9,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { LongTitle, Text } from 'components/typography';
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
-import { COLORS } from 'helpers/constants';
+import { centerImageStyle, COLORS } from 'helpers/constants';
 import {
   NodeBody,
   NodeDataResponse,
@@ -198,7 +198,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
 
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
-      return <Image src={text} width={161} height={127} style={{ borderRadius: '4px' }} />;
+      return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
     case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
