@@ -15,6 +15,7 @@ import { AddEdgeType } from 'components/layouts/components/schema/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeSelect } from 'components/select';
+import { Rule } from "antd/es/form";
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -122,9 +123,23 @@ export const AddSchemaEdgeForm: React.FC = () => {
             name="name"
             label="Connection name"
             rules={[
-              { required: true, message: 'Edge name is required' },
+              {
+                required: true,
+                message: 'Connection name is required',
+              },
               { min: 3, message: 'The minimum length for this field is 3 characters' },
               { max: 30, message: 'The maximum length for this field is 30 characters' },
+              {
+                validator: async (_: Rule, value: string | undefined) => {
+                  if (value !== undefined) {
+                    const regex = /^[a-z0-9_]+$/;
+                    if (!regex.test(value)) {
+                      return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
+                    }
+                  }
+                  return Promise.resolve();
+                },
+              },
             ]}
           >
             <FormInput placeholder="Connection name" />
