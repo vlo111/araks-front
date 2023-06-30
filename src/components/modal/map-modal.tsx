@@ -108,7 +108,7 @@ export const MapModal = ({
         if (map) {
           map.fitBounds(bounds);
           // Adjust zoom level
-          const zoom = 12; // Set your desired zoom level here
+          const zoom = 18;
           map.setZoom(zoom);
         }
       }
