@@ -3,7 +3,7 @@ import { useGetProject } from 'api/projects/use-get-project';
 import { Input as InputComponent, TextArea } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { FormItem } from 'components/form/form-item';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AddColorIcon } from './components/add-color-icon';
 import { ProjectType } from './components/project-type';
@@ -61,6 +61,8 @@ type Props = {
 
 export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
   const params = useParams();
+  const location = useLocation();
+
   const { user: logedInUser } = useAuth();
   const [form] = Form.useForm();
 
@@ -76,6 +78,7 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
       ...values,
       color: values.color ?? defaultValues.color,
       icon: values.icon ?? defaultValues.icon,
+      folder_id: location.state.folderId,
     });
   };
 

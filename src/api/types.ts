@@ -39,6 +39,7 @@ export type CreateOverviewFormData = {
   privacy: string;
   color: string;
   icon: string;
+  folder_id: string;
 };
 
 export type ProjectFullInfo = {

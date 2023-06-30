@@ -60,13 +60,21 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
+  // eslint-disable-next-line no-console
+  console.log('folder', folder);
+
   return (
     <Spin spinning={isInitialLoading}>
       <TitleSeparator name={listTitle} paginationProps={paginationProps} />
       <Row {...(dataToDraw.row as RowProps)} justify="start">
         {showCreate && (
           <Col {...(dataToDraw.col as ColProps)}>
-            <CreateNewProjectButton {...dataToDraw.newProject} onClick={() => navigate(PATHS.PROJECT_CREATE)} />
+            <CreateNewProjectButton
+              {...dataToDraw.newProject}
+              onClick={() =>
+                navigate(PATHS.PROJECT_CREATE, { state: { folderId: folder?.id, folderTitle: folder?.title } })
+              }
+            />
           </Col>
         )}
         {data?.rows?.map((item: ProjectListResponse) => (
