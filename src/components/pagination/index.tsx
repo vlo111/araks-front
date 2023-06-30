@@ -9,10 +9,6 @@ const PaginationStyle = styled(Pagination)`
     justify-content: end;
     padding: 24px;
 
-    .ant-pagination-item {
-      display: none;
-    }
-
     .ant-pagination-prev,
     .ant-pagination-next {
       width: 32px;

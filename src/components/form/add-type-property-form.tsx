@@ -169,7 +169,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           name="ref_property_type_id"
           label="Data type"
           rules={[{ required: true, message: 'Node property data type is required' }]}
-          hidden={isConnectionType === true}
+          hidden={isConnectionType === true || form.getFieldValue('default_property')}
         >
           <PropertyDataTypeSelect />
         </FormItem>
