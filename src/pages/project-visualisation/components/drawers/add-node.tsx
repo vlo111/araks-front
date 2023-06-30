@@ -11,7 +11,7 @@ import {
 } from "api/project-node-type-property/use-get-project-node-type-properties";
 import { AddNodeForm } from "components/form/add-node-form";
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from "api/types";
-import { NodeBody, NodeDataSubmit } from "types/node";
+import { NodeBody, NodeDataSubmit, NodePropertiesValues } from "types/node";
 import { PropertyTypes } from "components/form/property/types";
 import { setNodeDataValue } from "../../../data-sheet/components/table-section/node/utils";
 import { useManageNodes } from "api/node/use-manage-node";
@@ -19,8 +19,28 @@ import { Button } from "components/button";
 
 export const NodeEdit: React.FC = () => {
   const [form] = Form.useForm();
+  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
 
-  const { mutate } = useManageNodes();
+  const { mutate } = useManageNodes({
+    onSuccess: ({ data }) => {
+
+      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }, default_image: string };
+
+      const node = {
+        id: nodeData.id,
+        label: nodeData.name as unknown as string,
+        img: nodeData.default_image,
+        type: nodeData.default_image ? 'image' : 'circle',
+        x: openNodeCreate.x,
+        y: openNodeCreate.y,
+        style: {
+          stroke: nodeData.nodeType?.color ?? '',
+        },
+      };
+
+      graph.addItem('node', node);
+    }
+  });
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
 
@@ -33,8 +53,6 @@ export const NodeEdit: React.FC = () => {
   });
 
   const { id } = useParams();
-
-  const { openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
 
@@ -78,6 +96,7 @@ export const NodeEdit: React.FC = () => {
       project_type_id: parent_id || '',
     } as NodeDataSubmit);
 
+    form.resetFields()
     finishOpenNodeCreate()
   };
 

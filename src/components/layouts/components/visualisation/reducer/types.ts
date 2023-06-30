@@ -19,6 +19,11 @@ export interface IOpenNodeState extends IIsOpen {
   id: string
 }
 
+export interface IOpenNodeCreate extends IIsOpen {
+  x?: number
+  y?: number
+}
+
 export type GraphState = {
   graph?: Graph;
   nodes?: IProjectType
