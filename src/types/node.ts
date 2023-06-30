@@ -45,6 +45,7 @@ export type NodePropertiesValues = {
   nodes_data?: NodeDataTypes;
   nodeTypeProperty: {
     name: string;
+    id: string;
     default_image: boolean;
     default_property: boolean;
     multiple_type: boolean;
@@ -66,6 +67,7 @@ export type NodeEdges = {
   source_type_id: string;
   target_id: string;
   target_type_id: string;
+  project_type_property_type: string;
   nodes: {
     created_at: string;
     default_image: string;

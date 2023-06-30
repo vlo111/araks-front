@@ -50,8 +50,8 @@ export const useColumns = () => {
         ),
       width: item.default_image === true ? 10 : `${item.name} (${item.ref_property_type_id})`.length * 13,
       className: 'node-property-column',
-      dataIndex: item.name,
-      key: item.id,
+      dataIndex: item.default_property || item.default_image ? item.name : item.name + item.id,
+      key: item.name + item.id,
       ...(item.default_property || item.default_image ? { fixed: 'left' } : {}),
     })) || ([] as ColumnsType<DataType>);
 

@@ -41,7 +41,7 @@ export const TableSection = () => {
           (curr: DataType, item: NodePropertiesValues) => {
             return {
               ...curr,
-              [item.nodeTypeProperty.name]: getColumnValue(item, row),
+              [item.nodeTypeProperty.name + item.nodeTypeProperty.id]: getColumnValue(item, row),
             };
           },
           {
@@ -53,7 +53,9 @@ export const TableSection = () => {
         ...row.edges?.reduce((curr: DataType, item) => {
           return {
             ...curr,
-            [item.edgeTypes.name]: <ConnectionColumnValue itemName={item.edgeTypes.name} row={row} />,
+            [item.edgeTypes.name + item.edgeTypes.id]: (
+              <ConnectionColumnValue itemName={item.edgeTypes.name} row={row} />
+            ),
           };
         }, {} as DataType),
       }));
@@ -63,6 +65,10 @@ export const TableSection = () => {
 
   const columns = useColumns();
   const actions = useActions();
+  // eslint-disable-next-line no-console
+  console.log('columns', columns);
+  // eslint-disable-next-line no-console
+  console.log('rowData', rowData);
 
   useEffect(() => {
     if (columns.length) {
