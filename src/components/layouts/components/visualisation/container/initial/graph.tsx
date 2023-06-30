@@ -27,6 +27,21 @@ const defaultEdge = {
 };
 
 const defaultNode = {
+  style: {
+    lineWidth: 10,
+    fill: 'white',
+  },
+  clipCfg: {
+    show: true,
+    type: 'circle',
+    r: 30,
+    rx: 10,
+    ry: 15,
+    width: 15,
+    height: 15,
+    x: 0,
+    y: 0
+  },
   labelCfg: {
     style: {
       fontSize: 16,
@@ -41,6 +56,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
+  size: 60
 };
 
 export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCreate }) => {
@@ -49,6 +65,12 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     const isCanvas = target && target.isCanvas && target.isCanvas();
 
     const isNode = evt?.item?.getType() === 'node';
+
+    startOpenNodeCreate({
+      isOpened: false,
+      x: evt?.x ?? 0,
+      y: evt?.y ?? 0
+    });
 
     const nodeContext = `<div class="menu">
           <span>Focus on node</span>
@@ -76,9 +98,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
         });
       } else if (item?._cfg?.type === 'edge') {
       } else {
-        startOpenNodeCreate({
-          isOpened: true
-        });
+        startOpenNodeCreate({ isOpened: true });
       }
     },
     offsetX: 16 + 10,
@@ -98,6 +118,15 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     defaultEdge,
     defaultNode,
     plugins: [contextMenu],
+    layout: {
+      type: "concentric",
+      maxLevelDiff: 0.5,
+      sortBy: 'degree',
+      edgeLength: 10,
+      preventOverlap: true,
+      nodeSize: 80,
+      center: [window.innerWidth / 2, window.innerHeight / 2],
+    },
   });
 
   graph.on('dblclick', (evt) => {
