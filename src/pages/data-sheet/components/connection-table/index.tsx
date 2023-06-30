@@ -4,14 +4,34 @@ import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
 import { useActions } from './table-actions';
 import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
+import { useGetEdgesNodeData } from 'api/edges/use-get-edges-node-data';
+import { PageParameters } from 'api/types';
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { DataType } from '../table-section/types';
 
-const dataSource = [...Array(20)].map((_, i) => ({
-  key: i,
-  label: '',
-}));
+const dataSource = (length: number): DataType[] =>
+  [...Array(20 - length)].map((_, i) => ({
+    key: i,
+    column: 'operation',
+  }));
+
+const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 export const ConnectionTableSection = () => {
+  const [pageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
+  const [rowData, setRowData] = useState<DataType[]>(dataSource(0));
+
+  const { nodeTypeId } = useDataSheetWrapper();
+
+  useGetEdgesNodeData(pageData, nodeTypeId, {
+    enabled: !!nodeTypeId,
+    onSuccess: (data) => {
+      const rows = data.map((row) => ({ target: row.target.name, source: row.source.name }));
+      setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
+    },
+  });
   const columns = useColumns();
   const actions = useActions();
 
@@ -34,8 +54,7 @@ export const ConnectionTableSection = () => {
       <ConnectionTable
         id="connection-table"
         size="large"
-        bordered
-        dataSource={dataSource}
+        dataSource={rowData}
         columns={[...columns, ...actions]}
         pagination={false}
         scroll={{ x: 'max-content' }}

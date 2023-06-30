@@ -65,10 +65,6 @@ export const TableSection = () => {
 
   const columns = useColumns();
   const actions = useActions();
-  // eslint-disable-next-line no-console
-  console.log('columns', columns);
-  // eslint-disable-next-line no-console
-  console.log('rowData', rowData);
 
   useEffect(() => {
     if (columns.length) {

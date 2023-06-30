@@ -33,11 +33,13 @@ const StyledCustomColumn = styled.div`
   }
 
   .left {
-    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(139deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
+    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.1);
   }
 
   .right {
-    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1); */
+    background: linear-gradient(139deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
   }
 `;
 
@@ -66,6 +68,16 @@ export const useColumns = () => {
             <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
             <div className="text">{data?.source.name}</div>
           </VerticalSpace>
+        </StyledCustomColumn>
+      ),
+      dataIndex: 'target',
+      className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
+      key: 'target',
+      width: '150px',
+    },
+    {
+      title: () => (
+        <StyledCustomColumn>
           <div className="center">
             {data?.inverse === true ? (
               <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
@@ -73,17 +85,27 @@ export const useColumns = () => {
               <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
             )}
           </div>
+        </StyledCustomColumn>
+      ),
+      dataIndex: 'connection-type',
+      className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
+      key: 'connection-type',
+      width: '50px',
+    },
+    {
+      title: () => (
+        <StyledCustomColumn>
           <VerticalSpace className="right">
             <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
             <div className="text">{data?.target.name}</div>
           </VerticalSpace>
         </StyledCustomColumn>
       ),
-      dataIndex: 'label',
+      dataIndex: 'source',
       className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
       key: 'label',
       fixed: true,
-      width: '550px',
+      width: '150px',
     },
     ...(data?.properties
       ? data.properties?.map((item) => {
