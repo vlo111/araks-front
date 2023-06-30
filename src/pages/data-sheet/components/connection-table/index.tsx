@@ -9,6 +9,7 @@ import { PageParameters } from 'api/types';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { DataType } from '../table-section/types';
+import { NodePagination } from 'components/pagination';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -19,15 +20,15 @@ const dataSource = (length: number): DataType[] =>
 const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 export const ConnectionTableSection = () => {
-  const [pageData] = useState(initPageData);
+  const [pageData, setPageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0));
 
   const { nodeTypeId } = useDataSheetWrapper();
 
-  useGetEdgesNodeData(pageData, nodeTypeId, {
+  const { count: pageCount } = useGetEdgesNodeData(pageData, nodeTypeId, {
     enabled: !!nodeTypeId,
-    onSuccess: (data) => {
+    onSuccess: ({ rows: data }) => {
       const rows = data.map((row) => ({ target: row.target.name, source: row.source.name }));
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },
@@ -59,6 +60,24 @@ export const ConnectionTableSection = () => {
         pagination={false}
         scroll={{ x: 'max-content' }}
       />
+      {pageCount ? (
+        <NodePagination
+          total={pageCount}
+          defaultPageSize={initPageData.size}
+          pageSize={pageData.size}
+          defaultCurrent={initPageData.page}
+          current={pageData.page}
+          onChange={(page) => {
+            setPageData((prev) => ({ page, size: prev.size }));
+          }}
+          showSizeChanger
+          onShowSizeChange={(current, size) => {
+            setPageData({ page: current, size: size });
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

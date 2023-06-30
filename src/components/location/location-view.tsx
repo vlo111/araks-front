@@ -1,6 +1,6 @@
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { Button, Modal } from 'antd';
-import { MapView } from 'components/map';
+import { Button } from 'antd';
+import { MapModal } from 'components/modal/map-modal';
 import { SelectedLocation } from 'components/modal/types';
 import { useState } from 'react';
 import { ResponseLocationType } from 'types/node';
@@ -17,16 +17,20 @@ export const LocationView = ({ text, location }: Props) => {
       <Button type="text" onClick={() => setVisible(true)} icon={<EnvironmentOutlined />}>
         <span>{text}</span>
       </Button>
-      <Modal title="Selected Location" open={visible} onCancel={() => setVisible(false)} destroyOnClose footer={false}>
-        <MapView
-          defaultCenter={
-            {
-              lat: location?.location.latitude,
-              lng: location?.location.longitude,
-            } as SelectedLocation
-          }
-        />
-      </Modal>
+      <MapModal
+        visible={visible}
+        address={text}
+        hideFooter
+        onCancel={() => {
+          setVisible(false);
+        }}
+        defaultCenter={
+          {
+            lat: location?.location.latitude,
+            lng: location?.location.longitude,
+          } as SelectedLocation
+        }
+      />
     </>
   );
 };

@@ -1,18 +1,18 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { PageParameters } from 'api/types';
 import { useParams } from 'react-router-dom';
-import { ETypeEdgeData } from 'types/edges';
+import { ETypeEdgeData, ETypeEdgeDataResponse } from 'types/edges';
 import client from '../client';
 import { URL_EDGES_NODE_DATA } from './constants';
 
 type ReturnData = {
-  data: ETypeEdgeData[];
+  data: ETypeEdgeDataResponse;
 };
 
-type Options = UseQueryOptions<ReturnData, Error, ETypeEdgeData[]>;
-type Result = UseQueryResult<ETypeEdgeData[]> & {
-  // rowsData: NodeDataResponse[];
-  // count: number;
+type Options = UseQueryOptions<ReturnData, Error, ETypeEdgeDataResponse>;
+type Result = UseQueryResult<ETypeEdgeDataResponse> & {
+  rowsData: ETypeEdgeData[];
+  count: number;
 };
 
 export const useGetEdgesNodeData = (queryParams: PageParameters, typeId?: string, options?: Options): Result => {
@@ -27,8 +27,8 @@ export const useGetEdgesNodeData = (queryParams: PageParameters, typeId?: string
 
   return {
     ...result,
-    data: (isSuccess ? data : []) as ETypeEdgeData[],
-    // rowsData: (isSuccess ? data.rows : []) as NodeDataResponse[],
-    // count: (isSuccess ? data.count : 0) as number,
+    data: (isSuccess ? data : {}) as ETypeEdgeDataResponse,
+    rowsData: (isSuccess ? data.rows : []) as ETypeEdgeData[],
+    count: (isSuccess ? data.count : 0) as number,
   } as Result;
 };

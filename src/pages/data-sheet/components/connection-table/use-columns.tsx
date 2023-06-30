@@ -17,7 +17,7 @@ const StyledCustomColumn = styled.div`
   padding: 0;
 
   .text {
-    text-align: center;
+    padding-left: 16px;
   }
 
   .center {

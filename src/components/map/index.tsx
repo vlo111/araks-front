@@ -10,6 +10,7 @@ interface MapProps {
   defaultCenter?: SelectedLocation;
 }
 
+/** @deprecated not used, use the MapModal component  */
 export const MapView = ({ defaultCenter }: MapProps) => {
   const [center, setCenter] = useState(defaultCenter);
 

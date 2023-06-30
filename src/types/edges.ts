@@ -16,3 +16,8 @@ export type ETypeEdgeData = {
   source: EEdgeType;
   target: EEdgeType;
 };
+
+export type ETypeEdgeDataResponse = {
+  rows: ETypeEdgeData[];
+  count: number;
+};
