@@ -10,11 +10,12 @@ import { Input } from '.';
 type Props = {
   handleSelect: (value: string, options: ConnectionSourcesSearchResult[]) => void;
   targetId: string;
+  placeholder?: string;
 };
 
 const initPageData: SearchPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
-export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
+export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = 'Search' }: Props) => {
   const [pageData] = useState(initPageData);
   const [initalRequest, setStartInitialRequest] = useState(false);
 
@@ -53,10 +54,11 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId }: Props) => {
       open={!!options.length}
       onSelect={handleSelectAction}
       notFoundContent="No Connection data found"
+      style={{ width: '100%' }}
     >
       <Input
         onFocus={() => !options.length && !debouncedSearchValue && setStartInitialRequest(true)}
-        placeholder="Search"
+        placeholder={placeholder}
       />
     </AutoComplete>
   );

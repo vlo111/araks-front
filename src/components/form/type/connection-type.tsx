@@ -1,8 +1,8 @@
-import { Col, Form, message, Row, Space } from 'antd';
+import { Col, message, Row, Space } from 'antd';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
-import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { COLORS } from 'helpers/constants';
 import styled from 'styled-components';
 import { FormItem } from '../form-item';
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
@@ -12,6 +12,7 @@ import useFormInstance from 'antd/es/form/hooks/useFormInstance';
 import { ConnectionSourcesSearchResult } from 'types/node';
 import { CloseOutlined } from '@ant-design/icons';
 import { ConnectionAutocomplete } from 'components/input/connection-autocomplete';
+import { SelectConnectionFormItem } from 'components/form-item/select-connection-form-item';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -118,29 +119,7 @@ export const ConnectionType = ({ data }: Props) => {
         >
           <ConnectionAutocomplete targetId={data.target_id || ''} handleSelect={handleSelect} />
         </StyledFormItem>
-        <Form.List name={data.name}>
-          {(fields, { add, remove }) => (
-            <>
-              <VerticalSpace>
-                {fields.map((field) => (
-                  <ResultFormItem
-                    backgroundColor={data.source?.color}
-                    key={field.name}
-                    style={{ marginBottom: 0 }}
-                    name={[field.name, 'name']}
-                    rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
-                  >
-                    <Input
-                      prefix={<Connection />}
-                      disabled
-                      suffix={<CloseOutlined onClick={() => remove(field.name)} />}
-                    />
-                  </ResultFormItem>
-                ))}
-              </VerticalSpace>
-            </>
-          )}
-        </Form.List>
+        <SelectConnectionFormItem formName={data.name} color={data.source?.color} isRequired={data.required_type} />
       </VerticalSpace>
     </div>
   );

@@ -1,3 +1,5 @@
+import { EdgeType } from 'types/node';
+
 export type GetProjectsParameters = {
   page?: number;
   size?: number;
@@ -117,12 +119,6 @@ export interface IProjectTypeData extends ProjectFullInfo {
   projectsNodeTypes: IProjectType[];
 }
 
-export type SourceTargetProperty = {
-  color: string;
-  id: string;
-  name: string;
-};
-
 export type ProjectTypePropertyReturnData = {
   created_at: string;
   default_property: boolean;
@@ -137,8 +133,8 @@ export type ProjectTypePropertyReturnData = {
   unique_type: boolean;
   updated_at: string;
   user_id: string;
-  source?: SourceTargetProperty;
-  target?: SourceTargetProperty;
+  source?: EdgeType;
+  target?: EdgeType;
   source_attribute_id?: string;
   source_id?: string;
   target_attribute_id?: string;

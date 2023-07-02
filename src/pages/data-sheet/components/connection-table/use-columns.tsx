@@ -1,47 +1,10 @@
-import styled from 'styled-components';
 import { Skeleton } from 'antd';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
-import { VerticalSpace } from 'components/space/vertical-space';
-import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
-import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { ManageConnectionTypeProperty } from '../table-section/type-property/manage-connection-type-property';
-
-const StyledCustomColumn = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: '100%';
-  height: '100%';
-  margin: 0;
-  padding: 0;
-
-  .text {
-    padding-left: 16px;
-  }
-
-  .center {
-    padding: 0 16px;
-    .inverseGradient {
-      stop-color: 'red';
-    }
-  }
-
-  .left,
-  .right {
-    padding-bottom: 16px;
-  }
-
-  .left {
-    background: linear-gradient(139deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
-    box-shadow: 4px 0px 4px 0px rgba(0, 0, 0, 0.1);
-  }
-
-  .right {
-    /* box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1); */
-    background: linear-gradient(139deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
-  }
-`;
+import { Target } from './components/target';
+import { EdgeDirection } from './components/direction';
+import { Source } from './components/source';
 
 export const useColumns = () => {
   const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
@@ -62,48 +25,26 @@ export const useColumns = () => {
 
   const columns = [
     {
-      title: () => (
-        <StyledCustomColumn>
-          <VerticalSpace className="left">
-            <div style={{ height: '9px', backgroundColor: data?.source.color }}></div>
-            <div className="text">{data?.source.name}</div>
-          </VerticalSpace>
-        </StyledCustomColumn>
-      ),
-      dataIndex: 'target',
-      className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
-      key: 'target',
-      width: '150px',
-    },
-    {
-      title: () => (
-        <StyledCustomColumn>
-          <div className="center">
-            {data?.inverse === true ? (
-              <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-            ) : (
-              <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
-            )}
-          </div>
-        </StyledCustomColumn>
-      ),
-      dataIndex: 'connection-type',
-      className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
-      key: 'connection-type',
-      width: '50px',
-    },
-    {
-      title: () => (
-        <StyledCustomColumn>
-          <VerticalSpace className="right">
-            <div style={{ height: '9px', backgroundColor: data?.target.color }}></div>
-            <div className="text">{data?.target.name}</div>
-          </VerticalSpace>
-        </StyledCustomColumn>
-      ),
+      title: () => <Source sourceData={data?.source} />,
       dataIndex: 'source',
       className: 'connection-column connection-first-column', // connection-column -need to set for all columns to calculate width by this
-      key: 'label',
+      key: 'source',
+      width: '150px',
+      fixed: true,
+    },
+    {
+      title: () => <EdgeDirection data={data} />,
+      dataIndex: 'connection-type',
+      className: 'connection-column connection-first-column connection-type', // connection-column -need to set for all columns to calculate width by this
+      key: 'connection-type',
+      width: '50px',
+      fixed: true,
+    },
+    {
+      title: () => <Target dataTarget={data?.target} />,
+      dataIndex: 'target',
+      className: 'connection-column connection-first-column fixed-border', // connection-column -need to set for all columns to calculate width by this
+      key: 'target',
       fixed: true,
       width: '150px',
     },

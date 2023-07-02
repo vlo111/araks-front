@@ -1,3 +1,6 @@
+import { ProjectTypePropertyReturnData } from 'api/types';
+import { EdgeType } from 'types/node';
+
 export type EdgeTypeProperties = {
   id: string;
   multiple_type?: boolean;
@@ -14,15 +17,7 @@ export type EdgeTypePropertiesResponse = {
   source_attribute_id: string;
   inverse: boolean;
   multiple: boolean;
-  target: {
-    id: string;
-    name: string;
-    color: string;
-  };
-  source: {
-    id: string;
-    name: string;
-    color: string;
-  };
-  properties: EdgeTypeProperties[]; //needs to be changed
+  target: EdgeType;
+  source: EdgeType;
+  properties: ProjectTypePropertyReturnData[]; //needs to be changed
 };
