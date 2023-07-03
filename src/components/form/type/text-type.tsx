@@ -38,7 +38,13 @@ export const TextType = ({ data }: Props) => {
                       noStyle
                       name={[field.name]}
                       key={field.key}
-                      rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+                      rules={[
+                        { required: data.required_type, message: VALIDATE_MESSAGES.required },
+                        {
+                          max: data.default_property ? 30 : 80,
+                          message: `The maximum length for this field is ${data.default_property ? 30 : 80} characters`,
+                        },
+                      ]}
                     >
                       <Input />
                     </FormItem>
