@@ -1,7 +1,7 @@
 import { Col, Image, Row, Space } from 'antd';
-import { GridConnectionButton } from 'components/button';
+import { Button, GridConnectionButton } from 'components/button';
 
-import { Text } from 'components/typography';
+import { Text, Title } from 'components/typography';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { centerImageStyle, COLORS } from 'helpers/constants';
 import { useMemo } from 'react';
@@ -10,7 +10,7 @@ import { getRowData, groupedData } from './utils';
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
 
 export const VIewNode = () => {
-  const { state: selectedView } = useViewDatasheet();
+  const { state: selectedView, dispatch } = useViewDatasheet();
   const groupedDataList = useMemo(
     () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
     [selectedView?.edges]
@@ -27,8 +27,8 @@ export const VIewNode = () => {
         />
       )}
       <VerticalSpace>
-        <Text color={COLORS.PRIMARY.BLUE}>name</Text>
-        <Text>{selectedView?.name}</Text>
+        <Text color={COLORS.PRIMARY.BLUE}>Name</Text>
+        <Title level={3}>{selectedView?.name}</Title>
       </VerticalSpace>
       {selectedView?.properties ? (
         selectedView.properties.map((data) => {
@@ -62,9 +62,11 @@ export const VIewNode = () => {
           </Row>
           <Space size="large">
             {item.map((row) => (
-              <Text underline key={row.id} color={COLORS.PRIMARY.BLUE}>
-                {row.nodes.name}
-              </Text>
+              <Button type="text" key={row.id} onClick={() => dispatch(row.target_id)}>
+                <Text underline color={COLORS.PRIMARY.GRAY_DARK}>
+                  {row.nodes.name}
+                </Text>
+              </Button>
             ))}
           </Space>
         </VerticalSpace>

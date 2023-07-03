@@ -60,9 +60,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
-  // eslint-disable-next-line no-console
-  console.log('folder', folder);
-
   return (
     <Spin spinning={isInitialLoading}>
       <TitleSeparator name={listTitle} paginationProps={paginationProps} />

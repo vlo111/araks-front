@@ -1,5 +1,6 @@
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 import { SortProvider } from 'context/sort-context';
 import { useState } from 'react';
 import { AllDataFilterSection } from './all-data/filter-section';
@@ -25,7 +26,9 @@ export const RightSectionAllData = () => {
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
         />
-        <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+        <ViewDatasheetProvider>
+          <AllDataList filterValue={filterValue} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+        </ViewDatasheetProvider>
       </VerticalSpace>
     </SortProvider>
   );

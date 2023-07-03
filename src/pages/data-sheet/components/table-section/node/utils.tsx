@@ -203,7 +203,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank" icon={<LinkOutlined />}>
-          {text}
+          <Text color={COLORS.PRIMARY.GRAY_DARK}>{text}</Text>
         </Button>
       );
     case PropertyTypes.Location:
@@ -213,23 +213,23 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     case PropertyTypes.Date:
       return (
         <Space>
-          <CalendarOutlined /> <Text>{dayjs(text).format('YYYY-MM-DD')}</Text>
+          <CalendarOutlined /> <Text color={COLORS.PRIMARY.GRAY_DARK}>{dayjs(text).format('YYYY-MM-DD')}</Text>
         </Space>
       );
     case PropertyTypes.DateTime:
       return (
         <Space>
-          <CalendarOutlined /> <Text>{dayjs(text).format('YYYY-MM-DD HH:mm')}</Text>
+          <CalendarOutlined /> <Text color={COLORS.PRIMARY.GRAY_DARK}>{dayjs(text).format('YYYY-MM-DD HH:mm')}</Text>
         </Space>
       );
     case PropertyTypes.Boolean:
-      return <Text>{text === 'true' ? 'Yes' : 'No'}</Text>;
+      return <Text color={COLORS.PRIMARY.GRAY_DARK}>{text === 'true' ? 'Yes' : 'No'}</Text>;
     case PropertyTypes.Text:
     case PropertyTypes.Integer:
     case PropertyTypes.Decimal:
-      return <Text>{text}</Text>;
+      return <Text color={COLORS.PRIMARY.GRAY_DARK}>{text}</Text>;
     default:
-      return <Text>{text}</Text>;
+      return <Text color={COLORS.PRIMARY.GRAY_DARK}>{text}</Text>;
   }
 };
 

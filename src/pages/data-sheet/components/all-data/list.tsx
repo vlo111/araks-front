@@ -12,6 +12,8 @@ import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constant
 import styled from 'styled-components';
 import { AllDataResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
+import { Button } from 'components/button';
+import { useViewDatasheet } from 'context/datasheet-view-vontext';
 
 type TypeInfoProps = {
   color?: string;
@@ -49,6 +51,8 @@ type Props = {
 };
 
 export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Props) => {
+  const { state: selectedView, dispatch } = useViewDatasheet();
+
   const { state } = useSort();
   const { allDataTypesList } = useDataSheetWrapper();
   const [pageData, setPageData] = useState(initPageData);
@@ -87,18 +91,21 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
         dataSource={rowsData}
         renderItem={(item, index) => {
           return (
-            <StyledListItem key={item.id} color={item.nodeType?.name} onClick={() => handleItemClick(item)}>
+            <StyledListItem key={item.id} color={item.nodeType?.color}>
               <Checkbox
                 className="all-data-checkbox"
                 style={{ marginRight: '16px' }}
                 checked={checkedItems.includes(item.id)}
+                onClick={() => handleItemClick(item)}
               />
               <List.Item.Meta
                 avatar={<Avatar src={item.default_image} />}
                 title={
                   <Row>
                     <Col span={6}>
-                      <Text color={COLORS.PRIMARY.GRAY}>{item.name}</Text>
+                      <Button onClick={() => dispatch(item.id)} type="text">
+                        <Text color={COLORS.PRIMARY.GRAY}>{item.name}</Text>
+                      </Button>
                     </Col>
                     <Col span={18}>
                       <Row justify="end" align="middle" gutter={32}>

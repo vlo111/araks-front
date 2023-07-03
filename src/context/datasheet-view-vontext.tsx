@@ -1,4 +1,4 @@
-import { Col, Drawer, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row, Skeleton } from 'antd';
 import * as React from 'react';
 import { NodeBody, NodeDataResponse, NodeDataSubmit, NodePropertiesValues, ResponseLocationType } from 'types/node';
 import { VIewNode } from 'pages/data-sheet/components/table-section/node/view-node';
@@ -14,22 +14,27 @@ import { Button } from 'components/button';
 import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 type VIewDataType = NodeDataResponse | undefined;
 
-type Dispatch = React.Dispatch<React.SetStateAction<VIewDataType>>;
+type Dispatch = React.Dispatch<React.SetStateAction<string>>;
 type ViewDatasheetProviderProps = { children: React.ReactNode };
 
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
+  const isXXl = useIsXXlScreen();
+
   const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
   const [drawerWidth, setDrawerWidth] = React.useState<number>(0);
   const [form] = Form.useForm();
 
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
+  const [selectedViewId, setSelectedViewId] = React.useState<string>();
+
   const [isEdit, setIsEdit] = React.useState(false);
-  const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedView }), [selectedView]);
+  const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedViewId as Dispatch }), [selectedView]);
 
   const { data } = useGetProjectNodeTypeProperties(nodeTypeId, {
     enabled: !!(nodeTypeId && isConnectionType === false),
@@ -50,12 +55,15 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       );
 
       const firstFourElements = Array.from(columnsProperty);
+      if (!firstFourElements.length) {
+        calcWidth = isXXl ? 350 : 200;
+      }
       firstFourElements.forEach((column: Element) => {
         calcWidth += column.clientWidth || 0;
       });
       setDrawerWidth((rightSideWidth?.clientWidth ?? 0) - calcWidth);
     }
-  }, [selectedView]);
+  }, [selectedView, isXXl]);
 
   const { mutate } = useManageNodes();
 
@@ -78,9 +86,10 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     }
   };
 
-  const { data: nodeData, isInitialLoading } = useGetNode(selectedView?.id as string, {
-    enabled: !!(selectedView?.id && isEdit),
+  const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
+    enabled: !!selectedViewId,
     onSuccess: (nodeData) => {
+      setSelectedView(nodeData);
       const initialAcc = {
         name: [nodeData.name],
         node_icon: [nodeData.default_image],
@@ -177,14 +186,15 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
-        title={
-          <ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedView?.id as string} onClose={onClose} />
-        }
+        title={<ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedViewId as string} onClose={onClose} />}
         mask={false}
         placement="right"
         onClose={onClose}
         afterOpenChange={(open) => {
-          !open && setSelectedView(undefined);
+          if (!open) {
+            setSelectedView(undefined);
+            setSelectedViewId(undefined);
+          }
         }}
         open={!!selectedView}
         getContainer={false}
@@ -218,6 +228,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           >
             <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
           </Form>
+        ) : isInitialLoading ? (
+          <Skeleton />
         ) : (
           <VIewNode />
         )}

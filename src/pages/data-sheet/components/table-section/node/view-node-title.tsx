@@ -6,7 +6,6 @@ import { MenuText, Text } from 'components/typography';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
 import { useMemo } from 'react';
-import { getSingleData } from './utils';
 
 type ViewNodeProps = {
   id: string;
@@ -24,12 +23,13 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
     () => selectedView?.properties?.find((property) => property.nodeTypeProperty.default_property),
     [selectedView?.properties]
   );
+
   return (
     <Space style={{ width: '100%', justifyContent: 'space-between' }}>
       <div>
         <MenuText strong>{state}</MenuText>
         {' / '}
-        <Text>{getSingleData(defaultProperty?.nodes_data)}</Text>
+        <Text>{selectedView?.name}</Text>
       </div>
       <div>
         <Button type="link" disabled={isEdit} icon={<EditOutlined />} onClick={() => setIsEdit(true)} />
