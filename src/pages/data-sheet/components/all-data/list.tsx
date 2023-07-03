@@ -103,8 +103,10 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
                 title={
                   <Row>
                     <Col span={6}>
-                      <Button onClick={() => dispatch(item.id)} type="text">
-                        <Text color={COLORS.PRIMARY.GRAY}>{item.name}</Text>
+                      <Button onClick={() => dispatch(item.id)} type="link">
+                        <Text color={COLORS.PRIMARY.GRAY} underline>
+                          {item.name}
+                        </Text>
                       </Button>
                     </Col>
                     <Col span={18}>
