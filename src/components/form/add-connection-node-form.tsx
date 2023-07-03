@@ -1,4 +1,4 @@
-import { Col, Form, Row, Skeleton } from 'antd';
+import { Col, Row, Skeleton } from 'antd';
 import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { EdgeDirection } from 'pages/data-sheet/components/connection-table/components/direction';
@@ -21,8 +21,6 @@ import { UrlType } from './type/url-type';
 type Props = { data: EdgeTypePropertiesResponse; isInitialLoading: boolean };
 
 export const AddConnectionNodeForm = ({ data, isInitialLoading }: Props) => {
-  const form = Form.useFormInstance();
-
   if (isInitialLoading) {
     return <Skeleton />;
   }

@@ -51,7 +51,7 @@ type Props = {
 };
 
 export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Props) => {
-  const { state: selectedView, dispatch } = useViewDatasheet();
+  const { dispatch } = useViewDatasheet();
 
   const { state } = useSort();
   const { allDataTypesList } = useDataSheetWrapper();

@@ -32,6 +32,8 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
   };
 
   const { mutate } = useManageNodes();
+  // eslint-disable-next-line no-console
+  console.log('mutate', mutate);
 
   const [form] = Form.useForm();
 

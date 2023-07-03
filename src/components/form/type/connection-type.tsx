@@ -7,12 +7,10 @@ import styled from 'styled-components';
 import { FormItem } from '../form-item';
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
 
-import { Input } from 'components/input';
-import useFormInstance from 'antd/es/form/hooks/useFormInstance';
 import { ConnectionSourcesSearchResult } from 'types/node';
-import { CloseOutlined } from '@ant-design/icons';
 import { ConnectionAutocomplete } from 'components/input/connection-autocomplete';
 import { SelectConnectionFormItem } from 'components/form-item/select-connection-form-item';
+import useFormInstance from 'antd/es/form/hooks/useFormInstance';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
@@ -35,35 +33,6 @@ const StyledFormItem = styled(FormItem)`
   label,
   .ant-row {
     width: 100%;
-  }
-`;
-
-const ResultFormItem = styled(({ backgroundColor, ...props }) => <FormItem {...props} />)`
-  background: ${(props) => props.backgroundColor};
-  border-radius: 4px;
-
-  svg {
-    fill: ${COLORS.PRIMARY.WHITE};
-  }
-
-  .ant-input-prefix path {
-    fill: ${COLORS.PRIMARY.WHITE};
-  }
-
-  .ant-input-affix-wrapper {
-    border: none;
-    border-radius: 4px;
-    background: linear-gradient(
-      135deg,
-      ${(props) => props.backgroundColor} 1.28%,
-      ${(props) => props.backgroundColor} 100%
-    );
-    box-shadow: 0px 4px 4px 0px rgba(111, 111, 111, 0.16);
-    backdrop-filter: blur(2px);
-  }
-
-  .ant-input.ant-input-disabled {
-    color: ${COLORS.PRIMARY.WHITE};
   }
 `;
 

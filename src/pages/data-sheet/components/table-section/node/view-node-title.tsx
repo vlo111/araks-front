@@ -5,7 +5,6 @@ import { DeleteNodeModal } from 'components/modal/delete-node-modal';
 import { MenuText, Text } from 'components/typography';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
-import { useMemo } from 'react';
 
 type ViewNodeProps = {
   id: string;
@@ -18,11 +17,6 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
   const { state } = useOverview();
 
   const { state: selectedView } = useViewDatasheet();
-
-  const defaultProperty = useMemo(
-    () => selectedView?.properties?.find((property) => property.nodeTypeProperty.default_property),
-    [selectedView?.properties]
-  );
 
   return (
     <Space style={{ width: '100%', justifyContent: 'space-between' }}>
