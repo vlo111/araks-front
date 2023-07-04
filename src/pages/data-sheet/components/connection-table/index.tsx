@@ -11,6 +11,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { DataType } from '../table-section/types';
 import { NodePagination } from 'components/pagination';
 import { ManageConnection } from '../table-section/node/manage-connection';
+import { EdgeViewButton } from './components/edge-view-button';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -32,7 +33,10 @@ export const ConnectionTableSection = () => {
   const { rowsData: data, count: pageCount } = useGetEdgesNodeData(pageData, nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: ({ rows: data }) => {
-      const rows = data.map((row) => ({ target: row.target.name, source: row.source.name }));
+      const rows = data.map((row) => ({
+        target: row.target.name,
+        source: <EdgeViewButton text={row.source.name} rowData={row} />,  
+      }));
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },
   });

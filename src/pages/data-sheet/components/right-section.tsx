@@ -3,6 +3,7 @@ import { AddType } from 'components/button';
 import { ColorFill } from 'components/color-fill';
 import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { ViewDatasheetEdgeProvider } from 'context/datasheet-edge-view-vontext';
 import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { RightSectionAllData } from './right-section-all-data';
@@ -43,7 +44,17 @@ export const RightSection = () => {
         <HeaderActions />
       </AddType>
       {!nodeTypeId && <EmptyList />}
-      {nodeTypeId && <>{isConnectionType ? <ConnectionTableSection /> : <TableSection />}</>}
+      {nodeTypeId && (
+        <>
+          {isConnectionType ? (
+            <ViewDatasheetEdgeProvider>
+              <ConnectionTableSection />
+            </ViewDatasheetEdgeProvider>
+          ) : (
+            <TableSection />
+          )}
+        </>
+      )}
     </>
   );
 };
