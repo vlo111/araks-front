@@ -7,7 +7,7 @@ import { ConnectionSourcesSearchResult } from 'types/node';
 
 type Props = { data: EdgeTypePropertiesResponse };
 
-const formName = 'target_id';
+const formName = 'targetData';
 
 export const ConnectionTargetForm = ({ data }: Props) => {
   const form = Form.useFormInstance();

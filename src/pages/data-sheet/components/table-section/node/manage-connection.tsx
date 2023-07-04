@@ -1,12 +1,13 @@
 import { Col, Drawer, Form, Row } from 'antd';
+import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
-import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddConnectionNodeForm } from 'components/form/add-connection-node-form';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
+import { EdgesCreate, EdgesCreateProperties, EdgeSourceData, EdgeTargetData } from 'types/edges';
 import { NodeBody } from 'types/node';
 
 type Props = {
@@ -31,13 +32,30 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
     setOpen(true);
   };
 
-  const { mutate } = useManageNodes();
-  // eslint-disable-next-line no-console
-  console.log('mutate', mutate);
+  const { mutate } = useManageEdge();
 
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
+    const dataToSubmit = {
+      project_edge_type_id: nodeTypeId,
+      target_type_id: (values.targetData as EdgeTargetData[])[0].target_type_id,
+      target_id: (values.targetData as EdgeTargetData[])[0].target_id,
+      source_type_id: (values.sourceData as EdgeSourceData[])[0].source_type_id,
+      source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
+      properties: data?.properties.reduce((curr, item) => {
+        return [
+          ...curr,
+          {
+            edge_type_property_id: item.id,
+            edge_type_property_type: item.ref_property_type_id,
+            data: (values[item.name] as (string | number)[])[0],
+          },
+        ] as EdgesCreateProperties[];
+      }, [] as EdgesCreateProperties[]),
+    } as EdgesCreate;
+    mutate(dataToSubmit);
+
     onClose();
   };
 
