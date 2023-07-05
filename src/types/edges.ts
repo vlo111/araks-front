@@ -17,6 +17,7 @@ export type EdgesCreateProperties = {
 };
 
 export type ETypeEdgeData = {
+  id: string;
   project_edge_type_id: string;
   source_id: string;
   source: EEdgeType;

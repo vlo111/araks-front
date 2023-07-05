@@ -27,15 +27,23 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
 
   const [selectedView, setSelectedView] = React.useState<VIewDataType>();
   const [drawerWidth, setDrawerWidth] = React.useState<number>(0);
-  const [isEdit, setIsEdit] = React.useState(false);
 
   const [form] = Form.useForm();
+
+  const onClose = () => {
+    setSelectedView(undefined);
+    form.resetFields();
+  };
 
   const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(nodeTypeId, {
     enabled: !!(nodeTypeId && isConnectionType === true && !!selectedView),
   });
 
-  const { mutate } = useManageEdge(selectedView?.project_edge_type_id);
+  const { mutate } = useManageEdge(selectedView?.id || '', {
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
   React.useEffect(() => {
     if (data && data.source && selectedView) {
@@ -69,12 +77,6 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
 
   const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedView }), [selectedView]);
 
-  const onClose = () => {
-    setSelectedView(undefined);
-    setIsEdit(false);
-    form.resetFields();
-  };
-
   React.useEffect(() => {
     if (selectedView) {
       let calcWidth = 0;
@@ -96,10 +98,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
 
   const onFinish = (values: NodeBody) => {
     const dataToSubmit = {
-      project_edge_type_id: nodeTypeId,
-      target_type_id: (values.targetData as EdgeTargetData[])[0].target_type_id,
       target_id: (values.targetData as EdgeTargetData[])[0].target_id,
-      source_type_id: (values.sourceData as EdgeSourceData[])[0].source_type_id,
       source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
       properties: data?.properties.reduce((curr, item) => {
         return [
@@ -113,41 +112,38 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
       }, [] as EdgesCreateProperties[]),
     } as EdgesCreate;
     mutate(dataToSubmit);
-    onClose();
   };
-  
+
   return (
     <ViewDatasheetEdgeContext.Provider value={value}>
       {children}
       <Drawer
-        title={<ViewEdgeTitle setIsEdit={setIsEdit} isEdit={isEdit} onClose={onClose} />}
+        title={<ViewEdgeTitle onClose={onClose} />}
         mask={false}
         placement="right"
         onClose={onClose}
         bodyStyle={{ backgroundColor: '#F2F2F2', padding: '40px 0' }}
         afterOpenChange={(open) => {
           if (!open) {
-            setSelectedView(undefined);
+            onClose();
           }
         }}
         open={!!selectedView}
         getContainer={false}
         width={drawerWidth}
         footer={
-          isEdit && (
-            <Row gutter={16} justify="center">
-              <Col span={4}>
-                <Button style={{ marginRight: 8 }} onClick={onClose} block>
-                  Cancel
-                </Button>
-              </Col>
-              <Col span={4}>
-                <Button type="primary" onClick={() => form.submit()} block>
-                  Save
-                </Button>
-              </Col>
-            </Row>
-          )
+          <Row gutter={16} justify="center">
+            <Col span={4}>
+              <Button style={{ marginRight: 8 }} onClick={onClose} block>
+                Cancel
+              </Button>
+            </Col>
+            <Col span={4}>
+              <Button type="primary" onClick={() => form.submit()} block>
+                Save
+              </Button>
+            </Col>
+          </Row>
         }
         contentWrapperStyle={{ height: '100%' }}
       >
@@ -158,7 +154,6 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
           autoComplete="off"
           layout="vertical"
           requiredMark={false}
-          disabled={!isEdit}
         >
           <AddConnectionNodeForm data={data as EdgeTypePropertiesResponse} isInitialLoading={isInitialLoading} />
         </Form>
