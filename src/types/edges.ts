@@ -10,22 +10,23 @@ export interface EEdgeType {
   nodeType: EEdgeNodeType;
 }
 
+export type EdgesCreateProperties = {
+  edge_type_property_id: string;
+  edge_type_property_type: string;
+  data: string | number;
+};
+
 export type ETypeEdgeData = {
   project_edge_type_id: string;
   source_id: string;
   source: EEdgeType;
   target: EEdgeType;
+  properties?: EdgesCreateProperties[];
 };
 
 export type ETypeEdgeDataResponse = {
   rows: ETypeEdgeData[];
   count: number;
-};
-
-export type EdgesCreateProperties = {
-  edge_type_property_id: string;
-  edge_type_property_type: string;
-  data: string | number;
 };
 
 export type EdgeSourceData = {

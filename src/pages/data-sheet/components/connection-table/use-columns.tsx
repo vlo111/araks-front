@@ -59,7 +59,7 @@ export const useColumns = () => {
               >{`${item.name} (${item.ref_property_type_id})`}</ManageConnectionTypeProperty>
             ),
             width: `${item.name} (${item.ref_property_type_id})`.length * 15,
-            dataIndex: item.name,
+            dataIndex: item.id,
             className: 'connection-column',
           };
         })

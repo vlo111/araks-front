@@ -12,6 +12,7 @@ import { DataType } from '../table-section/types';
 import { NodePagination } from 'components/pagination';
 import { ManageConnection } from '../table-section/node/manage-connection';
 import { EdgeViewButton } from './components/edge-view-button';
+import { EdgesCreateProperties } from 'types/edges';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -34,8 +35,14 @@ export const ConnectionTableSection = () => {
     enabled: !!nodeTypeId,
     onSuccess: ({ rows: data }) => {
       const rows = data.map((row) => ({
-        target: row.target.name,
-        source: <EdgeViewButton text={row.source.name} rowData={row} />,  
+        target: <EdgeViewButton text={row.target.name} rowData={row} />,
+        source: <EdgeViewButton text={row.source.name} rowData={row} />,
+        ...row.properties?.reduce((curr: DataType, item: EdgesCreateProperties) => {
+          return {
+            ...curr,
+            [item.edge_type_property_id]: item.data,
+          };
+        }, {} as DataType),
       }));
       setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
     },

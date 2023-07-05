@@ -54,8 +54,8 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),
     } as EdgesCreate;
-    mutate(dataToSubmit);
 
+    mutate(dataToSubmit);
     onClose();
   };
 

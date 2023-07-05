@@ -51,7 +51,6 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
       options={options?.map((row) => ({ value: row.id, label: row.name }))}
       onSearch={handleSearch}
       value={searchValue}
-      open={!!options.length}
       onSelect={handleSelectAction}
       notFoundContent="No Connection data found"
       style={{ width: '100%' }}

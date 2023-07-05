@@ -24,7 +24,7 @@ export const EdgeViewButton = ({ text, rowData }: Props) => {
 
   return (
     <>
-      <Button type="link" className="table-row-height" onClick={() => dispatch(rowData?.source_id || '')}>
+      <Button type="link" className="table-row-height" onClick={() => dispatch(rowData)}>
         <CedllName underline color={COLORS.PRIMARY.BLUE}>
           {text}
         </CedllName>

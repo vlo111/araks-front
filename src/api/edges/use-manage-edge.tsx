@@ -21,6 +21,8 @@ export const useManageEdge = (edgeId?: string, options?: Options) => {
 
   const params = useParams();
   const queryClient = useQueryClient();
+  // eslint-disable-next-line no-console
+  console.log('edgeId', edgeId);
 
   const mutation = useMutation<ReturnData, unknown, EdgesCreate>({
     mutationFn: (values: EdgesCreate) => {
