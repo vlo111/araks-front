@@ -138,7 +138,11 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
           defaultCurrent={initPageData.page}
           current={pageData.page}
           onChange={(page) => {
-            setPageData({ page, size: DEFAULT_PAGE_SIZE });
+            setPageData((prev) => ({ page, size: prev.size }));
+          }}
+          showSizeChanger
+          onShowSizeChange={(current, size) => {
+            setPageData({ page: current, size: size });
           }}
         />
       ) : (
