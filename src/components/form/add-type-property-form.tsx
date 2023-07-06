@@ -135,7 +135,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isConnectionType ? 'Connection type' : isEdit ? 'Edit type' : 'Add property for type'}</Text>
+          <Text>{isConnectionType ? 'Connection type' : isEdit ? 'Edit Property' : 'Add property for type'}</Text>
           <Tooltip title="Useful information" placement="right">
             <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
           </Tooltip>

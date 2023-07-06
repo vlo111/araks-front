@@ -59,7 +59,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
         targetData: [
           {
             target_type_id: data.target.id,
-            source_id: selectedView?.target.id,
+            target_id: selectedView?.target.id,
             name: selectedView?.target.name,
             id: data.id,
           },
@@ -101,9 +101,11 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
       target_id: (values.targetData as EdgeTargetData[])[0].target_id,
       source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
       properties: data?.properties.reduce((curr, item) => {
+        const property = selectedView?.properties?.find((prop) => prop.edge_type_property_id === item.id);
         return [
           ...curr,
           {
+            id: property?.id,
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
             data: (values[item.name] as (string | number)[])[0],
@@ -111,6 +113,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),
     } as EdgesCreate;
+
     mutate(dataToSubmit);
   };
 

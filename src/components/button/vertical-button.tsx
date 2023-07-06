@@ -43,7 +43,15 @@ export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_
         dataSheetTableSize={dataSheetTableSize}
         wrapperWidth={open ? 200 : undefined}
       >
-        {open ? <Text>New Property</Text> : <PlusAction />}
+        {open ? (
+          <Text>New Property</Text>
+        ) : (
+          <PlusAction
+            onCustomClick={() => {
+              setOpen(true);
+            }}
+          />
+        )}
 
         <Text className="property-text" color={COLORS.PRIMARY.BLUE}>
           Add Property
