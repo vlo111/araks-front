@@ -118,6 +118,15 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     defaultEdge,
     defaultNode,
     plugins: [contextMenu],
+    layout: {
+      type: 'concentric',
+      maxLevelDiff: 0.5,
+      sortBy: 'degree',
+      edgeLength: 10,
+      preventOverlap: true,
+      nodeSize: 80,
+      center: [window.innerWidth / 2, window.innerHeight / 2],
+    },
   });
 
   graph.on('dblclick', (evt) => {

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: fixed;
-  width: 11rem;
-  height: 2.5rem;
+  width: 12rem;
+  height: 15rem;
   right: 10px;
   bottom: 10px;
   cursor: pointer;
@@ -45,10 +45,6 @@ export const Wrapper = styled.div`
         letter-spacing: 0.0875rem;
       }
     }
-  }
-
-  &:hover {
-    height: 12rem;
   }
 `;
 
@@ -106,7 +102,8 @@ export const Layout = styled.div`
 
   &.item {
     &:hover {
-      background: #666666;
+      background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);
+      backdrop-filter: blur(2px);
     }
   }
 `;

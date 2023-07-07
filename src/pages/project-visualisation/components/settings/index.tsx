@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 
 export const Settings = () => {
-  const { graph } = useGraph();
+  const { graph } = useGraph() ?? {};
   const [layout, setLayout] = useState('');
 
   useEffect(() => {
@@ -17,20 +17,39 @@ export const Settings = () => {
           edgeLength: 10,
           preventOverlap: true,
           nodeSize: 80,
-          center: [window.innerWidth / 3, window.innerHeight / 8],
+          center: [window.innerWidth / 3, window.innerHeight / 3],
         });
-      } else if ('grid') {
+      } else if (layout === 'grid') {
         graph.updateLayout({
           type: 'grid',
-          begin: [0, 0], // optional,
-          preventOverlap: true, // optional, must match nodeSize
-          preventOverlapPdding: 20, // optional
-          nodeSize: 30, // optional
-          condense: false, // optional
-          rows: 5, // optional
-          cols: 5, // optional
-          sortBy: 'degree', // optional
-          workerEnabled: true, // optional, enable web-worker
+          center: [window.innerWidth / 3, window.innerHeight / 3],
+          begin: [0, 0],
+          preventOverlap: true,
+          preventOverlapPdding: 20,
+          nodeSize: 30,
+          condense: false,
+          rows: 5,
+          cols: 5,
+          sortBy: 'degree',
+          workerEnabled: true,
+        });
+      } else if (layout === 'fruchterman') {
+        graph.updateLayout({
+          type: 'fruchterman',
+          center: [window.innerWidth / 3, window.innerHeight / 3],
+          gravity: 8,
+          speed: 10,
+          clustering: true,
+          clusterGravity: 5,
+        });
+      } else if (layout === 'cluster') {
+        graph.updateLayout({
+          type: 'fruchterman',
+          center: [window.innerWidth / 3, window.innerHeight / 3],
+          gravity: 50,
+          speed: 50,
+          clustering: true,
+          clusterGravity: 20,
         });
       }
     }
@@ -43,13 +62,18 @@ export const Settings = () => {
           <span>Set Layout</span>
           <SettingsSVG />
         </Layout>
+        <Layout className="item" onClick={() => setLayout('fruchterman')}>
+          Fruchterman Reingold
+        </Layout>
         <Layout className="item" onClick={() => setLayout('concentric')}>
-          concentric
+          Concentric
+        </Layout>
+        <Layout className="item" onClick={() => setLayout('cluster')}>
+          Clustering
         </Layout>
         <Layout className="item" onClick={() => setLayout('grid')}>
-          grid
+          Grid
         </Layout>
-        <Layout className="item">lay 1</Layout>
       </Items>
     </Wrapper>
   );
