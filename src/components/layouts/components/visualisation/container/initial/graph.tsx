@@ -40,7 +40,7 @@ const defaultNode = {
     width: 15,
     height: 15,
     x: 0,
-    y: 0
+    y: 0,
   },
   labelCfg: {
     style: {
@@ -56,7 +56,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
-  size: 60
+  size: 60,
 };
 
 export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCreate }) => {
@@ -69,7 +69,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     startOpenNodeCreate({
       isOpened: false,
       x: evt?.x ?? 0,
-      y: evt?.y ?? 0
+      y: evt?.y ?? 0,
     });
 
     const nodeContext = `<div class="menu">
@@ -119,7 +119,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     defaultNode,
     plugins: [contextMenu],
     layout: {
-      type: "concentric",
+      type: 'concentric',
       maxLevelDiff: 0.5,
       sortBy: 'degree',
       edgeLength: 10,
