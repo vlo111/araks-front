@@ -51,7 +51,21 @@ export const Settings = () => {
           clustering: true,
           clusterGravity: 20,
         });
+      } else if (layout === 'circular') {
+        graph.updateLayout({
+          type: 'circular',
+          center: [window.innerWidth / 3, window.innerHeight / 3],
+          radius: null,
+          startRadius: 10,
+          endRadius: 600,
+          clockwise: false,
+          divisions: 5,
+          ordering: 'degree',
+          angleRatio: 1,
+        });
       }
+
+      if (graph.fitCenter) graph.fitCenter();
     }
   }, [layout, graph]);
 
@@ -73,6 +87,9 @@ export const Settings = () => {
         </Layout>
         <Layout className="item" onClick={() => setLayout('grid')}>
           Grid
+        </Layout>
+        <Layout className="item" onClick={() => setLayout('circular')}>
+          Circular
         </Layout>
       </Items>
     </Wrapper>
