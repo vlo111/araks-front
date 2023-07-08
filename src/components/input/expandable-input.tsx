@@ -7,8 +7,9 @@ import { COLORS } from 'helpers/constants';
 import debounce from 'lodash.debounce';
 
 const StyleInput = styled(Input)`
-  .ant-input-affix-wrapper {
-    padding-left: 0px;
+  &.ant-input-affix-wrapper {
+    /* padding-left: 0px; */
+    background: ${COLORS.PRIMARY.WHITE};
   }
   ::placeholder {
     color: ${COLORS.PRIMARY.GRAY};
