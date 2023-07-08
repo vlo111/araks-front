@@ -13,6 +13,7 @@ import { NodePagination } from 'components/pagination';
 import { ManageConnection } from '../table-section/node/manage-connection';
 import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
+import { VerticalSpace } from 'components/space/vertical-space';
 
 const dataSource = (length: number): DataType[] =>
   [...Array(20 - length)].map((_, i) => ({
@@ -80,39 +81,41 @@ export const ConnectionTableSection = () => {
   return (
     <div style={{ position: 'relative' }}>
       <ManageConnection tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
-      <div
-        id="container"
-        style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
-        ref={tableRef}
-      >
-        <VerticalConnectionButton columnWidth={columnWidth} />
-        <ConnectionTable
-          id="connection-table"
-          size="large"
-          dataSource={rowData}
-          columns={[...columns, ...actions]}
-          pagination={false}
-          scroll={{ x: 'max-content' }}
-        />
-      </div>
-      {pageCount ? (
-        <NodePagination
-          total={pageCount}
-          defaultPageSize={initPageData.size}
-          pageSize={pageData.size}
-          defaultCurrent={initPageData.page}
-          current={pageData.page}
-          onChange={(page) => {
-            setPageData((prev) => ({ page, size: prev.size }));
-          }}
-          showSizeChanger
-          onShowSizeChange={(current, size) => {
-            setPageData({ page: current, size: size });
-          }}
-        />
-      ) : (
-        <></>
-      )}
+      <VerticalSpace size="large">
+        <div
+          id="container"
+          style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
+          ref={tableRef}
+        >
+          <VerticalConnectionButton columnWidth={columnWidth} />
+          <ConnectionTable
+            id="connection-table"
+            size="large"
+            dataSource={rowData}
+            columns={[...columns, ...actions]}
+            pagination={false}
+            scroll={{ x: 'max-content' }}
+          />
+        </div>
+        {pageCount ? (
+          <NodePagination
+            total={pageCount}
+            defaultPageSize={initPageData.size}
+            pageSize={pageData.size}
+            defaultCurrent={initPageData.page}
+            current={pageData.page}
+            onChange={(page) => {
+              setPageData((prev) => ({ page, size: prev.size }));
+            }}
+            showSizeChanger
+            onShowSizeChange={(current, size) => {
+              setPageData({ page: current, size: size });
+            }}
+          />
+        ) : (
+          <></>
+        )}
+      </VerticalSpace>
     </div>
   );
 };
