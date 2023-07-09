@@ -1,9 +1,7 @@
-import { Checkbox, Form, Space, Tooltip } from 'antd';
+import { Checkbox, Form, Space } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from './form-item';
-
-import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
 import { TreeSelect } from 'components/select';
@@ -14,6 +12,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { useDeleteProjectNodeType } from 'api/project-node-types/use-delete-project-node-type';
 import { useEffect } from 'react';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -107,10 +106,12 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
         requiredMark={false}
       >
         <Space size={8}>
-          <Text>{isEdit ? 'Edit type' : 'Write new type data'}</Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
+          <Text>{isEdit ? 'Edit type' : 'Create New Type'}</Text>
+          <UsefulInformationTooltip
+            infoText="A node type represents a group of nodes with a shared business purpose. It allows for the definition
+                  of node properties and rules governing conversions between node types. Each node is associated with a
+                  specific node type."
+          />
         </Space>
         <FormItem
           name="name"
@@ -129,7 +130,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder="Please select"
+            placeholder="Parent"
             allowClear
             treeDefaultExpandAll
             fieldNames={{ value: 'key' }}
@@ -147,9 +148,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
                 <FormItem name="inherit" valuePropName="checked">
                   <Checkbox disabled={!getFieldValue('parent_id')}>Inherit properties</Checkbox>
                 </FormItem>
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
+                <UsefulInformationTooltip infoText="Inherit parent options" />
               </Space>
             )}
           </Form.Item>

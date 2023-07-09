@@ -9,3 +9,20 @@
   backdrop-filter: blur(2px);
   border-radius: 4px;
 }
+
+.useful-info-tooltip .ant-tooltip-inner {
+  padding: 24px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.67);
+  box-shadow: 0px 10px 10px 0px rgba(65, 65, 65, 0.2);
+  backdrop-filter: blur(7px);
+  width: 331px;
+}
+
+.useful-info-tooltip .ant-tooltip-inner .useful-info-text {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.98px;
+}

@@ -49,7 +49,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
               showSearch
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder="Please select"
+              placeholder="Select Source"
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
@@ -61,7 +61,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
               showSearch
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder="Please select"
+              placeholder="Select Target"
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
