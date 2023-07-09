@@ -1,6 +1,6 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { useDeleteEdge } from 'api/edges/use-delete-edge';
 import { Button } from 'components/button';
+import { Icon } from 'components/icon';
 import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
@@ -46,7 +46,12 @@ export const DeleteEdgeModal = ({ id, onClose }: Props) => {
           </Button>
         </VerticalSpace>
       </Modal>
-      <Button type="link" disabled={isDeleteStart} icon={<DeleteOutlined />} onClick={() => setDeleteStart(true)} />
+      <Button
+        type="link"
+        disabled={isDeleteStart}
+        icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
+        onClick={() => setDeleteStart(true)}
+      />
     </>
   );
 };
