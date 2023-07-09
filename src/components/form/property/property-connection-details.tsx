@@ -1,8 +1,8 @@
-import { InfoCircleFilled } from '@ant-design/icons';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { TreeSelect } from 'components/select';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useEffect, useState } from 'react';
 import { FormItem } from '../form-item';
 import { PropertyTypes } from './types';
@@ -71,9 +71,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
             <Checkbox disabled={target !== source}>
               <Space>
                 Inverse
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
+                <UsefulInformationTooltip infoText="Target also connected to Source if has inverse enabled" />
               </Space>
             </Checkbox>
           </FormItem>
@@ -81,9 +79,7 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
             <Checkbox>
               <Space>
                 Multiple
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
+                <UsefulInformationTooltip infoText="Can add multiple rows" />
               </Space>
             </Checkbox>
           </FormItem>

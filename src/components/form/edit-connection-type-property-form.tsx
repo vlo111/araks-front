@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { Rule } from 'antd/es/form';
 import styled from 'styled-components';
-import { InfoCircleFilled } from '@ant-design/icons';
 
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
@@ -20,6 +19,7 @@ import { PropertyTypes } from './property/types';
 import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
 import { DeleteConnectionTypeModal } from 'components/modal/delete-connection-type-modal';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -88,9 +88,7 @@ export const EditConnectionTypePropertyForm = ({ hide, connectionData }: Props) 
       >
         <Space size={8}>
           <Text>Edit Connection Property</Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
+          <UsefulInformationTooltip infoText="Inherit parent options" />
         </Space>
         <FormItem
           name="name"

@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from './form-item';
 
-import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
 import { useCreateProjectNodeTypeProperty } from 'api/project-node-type-property/use-create-project-node-type-property';
@@ -23,6 +22,7 @@ import { PropertyTypes } from './property/types';
 import { Rule } from 'antd/es/form';
 import { useQueryClient } from '@tanstack/react-query';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -138,9 +138,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           <Text>
             {isConnectionType ? 'Create Connection type' : isEdit ? 'Edit Property' : 'Add property for type'}
           </Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
+          <UsefulInformationTooltip infoText="Inherit parent options" />
         </Space>
         <FormItem
           name="name"

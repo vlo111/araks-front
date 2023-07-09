@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { InfoCircleFilled } from '@ant-design/icons';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { Checkbox } from 'components/checkbox';
 import { FormItem } from '../form-item';
 import { PropertyTypes } from './types';
 import { PropertyMultipleDetails } from './property-multiple-details';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
 export const PropertyBasicDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
@@ -35,9 +35,7 @@ export const PropertyBasicDetails = () => {
             <Checkbox>
               <Space>
                 Required
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
+                <UsefulInformationTooltip infoText="Make field required" />
               </Space>
             </Checkbox>
           </FormItem>
@@ -45,9 +43,7 @@ export const PropertyBasicDetails = () => {
             <Checkbox disabled={disableUnique}>
               <Space>
                 Set field as unique
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
+                <UsefulInformationTooltip infoText="Make field as unique" />
               </Space>
             </Checkbox>
           </FormItem>

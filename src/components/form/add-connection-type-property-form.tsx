@@ -1,9 +1,8 @@
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from './form-item';
 
-import { InfoCircleFilled } from '@ant-design/icons';
 import { Button } from 'components/button';
 import styled from 'styled-components';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
@@ -15,6 +14,7 @@ import { Rule } from 'antd/es/form';
 import { PropertyDataConnectionTypeSelect } from 'components/select/property-data-connection-type-select';
 import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
 import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -94,9 +94,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId
       >
         <Space size={8}>
           <Text>{isEdit ? 'Edit connection property' : 'Add property for connection type'}</Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
+          <UsefulInformationTooltip infoText="Inherit parent options" />
         </Space>
         <FormItem
           name="name"

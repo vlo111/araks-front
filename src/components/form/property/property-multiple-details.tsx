@@ -1,6 +1,6 @@
-import { InfoCircleFilled } from '@ant-design/icons';
-import { Form, Space, Tooltip } from 'antd';
+import { Form, Space } from 'antd';
 import { Checkbox } from 'components/checkbox';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useEffect } from 'react';
 import { FormItem } from '../form-item';
 import { PropertyTypes } from './types';
@@ -23,9 +23,7 @@ export const PropertyMultipleDetails = () => {
       <Checkbox disabled={disableMultiple}>
         <Space>
           Multiple
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
+          <UsefulInformationTooltip infoText="Can have multiple rows" />
         </Space>
       </Checkbox>
     </FormItem>
