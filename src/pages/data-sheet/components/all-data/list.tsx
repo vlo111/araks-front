@@ -134,7 +134,7 @@ export const AllDataList = ({ filterValue, checkedItems, setCheckedItems }: Prop
         <NodePagination
           total={pageCount}
           defaultPageSize={initPageData.size}
-          pageSize={initPageData.size}
+          pageSize={pageData.size}
           defaultCurrent={initPageData.page}
           current={pageData.page}
           onChange={(page) => {

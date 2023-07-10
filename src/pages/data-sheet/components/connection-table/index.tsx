@@ -15,8 +15,8 @@ import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
 import { VerticalSpace } from 'components/space/vertical-space';
 
-const dataSource = (length: number): DataType[] =>
-  [...Array(20 - length)].map((_, i) => ({
+const dataSource = (length: number, pageSize: number): DataType[] =>
+  [...Array(pageSize - length)].map((_, i) => ({
     key: i,
     column: 'operation',
   }));
@@ -27,7 +27,7 @@ export const ConnectionTableSection = () => {
   const [pageData, setPageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
   const [tableHead, setTableHead] = useState(0);
-  const [rowData, setRowData] = useState<DataType[]>(dataSource(0));
+  const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
 
   const { nodeTypeId } = useDataSheetWrapper();
@@ -45,7 +45,7 @@ export const ConnectionTableSection = () => {
           };
         }, {} as DataType),
       }));
-      setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0)] as DataType[]);
+      setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0, pageData.size)] as DataType[]);
     },
   });
   const columns = useColumns();
