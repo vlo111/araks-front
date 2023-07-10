@@ -46,7 +46,7 @@ export const VIewNode = () => {
         <VerticalSpace key={index}>
           <Row>
             <Col>
-              <Text color={COLORS.PRIMARY.BLUE}>{index}</Text>
+              <Text color={COLORS.PRIMARY.BLUE}>{item[0].edgeTypes.name}</Text>
             </Col>
             <Col span={8} offset={1}>
               <GridConnectionButton

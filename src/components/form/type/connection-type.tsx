@@ -36,20 +36,25 @@ const StyledFormItem = styled(FormItem)`
   }
 `;
 
+export const getConnectionFormName = (name: string, id: string) => `${name}-${id}`;
+
 export const ConnectionType = ({ data }: Props) => {
   const form = useFormInstance();
+  const formName = getConnectionFormName(data.name, data.id);
 
   const handleSelect = (value: string, options: ConnectionSourcesSearchResult[]) => {
     const selectedRow = options?.find((row) => row.id === value);
-    const existingData = form.getFieldValue(data.name);
+
+    const existingData = form.getFieldValue(formName);
 
     if (existingData?.length && existingData.find((data: NodeDataConnectionToSave) => data.target_id === value)) {
       message.warning(`THe option is already selected`);
       return;
     }
+
     if (selectedRow) {
-      form.setFieldValue(data.name, [
-        ...(form.getFieldValue(data.name) || []),
+      form.setFieldValue(formName, [
+        ...(form.getFieldValue(formName) || []),
         {
           target_type_id: selectedRow.project_type_id,
           target_id: selectedRow.id,
@@ -88,7 +93,7 @@ export const ConnectionType = ({ data }: Props) => {
         >
           <ConnectionAutocomplete targetId={data.target_id || ''} handleSelect={handleSelect} />
         </StyledFormItem>
-        <SelectConnectionFormItem formName={data.name} color={data.source?.color} isRequired={data.required_type} />
+        <SelectConnectionFormItem formName={formName} color={data.source?.color} isRequired={data.required_type} />
       </VerticalSpace>
     </div>
   );

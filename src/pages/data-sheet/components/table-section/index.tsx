@@ -17,6 +17,7 @@ import { PageParameters } from 'api/types';
 import { NodeViewButton } from './node/node-view-button';
 import { ConnectionColumnValue } from './node/connection-column-value';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { getConnectionFormName } from 'components/form/type/connection-type';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -55,7 +56,10 @@ export const TableSection = () => {
           return {
             ...curr,
             [item.edgeTypes.name + item.edgeTypes.id]: (
-              <ConnectionColumnValue itemName={item.edgeTypes.name} row={row} />
+              <ConnectionColumnValue
+                itemName={getConnectionFormName(item.edgeTypes.name, item.edgeTypes.id)}
+                row={row}
+              />
             ),
           };
         }, {} as DataType),

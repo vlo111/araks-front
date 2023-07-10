@@ -4,6 +4,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
 import { NodeDataResponse } from 'types/node';
+import { getConnectionFormName } from 'components/form/type/connection-type';
 
 type Props = {
   itemName: string;
@@ -15,7 +16,9 @@ const getPopupContainer = (triggerNode: HTMLElement) => {
 };
 
 export const ConnectionColumnValue = ({ itemName, row }: Props) => {
-  const filteredData = row.edges.filter((edge) => edge.edgeTypes.name === itemName);
+  const filteredData = row.edges.filter(
+    (edge) => getConnectionFormName(edge.edgeTypes.name, edge.edgeTypes.id) === itemName
+  );
 
   return (
     <div id="custom-popup-container">

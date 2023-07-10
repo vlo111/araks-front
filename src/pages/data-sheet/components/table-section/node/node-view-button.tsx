@@ -17,6 +17,8 @@ const CedllName = styled(MenuText)`
   line-height: normal;
   letter-spacing: 1.4px !important;
   text-decoration-line: underline;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 0.1px;
 `;
 
 export const NodeViewButton = ({ text, rowData }: Props) => {

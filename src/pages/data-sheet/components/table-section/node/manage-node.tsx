@@ -6,6 +6,7 @@ import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { PropertyTypes } from 'components/form/property/types';
+import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
@@ -71,8 +72,9 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
       .filter(Boolean);
     const dataToSubmitEdges = data
       ?.map((item) => {
+        const formName = getConnectionFormName(item.name, item.id);
         return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+          ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,

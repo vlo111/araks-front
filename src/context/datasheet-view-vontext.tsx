@@ -15,11 +15,31 @@ import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { getConnectionFormName } from 'components/form/type/connection-type';
 
 type VIewDataType = NodeDataResponse | undefined;
 
 type Dispatch = React.Dispatch<React.SetStateAction<string>>;
 type ViewDatasheetProviderProps = { children: React.ReactNode };
+
+const getValue = (item: NodePropertiesValues) => {
+  switch (item.project_type_property_type) {
+    case PropertyTypes.Location:
+      return (item.nodes_data as ResponseLocationType[])?.map(
+        (addr: ResponseLocationType) =>
+          ({
+            address: addr.address,
+            lat: addr.location.latitude,
+            lng: addr.location.longitude,
+          } as Location)
+      );
+    case PropertyTypes.DateTime:
+    case PropertyTypes.Date:
+      return item.nodes_data?.map((rec) => dayjs(rec as string));
+    default:
+      return item.nodes_data;
+  }
+};
 
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
@@ -66,25 +86,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   }, [selectedView, isXXl]);
 
   const { mutate } = useManageNodes();
-
-  const getValue = (item: NodePropertiesValues) => {
-    switch (item.project_type_property_type) {
-      case PropertyTypes.Location:
-        return (item.nodes_data as ResponseLocationType[])?.map(
-          (addr: ResponseLocationType) =>
-            ({
-              address: addr.address,
-              lat: addr.location.latitude,
-              lng: addr.location.longitude,
-            } as Location)
-        );
-      case PropertyTypes.DateTime:
-      case PropertyTypes.Date:
-        return item.nodes_data?.map((rec) => dayjs(rec as string));
-      default:
-        return item.nodes_data;
-    }
-  };
 
   const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
     enabled: !!selectedViewId,
@@ -160,8 +161,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
 
     const dataToSubmitEdges = data
       ?.map((item) => {
+        const formName = getConnectionFormName(item.name, item.id);
         return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+          ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
               id: itemConn.rowId,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,

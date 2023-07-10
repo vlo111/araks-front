@@ -2,6 +2,7 @@ import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
 import { Avatar, Button, Image, Space } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
+import { getConnectionFormName } from 'components/form/type/connection-type';
 import { LocationView } from 'components/location/location-view';
 import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
@@ -159,7 +160,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
  */
 export const groupedData = (data: NodeEdges[]) =>
   data.reduce((result, item) => {
-    const edgeTypeName = item.edgeTypes.name;
+    const edgeTypeName = getConnectionFormName(item.edgeTypes.name, item.edgeTypes.id);
 
     if (!result[edgeTypeName]) {
       result[edgeTypeName] = [];
