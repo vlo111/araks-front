@@ -63,6 +63,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeMa
     } else if (e.key === 'delete') {
       dispatch({ type: TypePropertyActionKind.DELETE_TYPE_START, payload: { propertyId } });
     } else if (e.key === 'default' && nodeTypeId) {
+      // Not used, set as default functionality blocked
       mutate({ propertyId, nodeTypeId: nodeTypeId });
     }
     closeManageNodes();

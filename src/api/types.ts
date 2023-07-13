@@ -1,3 +1,4 @@
+import { PropertyTypes } from 'components/form/property/types';
 import { EdgeType } from 'types/node';
 
 export type GetProjectsParameters = {
@@ -170,7 +171,7 @@ export type ProjectNodeTypePropertyReturnData = {
   user_id: string;
   project_id: string;
   project_type_id: string;
-  ref_property_type_id: string;
+  ref_property_type_id: PropertyTypes;
   created_at: string;
   updated_at: string;
 };

@@ -68,7 +68,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   });
 
   // get node type edit data
-  useGetProjectNodeTypeProperty(propertyId, {
+  const { data } = useGetProjectNodeTypeProperty(propertyId, {
     enabled: !!propertyId,
     onSuccess: (data) => {
       form.setFieldsValue({
@@ -171,7 +171,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           rules={[{ required: true, message: 'Node property data type is required' }]}
           hidden={isConnectionType === true || form.getFieldValue('default_property')}
         >
-          <PropertyDataTypeSelect />
+          <PropertyDataTypeSelect propertyTypeId={data?.ref_property_type_id} />
         </FormItem>
         <PropertyBasicDetails />
         <PropertyConnectionDetails isConnectionType={isConnectionType} />
