@@ -2,6 +2,10 @@ import { useGetDictionary, GET_DICTIONARY_PROPERTY_TYPES } from 'api/dictionary/
 import { Select } from '.';
 import { RefSelectProps } from 'antd';
 import { PropertyTypes } from 'components/form/property/types';
+import { PageParameters } from 'api/types';
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
+import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 
 type Props = Partial<RefSelectProps> & { propertyTypeId?: PropertyTypes };
 
@@ -43,11 +47,17 @@ const editPropertyList = {
     PropertyTypes.Location,
   ],
 };
+const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 export const PropertyDataTypeSelect = (props: Props) => {
+  const { nodeTypeId } = useDataSheetWrapper();
+  const { count: dataCount, isFetched } = useGetTypeNodes(initPageData, nodeTypeId, {
+    enabled: !!props.propertyTypeId,
+  });
+
   const { data } = useGetDictionary<PropertyDataType[]>(GET_DICTIONARY_PROPERTY_TYPES, {
     select: (data: { data: PropertyDataType[] }) => {
-      if (props.propertyTypeId) {
+      if (props.propertyTypeId && dataCount) {
         return {
           data: data.data.filter((item) => {
             return editPropertyList[props.propertyTypeId || PropertyTypes.Text].includes(item.code);
@@ -56,7 +66,7 @@ export const PropertyDataTypeSelect = (props: Props) => {
       }
       return data;
     },
-    enabled: true,
+    enabled: (props.propertyTypeId && isFetched) || !props.propertyTypeId,
   });
 
   return (
