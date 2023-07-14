@@ -1,5 +1,5 @@
 import { Select as SelectComponent } from 'antd';
-import { COLORS } from 'helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 import { changeHeight, placeholderSize } from 'helpers/styles';
 import styled, { css } from 'styled-components';
 
@@ -13,6 +13,9 @@ export const Select = styled(SelectComponent)`
         !props.size
           ? css`
               ${changeHeight}
+              @media (min-width: ${screenSize.xxl}) {
+                padding-top: 4px;
+              }
             `
           : ''}
 
@@ -27,7 +30,9 @@ export const Select = styled(SelectComponent)`
 
       .ant-select-selection-placeholder {
         ${placeholderSize}
-        padding-top: 4px;
+        @media (max-width: ${screenSize.xxl}) {
+          padding-top: 3px;
+        }
       }
     }
   }

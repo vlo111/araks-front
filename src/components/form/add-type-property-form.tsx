@@ -23,6 +23,7 @@ import { Rule } from 'antd/es/form';
 import { useQueryClient } from '@tanstack/react-query';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
+import { EditNodePropertyTypeInfoModal } from 'components/modal/edit-node-property-type-info-modal';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -177,9 +178,13 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         <PropertyConnectionDetails isConnectionType={isConnectionType} />
         <FormItem>
           <VerticalSpace>
-            <Button block type="primary" htmlType="submit">
-              Save
-            </Button>
+            {isEdit ? (
+              <EditNodePropertyTypeInfoModal id={data?.id} initPropertyType={data?.ref_property_type_id} />
+            ) : (
+              <Button block type="primary" htmlType="submit">
+                Save
+              </Button>
+            )}
             {isEdit ? (
               <Button block type="text" onClick={onHandleDelete}>
                 Delete

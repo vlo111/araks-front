@@ -49,8 +49,14 @@ const editPropertyList = {
 };
 const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
+/**
+ * Property Data type selection
+ * @param props
+ * @returns
+ */
 export const PropertyDataTypeSelect = (props: Props) => {
   const { nodeTypeId } = useDataSheetWrapper();
+
   const { count: dataCount, isFetched } = useGetTypeNodes(initPageData, nodeTypeId, {
     enabled: !!props.propertyTypeId,
   });
@@ -59,9 +65,10 @@ export const PropertyDataTypeSelect = (props: Props) => {
     select: (data: { data: PropertyDataType[] }) => {
       if (props.propertyTypeId && dataCount) {
         return {
-          data: data.data.filter((item) => {
-            return editPropertyList[props.propertyTypeId || PropertyTypes.Text].includes(item.code);
-          }),
+          data: data.data.map((item) => ({
+            ...item,
+            disabled: !editPropertyList[props.propertyTypeId || PropertyTypes.Text].includes(item.code),
+          })),
         };
       }
       return data;
@@ -75,6 +82,12 @@ export const PropertyDataTypeSelect = (props: Props) => {
       placeholder="Please select"
       fieldNames={{ value: 'code', label: 'name' }}
       options={data}
+      // onSelect={(value) => {
+      //   setPropertyType(value as PropertyTypes);
+      //   if (props.propertyTypeId !== value) {
+      //     form.setFieldValue('hasWarning', true);
+      //   }
+      // }}
       {...props}
     />
   );

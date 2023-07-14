@@ -248,3 +248,14 @@ export interface IResponsePerspectiveUsers {
   shared: ISharedPerspectiveUserData[];
   nodeType: [];
 }
+
+export type CheckPropertyBody = {
+  project_id?: string;
+  project_type_id?: string;
+  ref_property_type_id?: PropertyTypes;
+};
+
+export type CheckPropertyResponse = {
+  invalidCount: number;
+  allCount: number;
+};
