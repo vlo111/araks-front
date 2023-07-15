@@ -18,7 +18,8 @@ import { NodeViewButton } from './node/node-view-button';
 import { ConnectionColumnValue } from './node/connection-column-value';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { getConnectionFormName } from 'components/form/type/connection-type';
-import { ImportModal } from 'components/modal/import-modal';
+import { ImportDrawer } from 'components/drawer/import-drawer';
+import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -102,7 +103,8 @@ export const TableSection = () => {
   return (
     <div style={{ position: 'relative' }}>
       <ManageNode tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
-      <ImportModal />
+      <ImportDrawer />
+      <ImportStepsDrawer />
       <VerticalSpace size="large">
         <div
           id="container"

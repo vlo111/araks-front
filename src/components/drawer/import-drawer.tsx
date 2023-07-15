@@ -1,6 +1,8 @@
-import { Drawer, message, Upload, UploadProps } from 'antd';
+import { Drawer, message, Modal, Space, Upload, UploadProps } from 'antd';
 import { RcFile } from 'antd/es/upload';
 import { FILE_IMPORT_URL } from 'api/upload/constants';
+import { Button } from 'components/button';
+import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { Icon } from 'components/icon';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
@@ -20,7 +22,7 @@ const handleFileUpload = (file: RcFile): Promise<boolean> => {
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
     // eslint-disable-next-line no-console
-    console.log('Cheeeeeck', allowedFileTypes.includes(fileExtension || ''), fileExtension);
+    // console.log('Cheeeeeck', allowedFileTypes.includes(fileExtension || ''), fileExtension);
     // Check if the file extension is valid
     if (!allowedFileTypes.includes(fileExtension || '')) {
       message.error(`Invalid file type. Only ${fileExtensionsToString} files are allowed.`);
@@ -42,28 +44,16 @@ const props: UploadProps = {
   action: `${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`,
   headers: {
     Authorization: `Bearer ${token}`,
-    'Content-Type': 'multipart/form-data',
   },
   accept: fileExtensionsToString,
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      // eslint-disable-next-line no-console
-      console.log(info.file, info.fileList);
-    }
-    if (status === 'done') {
-      // message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      // message.error(`${info.file.name} file upload failed.`);
-    }
-  },
+
   onDrop(e) {
     // eslint-disable-next-line no-console
-    console.log('Dropped files', e.dataTransfer.files);
+    // console.log('Dropped files', e.dataTransfer.files);
   },
 };
 
-export const ImportModal = () => {
+export const ImportDrawer = () => {
   const { state, dispatch } = useImport();
 
   const handleCancel = () => {
@@ -72,6 +62,31 @@ export const ImportModal = () => {
 
   return (
     <>
+      <Modal
+        open={state.importConfirm}
+        title={<Text color={COLORS.SECONDARY.GREEN}>Success</Text>}
+        getContainer={false}
+        destroyOnClose
+        closable={false}
+        mask
+        maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
+        footer={null}
+      >
+        <VerticalSpace>
+          <Space>
+            <Icon color="#414141" icon="file" size={40} />
+            <Text>{state.fileName}</Text>
+          </Space>
+          <Button
+            block
+            type="primary"
+            onClick={() => dispatch({ type: ImportActionType.IMPORT_SUCCESS_NEXT, payload: {} })}
+          >
+            Next
+          </Button>
+          <ImportCancelButton name="Back" type={ImportActionType.IMPORT_SUCCESS_BACK} />
+        </VerticalSpace>
+      </Modal>
       <Drawer
         open={state.importOpen}
         footer={false}
@@ -81,22 +96,45 @@ export const ImportModal = () => {
         onClose={handleCancel}
         getContainer={false}
         destroyOnClose
-        afterOpenChange={(open) => {
-          if (!open) {
-            handleCancel();
-          }
-        }}
+        // afterOpenChange={(open) => {
+        //   if (!open) {
+        //     handleCancel();
+        //   }
+        // }}
         contentWrapperStyle={{
           margin: '10% 30%',
           boxShadow: 'none',
         }}
         style={{
           background: 'transparent',
-          borderImageWidth: '1rem',
         }}
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
-        <Dragger {...props} beforeUpload={handleFileUpload}>
+        <Dragger
+          {...props}
+          beforeUpload={handleFileUpload}
+          onChange={(info) => {
+            const { status } = info.file;
+            if (status !== 'uploading') {
+              // eslint-disable-next-line no-console
+              // console.log(info.file, info.fileList);
+            }
+            if (status === 'done') {
+              // eslint-disable-next-line no-console
+              // console.log('info.file done', info.file);
+              dispatch({
+                type: ImportActionType.IMPORT_SUCCESS_CONFIRM,
+                payload: {
+                  fileName: info.file.name,
+                  ...info.file.response,
+                },
+              });
+              // message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+              // message.error(`${info.file.name} file upload failed.`);
+            }
+          }}
+        >
           <VerticalSpace>
             <Icon color="#414141" icon="import-file" size={151} />
             <Text color={COLORS.PRIMARY.GRAY}>Import other Xls or CSV file</Text>
