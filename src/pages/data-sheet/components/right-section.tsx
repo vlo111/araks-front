@@ -4,6 +4,7 @@ import { ColorFill } from 'components/color-fill';
 import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { ViewDatasheetEdgeProvider } from 'context/datasheet-edge-view-vontext';
+import { ImportProvider } from 'context/import-context';
 import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { RightSectionAllData } from './right-section-all-data';
@@ -30,7 +31,7 @@ export const RightSection = () => {
   }
 
   return (
-    <>
+    <ImportProvider>
       <ColorFill color={color} />
       <AddType
         titleText={titleText}
@@ -55,6 +56,6 @@ export const RightSection = () => {
           )}
         </>
       )}
-    </>
+    </ImportProvider>
   );
 };
