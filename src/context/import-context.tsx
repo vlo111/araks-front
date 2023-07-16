@@ -9,13 +9,13 @@ enum ImportActionType {
   IMPORT_CLEANING_STEP = 'IMPORT_CLEANING_STEP', //SECOND STEP
 }
 
-type ImportState = {
+export type ImportState = {
   importOpen?: boolean; //file upload window
   fileName?: string; //uploaded file name
   importConfirm?: boolean; //confirm modal open
   importSteps?: boolean; //import process steps
   step?: number; //step number, start from 0 as first page
-  // data?: unknown;
+  data?: unknown[];
 };
 type ImportAction = {
   type: ImportActionType;

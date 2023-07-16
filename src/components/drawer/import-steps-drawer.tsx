@@ -3,6 +3,7 @@ import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SecondaryText } from 'components/typography';
 import { ImportActionType, useImport } from 'context/import-context';
+import { ImportExcel } from 'pages/import/import-excel';
 import { CSSProperties } from 'react';
 
 const steps = [
@@ -45,8 +46,6 @@ const headerStyle: CSSProperties = {
 export const ImportStepsDrawer = () => {
   const { state, dispatch } = useImport();
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
-  // eslint-disable-next-line no-console
-  console.log('state', state);
 
   const handleCancel = () => {
     Modal.confirm({
@@ -100,6 +99,7 @@ export const ImportStepsDrawer = () => {
         contentWrapperStyle={{
           margin: '32px 24px',
           boxShadow: 'none',
+          height: '100%',
         }}
         style={
           {
@@ -108,7 +108,7 @@ export const ImportStepsDrawer = () => {
         }
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
-        Hello Steps
+        <ImportExcel />
       </Drawer>
     </>
   );
