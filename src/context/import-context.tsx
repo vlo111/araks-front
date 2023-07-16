@@ -1,3 +1,6 @@
+import { LongTitle } from 'components/typography';
+import { VARIABLES } from 'helpers/constants';
+import { ExcelType } from 'pages/import/types';
 import { createContext, Dispatch, ReactNode, useContext, useMemo, useReducer } from 'react';
 
 enum ImportActionType {
@@ -6,6 +9,7 @@ enum ImportActionType {
   IMPORT_SUCCESS_CONFIRM = 'IMPORT_SUCCESS_CONFIRM', // Open modal with Next and Back buttons
   IMPORT_SUCCESS_NEXT = 'IMPORT_SUCCESS_NEXT', //Go to steps
   IMPORT_SUCCESS_BACK = 'IMPORT_SUCCESS_BACK', //back to file upload window
+  IMPORT_SHEET_SELECT_DATA = 'IMPORT_SHEET_SELECT_DATA', //Add selected sheet data for further manipulation
   IMPORT_CLEANING_STEP = 'IMPORT_CLEANING_STEP', //SECOND STEP
 }
 
@@ -16,6 +20,8 @@ export type ImportState = {
   importSteps?: boolean; //import process steps
   step?: number; //step number, start from 0 as first page
   data?: unknown[];
+  activeTab?: number;
+  dataSource?: unknown[][];
 };
 type ImportAction = {
   type: ImportActionType;
@@ -31,6 +37,27 @@ const importInitialState = {
   importOpen: false,
   importConfirm: false,
   importSteps: false,
+};
+
+const createTableData = (data: Array<[string, string]>) => {
+  return data.map((row, index) =>
+    row.reduce(
+      (acc, item, index) => {
+        return {
+          ...acc,
+          ...{
+            [`import${index}`]:
+              item && typeof item === 'string' && item.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
+                <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={item} />
+              ) : (
+                item
+              ),
+          },
+        };
+      },
+      [{ key: index }]
+    )
+  );
 };
 
 const importReducer = (state: ImportState, action: ImportAction) => {
@@ -67,6 +94,15 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       return {
         importConfirm: false,
         importOpen: true,
+      };
+    case ImportActionType.IMPORT_SHEET_SELECT_DATA:
+      const sheetData = state?.data?.[payload?.activeTab || 0] as ExcelType;
+      const dataTorWork = sheetData.data.slice(0, 6);
+
+      return {
+        ...state,
+        ...payload,
+        dataSource: createTableData(dataTorWork),
       };
     case ImportActionType.IMPORT_CLEANING_STEP:
       return {

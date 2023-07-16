@@ -1,7 +1,5 @@
 import { Table } from 'antd';
-import { LongTitle } from 'components/typography';
 import { useImport } from 'context/import-context';
-import { VARIABLES } from 'helpers/constants';
 import { useMemo } from 'react';
 import { ExcelType } from './types';
 
@@ -24,36 +22,22 @@ const createDraftColumns = (count: number) => [
   })),
 ];
 
-const createTableData = (data: Array<[string, string]>) => {
-  return data.map((row) =>
-    row.reduce((acc, item, index) => {
-      return {
-        ...acc,
-        ...{
-          [`import${index}`]:
-            item && typeof item === 'string' && item.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
-              <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={item} />
-            ) : (
-              item
-            ),
-        },
-      };
-    }, [])
-  );
-};
-
 export const ImportSheetTable = ({ activeTab }: Props) => {
   const { state } = useImport();
+  // eslint-disable-next-line no-console
+  console.log('state', state);
 
   const sheetData = useMemo(() => state?.data?.[+activeTab] as ExcelType, [activeTab, state?.data]);
 
-  const dataTorWork = sheetData.data.slice(0, 6);
-
-  const dataSource = createTableData(dataTorWork);
-
   const columns = createDraftColumns(sheetData.data[0].length);
-  // eslint-disable-next-line no-console
-  console.log('dataSource', dataSource);
 
-  return <Table dataSource={dataSource} columns={columns} tableLayout="fixed" scroll={{ x: 'max-content' }} />;
+  return (
+    <Table
+      dataSource={state.dataSource}
+      columns={columns}
+      tableLayout="fixed"
+      scroll={{ x: 'max-content' }}
+      pagination={false}
+    />
+  );
 };

@@ -1,8 +1,8 @@
 import { Col, Row } from 'antd';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { ImportTabs } from 'components/tabs/import-tabs';
-import { ImportState, useImport } from 'context/import-context';
-import { useCallback, useMemo, useState } from 'react';
+import { ImportActionType, ImportState, useImport } from 'context/import-context';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ImportSheetTable } from './import-sheet-table';
 import { ExcelType } from './types';
 
@@ -12,11 +12,11 @@ const extractTabNames = (state: ImportState) =>
     : null;
 
 /**
- * Component to show grid with sheets
+ * Component to show grid with sheets, FOR CSV we SILL have Other Component
  * @returns
  */
 export const ImportExcel = () => {
-  const { state } = useImport();
+  const { state, dispatch } = useImport();
 
   const [activeTab, setActiveTab] = useState('0');
 
@@ -25,6 +25,10 @@ export const ImportExcel = () => {
   }, []);
 
   const getTabNames = useMemo(() => extractTabNames(state), [state]);
+
+  useEffect(() => {
+    dispatch({ type: ImportActionType.IMPORT_SHEET_SELECT_DATA, payload: { activeTab: +activeTab } });
+  }, [activeTab, dispatch]);
 
   return (
     <VerticalSpace size="large">

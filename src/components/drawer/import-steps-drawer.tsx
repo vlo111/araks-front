@@ -99,7 +99,7 @@ export const ImportStepsDrawer = () => {
         contentWrapperStyle={{
           margin: '32px 24px',
           boxShadow: 'none',
-          height: '100%',
+          height: document.getElementById('datasheet-data')?.clientHeight,
         }}
         style={
           {
