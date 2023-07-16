@@ -3,6 +3,7 @@ import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SecondaryText } from 'components/typography';
 import { ImportActionType, useImport } from 'context/import-context';
+import { ImportClean } from 'pages/import/import-clean';
 import { ImportExcel } from 'pages/import/import-excel';
 import { CSSProperties } from 'react';
 
@@ -46,6 +47,8 @@ const headerStyle: CSSProperties = {
 export const ImportStepsDrawer = () => {
   const { state, dispatch } = useImport();
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
+  // eslint-disable-next-line no-console
+  console.log('document.getElementById', document.getElementById('datasheet-data')?.clientHeight);
 
   const handleCancel = () => {
     Modal.confirm({
@@ -99,8 +102,9 @@ export const ImportStepsDrawer = () => {
         contentWrapperStyle={{
           margin: '32px 24px',
           boxShadow: 'none',
-          height: document.getElementById('datasheet-data')?.clientHeight,
+          height: '800px',
         }}
+        bodyStyle={{ padding: '0px 0px 24px 24px' }}
         style={
           {
             // background: 'transparent',
@@ -108,7 +112,10 @@ export const ImportStepsDrawer = () => {
         }
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
-        <ImportExcel />
+        <div style={{ position: 'relative' }}>
+          <ImportExcel />
+          <ImportClean />
+        </div>
       </Drawer>
     </>
   );

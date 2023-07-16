@@ -103,6 +103,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...state,
         ...payload,
         dataSource: createTableData(dataTorWork),
+        sheetData,
       };
     case ImportActionType.IMPORT_CLEANING_STEP:
       return {

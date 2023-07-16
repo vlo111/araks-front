@@ -18,6 +18,7 @@ const createDraftColumns = (count: number) => [
   },
   ...[...Array(count)].map((_, i) => ({
     title: 'None',
+    key: i,
     dataIndex: `import${i}`,
   })),
 ];
