@@ -11,6 +11,7 @@ enum ImportActionType {
   IMPORT_SUCCESS_BACK = 'IMPORT_SUCCESS_BACK', //back to file upload window
   IMPORT_SHEET_SELECT_DATA = 'IMPORT_SHEET_SELECT_DATA', //Add selected sheet data for further manipulation
   IMPORT_CLEANING_STEP = 'IMPORT_CLEANING_STEP', //SECOND STEP
+  IMPORT_CLEANING_SKIP_ROWS = 'IMPORT_CLEANING_SKIP_ROWS', //SECOND STEP skip top rows by count
 }
 
 export type ImportState = {
@@ -22,6 +23,8 @@ export type ImportState = {
   data?: unknown[];
   activeTab?: number;
   dataSource?: unknown[][];
+  skipRowsCount?: number; //filter in second step
+  sheetData?: unknown;
 };
 type ImportAction = {
   type: ImportActionType;
@@ -80,7 +83,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         importConfirm: true,
         importOpen: false,
       };
-    case ImportActionType.IMPORT_SUCCESS_NEXT:
+    case ImportActionType.IMPORT_SUCCESS_NEXT: // First step, TODO: remove everything related to step 2 for back operation
       return {
         ...state,
         ...payload,
@@ -95,21 +98,34 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         importConfirm: false,
         importOpen: true,
       };
-    case ImportActionType.IMPORT_SHEET_SELECT_DATA:
-      const sheetData = state?.data?.[payload?.activeTab || 0] as ExcelType;
-      const dataTorWork = sheetData.data.slice(0, 6);
+    case ImportActionType.IMPORT_SHEET_SELECT_DATA: //runs in first step to get first data and store selected sheet
+      const sheetDataSelect = state?.data?.[payload?.activeTab || 0] as ExcelType;
+      const dataTorWorkSelect = sheetDataSelect.data.slice(0, 6);
 
       return {
         ...state,
         ...payload,
-        dataSource: createTableData(dataTorWork),
-        sheetData,
+        dataSource: createTableData(dataTorWorkSelect),
+        sheetData: sheetDataSelect,
       };
-    case ImportActionType.IMPORT_CLEANING_STEP:
+    case ImportActionType.IMPORT_CLEANING_STEP: // Second step, TODO: remove everything related to step 3 for back operation
       return {
         ...state,
         ...payload,
         step: 1,
+      };
+    case ImportActionType.IMPORT_CLEANING_SKIP_ROWS: // INSIDE Second step
+      const sheetDataSkip = state?.data?.[state?.activeTab || 0] as ExcelType;
+      const modifiedArray = sheetDataSkip.data.slice(payload.skipRowsCount);
+      const dataTorWorkSkip = modifiedArray.slice(0, 6);
+      return {
+        ...state,
+        ...payload,
+        dataSource: createTableData(dataTorWorkSkip),
+        sheetData: {
+          ...(state.sheetData as ExcelType),
+          data: modifiedArray,
+        },
       };
     default:
       return state;
