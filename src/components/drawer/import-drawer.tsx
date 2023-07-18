@@ -41,7 +41,6 @@ const props: UploadProps = {
   name: 'file',
   multiple: false,
   showUploadList: false,
-  action: `${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`,
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -113,6 +112,7 @@ export const ImportDrawer = () => {
         <Dragger
           {...props}
           beforeUpload={handleFileUpload}
+          action={`${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`}
           onChange={(info) => {
             const { status } = info.file;
             if (status !== 'uploading') {

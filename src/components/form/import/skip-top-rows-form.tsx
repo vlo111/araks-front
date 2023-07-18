@@ -2,6 +2,7 @@ import { Form } from 'antd';
 import { Button } from 'components/button';
 import { InputNumber } from 'components/input-number';
 import { ImportActionType, useImport } from 'context/import-context';
+import { useEffect } from 'react';
 import { FormItem } from '../form-item';
 
 type SkipTopRows = {
@@ -13,6 +14,12 @@ export const SkipTopRowsForm = () => {
   const { state, dispatch } = useImport();
   // eslint-disable-next-line no-console
   console.log('state', state);
+
+  useEffect(() => {
+    if (state.skipRowsCount) {
+      form.setFieldValue('rowsCount', state.skipRowsCount);
+    }
+  }, [form, state.skipRowsCount]);
 
   const onFinish = (values: SkipTopRows) => {
     // eslint-disable-next-line no-console

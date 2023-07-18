@@ -1,3 +1,4 @@
+import { ColumnsType } from 'antd/es/table';
 import { LongTitle } from 'components/typography';
 import { VARIABLES } from 'helpers/constants';
 import { ExcelType } from 'pages/import/types';
@@ -12,19 +13,23 @@ enum ImportActionType {
   IMPORT_SHEET_SELECT_DATA = 'IMPORT_SHEET_SELECT_DATA', //Add selected sheet data for further manipulation
   IMPORT_CLEANING_STEP = 'IMPORT_CLEANING_STEP', //SECOND STEP
   IMPORT_CLEANING_SKIP_ROWS = 'IMPORT_CLEANING_SKIP_ROWS', //SECOND STEP skip top rows by count
+  IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
 }
 
 export type ImportState = {
-  importOpen?: boolean; //file upload window
-  fileName?: string; //uploaded file name
-  importConfirm?: boolean; //confirm modal open
-  importSteps?: boolean; //import process steps
-  step?: number; //step number, start from 0 as first page
-  data?: unknown[];
   activeTab?: number;
+  columns?: ColumnsType<unknown[]> | undefined;
+  columnRow?: [string, string] | undefined;
+  data?: unknown[];
   dataSource?: unknown[][];
+  fileName?: string; //uploaded file name
+  firstRowIsColumn?: string; //filter in second step
+  importConfirm?: boolean; //confirm modal open
+  importOpen?: boolean; //file upload window
+  importSteps?: boolean; //import process steps
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
+  step?: number; //step number, start from 0 as first page
 };
 type ImportAction = {
   type: ImportActionType;
@@ -63,6 +68,40 @@ const createTableData = (data: Array<[string, string]>) => {
   );
 };
 
+const createDraftColumns = (count: number) => [
+  {
+    title: 'N',
+    dataIndex: 'rowNumber',
+    key: 'rowNumber',
+    render: (text: unknown, record: unknown, index: number) => {
+      return index + 1;
+    },
+  },
+  ...[...Array(count)].map((_, i) => ({
+    title: 'None',
+    key: i,
+    dataIndex: `import${i}`,
+  })),
+];
+
+const createColumns = (firstRow: [string, string] | undefined) => [
+  {
+    title: 'N',
+    dataIndex: 'rowNumber',
+    key: 'rowNumber',
+    render: (text: unknown, record: unknown, index: number) => {
+      return index + 1;
+    },
+  },
+  ...(firstRow
+    ? firstRow.map((item, i) => ({
+        title: item,
+        key: i,
+        dataIndex: `import${i}`,
+      }))
+    : []),
+];
+
 const importReducer = (state: ImportState, action: ImportAction) => {
   const { type, payload } = action;
   // eslint-disable-next-line no-console
@@ -92,6 +131,10 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         importOpen: false,
         // step options
         step: 0,
+        //remove steps actions higher that fist
+        skipRowsCount: undefined,
+        firstRowIsColumn: undefined,
+        columnRow: undefined,
       };
     case ImportActionType.IMPORT_SUCCESS_BACK:
       return {
@@ -107,6 +150,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...payload,
         dataSource: createTableData(dataTorWorkSelect),
         sheetData: sheetDataSelect,
+        columns: createDraftColumns(sheetDataSelect.data[0].length) as ColumnsType<unknown[]> | undefined,
       };
     case ImportActionType.IMPORT_CLEANING_STEP: // Second step, TODO: remove everything related to step 3 for back operation
       return {
@@ -115,8 +159,10 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         step: 1,
       };
     case ImportActionType.IMPORT_CLEANING_SKIP_ROWS: // INSIDE Second step
-      const sheetDataSkip = state?.data?.[state?.activeTab || 0] as ExcelType;
-      const modifiedArray = sheetDataSkip.data.slice(payload.skipRowsCount);
+      // const sheetDataSkip = state?.data?.[state?.activeTab || 0] as ExcelType;
+      // const modifiedArray = sheetDataSkip.data.slice(payload.skipRowsCount);
+      const sheetDataSkip = (state.sheetData as ExcelType).data;
+      const modifiedArray = sheetDataSkip.slice(payload.skipRowsCount);
       const dataTorWorkSkip = modifiedArray.slice(0, 6);
       return {
         ...state,
@@ -125,6 +171,41 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         sheetData: {
           ...(state.sheetData as ExcelType),
           data: modifiedArray,
+        },
+      };
+    case ImportActionType.IMPORT_CLEANING_FIRST_ROW_AS_HEADER: // Inside Second Step
+      if (payload.firstRowIsColumn === 'no') {
+        if (!state.firstRowIsColumn) {
+          return {
+            ...state,
+            ...payload,
+          };
+        }
+        const dataToReturn = [state.columnRow, ...(state.sheetData as ExcelType).data] as [string, string][];
+        return {
+          ...state,
+          ...payload,
+          columns: createDraftColumns(state.columnRow?.length || 0) as ColumnsType<unknown[]> | undefined,
+          dataSource: createTableData(dataToReturn.slice(0, 6)),
+          sheetData: {
+            ...(state.sheetData as ExcelType),
+            data: dataToReturn,
+          },
+        };
+      }
+      const sheetDataCols = (state.sheetData as ExcelType).data;
+      const modifiedArrayCols = sheetDataCols.slice();
+      const firstColumn = modifiedArrayCols.shift();
+      const dataTorWorkCols = modifiedArrayCols.slice(0, 6);
+      return {
+        ...state,
+        ...payload,
+        columns: createColumns(firstColumn),
+        columnRow: firstColumn,
+        dataSource: createTableData(dataTorWorkCols),
+        sheetData: {
+          ...(state.sheetData as ExcelType),
+          data: modifiedArrayCols,
         },
       };
     default:

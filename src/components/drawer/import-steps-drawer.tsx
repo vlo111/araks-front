@@ -47,8 +47,6 @@ const headerStyle: CSSProperties = {
 export const ImportStepsDrawer = () => {
   const { state, dispatch } = useImport();
   const items = steps.map((item) => ({ key: item.title, title: item.title }));
-  // eslint-disable-next-line no-console
-  console.log('document.getElementById', document.getElementById('datasheet-data')?.clientHeight);
 
   const handleCancel = () => {
     Modal.confirm({
