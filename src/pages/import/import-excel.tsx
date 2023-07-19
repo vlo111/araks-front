@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { ImportMappingTable } from 'components/table/import-mapping-table';
 import { ImportTabs } from 'components/tabs/import-tabs';
 import { ImportActionType, ImportState, useImport } from 'context/import-context';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -56,7 +57,12 @@ export const ImportExcel = () => {
         </Button>
       )}
       <Row>
-        <Col span={24}>{getTabNames && <ImportSheetTable activeTab={activeTab} />}</Col>
+        {!state.showMapping && <Col span={24}>{getTabNames && <ImportSheetTable activeTab={activeTab} />}</Col>}
+        {state.step === 2 && state.showMapping && (
+          <Col span={24}>
+            <ImportMappingTable />
+          </Col>
+        )}
       </Row>
     </VerticalSpace>
   );

@@ -9,7 +9,7 @@ type ReturnData = {
   data: ProjectTypePropertyReturnData[];
 };
 
-type Options = UseQueryOptions<ReturnData, Error, ProjectTypePropertyReturnData>;
+type Options = UseQueryOptions<ReturnData, Error, ProjectTypePropertyReturnData[]>;
 type Result = UseQueryResult<ProjectTypePropertyReturnData[]> & { formatted: TreeNodeType[] };
 
 export const useGetProjectNodeTypeProperties = (nodeTypeId?: string, options?: Options): Result => {

@@ -14,6 +14,7 @@ enum ImportActionType {
   IMPORT_CLEANING_STEP = 'IMPORT_CLEANING_STEP', //SECOND STEP
   IMPORT_CLEANING_SKIP_ROWS = 'IMPORT_CLEANING_SKIP_ROWS', //SECOND STEP skip top rows by count
   IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
+  IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
 }
 
 export type ImportState = {
@@ -27,6 +28,7 @@ export type ImportState = {
   importConfirm?: boolean; //confirm modal open
   importOpen?: boolean; //file upload window
   importSteps?: boolean; //import process steps
+  showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
   step?: number; //step number, start from 0 as first page
@@ -45,6 +47,7 @@ const importInitialState = {
   importOpen: false,
   importConfirm: false,
   importSteps: false,
+  showMapping: false,
 };
 
 const createTableData = (data: Array<[string, string]>) => {
@@ -207,6 +210,13 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           ...(state.sheetData as ExcelType),
           data: modifiedArrayCols,
         },
+      };
+    case ImportActionType.IMPORT_MAPPING_STEP: //Third step
+      return {
+        ...state,
+        ...payload,
+        step: 2,
+        showMapping: true,
       };
     default:
       return state;

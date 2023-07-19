@@ -70,20 +70,22 @@ export const ImportStepsDrawer = () => {
         open={state.importSteps}
         title={<Steps current={state.step} items={items} labelPlacement="vertical" />}
         footer={
-          <Row justify="end" gutter={32}>
-            <Col xs={4} xxl={2}>
-              <ImportCancelButton name="Cancel" type={ImportActionType.IMPORT_CLOSE} />
-            </Col>
-            <Col xs={4} xxl={2}>
-              <Button
-                block
-                type="primary"
-                onClick={() => dispatch({ type: ImportActionType.IMPORT_CLEANING_STEP, payload: {} })}
-              >
-                Next
-              </Button>
-            </Col>
-          </Row>
+          state.step !== 1 ? (
+            <Row justify="end" gutter={32}>
+              <Col xs={4} xxl={2}>
+                <ImportCancelButton name="Cancel" type={ImportActionType.IMPORT_CLOSE} />
+              </Col>
+              <Col xs={4} xxl={2}>
+                <Button
+                  block
+                  type="primary"
+                  onClick={() => dispatch({ type: ImportActionType.IMPORT_CLEANING_STEP, payload: {} })}
+                >
+                  Next
+                </Button>
+              </Col>
+            </Row>
+          ) : null
         }
         placement="top"
         closable={false}
@@ -110,9 +112,9 @@ export const ImportStepsDrawer = () => {
         }
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', height: '100%' }}>
           <ImportExcel />
-          <ImportClean />
+          {state.step === 1 && <ImportClean />}
         </div>
       </Drawer>
     </>
