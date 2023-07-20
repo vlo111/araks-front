@@ -53,24 +53,42 @@ const importInitialState = {
 };
 
 const createTableData = (data: Array<[string, string]>) => {
-  return data.map((row, index) =>
-    row.reduce(
-      (acc, item, index) => {
-        return {
-          ...acc,
-          ...{
-            [`import${index}`]:
-              item && typeof item === 'string' && item.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
-                <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={item} />
-              ) : (
-                item
-              ),
-          },
-        };
-      },
-      [{ key: index }]
-    )
+  return data.map((row, indexRow) =>
+    row.reduce((acc, item, index) => {
+      return {
+        key: indexRow,
+        ...acc,
+        ...{
+          [`import${index}`]:
+            item && typeof item === 'string' && item.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
+              <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={item} />
+            ) : (
+              item
+            ),
+        },
+      };
+    }, [])
   );
+};
+
+const createCsvDataSource = (data: unknown[]) => {
+  return data.map((row, index) => {
+    return Object.keys(row as CsvType).reduce((acc, item) => {
+      const value = (row as CsvType)[item];
+      return {
+        key: index,
+        ...acc,
+        ...{
+          [item]:
+            value && typeof value === 'string' && value.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
+              <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={value} />
+            ) : (
+              value
+            ),
+        },
+      };
+    }, []);
+  });
 };
 
 const createDraftColumns = (count: number) => [
@@ -137,25 +155,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
             dataIndex: key,
             key,
           })),
-          dataSource: state.data?.slice(0, 6).map((row, index) => {
-            return Object.keys(row as CsvType).reduce(
-              (acc, item) => {
-                const value = (row as CsvType)[item];
-                return {
-                  ...acc,
-                  ...{
-                    [item]:
-                      value && typeof value === 'string' && value.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
-                        <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={value} />
-                      ) : (
-                        value
-                      ),
-                  },
-                };
-              },
-              [{ key: index }]
-            );
-          }),
+          dataSource: createCsvDataSource(state.data?.slice(0, 6) as unknown[]),
           sheetData: {
             data: state.data?.slice(),
           },
@@ -207,7 +207,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       return {
         ...state,
         ...payload,
-        dataSource: createTableData(dataTorWorkSkip),
+        dataSource: state.isCSV ? createCsvDataSource(dataTorWorkSkip) : createTableData(dataTorWorkSkip),
         sheetData: {
           ...(state.sheetData as ExcelType),
           data: modifiedArray,
