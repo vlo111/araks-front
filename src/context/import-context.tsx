@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/es/table';
 import { LongTitle } from 'components/typography';
 import { VARIABLES } from 'helpers/constants';
-import { ExcelType } from 'pages/import/types';
+import { CsvType, ExcelType } from 'pages/import/types';
 import { createContext, Dispatch, ReactNode, useContext, useMemo, useReducer } from 'react';
 
 enum ImportActionType {
@@ -28,6 +28,7 @@ export type ImportState = {
   importConfirm?: boolean; //confirm modal open
   importOpen?: boolean; //file upload window
   importSteps?: boolean; //import process steps
+  isCSV?: boolean; //to check if file is csv or not
   showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
@@ -47,6 +48,7 @@ const importInitialState = {
   importOpen: false,
   importConfirm: false,
   importSteps: false,
+  isCSV: false,
   showMapping: false,
 };
 
@@ -126,6 +128,40 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         importOpen: false,
       };
     case ImportActionType.IMPORT_SUCCESS_NEXT: // First step, TODO: remove everything related to step 2 for back operation
+      // save data for CSV
+      let csvData = {};
+      if (state.isCSV) {
+        csvData = {
+          columns: Object.keys(state?.data?.[0] as CsvType).map((key) => ({
+            title: key,
+            dataIndex: key,
+            key,
+          })),
+          dataSource: state.data?.slice(0, 6).map((row, index) => {
+            return Object.keys(row as CsvType).reduce(
+              (acc, item) => {
+                const value = (row as CsvType)[item];
+                return {
+                  ...acc,
+                  ...{
+                    [item]:
+                      value && typeof value === 'string' && value.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
+                        <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={value} />
+                      ) : (
+                        value
+                      ),
+                  },
+                };
+              },
+              [{ key: index }]
+            );
+          }),
+          sheetData: {
+            data: state.data?.slice(),
+          },
+        };
+      }
+
       return {
         ...state,
         ...payload,
@@ -138,6 +174,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         skipRowsCount: undefined,
         firstRowIsColumn: undefined,
         columnRow: undefined,
+        ...csvData,
       };
     case ImportActionType.IMPORT_SUCCESS_BACK:
       return {

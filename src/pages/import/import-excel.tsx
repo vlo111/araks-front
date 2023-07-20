@@ -14,7 +14,7 @@ const extractTabNames = (state: ImportState) =>
     : null;
 
 /**
- * Component to show grid with sheets, FOR CSV we SILL have Other Component
+ * Component to show grid with sheets
  * @returns
  */
 export const ImportExcel = () => {

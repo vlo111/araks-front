@@ -9,12 +9,12 @@ import { Text } from 'components/typography';
 // import { Modal } from 'components/modal';
 import { ImportActionType, useImport } from 'context/import-context';
 import { AUTH_KEYS, COLORS } from 'helpers/constants';
+import { useLocalStorageGet } from 'hooks/use-local-storage-get';
 
 const { Dragger } = Upload;
 
 const allowedFileTypes = ['csv', 'xlsx'];
 const fileExtensionsToString = allowedFileTypes.join(', ');
-const token = localStorage.getItem(AUTH_KEYS.TOKEN) || '';
 
 const handleFileUpload = (file: RcFile): Promise<boolean> => {
   return new Promise<boolean>((resolve, reject) => {
@@ -41,9 +41,6 @@ const props: UploadProps = {
   name: 'file',
   multiple: false,
   showUploadList: false,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
   accept: fileExtensionsToString,
 
   onDrop(e) {
@@ -53,6 +50,8 @@ const props: UploadProps = {
 };
 
 export const ImportDrawer = () => {
+  const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+
   const { state, dispatch } = useImport();
 
   const handleCancel = () => {
@@ -113,6 +112,9 @@ export const ImportDrawer = () => {
           {...props}
           beforeUpload={handleFileUpload}
           action={`${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`}
+          headers={{
+            Authorization: `Bearer ${token}`,
+          }}
           onChange={(info) => {
             const { status } = info.file;
             if (status !== 'uploading') {
@@ -122,10 +124,13 @@ export const ImportDrawer = () => {
             if (status === 'done') {
               // eslint-disable-next-line no-console
               // console.log('info.file done', info.file);
+              const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
+
               dispatch({
                 type: ImportActionType.IMPORT_SUCCESS_CONFIRM,
                 payload: {
                   fileName: info.file.name,
+                  isCSV: fileExtension === 'csv',
                   ...info.file.response,
                 },
               });

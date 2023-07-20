@@ -4,6 +4,7 @@ import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SecondaryText } from 'components/typography';
 import { ImportActionType, useImport } from 'context/import-context';
 import { ImportClean } from 'pages/import/import-clean';
+import { ImportCsv } from 'pages/import/import-csv';
 import { ImportExcel } from 'pages/import/import-excel';
 import { CSSProperties } from 'react';
 
@@ -113,7 +114,7 @@ export const ImportStepsDrawer = () => {
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
         <div style={{ position: 'relative', height: '100%' }}>
-          <ImportExcel />
+          {state.isCSV ? <ImportCsv /> : <ImportExcel />}
           {state.step === 1 && <ImportClean />}
         </div>
       </Drawer>
