@@ -10,7 +10,6 @@ export const ImportMappingSelect = (props: Partial<RefSelectProps>) => {
       style={{ width: '100%' }}
       placeholder="Select"
       options={state.columnRow?.map((item) => ({ label: item, key: item }))}
-      {...props}
     />
   );
 };

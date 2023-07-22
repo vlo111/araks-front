@@ -3,7 +3,7 @@ import { DownloadAction } from 'components/actions';
 import { QueriesButton } from 'components/button/queries-button';
 import { Sort } from 'components/dropdown';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
-import { ExpandableInput } from 'components/input/expandable-input';
+import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useCallback } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
@@ -15,10 +15,11 @@ type Props = {
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
+
 export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
   const setSearchText = useCallback(
-    (text: string) => {
-      setFilterValue((prevValue) => ({ ...prevValue, search: text }));
+    ({ text, type }: SearchText) => {
+      setFilterValue((prevValue) => ({ ...prevValue, search: text, type }));
     },
     [setFilterValue]
   );

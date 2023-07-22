@@ -1,11 +1,9 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import { PageParameters } from 'api/types';
+import { AllDataPageParameters } from 'api/types';
 import { useParams } from 'react-router-dom';
 import { AllDataListResponse, AllDataResponse } from 'types/node';
 import client from '../client';
 import { URL_GET_PROJECT_ALL_DATA } from './constants';
-
-export const GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST = '/projects-edge-type/:edge_type_id/properties';
 
 type ReturnData = {
   data: AllDataListResponse[];
@@ -17,7 +15,7 @@ type Result = UseQueryResult<AllDataListResponse> & {
   count: number;
 };
 
-export const useGetProjectAllData = (queryParams: PageParameters, options?: Options): Result => {
+export const useGetProjectAllData = ({ type, ...queryParams }: AllDataPageParameters, options?: Options): Result => {
   const params = useParams();
   const urlNodes = URL_GET_PROJECT_ALL_DATA.replace(':project_id', params.id || '');
   const result = useQuery({

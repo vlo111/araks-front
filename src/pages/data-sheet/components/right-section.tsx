@@ -1,10 +1,12 @@
 import { Skeleton } from 'antd';
 import { AddType } from 'components/button';
 import { ColorFill } from 'components/color-fill';
+import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { ViewDatasheetEdgeProvider } from 'context/datasheet-edge-view-vontext';
 import { ImportProvider } from 'context/import-context';
+import { SortProvider } from 'context/sort-context';
 import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { RightSectionAllData } from './right-section-all-data';
@@ -27,7 +29,11 @@ export const RightSection = () => {
   }
 
   if (allTypeSelected) {
-    return <RightSectionAllData />;
+    return (
+      <SortProvider defaultValue={ALL_DATA_SORT_BY[2].key}>
+        <RightSectionAllData />
+      </SortProvider>
+    );
   }
 
   return (

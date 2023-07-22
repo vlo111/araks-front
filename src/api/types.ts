@@ -24,6 +24,7 @@ export type AllDataPageParameters = {
   sortOrder?: string;
   search?: string;
   project_type_list_id?: string[];
+  type?: string;
 };
 
 export enum RequestTypes {

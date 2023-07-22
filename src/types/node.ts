@@ -136,3 +136,24 @@ export type ConnectionSourcesSearchResponse = {
   count: number;
   rows: ConnectionSourcesSearchResult[];
 };
+
+export type AllDataDocumentResponse = {
+  color: string;
+  match_content: string;
+  match_count: number;
+  match_filename: string;
+  node_id: string;
+  page: number;
+  path: string;
+  project_id: string;
+  property_id: string;
+  property_name: string;
+  type_id: string;
+  type_name: string;
+  user_id: string;
+};
+
+export type AllDataDocumentListResponse = {
+  count: number;
+  rows: AllDataDocumentResponse[];
+};

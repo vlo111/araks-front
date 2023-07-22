@@ -5,8 +5,6 @@ import { NodeDataListResponse, NodeDataResponse } from 'types/node';
 import client from '../client';
 import { URL_NODES_LIST } from './constants';
 
-export const GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST = '/projects-edge-type/:edge_type_id/properties';
-
 type ReturnData = {
   data: NodeDataListResponse;
 };

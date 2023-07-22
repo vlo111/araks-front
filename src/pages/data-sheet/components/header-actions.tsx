@@ -21,8 +21,8 @@ export const HeaderActions = () => {
 
   return (
     <Space size={8}>
-      {!isConnectionType && <UploadAction icon={iconProps} />}
       <DownloadAction icon={iconProps} />
+      {!isConnectionType && <UploadAction icon={iconProps} />}
       <EditType icon={iconProps} {...editTypeProps} />
     </Space>
   );
