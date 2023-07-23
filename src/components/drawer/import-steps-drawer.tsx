@@ -80,6 +80,7 @@ export const ImportStepsDrawer = () => {
                 <Button
                   block
                   type="primary"
+                  disabled={state.step === 2 && !state.mapping}
                   onClick={() => dispatch({ type: ImportActionType.IMPORT_CLEANING_STEP, payload: {} })}
                 >
                   Next
@@ -104,6 +105,7 @@ export const ImportStepsDrawer = () => {
           margin: '32px 24px',
           boxShadow: 'none',
           height: '800px',
+          transform: 'translateY(0px)',
         }}
         bodyStyle={{ padding: '0px 0px 24px 24px' }}
         style={

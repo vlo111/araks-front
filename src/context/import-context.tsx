@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import { ProjectTypePropertyReturnData } from 'api/types';
 import { LongTitle } from 'components/typography';
 import { VARIABLES } from 'helpers/constants';
 import { CsvType, ExcelType } from 'pages/import/types';
@@ -15,6 +16,22 @@ enum ImportActionType {
   IMPORT_CLEANING_SKIP_ROWS = 'IMPORT_CLEANING_SKIP_ROWS', //SECOND STEP skip top rows by count
   IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
   IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
+  IMPORT_MAPPING_CHECK_APPROVE = 'IMPORT_MAPPING_CHECK_APPROVE', // Runs when user approves check result
+}
+
+export interface ItemMapping {
+  key: string;
+  dataFields: string;
+  importedFields?: string;
+  property: ProjectTypePropertyReturnData;
+  check?: {
+    matched: boolean;
+    count?: number;
+  };
+}
+
+interface MappingResult {
+  [x: string]: ItemMapping;
 }
 
 export type ImportState = {
@@ -29,6 +46,7 @@ export type ImportState = {
   importOpen?: boolean; //file upload window
   importSteps?: boolean; //import process steps
   isCSV?: boolean; //to check if file is csv or not
+  mapping?: MappingResult;
   showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
@@ -254,6 +272,14 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...payload,
         step: 2,
         showMapping: true,
+      };
+    case ImportActionType.IMPORT_MAPPING_CHECK_APPROVE: //Approve check result
+      return {
+        ...state,
+        mapping: {
+          ...(state?.mapping ?? {}),
+          ...(payload as MappingResult),
+        },
       };
     default:
       return state;
