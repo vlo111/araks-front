@@ -17,7 +17,6 @@ export const Input = styled(InputComponent)`
   }
 `;
 
-
 export const FormInput = (props: InputProps) => {
   return <Input {...props} />;
 };

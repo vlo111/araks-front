@@ -37,6 +37,10 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
         background-color: ${(props) => `${props.color}`};
       }
     }
+
+    .ant-list-item-meta {
+      align-items: center;
+    }
   }
 `;
 
@@ -89,7 +93,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
               <List.Item.Meta
                 avatar={<Avatar src={item.default_image} />}
                 title={
-                  <Row>
+                  <Row align="middle">
                     <Col span={6}>
                       <Button onClick={() => dispatch(item.id)} type="link">
                         <Text color={COLORS.PRIMARY.GRAY} underline>

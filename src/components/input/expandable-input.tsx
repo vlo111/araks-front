@@ -6,12 +6,13 @@ import './expandable-input.css';
 import { COLORS } from 'helpers/constants';
 import debounce from 'lodash.debounce';
 import { changeHeight } from 'helpers/styles';
-import { Select } from 'antd';
 import { useState } from 'react';
+import { Select } from 'components/select';
 
 const StyleInput = styled(Input)`
   .ant-input-affix-wrapper {
     /* padding-left: 0px; */
+    padding: 4px 11px;
     background: ${COLORS.PRIMARY.WHITE};
     ${(props) =>
       !props.size
@@ -59,8 +60,8 @@ export const ExpandableInput = ({ setSearchText }: Props) => {
         { label: 'Node', value: 'node' },
         { label: 'Document', value: 'document' },
       ]}
-      onSelect={(value: string) => {
-        setType(value);
+      onSelect={(value) => {
+        setType(value as string);
       }}
     />
   );

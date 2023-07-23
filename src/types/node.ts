@@ -151,6 +151,7 @@ export type AllDataDocumentResponse = {
   type_id: string;
   type_name: string;
   user_id: string;
+  default_image: string;
 };
 
 export type AllDataDocumentListResponse = {

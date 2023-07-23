@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Col, List, Row, Skeleton, Spin } from 'antd';
+import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { AllDataPageParameters } from 'api/types';
 import { Checkbox } from 'components/checkbox';
 import { NodePagination } from 'components/pagination';
@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import { AllDataDocumentResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { Button } from 'components/button';
-import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { AllDataListNode } from './list-node';
 import { useGetProjectAllDocuments } from 'api/all-data/use-get-project-all-documents';
 import { MarkedText } from 'components/typography/marked-text';
@@ -39,6 +38,10 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
         background-color: ${(props) => `${props.color}`};
       }
     }
+
+    .ant-list-item-meta {
+      align-items: center;
+    }
   }
 `;
 
@@ -54,13 +57,11 @@ type Props = {
 };
 
 export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
-  const { dispatch } = useViewDatasheet();
-
   const handleItemClick = useCallback(
     (item: AllDataDocumentResponse) => {
-      const updatedCheckedItems = checkedItems.includes(item.type_id)
-        ? checkedItems.filter((i) => i !== item.type_id)
-        : [...checkedItems, item.type_id];
+      const updatedCheckedItems = checkedItems.includes(item.node_id)
+        ? checkedItems.filter((i) => i !== item.node_id)
+        : [...checkedItems, item.node_id];
       setCheckedItems(updatedCheckedItems);
     },
     [checkedItems, setCheckedItems]
@@ -90,23 +91,21 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
           dataSource={rowsData}
           renderItem={(item, index) => {
             return (
-              <StyledListItem key={item.type_id} color={item.color}>
+              <StyledListItem key={item.node_id} color={item.color}>
                 <Checkbox
                   className="all-data-checkbox"
                   style={{ marginRight: '16px' }}
-                  checked={checkedItems.includes(item.type_id)}
+                  checked={checkedItems.includes(item.node_id)}
                   onClick={() => handleItemClick(item)}
                 />
                 <List.Item.Meta
-                  // avatar={<Avatar src={item.default_image} />}
+                  avatar={<Avatar src={item.default_image} />}
                   title={
-                    <Row>
+                    <Row align="middle">
                       <Col span={6} style={{ textAlign: 'center' }}>
-                        <Button onClick={() => dispatch(item.type_id)} type="link">
-                          <Text color={COLORS.PRIMARY.GRAY} underline>
-                            {item.property_name}
-                          </Text>
-                        </Button>
+                        <Text color={COLORS.PRIMARY.GRAY} underline>
+                          {item.property_name}
+                        </Text>
                       </Col>
                       <Col span={18}>
                         <Row justify="end" align="middle" gutter={32}>
