@@ -81,7 +81,15 @@ export const ImportStepsDrawer = () => {
                   block
                   type="primary"
                   disabled={state.step === 2 && !state.mapping}
-                  onClick={() => dispatch({ type: ImportActionType.IMPORT_CLEANING_STEP, payload: {} })}
+                  onClick={() => {
+                    let type = ImportActionType.IMPORT_CLEANING_STEP;
+                    if (state.step === 2 && state.mapping) {
+                      type = !state.showMappingResult
+                        ? ImportActionType.IMPORT_MAPPING_RESULT
+                        : ImportActionType.IMPORT_MAPPING_RESULT;
+                    }
+                    dispatch({ type, payload: {} });
+                  }}
                 >
                   Next
                 </Button>

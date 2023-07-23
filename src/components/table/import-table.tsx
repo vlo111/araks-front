@@ -37,14 +37,22 @@ export const ImportTable: React.FC = () => {
     },
   });
 
+  // eslint-disable-next-line no-console
+  console.log('columnRow', state.columnRow);
+
   const columns: ColumnsType<ItemMapping> = [
     {
       title: 'Data schema fields',
       dataIndex: 'dataFields',
       key: 'dataFields',
-      render: (_: unknown, record: ItemMapping) => {
+      render: (_: unknown, record: ItemMapping, index: number) => {
         return (
           <VerticalSpace size={2}>
+            {index === 0 && (
+              <SecondaryText color={COLORS.PRIMARY.BLUE} disabled>
+                Default property
+              </SecondaryText>
+            )}
             <Input value={record.dataFields} disabled />
             <Space>
               {record.property.required_type && (
@@ -65,45 +73,48 @@ export const ImportTable: React.FC = () => {
       key: 'importedFields',
       className: 'on-top',
       render: (_: unknown, record: ItemMapping, index: number) => (
-        <Select
-          disabled={!!(!state.mapping && index)}
-          style={{ width: '100%' }}
-          placeholder="Select"
-          value={record.importedFields} // Bind the selected value to the state
-          onChange={(value) => {
-            //should check happen
-            if (value === 'Type') {
-              // just for testing if not matches
+        <VerticalSpace size={2}>
+          {index === 0 && <SecondaryText color={COLORS.PRIMARY.BLUE}>Default property </SecondaryText>}
+          <Select
+            disabled={!!(!state.mapping && index)}
+            style={{ width: '100%' }}
+            placeholder="Select"
+            value={record.importedFields} // Bind the selected value to the state
+            onChange={(value) => {
+              //should check happen
+              if (value === 'Type') {
+                // just for testing if not matches
+                setRowData((prevData) =>
+                  prevData?.map((item) =>
+                    item.key === record.key ? { ...item, check: { matched: false, count: 100 } } : item
+                  )
+                );
+                return;
+              }
               setRowData((prevData) =>
-                prevData?.map((item) =>
-                  item.key === record.key ? { ...item, check: { matched: false, count: 100 } } : item
-                )
+                prevData?.map((item) => (item.key === record.key ? { ...item, check: { matched: true } } : item))
               );
-              return;
-            }
-            setRowData((prevData) =>
-              prevData?.map((item) => (item.key === record.key ? { ...item, check: { matched: true } } : item))
-            );
-            dispatch({
-              type: ImportActionType.IMPORT_MAPPING_CHECK_APPROVE,
-              payload: {
-                [record.key]: {
-                  key: record.key,
-                  dataFields: record.dataFields,
-                  importedFields: value,
+              dispatch({
+                type: ImportActionType.IMPORT_MAPPING_CHECK_APPROVE,
+                payload: {
+                  [record.key]: {
+                    key: record.key,
+                    dataFields: record.dataFields,
+                    importedFields: value,
+                  },
                 },
-              },
-            });
-            return;
-            // handleImportFieldChange(record, value);
-          }}
-        >
-          {state.columnRow?.map((item) => (
-            <Option value={item} key={item}>
-              {item}
-            </Option>
-          ))}
-        </Select>
+              });
+              return;
+              // handleImportFieldChange(record, value);
+            }}
+          >
+            {state.columnRow?.map((item) => (
+              <Option value={item} key={item}>
+                {item}
+              </Option>
+            ))}
+          </Select>
+        </VerticalSpace>
       ),
     },
     {

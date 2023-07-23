@@ -1,7 +1,7 @@
 import { Col, Row, Table } from 'antd';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { ImportMappingTable } from 'components/table/import-mapping-table';
+import { ImportTable } from 'components/table/import-table';
 import { ImportActionType, useImport } from 'context/import-context';
 
 /**
@@ -34,7 +34,7 @@ export const ImportCsv = () => {
         )}
         {state.step === 2 && state.showMapping && (
           <Col span={24}>
-            <ImportMappingTable />
+            <ImportTable />
           </Col>
         )}
       </Row>

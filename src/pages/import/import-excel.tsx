@@ -33,6 +33,8 @@ export const ImportExcel = () => {
       dispatch({ type: ImportActionType.IMPORT_SHEET_SELECT_DATA, payload: { activeTab: +activeTab } });
     }
   }, [activeTab, dispatch, state.step]);
+  // eslint-disable-next-line no-console
+  console.log('state', state);
 
   return (
     <VerticalSpace size="large">
@@ -57,8 +59,10 @@ export const ImportExcel = () => {
         </Button>
       )}
       <Row>
-        {!state.showMapping && <Col span={24}>{getTabNames && <ImportSheetTable activeTab={activeTab} />}</Col>}
-        {state.step === 2 && state.showMapping && (
+        {(!state.showMapping || state.showMappingResult) && (
+          <Col span={24}>{getTabNames && <ImportSheetTable activeTab={activeTab} />}</Col>
+        )}
+        {state.step === 2 && state.showMapping && !state.showMappingResult && (
           <Col span={24}>
             <ImportTable />
           </Col>

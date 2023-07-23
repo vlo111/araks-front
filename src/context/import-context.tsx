@@ -17,6 +17,7 @@ enum ImportActionType {
   IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
   IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
   IMPORT_MAPPING_CHECK_APPROVE = 'IMPORT_MAPPING_CHECK_APPROVE', // Runs when user approves check result
+  IMPORT_MAPPING_RESULT = 'IMPORT_MAPPING_RESULT', // See result in table
 }
 
 export interface ItemMapping {
@@ -48,6 +49,7 @@ export type ImportState = {
   isCSV?: boolean; //to check if file is csv or not
   mapping?: MappingResult;
   showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
+  showMappingResult?: boolean; //show mapping result in a greid
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
   step?: number; //step number, start from 0 as first page
@@ -68,9 +70,10 @@ const importInitialState = {
   importSteps: false,
   isCSV: false,
   showMapping: false,
+  showMappingResult: false,
 };
 
-const createTableData = (data: Array<[string, string]>) => {
+const createTableData = (data: Array<[string, string]>, columnsLenght = 1) => {
   return data.map((row, indexRow) =>
     row.reduce((acc, item, index) => {
       return {
@@ -79,7 +82,12 @@ const createTableData = (data: Array<[string, string]>) => {
         ...{
           [`import${index}`]:
             item && typeof item === 'string' && item.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
-              <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={item} />
+              <LongTitle
+                style={{ maxWidth: '500px' }}
+                className="button-content__text"
+                name={item}
+                cutPosition={(VARIABLES.MAX_PROJECT_TITLE_LENGTH / columnsLenght) * 10}
+              />
             ) : (
               item
             ),
@@ -173,6 +181,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
             dataIndex: key,
             key,
           })),
+          columnRow: Object.keys(state?.data?.[0] as CsvType),
           dataSource: createCsvDataSource(state.data?.slice(0, 6) as unknown[]),
           sheetData: {
             data: state.data?.slice(),
@@ -280,6 +289,34 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           ...(state?.mapping ?? {}),
           ...(payload as MappingResult),
         },
+      };
+    case ImportActionType.IMPORT_MAPPING_RESULT: //Mapping result in table
+      const importedFields = Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).map(
+        (item) => item.importedFields
+      );
+
+      const columnsMappingResult = state.columns
+        ?.filter((item) => importedFields.includes(item.title as string))
+        .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+        .slice();
+
+      const importedKeys = Object.values(columnsMappingResult as ColumnsType<unknown[]>).map((item) => item.key);
+
+      const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
+        importedKeys.map((index) => subArray[index as number])
+      ) as [string, string][];
+
+      return {
+        ...state,
+        ...payload,
+        showMappingResult: true,
+        columnRow: importedFields as [string, string],
+        columns: columnsMappingResult,
+        sheetData: {
+          ...(state.sheetData as ExcelType),
+          data: sheetDataMapping,
+        },
+        dataSource: state.isCSV ? [] : createTableData(sheetDataMapping, columnsMappingResult?.length),
       };
     default:
       return state;

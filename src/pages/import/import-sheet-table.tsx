@@ -14,7 +14,7 @@ export const ImportSheetTable = ({ activeTab }: Props) => {
       columns={state.columns}
       tableLayout="fixed"
       scroll={{ x: 'max-content' }}
-      pagination={false}
+      pagination={!!state.showMappingResult ? undefined : false}
     />
   );
 };
