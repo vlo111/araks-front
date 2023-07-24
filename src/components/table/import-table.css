@@ -1,3 +1,27 @@
 .on-top {
   vertical-align: top;
 }
+
+.merge-table .ant-table-thead .ant-table-cell {
+  background-color: transparent;
+}
+
+.merge-table .ant-table-tbody .ant-table-cell,
+.merge-table .ant-table-thead .ant-table-cell {
+  border-bottom: 0;
+}
+
+.merge-table .ant-table-tbody .ant-table-cell:first-child,
+.merge-table .ant-table-tbody .ant-table-cell:last-child {
+  border-bottom: 0;
+  background-color: #ededed;
+}
+
+.merge-table .ant-table-thead .ant-table-cell::after,
+.merge-table .ant-table-thead .ant-table-cell::before {
+  width: 0 !important;
+}
+
+.merge-table table {
+  border-spacing: 0 10px;
+}

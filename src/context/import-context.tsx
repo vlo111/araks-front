@@ -18,6 +18,9 @@ enum ImportActionType {
   IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
   IMPORT_MAPPING_CHECK_APPROVE = 'IMPORT_MAPPING_CHECK_APPROVE', // Runs when user approves check result
   IMPORT_MAPPING_RESULT = 'IMPORT_MAPPING_RESULT', // See result in table
+  IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
+  IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
+  IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
 }
 
 export interface ItemMapping {
@@ -31,8 +34,13 @@ export interface ItemMapping {
   };
 }
 
-interface MappingResult {
+export interface MappingResult {
   [x: string]: ItemMapping;
+}
+
+export enum SetImportRule {
+  Skip = 'skip',
+  Overwrite = 'overwrite',
 }
 
 export type ImportState = {
@@ -53,6 +61,7 @@ export type ImportState = {
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
   step?: number; //step number, start from 0 as first page
+  setRulesSkipOverwrite?: SetImportRule;
 };
 type ImportAction = {
   type: ImportActionType;
@@ -71,6 +80,7 @@ const importInitialState = {
   isCSV: false,
   showMapping: false,
   showMappingResult: false,
+  setRulesSkipOverwrite: SetImportRule.Skip,
 };
 
 const createTableData = (data: Array<[string, string]>, columnsLenght = 1) => {
@@ -97,7 +107,7 @@ const createTableData = (data: Array<[string, string]>, columnsLenght = 1) => {
   );
 };
 
-const createCsvDataSource = (data: unknown[]) => {
+const createCsvDataSource = (data: unknown[], columnsLenght = 1) => {
   return data.map((row, index) => {
     return Object.keys(row as CsvType).reduce((acc, item) => {
       const value = (row as CsvType)[item];
@@ -107,7 +117,12 @@ const createCsvDataSource = (data: unknown[]) => {
         ...{
           [item]:
             value && typeof value === 'string' && value.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH ? (
-              <LongTitle style={{ maxWidth: '500px' }} className="button-content__text" name={value} />
+              <LongTitle
+                style={{ maxWidth: '500px' }}
+                className="button-content__text"
+                name={value}
+                cutPosition={(VARIABLES.MAX_PROJECT_TITLE_LENGTH / columnsLenght) * 10}
+              />
             ) : (
               value
             ),
@@ -291,32 +306,74 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         },
       };
     case ImportActionType.IMPORT_MAPPING_RESULT: //Mapping result in table
+      let columnData = {};
       const importedFields = Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).map(
         (item) => item.importedFields
       );
 
-      const columnsMappingResult = state.columns
-        ?.filter((item) => importedFields.includes(item.title as string))
-        .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
-        .slice();
+      if (state.isCSV) {
+        const columnsMappingResult = state.columns
+          ?.filter((item) => importedFields.includes(item.title as string))
+          .slice();
+        const extractedData = (state.data as CsvType[])?.map((item) => {
+          const extractedItem = {} as CsvType;
+          (importedFields as [string, string]).forEach((key) => {
+            extractedItem[key] = item[key];
+          });
+          return extractedItem;
+        });
+        columnData = {
+          columns: columnsMappingResult,
+          sheetData: {
+            ...(state.sheetData as ExcelType),
+            data: extractedData,
+          },
+          dataSource: createCsvDataSource(extractedData, columnsMappingResult?.length),
+        };
+      } else {
+        const columnsMappingResult = state.columns
+          ?.filter((item) => importedFields.includes(item.title as string))
+          .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+          .slice();
+        const importedKeys = Object.values(columnsMappingResult as ColumnsType<unknown[]>).map((item) => item.key);
 
-      const importedKeys = Object.values(columnsMappingResult as ColumnsType<unknown[]>).map((item) => item.key);
-
-      const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
-        importedKeys.map((index) => subArray[index as number])
-      ) as [string, string][];
+        const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
+          importedKeys.map((index) => subArray[index as number])
+        ) as [string, string][];
+        columnData = {
+          columns: columnsMappingResult,
+          sheetData: {
+            ...(state.sheetData as ExcelType),
+            data: sheetDataMapping,
+          },
+          dataSource: createTableData(sheetDataMapping, columnsMappingResult?.length),
+        };
+      }
 
       return {
         ...state,
         ...payload,
         showMappingResult: true,
         columnRow: importedFields as [string, string],
-        columns: columnsMappingResult,
-        sheetData: {
-          ...(state.sheetData as ExcelType),
-          data: sheetDataMapping,
-        },
-        dataSource: state.isCSV ? [] : createTableData(sheetDataMapping, columnsMappingResult?.length),
+
+        ...columnData,
+      };
+    case ImportActionType.IMPORT_SET_RULE:
+      return {
+        ...state,
+        ...payload,
+        step: 3,
+      };
+    case ImportActionType.IMPORT_SET_RULE_ACTION:
+      return {
+        ...state,
+        ...payload,
+      };
+    case ImportActionType.IMPORT_MERGE:
+      return {
+        ...state,
+        ...payload,
+        step: 4,
       };
     default:
       return state;

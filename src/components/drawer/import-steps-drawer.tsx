@@ -6,6 +6,7 @@ import { ImportActionType, useImport } from 'context/import-context';
 import { ImportClean } from 'pages/import/import-clean';
 import { ImportCsv } from 'pages/import/import-csv';
 import { ImportExcel } from 'pages/import/import-excel';
+import { ImportSetRules } from 'pages/import/import-set-rules';
 import { CSSProperties } from 'react';
 
 const steps = [
@@ -22,11 +23,11 @@ const steps = [
     content: 'Last-content',
   },
   {
-    title: <SecondaryText>Merge</SecondaryText>,
+    title: <SecondaryText>Set Rules</SecondaryText>,
     content: 'Last-content',
   },
   {
-    title: <SecondaryText>Finish</SecondaryText>,
+    title: <SecondaryText>Merging</SecondaryText>,
     content: 'Last-content',
   },
 ];
@@ -71,7 +72,7 @@ export const ImportStepsDrawer = () => {
         open={state.importSteps}
         title={<Steps current={state.step} items={items} labelPlacement="vertical" />}
         footer={
-          state.step !== 1 ? (
+          state.step !== 1 && state.step !== 3 ? (
             <Row justify="end" gutter={32}>
               <Col xs={4} xxl={2}>
                 <ImportCancelButton name="Cancel" type={ImportActionType.IMPORT_CLOSE} />
@@ -86,8 +87,9 @@ export const ImportStepsDrawer = () => {
                     if (state.step === 2 && state.mapping) {
                       type = !state.showMappingResult
                         ? ImportActionType.IMPORT_MAPPING_RESULT
-                        : ImportActionType.IMPORT_MAPPING_RESULT;
+                        : ImportActionType.IMPORT_SET_RULE;
                     }
+
                     dispatch({ type, payload: {} });
                   }}
                 >
@@ -124,8 +126,14 @@ export const ImportStepsDrawer = () => {
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
         <div style={{ position: 'relative', height: '100%' }}>
-          {state.isCSV ? <ImportCsv /> : <ImportExcel />}
-          {state.step === 1 && <ImportClean />}
+          {state.step === 3 ? (
+            <ImportSetRules />
+          ) : (
+            <>
+              {state.isCSV ? <ImportCsv /> : <ImportExcel />}
+              {state.step === 1 && <ImportClean />}
+            </>
+          )}
         </div>
       </Drawer>
     </>

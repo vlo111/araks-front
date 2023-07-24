@@ -22,8 +22,6 @@ export const SkipTopRowsForm = () => {
   }, [form, state.skipRowsCount]);
 
   const onFinish = (values: SkipTopRows) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
     dispatch({ type: ImportActionType.IMPORT_CLEANING_SKIP_ROWS, payload: { skipRowsCount: values.rowsCount } });
   };
 

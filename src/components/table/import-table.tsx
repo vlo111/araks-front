@@ -37,9 +37,6 @@ export const ImportTable: React.FC = () => {
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log('columnRow', state.columnRow);
-
   const columns: ColumnsType<ItemMapping> = [
     {
       title: 'Data schema fields',

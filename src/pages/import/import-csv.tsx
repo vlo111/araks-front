@@ -10,8 +10,6 @@ import { ImportActionType, useImport } from 'context/import-context';
  */
 export const ImportCsv = () => {
   const { state, dispatch } = useImport();
-  // eslint-disable-next-line no-console
-  console.log('state', state);
 
   return (
     <VerticalSpace size="large">
@@ -21,18 +19,18 @@ export const ImportCsv = () => {
         </Button>
       )}
       <Row>
-        {!state.showMapping && (
+        {(!state.showMapping || state.showMappingResult) && (
           <Col span={24}>
             <Table
               dataSource={state.dataSource}
               columns={state.columns}
               tableLayout="fixed"
               scroll={{ x: 'max-content' }}
-              pagination={false}
+              pagination={!!state.showMappingResult ? undefined : false}
             />
           </Col>
         )}
-        {state.step === 2 && state.showMapping && (
+        {state.step === 2 && state.showMapping && !state.showMappingResult && (
           <Col span={24}>
             <ImportTable />
           </Col>
