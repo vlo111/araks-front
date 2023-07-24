@@ -78,7 +78,7 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
       ...values,
       color: values.color ?? defaultValues.color,
       icon: values.icon ?? defaultValues.icon,
-      folder_id: location.state.folderId,
+      ...(location.state?.folderId ? { folder_id: location.state?.folderId } : {}),
     });
   };
 
