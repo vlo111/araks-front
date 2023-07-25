@@ -36,7 +36,7 @@ export const FirstRowColumnName = () => {
           form.submit();
         }}
       >
-        <Radio.Group options={['yes', 'no']} />
+        <Radio.Group options={['yes', 'no']} disabled={state.isCSV} />
       </FormItem>
     </Form>
   );

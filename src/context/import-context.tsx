@@ -238,6 +238,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       return {
         ...state,
         ...payload,
+        firstRowIsColumn: state.isCSV ? 'no' : undefined,
         step: 1,
       };
     case ImportActionType.IMPORT_CLEANING_SKIP_ROWS: // INSIDE Second step
@@ -307,13 +308,21 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       };
     case ImportActionType.IMPORT_MAPPING_RESULT: //Mapping result in table
       let columnData = {};
+
       const importedFields = Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).map(
         (item) => item.importedFields
       );
 
       if (state.isCSV) {
-        const columnsMappingResult = state.columns
-          ?.filter((item) => importedFields.includes(item.title as string))
+        // const columnsMappingResult = state.columns
+        //   ?.filter((item) => importedFields.includes(item.title as string))
+        //   .slice();
+        const columnsMappingResult = importedFields
+          .map((item, index) => ({
+            key: index,
+            title: item,
+            dataIndex: item,
+          }))
           .slice();
         const extractedData = (state.data as CsvType[])?.map((item) => {
           const extractedItem = {} as CsvType;
@@ -331,11 +340,24 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           dataSource: createCsvDataSource(extractedData, columnsMappingResult?.length),
         };
       } else {
-        const columnsMappingResult = state.columns
-          ?.filter((item) => importedFields.includes(item.title as string))
-          .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+        // const columnsMappingResult = state.columns
+        //   ?.filter((item) => importedFields.includes(item.title as string))
+        //   .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+        //   .slice();
+        const columnsMappingResult = importedFields
+          .map((item, index) => ({
+            key: index,
+            title: item,
+            dataIndex: `import${index}`,
+            index: state.columns?.find((col) => col.title === item)?.key,
+          }))
           .slice();
-        const importedKeys = Object.values(columnsMappingResult as ColumnsType<unknown[]>).map((item) => item.key);
+        const importedKeys = Object.values(columnsMappingResult).map((item) => item.index);
+        // eslint-disable-next-line no-console
+        console.log('importedKeys', importedKeys);
+
+        // eslint-disable-next-line no-console
+        console.log('state.sheetData.data.slice()', (state.sheetData as ExcelType)?.data.slice());
 
         const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
           importedKeys.map((index) => subArray[index as number])
