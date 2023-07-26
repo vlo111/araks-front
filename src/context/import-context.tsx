@@ -16,6 +16,7 @@ enum ImportActionType {
   IMPORT_CLEANING_SKIP_ROWS = 'IMPORT_CLEANING_SKIP_ROWS', //SECOND STEP skip top rows by count
   IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
   IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
+  IMPORT_MAPPING_SET_COLUMNS = 'IMPORT_MAPPING_SET_COLUMNS', //set columns from main table, where it will show
   IMPORT_MAPPING_CHECK_APPROVE = 'IMPORT_MAPPING_CHECK_APPROVE', // Runs when user approves check result
   IMPORT_MAPPING_RESULT = 'IMPORT_MAPPING_RESULT', // See result in table
   IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
@@ -46,6 +47,7 @@ export enum SetImportRule {
 export type ImportState = {
   activeTab?: number;
   columns?: ColumnsType<unknown[]> | undefined;
+  columnsMapped?: ColumnsType<unknown[]> | undefined;
   columnRow?: [string, string] | undefined;
   data?: unknown[];
   dataSource?: unknown[][];
@@ -60,6 +62,7 @@ export type ImportState = {
   showMappingResult?: boolean; //show mapping result in a greid
   skipRowsCount?: number; //filter in second step
   sheetData?: unknown;
+  type_id?: string;
   step?: number; //step number, start from 0 as first page
   setRulesSkipOverwrite?: SetImportRule;
 };
@@ -306,6 +309,11 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           ...(payload as MappingResult),
         },
       };
+    case ImportActionType.IMPORT_MAPPING_SET_COLUMNS: //here it saves columnMapped and project type id
+      return {
+        ...state,
+        ...payload,
+      };
     case ImportActionType.IMPORT_MAPPING_RESULT: //Mapping result in table
       let columnData = {};
 
@@ -314,67 +322,108 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       );
 
       if (state.isCSV) {
+        const dataSource = (state.data as CsvType[])?.map((item) => {
+          return Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).reduce(
+            (acc, column) => {
+              return {
+                ...acc,
+                [column.key]: item[column.importedFields as string],
+              };
+            },
+            {}
+          );
+        });
         // const columnsMappingResult = state.columns
         //   ?.filter((item) => importedFields.includes(item.title as string))
         //   .slice();
-        const columnsMappingResult = importedFields
-          .map((item, index) => ({
-            key: index,
-            title: item,
-            dataIndex: item,
-          }))
-          .slice();
-        const extractedData = (state.data as CsvType[])?.map((item) => {
-          const extractedItem = {} as CsvType;
-          (importedFields as [string, string]).forEach((key) => {
-            extractedItem[key] = item[key];
-          });
-          return extractedItem;
-        });
+        // const columnsMappingResult = importedFields
+        //   .map((item, index) => ({
+        //     key: index,
+        //     title: item,
+        //     dataIndex: item,
+        //   }))
+        //   .slice();
+        // const extractedData = (state.data as CsvType[])?.map((item) => {
+        //   const extractedItem = {} as CsvType;
+        //   (importedFields as [string, string]).forEach((key) => {
+        //     extractedItem[key] = item[key];
+        //   });
+        //   return extractedItem;
+        // });
+
         columnData = {
-          columns: columnsMappingResult,
+          // columns: columnsMappingResult,
           sheetData: {
             ...(state.sheetData as ExcelType),
-            data: extractedData,
+            data: dataSource,
           },
-          dataSource: createCsvDataSource(extractedData, columnsMappingResult?.length),
+          dataSource: createCsvDataSource(dataSource),
         };
       } else {
-        // const columnsMappingResult = state.columns
-        //   ?.filter((item) => importedFields.includes(item.title as string))
-        //   .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+        // // const columnsMappingResult = state.columns
+        // //   ?.filter((item) => importedFields.includes(item.title as string))
+        // //   .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
+        // //   .slice();
+        // const columnsMappingResult = importedFields
+        //   .map((item, index) => ({
+        //     key: index,
+        //     title: item,
+        //     dataIndex: `import${index}`,
+        //     index: state.columns?.find((col) => col.title === item)?.key,
+        //   }))
         //   .slice();
-        const columnsMappingResult = importedFields
-          .map((item, index) => ({
-            key: index,
-            title: item,
-            dataIndex: `import${index}`,
-            index: state.columns?.find((col) => col.title === item)?.key,
-          }))
-          .slice();
-        const importedKeys = Object.values(columnsMappingResult).map((item) => item.index);
-        // eslint-disable-next-line no-console
-        console.log('importedKeys', importedKeys);
+        // const importedKeys = Object.values(columnsMappingResult).map((item) => item.index);
 
-        // eslint-disable-next-line no-console
-        console.log('state.sheetData.data.slice()', (state.sheetData as ExcelType)?.data.slice());
+        // const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
+        //   importedKeys.map((index) => subArray[index as number])
+        // ) as [string, string][];
 
-        const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
-          importedKeys.map((index) => subArray[index as number])
-        ) as [string, string][];
+        // columnData = {
+        //   columns: columnsMappingResult,
+        //   sheetData: {
+        //     ...(state.sheetData as ExcelType),
+        //     data: sheetDataMapping,
+        //   },
+        //   dataSource: createTableData(sheetDataMapping, columnsMappingResult?.length),
+        // };
+
+        const mergedObject = Object.keys(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).reduce(
+          (acc, key) => {
+            const column = (state.mapping as { [s: string]: ItemMapping })[key];
+            const keyIndex = state.columns?.findIndex((item) => item.title === column.importedFields) as number;
+            if (keyIndex !== -1) {
+              acc[column.key] = {
+                ...column,
+                dataIndex: state.columns?.[keyIndex].key as number,
+              };
+            }
+            return acc;
+          },
+          {} as { [s: string]: ItemMapping & { dataIndex: number } }
+        );
+
+        const dataSource = (state.sheetData as ExcelType)?.data.map((item) => {
+          return Object.values(mergedObject).reduce((acc, column) => {
+            return {
+              ...acc,
+              [column.key]: item[column.dataIndex],
+            };
+          }, {});
+        });
+
         columnData = {
-          columns: columnsMappingResult,
           sheetData: {
             ...(state.sheetData as ExcelType),
-            data: sheetDataMapping,
+            data: dataSource,
           },
-          dataSource: createTableData(sheetDataMapping, columnsMappingResult?.length),
+          dataSource: createCsvDataSource(dataSource),
         };
       }
 
       return {
         ...state,
         ...payload,
+        columns: state.columnsMapped,
         showMappingResult: true,
         columnRow: importedFields as [string, string],
 

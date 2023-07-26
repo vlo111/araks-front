@@ -5,6 +5,7 @@ import { FormItem } from 'components/form/form-item';
 import { Input } from 'components/input';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { ImportMappingSelect } from 'components/select/import-mapping-select';
+import { ImportActionType, useImport } from 'context/import-context';
 import { useState } from 'react';
 
 interface Item {
@@ -59,7 +60,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
+/**
+ *
+ * @returns @deprecated not used
+ */
 export const ImportMappingTable = () => {
+  const { dispatch } = useImport();
   const [form] = Form.useForm();
   const { nodeTypeId } = useDataSheetWrapper();
   const [rowData, setRowData] = useState<Item[]>();
@@ -67,7 +73,12 @@ export const ImportMappingTable = () => {
   useGetProjectNodeTypeProperties(nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: (data) => {
-      setRowData(data.map((item) => ({ dataFields: item.name, key: item.id })));
+      const rowCols = data.map((item) => ({ dataFields: item.name, key: item.id, title: item.name }));
+      setRowData(rowCols);
+      dispatch({
+        type: ImportActionType.IMPORT_MAPPING_SET_COLUMNS,
+        payload: { columnsMapped: rowCols, type_id: nodeTypeId },
+      });
     },
   });
 

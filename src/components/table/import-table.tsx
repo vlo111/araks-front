@@ -25,15 +25,29 @@ export const ImportTable: React.FC = () => {
   useGetProjectNodeTypeProperties(nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: (data) => {
-      setRowData(
-        data
-          .filter(
-            (row) =>
-              row.ref_property_type_id !== PropertyTypes.IMAGE_URL &&
-              row.ref_property_type_id !== PropertyTypes.Document
-          )
-          .map((item) => ({ dataFields: `${item.name} (${item.ref_property_type_id})`, key: item.id, property: item }))
+      const propertiesFielter = data.filter(
+        (row) =>
+          row.ref_property_type_id !== PropertyTypes.IMAGE_URL && row.ref_property_type_id !== PropertyTypes.Document
       );
+      setRowData(
+        propertiesFielter.map((item) => ({
+          dataFields: `${item.name} (${item.ref_property_type_id})`,
+          key: item.id,
+          property: item,
+        }))
+      );
+      dispatch({
+        type: ImportActionType.IMPORT_MAPPING_SET_COLUMNS,
+        payload: {
+          columnsMapped: propertiesFielter.map((item) => ({
+            dataIndex: item.id,
+            key: item.id,
+            title: item.name,
+            property: item,
+          })),
+          type_id: nodeTypeId,
+        },
+      });
     },
   });
 

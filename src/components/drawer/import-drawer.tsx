@@ -1,4 +1,4 @@
-import { Drawer, message, Modal, Space, Upload, UploadProps } from 'antd';
+import { Drawer, message, Modal, Space, Spin, Upload, UploadProps } from 'antd';
 import { RcFile } from 'antd/es/upload';
 import { FILE_IMPORT_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
@@ -10,6 +10,7 @@ import { Text } from 'components/typography';
 import { ImportActionType, useImport } from 'context/import-context';
 import { AUTH_KEYS, COLORS } from 'helpers/constants';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
+import { useState } from 'react';
 
 const { Dragger } = Upload;
 
@@ -51,6 +52,7 @@ const props: UploadProps = {
 
 export const ImportDrawer = () => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+  const [isUploading, setIsUploading] = useState(false);
 
   const { state, dispatch } = useImport();
 
@@ -69,6 +71,10 @@ export const ImportDrawer = () => {
         mask
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
         footer={null}
+        style={{
+          top: 300,
+          left: 200,
+        }}
       >
         <VerticalSpace>
           <Space>
@@ -85,6 +91,7 @@ export const ImportDrawer = () => {
           <ImportCancelButton name="Back" type={ImportActionType.IMPORT_SUCCESS_BACK} />
         </VerticalSpace>
       </Modal>
+
       <Drawer
         open={state.importOpen}
         footer={false}
@@ -108,46 +115,50 @@ export const ImportDrawer = () => {
         }}
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
-        <Dragger
-          {...props}
-          beforeUpload={handleFileUpload}
-          action={`${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`}
-          headers={{
-            Authorization: `Bearer ${token}`,
-          }}
-          onChange={(info) => {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-              // eslint-disable-next-line no-console
-              // console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-              // eslint-disable-next-line no-console
-              // console.log('info.file done', info.file);
-              const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
+        <Spin spinning={isUploading}>
+          <Dragger
+            {...props}
+            beforeUpload={handleFileUpload}
+            action={`${process.env.REACT_APP_BASE_URL}${FILE_IMPORT_URL}`}
+            headers={{
+              Authorization: `Bearer ${token}`,
+            }}
+            onChange={(info) => {
+              const { status } = info.file;
+              setIsUploading(status === 'uploading');
 
-              dispatch({
-                type: ImportActionType.IMPORT_SUCCESS_CONFIRM,
-                payload: {
-                  fileName: info.file.name,
-                  isCSV: fileExtension === 'csv',
-                  ...info.file.response,
-                },
-              });
-              // message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-              // message.error(`${info.file.name} file upload failed.`);
-            }
-          }}
-        >
-          <VerticalSpace>
-            <Icon color="#414141" icon="import-file" size={151} />
-            <Text color={COLORS.PRIMARY.GRAY}>Import other Xls or CSV file</Text>
-            <Text color={COLORS.PRIMARY.BLUE} underline>
-              Browse on your device
-            </Text>
-          </VerticalSpace>
-        </Dragger>
+              if (status !== 'uploading') {
+                // eslint-disable-next-line no-console
+                // console.log(info.file, info.fileList);
+              }
+              if (status === 'done') {
+                // eslint-disable-next-line no-console
+                // console.log('info.file done', info.file);
+                const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
+
+                dispatch({
+                  type: ImportActionType.IMPORT_SUCCESS_CONFIRM,
+                  payload: {
+                    fileName: info.file.name,
+                    isCSV: fileExtension === 'csv',
+                    ...info.file.response,
+                  },
+                });
+                // message.success(`${info.file.name} file uploaded successfully.`);
+              } else if (status === 'error') {
+                // message.error(`${info.file.name} file upload failed.`);
+              }
+            }}
+          >
+            <VerticalSpace>
+              <Icon color="#414141" icon="import-file" size={151} />
+              <Text color={COLORS.PRIMARY.GRAY}>Import other Xls or CSV file</Text>
+              <Text color={COLORS.PRIMARY.BLUE} underline>
+                Browse on your device
+              </Text>
+            </VerticalSpace>
+          </Dragger>
+        </Spin>
       </Drawer>
     </>
   );
