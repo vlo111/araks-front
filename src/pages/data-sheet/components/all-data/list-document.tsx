@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
+import { Fragment, useCallback } from 'react';
+import { Avatar, Col, Divider, List, Row, Skeleton, Spin } from 'antd';
 import { AllDataPageParameters } from 'api/types';
 import { Checkbox } from 'components/checkbox';
 import { NodePagination } from 'components/pagination';
@@ -8,11 +8,10 @@ import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constant
 import styled from 'styled-components';
 import { AllDataDocumentResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
-import { Button } from 'components/button';
-import { AllDataListNode } from './list-node';
 import { useGetProjectAllDocuments } from 'api/all-data/use-get-project-all-documents';
-import { MarkedText } from 'components/typography/marked-text';
+import { Button } from 'components/button';
 import { Icon } from 'components/icon';
+import { MarkedText } from 'components/typography/marked-text';
 
 type TypeInfoProps = {
   color?: string;
@@ -26,6 +25,7 @@ const TypeInfo = styled(({ color, ...props }) => <div {...props} />)<TypeInfoPro
 
 const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)`
   && {
+    align-items: flex-start;
     margin-bottom: 8px;
     padding-left: 24px;
     padding-right: 32px;
@@ -39,9 +39,9 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
       }
     }
 
-    .ant-list-item-meta {
+    /* .ant-list-item-meta {
       align-items: center;
-    }
+    } */
   }
 `;
 
@@ -77,73 +77,68 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
 
   return (
     <Spin spinning={isInitialLoading}>
-      {filterValue.type === 'node' && (
-        <AllDataListNode
-          setFilterValue={setFilterValue}
-          checkedItems={checkedItems}
-          setCheckedItems={setCheckedItems}
-          filterValue={filterValue}
-        />
-      )}
-      {filterValue.type === 'document' && (
-        <List
-          pagination={false}
-          dataSource={rowsData}
-          renderItem={(item, index) => {
-            return (
-              <StyledListItem key={item.node_id} color={item.color}>
-                <Checkbox
-                  className="all-data-checkbox"
-                  style={{ marginRight: '16px' }}
-                  checked={checkedItems.includes(item.node_id)}
-                  onClick={() => handleItemClick(item)}
-                />
-                <List.Item.Meta
-                  avatar={<Avatar src={item.default_image} />}
-                  title={
-                    <Row align="middle">
-                      <Col span={6} style={{ textAlign: 'center' }}>
-                        <Text color={COLORS.PRIMARY.GRAY} underline>
-                          {item.property_name}
-                        </Text>
-                      </Col>
-                      <Col span={18}>
-                        <Row justify="end" align="middle" gutter={32}>
-                          <Col span={8}>
-                            <Button
-                              block
-                              type="link"
-                              onClick={() => {
-                                window.open(item.path, '_blank');
-                              }}
-                              icon={<Icon color="red" icon="file1" size={16} />}
-                            >
-                              <SecondaryText ellipsis>
-                                <span dangerouslySetInnerHTML={{ __html: item.match_filename }} />
-                              </SecondaryText>
-                            </Button>
-                          </Col>
-                          <Col xs={7} xxl={8}>
-                            <MarkedText longText={item.match_content} searchTerm={filterValue.search || ''} />
-                          </Col>
-                          <Col xs={3} xxl={2}>
-                            <Text color={COLORS.PRIMARY.GRAY}>({item.match_count})</Text>
-                          </Col>
-                          <Col span={6}>
-                            <TypeInfo color={item.color} className="all-data-type-name">
-                              <Text color={COLORS.PRIMARY.GRAY_DARK}>{item.type_name}</Text>
-                            </TypeInfo>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  }
-                />
-              </StyledListItem>
-            );
-          }}
-        />
-      )}
+      <List
+        pagination={false}
+        dataSource={rowsData}
+        renderItem={(item, index) => {
+          return (
+            <StyledListItem key={item.node_id} color={item.color}>
+              <Checkbox
+                className="all-data-checkbox"
+                style={{ marginRight: '16px' }}
+                checked={checkedItems.includes(item.node_id)}
+                onClick={() => handleItemClick(item)}
+              />
+              <List.Item.Meta
+                avatar={<Avatar src={item.default_image} />}
+                title={
+                  <Row align="top">
+                    <Col span={3} style={{ textAlign: 'left' }}>
+                      <Text color={COLORS.PRIMARY.GRAY} underline>
+                        {item.property_name}
+                      </Text>
+                    </Col>
+                    <Col span={15}>
+                      {item.data?.map((dataItem) => (
+                        <Fragment key={dataItem.match_filename}>
+                          <Row justify="end" align="top" gutter={32}>
+                            <Col xs={10} xxl={9}>
+                              <Button
+                                block
+                                type="link"
+                                onClick={() => {
+                                  window.open(dataItem.path, '_blank');
+                                }}
+                                icon={<Icon color="red" icon="file1" size={16} />}
+                              >
+                                <SecondaryText ellipsis>
+                                  <span dangerouslySetInnerHTML={{ __html: dataItem.match_filename }} />
+                                </SecondaryText>
+                              </Button>
+                            </Col>
+                            <Col xs={11} xxl={12}>
+                              <MarkedText longText={dataItem.match_content} searchTerm={filterValue.search || ''} />
+                            </Col>
+                            <Col xs={3} xxl={2}>
+                              <Text color={COLORS.PRIMARY.GRAY}>({dataItem.match_count})</Text>
+                            </Col>
+                          </Row>
+                          <Divider />
+                        </Fragment>
+                      ))}
+                    </Col>
+                    <Col span={6}>
+                      <TypeInfo color={item.color} className="all-data-type-name">
+                        <Text color={COLORS.PRIMARY.GRAY_DARK}>{item.type_name}</Text>
+                      </TypeInfo>
+                    </Col>
+                  </Row>
+                }
+              />
+            </StyledListItem>
+          );
+        }}
+      />
       {pageCount ? (
         <NodePagination
           total={pageCount}
