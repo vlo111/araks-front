@@ -3,26 +3,30 @@ import { Text } from './text';
 
 interface MarkedTextProps {
   longText: string;
-  searchTerm: string;
 }
 
-export const MarkedText: React.FC<MarkedTextProps> = ({ longText, searchTerm }) => {
-  if (!searchTerm || searchTerm.trim() === '') {
-    return <Text>{longText}</Text>;
+const extractMatchedText = (text: string) => {
+  const matchStartTag = '<em>';
+  const matchEndTag = '</em>';
+  const startIndex = text.indexOf(matchStartTag);
+  const endIndex = text.indexOf(matchEndTag);
+
+  if (startIndex >= 0 && endIndex > startIndex + matchStartTag.length) {
+    const prefix = text.substring(0, startIndex);
+    const matched = text.substring(startIndex + matchStartTag.length, endIndex);
+    const suffix = text.substring(endIndex + matchEndTag.length);
+    return (
+      <>
+        {prefix}
+        <span style={{ backgroundColor: '#FFFF00' }}>{matched}</span>
+        {suffix}
+      </>
+    );
   }
 
-  const parts = longText.split(new RegExp(`(${searchTerm})`, 'gi'));
-  return (
-    <Text color={COLORS.PRIMARY.GRAY}>
-      {parts.map((part, index) =>
-        part.toLowerCase() === searchTerm.toLowerCase() ? (
-          <span key={index} style={{ backgroundColor: 'yellow', fontWeight: 'bold' }}>
-            {part}
-          </span>
-        ) : (
-          <span key={index}>{part}</span>
-        )
-      )}
-    </Text>
-  );
+  return text;
+};
+
+export const MarkedText: React.FC<MarkedTextProps> = ({ longText }) => {
+  return <Text color={COLORS.PRIMARY.GRAY}>{extractMatchedText(longText)}</Text>;
 };
