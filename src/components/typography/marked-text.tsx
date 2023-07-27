@@ -18,7 +18,7 @@ const extractMatchedText = (text: string) => {
     return (
       <>
         {prefix}
-        <span style={{ backgroundColor: '#FFFF00' }}>{matched}</span>
+        <span style={{ backgroundColor: '#FFDE80' }}>{matched}</span>
         {suffix}
       </>
     );
