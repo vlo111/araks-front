@@ -9,9 +9,10 @@ import { useState } from 'react';
 type Props = {
   count?: number;
   onClose: () => void;
+  onCancel: () => void;
 };
 
-export const ImportMappingIgnoreErrorsModal = ({ count, onClose }: Props) => {
+export const ImportMappingIgnoreErrorsModal = ({ count, onClose, onCancel }: Props) => {
   const [open, setOpen] = useState(false);
 
   const ignoreRows = async () => {
@@ -46,7 +47,7 @@ export const ImportMappingIgnoreErrorsModal = ({ count, onClose }: Props) => {
             type="default"
             onClick={() => {
               setOpen(false);
-              onClose();
+              onCancel();
             }}
           >
             Cancel

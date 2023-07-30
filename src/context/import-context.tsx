@@ -17,8 +17,9 @@ enum ImportActionType {
   IMPORT_CLEANING_FIRST_ROW_AS_HEADER = 'IMPORT_CLEANING_FIRST_ROW_AS_HEADER', //SECOND STEP make first row as table column names
   IMPORT_MAPPING_STEP = 'IMPORT_MAPPING_STEP', //THIRD STEP
   IMPORT_MAPPING_SET_COLUMNS = 'IMPORT_MAPPING_SET_COLUMNS', //set columns from main table, where it will show
-  IMPORT_MAPPING_CHECK_APPROVE = 'IMPORT_MAPPING_CHECK_APPROVE', // Runs when user approves check result
+  IMPORT_MAPPING_CLEAR_WARNING = 'IMPORT_MAPPING_CLEAR_WARNING', // Clear warning when user clicks ignore warnings
   IMPORT_MAPPING_RESULT = 'IMPORT_MAPPING_RESULT', // See result in table
+  IMPORT_MAPPING_SAVE_DATA = 'IMPORT_MAPPING_SAVE_DATA', // See result in table
   IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
   IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
   IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
@@ -28,10 +29,13 @@ export interface ItemMapping {
   key: string;
   dataFields: string;
   importedFields?: string;
+  importedFieldsIndex?: number;
   property: ProjectTypePropertyReturnData;
   check?: {
     matched: boolean;
-    count?: number;
+    count: number;
+    allData: number;
+    emptyValue: number;
   };
 }
 
@@ -43,6 +47,15 @@ export enum SetImportRule {
   Skip = 'skip',
   Overwrite = 'overwrite',
 }
+
+export type DataResultItem = ProjectTypePropertyReturnData & {
+  key: string;
+  value: unknown;
+};
+
+export type DataResult = {
+  [x: string]: DataResultItem[];
+};
 
 export type ImportState = {
   activeTab?: number;
@@ -57,7 +70,9 @@ export type ImportState = {
   importOpen?: boolean; //file upload window
   importSteps?: boolean; //import process steps
   isCSV?: boolean; //to check if file is csv or not
-  mapping?: MappingResult;
+  mapping?: ItemMapping[];
+  mappingSaved?: boolean;
+  mappingHasWarning?: boolean;
   showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
   showMappingResult?: boolean; //show mapping result in a greid
   skipRowsCount?: number; //filter in second step
@@ -81,6 +96,9 @@ const importInitialState = {
   importConfirm: false,
   importSteps: false,
   isCSV: false,
+  mapping: [],
+  mappingSaved: false,
+  mappingHasWarning: false,
   showMapping: false,
   showMappingResult: false,
   setRulesSkipOverwrite: SetImportRule.Skip,
@@ -301,135 +319,43 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         step: 2,
         showMapping: true,
       };
-    case ImportActionType.IMPORT_MAPPING_CHECK_APPROVE: //Approve check result
-      return {
-        ...state,
-        mapping: {
-          ...(state?.mapping ?? {}),
-          ...(payload as MappingResult),
-        },
-      };
     case ImportActionType.IMPORT_MAPPING_SET_COLUMNS: //here it saves columnMapped and project type id
       return {
         ...state,
         ...payload,
       };
     case ImportActionType.IMPORT_MAPPING_RESULT: //Mapping result in table
-      let columnData = {};
-
-      const importedFields = Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).map(
-        (item) => item.importedFields
-      );
-
-      if (state.isCSV) {
-        const dataSource = (state.data as CsvType[])?.map((item) => {
-          return Object.values(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).reduce(
-            (acc, column) => {
-              return {
-                ...acc,
-                [column.key]: item[column.importedFields as string],
-              };
-            },
-            {}
-          );
-        });
-        // const columnsMappingResult = state.columns
-        //   ?.filter((item) => importedFields.includes(item.title as string))
-        //   .slice();
-        // const columnsMappingResult = importedFields
-        //   .map((item, index) => ({
-        //     key: index,
-        //     title: item,
-        //     dataIndex: item,
-        //   }))
-        //   .slice();
-        // const extractedData = (state.data as CsvType[])?.map((item) => {
-        //   const extractedItem = {} as CsvType;
-        //   (importedFields as [string, string]).forEach((key) => {
-        //     extractedItem[key] = item[key];
-        //   });
-        //   return extractedItem;
-        // });
-
-        columnData = {
-          // columns: columnsMappingResult,
-          sheetData: {
-            ...(state.sheetData as ExcelType),
-            data: dataSource,
-          },
-          dataSource: createCsvDataSource(dataSource),
-        };
-      } else {
-        // // const columnsMappingResult = state.columns
-        // //   ?.filter((item) => importedFields.includes(item.title as string))
-        // //   .map((item, index) => ({ ...item, dataIndex: `import${index}` }))
-        // //   .slice();
-        // const columnsMappingResult = importedFields
-        //   .map((item, index) => ({
-        //     key: index,
-        //     title: item,
-        //     dataIndex: `import${index}`,
-        //     index: state.columns?.find((col) => col.title === item)?.key,
-        //   }))
-        //   .slice();
-        // const importedKeys = Object.values(columnsMappingResult).map((item) => item.index);
-
-        // const sheetDataMapping = (state.sheetData as ExcelType)?.data.map((subArray) =>
-        //   importedKeys.map((index) => subArray[index as number])
-        // ) as [string, string][];
-
-        // columnData = {
-        //   columns: columnsMappingResult,
-        //   sheetData: {
-        //     ...(state.sheetData as ExcelType),
-        //     data: sheetDataMapping,
-        //   },
-        //   dataSource: createTableData(sheetDataMapping, columnsMappingResult?.length),
-        // };
-
-        const mergedObject = Object.keys(state.mapping as { [s: string]: ItemMapping } | ArrayLike<ItemMapping>).reduce(
-          (acc, key) => {
-            const column = (state.mapping as { [s: string]: ItemMapping })[key];
-            const keyIndex = state.columns?.findIndex((item) => item.title === column.importedFields) as number;
-            if (keyIndex !== -1) {
-              acc[column.key] = {
-                ...column,
-                dataIndex: state.columns?.[keyIndex].key as number,
-              };
-            }
-            return acc;
-          },
-          {} as { [s: string]: ItemMapping & { dataIndex: number } }
-        );
-
-        const dataSource = (state.sheetData as ExcelType)?.data.map((item) => {
-          return Object.values(mergedObject).reduce((acc, column) => {
-            return {
-              ...acc,
-              [column.key]: item[column.dataIndex],
-            };
-          }, {});
-        });
-
-        columnData = {
-          sheetData: {
-            ...(state.sheetData as ExcelType),
-            data: dataSource,
-          },
-          dataSource: createCsvDataSource(dataSource),
-        };
-      }
-
       return {
         ...state,
-        ...payload,
-        columns: state.columnsMapped,
         showMappingResult: true,
-        columnRow: importedFields as [string, string],
-
-        ...columnData,
+      };
+    case ImportActionType.IMPORT_MAPPING_SAVE_DATA: //should be instead of above one
+      return {
+        ...state,
+        columns: state.columnsMapped,
+        mappingSaved: true,
+        mappingHasWarning: payload.mappingHasWarning,
+        dataToSave: payload.sheetData,
+        mapping: payload.mapping,
+        dataSource: createCsvDataSource(
+          (payload.sheetData as DataResultItem[][]).map((innerArray) => {
+            const obj = {} as CsvType;
+            innerArray.forEach((item) => {
+              obj[item.key] = item.value as string;
+            });
+            return obj;
+          })
+        ),
+      };
+    case ImportActionType.IMPORT_MAPPING_CLEAR_WARNING:
+      return {
+        ...state,
+        mappingHasWarning: false,
       };
     case ImportActionType.IMPORT_SET_RULE:
+      if (!state.mappingSaved || state.mappingHasWarning) {
+        return state;
+      }
       return {
         ...state,
         ...payload,

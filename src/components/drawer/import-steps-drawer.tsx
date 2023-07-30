@@ -53,16 +53,7 @@ export const ImportStepsDrawer = () => {
   const handleCancel = () => {
     Modal.confirm({
       title: 'Are you sure you want to cancel current import process? All data will be cleared.',
-      //   content: (
-      //     <VerticalSpace>
-      //       <Button type="primary" onClick={}>
-      //         Confirm
-      //       </Button>
-      //       <Button type="default">Cancel</Button>
-      //     </VerticalSpace>
-      //   ),
       onOk: () => dispatch({ type: ImportActionType.IMPORT_CLOSE, payload: {} }),
-      //   footer: null,
     });
   };
 
@@ -81,10 +72,10 @@ export const ImportStepsDrawer = () => {
                 <Button
                   block
                   type="primary"
-                  disabled={state.step === 2 && !state.mapping}
+                  disabled={state.step === 2 && (!state.mappingSaved || state.mappingHasWarning)}
                   onClick={() => {
                     let type = ImportActionType.IMPORT_CLEANING_STEP;
-                    if (state.step === 2 && state.mapping) {
+                    if (state.step === 2 && state.mappingSaved) {
                       type = !state.showMappingResult
                         ? ImportActionType.IMPORT_MAPPING_RESULT
                         : ImportActionType.IMPORT_SET_RULE;
@@ -105,11 +96,6 @@ export const ImportStepsDrawer = () => {
         onClose={handleCancel}
         getContainer={false}
         destroyOnClose
-        // afterOpenChange={(open) => {
-        //   if (!open) {
-        //     handleCancel();
-        //   }
-        // }}
         headerStyle={headerStyle}
         contentWrapperStyle={{
           margin: '32px 24px',
@@ -118,11 +104,6 @@ export const ImportStepsDrawer = () => {
           transform: 'translateY(0px)',
         }}
         bodyStyle={{ padding: '0px 0px 24px 24px' }}
-        style={
-          {
-            // background: 'transparent',
-          }
-        }
         maskStyle={{ backgroundImage: 'linear-gradient(#C8CBDA80, #FFFFFF7D)', backdropFilter: 'blur(5px)' }}
       >
         <div style={{ position: 'relative', height: '100%' }}>

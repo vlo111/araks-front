@@ -1,5 +1,5 @@
 import React from 'react';
-import { ItemMapping, MappingResult, useImport } from 'context/import-context';
+import { ItemMapping, useImport } from 'context/import-context';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import './import-table.css';
@@ -42,7 +42,7 @@ export const MergeTable: React.FC = () => {
     <Table
       className="merge-table"
       rowClassName="merge-table-row"
-      dataSource={Object.values(state.mapping as MappingResult) as ItemMapping[]}
+      dataSource={state.mapping}
       columns={columns}
       pagination={false}
     />
