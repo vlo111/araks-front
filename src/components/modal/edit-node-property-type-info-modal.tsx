@@ -77,7 +77,9 @@ export const EditNodePropertyTypeInfoModal = ({ id, initPropertyType }: Props) =
       >
         <VerticalSpace size="large">
           <VerticalSpace size={0}>
-            <MenuText>{`The ${checkData?.invalidCount} rows are error data. The system should delete the rows.`}</MenuText>
+            <MenuText>{`Property type mismatch. The system has detected inconsistencies in the property type and is unable to proceed. As a result, ${
+              checkData?.invalidCount
+            } row${checkData?.invalidCount > 1 ? 's' : ''} will be deleted from the dataset.`}</MenuText>
             <MenuText strong>Clean the Rows and Change type</MenuText>
           </VerticalSpace>
           <Button block onClick={handleContinue} type="primary">

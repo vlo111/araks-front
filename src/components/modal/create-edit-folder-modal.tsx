@@ -23,10 +23,10 @@ export const CreateEditFolderModal = ({ isModalOpen, setIsModalOpen, initialValu
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (initialValue) {
+    if (initialValue && isModalOpen) {
       form.setFieldValue('folderName', initialValue);
     }
-  }, [form, initialValue]);
+  }, [form, initialValue, isModalOpen]);
 
   const onFinish = (values: CreateFolderFormData) => {
     mutate(values);
@@ -50,6 +50,7 @@ export const CreateEditFolderModal = ({ isModalOpen, setIsModalOpen, initialValu
         closable={false}
         afterClose={afterClose}
         forceRender
+        destroyOnClose
       >
         <Form
           name="create-edit-new-folder"

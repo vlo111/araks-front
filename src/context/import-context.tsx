@@ -96,6 +96,7 @@ const importInitialState = {
   importConfirm: false,
   importSteps: false,
   isCSV: false,
+  firstRowIsColumn: 'no',
   mapping: [],
   mappingSaved: false,
   mappingHasWarning: false,
@@ -259,7 +260,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       return {
         ...state,
         ...payload,
-        firstRowIsColumn: state.isCSV ? 'no' : undefined,
+        firstRowIsColumn: 'no',
         step: 1,
       };
     case ImportActionType.IMPORT_CLEANING_SKIP_ROWS: // INSIDE Second step

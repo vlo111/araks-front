@@ -45,6 +45,7 @@ const FolrderText = (props: Omit<Props, 'ButtonProps'>) => {
           !open && setIsClicked(false);
           return open;
         }}
+        destroyTooltipOnHide
         content={
           <FolderActionMenu
             setIsDeleteModalOpen={openDeleteModal}

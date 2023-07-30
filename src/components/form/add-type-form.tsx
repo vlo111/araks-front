@@ -130,7 +130,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder="Parent"
+            placeholder="Please select parent"
             allowClear
             treeDefaultExpandAll
             fieldNames={{ value: 'key' }}

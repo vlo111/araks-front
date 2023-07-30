@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Button as Component, ButtonProps, Space } from 'antd';
 import styled, { css } from 'styled-components';
 
-import { COLORS, VARIABLES } from '../../helpers/constants';
+import { COLORS, screenSize, VARIABLES } from '../../helpers/constants';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 
 import { LongTitle, MenuText, Text } from '../typography';
@@ -27,12 +27,16 @@ const DotsWrapper = styled.div<FullWidth>`
       props.fullWidth
         ? css``
         : css`
-            left: 90px;
-            bottom: 145px;
             height: 30px;
             width: 15px;
             padding: 5px;
             border-radius: 8px;
+            left: 90px;
+            bottom: 145px;
+            @media (max-width: ${screenSize.xxl}) {
+              left: 88px;
+              bottom: 138px;
+            }
           `}
 
     &:hover, &:active {
@@ -87,8 +91,8 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
             <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
           }
         >
-          <DotsWrapper fullWidth={fullWidth}>
-            <DotsVertical className="more-dots" onClick={() => setIsClicked((prev) => !prev)} />
+          <DotsWrapper fullWidth={fullWidth} onClick={() => setIsClicked((prev) => !prev)}>
+            <DotsVertical className="more-dots" />
           </DotsWrapper>
         </ProjectActionPopover>
         <DeleteProjectModal
@@ -134,7 +138,7 @@ const StyledButton = styled(({ fullWidth, ...props }) => <Component {...props} /
       background-color: rgba(35, 47, 106, 0.1);
 
       .more-dots circle {
-        fill: ${COLORS.PRIMARY.BLUE};
+        fill: ${COLORS.PRIMARY.BLUE};media
       }
     }
   }

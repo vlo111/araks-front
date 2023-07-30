@@ -66,7 +66,13 @@ export const TableSection = () => {
           };
         }, {} as DataType),
       }));
-      setRowData([...(rows ? rows : []), ...dataSource(rows?.length || 0, pageData.size)] as DataType[]);
+      setRowData([
+        ...(rows ? rows : []),
+        ...dataSource(
+          rows?.length || 0,
+          pageCount < pageData.size ? (pageCount > DEFAULT_PAGE_SIZE ? pageCount : DEFAULT_PAGE_SIZE) : pageData.size
+        ),
+      ] as DataType[]);
     },
   });
 

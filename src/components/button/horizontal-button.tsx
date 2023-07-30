@@ -60,7 +60,7 @@ export const HorizontalButton = ({ tableHead, openForm, formIsOpened }: Props) =
   }, [openForm]);
 
   return !formIsOpened ? (
-    <Wrapper onClick={handlePropertyAddClick} position={tableHead}>
+    <Wrapper onClick={handlePropertyAddClick} position={tableHead + 20}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>
         Add Node
