@@ -80,7 +80,7 @@ const menu: MenuProps['items'] = [
   {
     icon: <Shared />,
     label: <MenuText>Shared</MenuText>,
-    key: 'shared',
+    key: PATHS.SHARED,
   },
 ];
 
@@ -92,7 +92,12 @@ export const ProjectHome = () => {
     navigate(e.key);
   };
 
-  const defaultSelected = location.pathname === PATHS.PUBLIC ? PATHS.PUBLIC : PATHS.PROJECTS;
+  const defaultSelected =
+    location.pathname === PATHS.PUBLIC
+      ? PATHS.PUBLIC
+      : location.pathname === PATHS.SHARED
+      ? PATHS.SHARED
+      : PATHS.PROJECTS;
 
   return (
     <Layout>
