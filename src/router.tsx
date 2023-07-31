@@ -14,8 +14,9 @@ import { PATHS } from './helpers/constants';
 import { Projects } from './pages/projects';
 import { SignIn } from './pages/sign-in';
 import { Profile } from './pages/profile';
-import { ProjectPerspectives } from "./pages/project-perspectives";
-import { ProjectVisualisation } from "./pages/project-visualisation";
+import { ProjectPerspectives } from './pages/project-perspectives';
+import { ProjectVisualisation } from './pages/project-visualisation';
+import { Shared } from 'pages/shared';
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PUBLIC,
             element: <Public />,
+          },
+          {
+            path: PATHS.SHARED,
+            element: <Shared />,
           },
           {
             path: PATHS.PROFILE,

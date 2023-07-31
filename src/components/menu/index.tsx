@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu as MenuComponent, MenuProps } from 'antd';
 import { FolderFilled } from '@ant-design/icons';
 import { ReactComponent as Delete } from 'components/icons/delete.svg';
@@ -29,10 +29,11 @@ type FoldersList = {
 
 const menuItemStyle = { borderBottom: `1px solid ${COLORS.PRIMARY.GRAY_LIGHT}`, borderRadius: '0' };
 
-const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
+const menuItems = (foldersList: FoldersList[], isSharedPage = false): MenuItem[] => [
   {
     key: '1',
     icon: <MoveTo />,
+    disabled: isSharedPage,
     children: foldersList?.map(
       (item): MenuItem => ({
         key: item.key,
@@ -66,6 +67,7 @@ const menuItems = (foldersList: FoldersList[]): MenuItem[] => [
   },
   {
     key: 'edit',
+    disabled: isSharedPage,
     icon: <Edit />,
     label: <MenuText>Edit</MenuText>,
   },
@@ -115,6 +117,7 @@ type Props = {
 
 /* forceSubMenuRender - set condiotn when popover become visible this will become true */
 export const ProjectActionMenu = ({ foldersList, projectId, folderId, setIsDeleteModalOpen }: Props) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const { mutate } = useMoveProjectTo(folderId);
   const { mutate: mutateAll } = useMoveProjectToAll(folderId);
@@ -139,7 +142,7 @@ export const ProjectActionMenu = ({ foldersList, projectId, folderId, setIsDelet
       <Menu
         style={{ width: 256 }}
         mode="vertical"
-        items={menuItems(foldersList)}
+        items={menuItems(foldersList, location.pathname === PATHS.SHARED)}
         forceSubMenuRender={false}
         onClick={onClick}
       />

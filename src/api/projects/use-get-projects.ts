@@ -4,6 +4,7 @@ import client from '../client';
 
 export const GET_PROJECTS_LIST = '/projects';
 export const GET_PROJECTS_PUBLIC_LIST = '/projects/public';
+export const GET_PROJECTS_SHARED = '/shared';
 export const GET_FOLDER_PROJECTS_LIST = '/folders/:id';
 
 type ReturnDataType = {

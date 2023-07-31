@@ -12,6 +12,7 @@ export const PATHS = {
   PROJECT_VISUALISATION: '/projects/visualisation/:id',
   DATA_SHEET: '/projects/data-sheet/:id',
   PUBLIC: '/public',
+  SHARED: '/shared',
   FOLDER: '/folder/:id',
   ERROR_403: 'no-access',
 };
