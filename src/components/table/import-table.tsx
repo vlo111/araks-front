@@ -125,6 +125,14 @@ export const ImportTable: React.FC = () => {
     [clearRowData, dispatch, rowData, state.columnRow, state.isCSV, state.sheetData]
   );
 
+  const calcPercent = (record: ItemMapping) => {
+    if (!record?.check?.allData || !Number.isNaN(record?.check.allData) || !Number.isNaN(record?.check.emptyValue)) {
+      return 0;
+    }
+
+    return Math.round(((record?.check.allData - record?.check.emptyValue) * 100) / record?.check.allData);
+  };
+
   const columns: ColumnsType<ItemMapping> = [
     {
       title: 'Data schema fields',
@@ -192,9 +200,7 @@ export const ImportTable: React.FC = () => {
           return (
             <VerticalSpace size={0}>
               <SecondaryText color={COLORS.SECONDARY.GREEN_LIGHT}>Matched to the column</SecondaryText>
-              <SecondaryText color="#C3C3C3">{`${Math.round(
-                ((record?.check.allData - record?.check.emptyValue) * 100) / record?.check.allData
-              )}% of rows have a value`}</SecondaryText>
+              <SecondaryText color="#C3C3C3">{`${calcPercent(record)}% of rows have a value`}</SecondaryText>
             </VerticalSpace>
           );
         }
@@ -206,9 +212,7 @@ export const ImportTable: React.FC = () => {
                   <SecondaryText
                     color={COLORS.SECONDARY.MAGENTA}
                   >{`${record?.check.count} validation errors`}</SecondaryText>
-                  <SecondaryText color="#C3C3C3">{`${Math.round(
-                    ((record?.check.allData - record?.check.emptyValue) * 100) / record?.check.allData
-                  )}% of rows have a value`}</SecondaryText>
+                  <SecondaryText color="#C3C3C3">{`${calcPercent(record)}% of rows have a value`}</SecondaryText>
                 </VerticalSpace>
               </Col>
               <Col span={12}>
