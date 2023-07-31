@@ -22,7 +22,7 @@ enum ImportActionType {
   IMPORT_MAPPING_SAVE_DATA = 'IMPORT_MAPPING_SAVE_DATA', // See result in table
   IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
   IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
-  IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
+  // IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
 }
 
 export interface ItemMapping {
@@ -80,6 +80,7 @@ export type ImportState = {
   type_id?: string;
   step?: number; //step number, start from 0 as first page
   setRulesSkipOverwrite?: SetImportRule;
+  dataToSave?: DataResultItem[];
 };
 type ImportAction = {
   type: ImportActionType;
@@ -336,7 +337,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         columns: state.columnsMapped,
         mappingSaved: true,
         mappingHasWarning: payload.mappingHasWarning,
-        dataToSave: payload.sheetData,
+        dataToSave: payload.sheetData as DataResultItem[],
         mapping: payload.mapping,
         dataSource: createCsvDataSource(
           (payload.sheetData as DataResultItem[][]).map((innerArray) => {
@@ -367,12 +368,12 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...state,
         ...payload,
       };
-    case ImportActionType.IMPORT_MERGE:
-      return {
-        ...state,
-        ...payload,
-        step: 4,
-      };
+    // case ImportActionType.IMPORT_MERGE:
+    //   return {
+    //     ...state,
+    //     ...payload,
+    //     step: 4,
+    //   };
     default:
       return state;
   }

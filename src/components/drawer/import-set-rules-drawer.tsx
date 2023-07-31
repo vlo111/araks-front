@@ -1,5 +1,6 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Drawer, Modal, notification, Row } from 'antd';
+import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SetRules } from 'components/form/import/set-rules';
@@ -11,6 +12,8 @@ import { ImportActionType, useImport } from 'context/import-context';
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
   const [api, contextHolder] = notification.useNotification();
+
+  const { mutate } = useImportNodes();
 
   const handleCancel = () => {
     Modal.confirm({
@@ -34,11 +37,14 @@ export const ImportSetRulesDrawer = () => {
               block
               type="primary"
               onClick={() =>
-                !state.setRulesSkipOverwrite
+                !state.setRulesSkipOverwrite || !state.dataToSave
                   ? api.warning({
                       message: 'Please set rule at first!',
                     })
-                  : dispatch({ type: ImportActionType.IMPORT_MERGE, payload: {} })
+                  : mutate({
+                      rule: state.setRulesSkipOverwrite,
+                      data: state.dataToSave,
+                    })
               }
             >
               Import
