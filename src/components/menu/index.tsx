@@ -29,54 +29,55 @@ type FoldersList = {
 
 const menuItemStyle = { borderBottom: `1px solid ${COLORS.PRIMARY.GRAY_LIGHT}`, borderRadius: '0' };
 
-const menuItems = (foldersList: FoldersList[], isSharedPage = false): MenuItem[] => [
-  {
-    key: '1',
-    icon: <MoveTo />,
-    disabled: isSharedPage,
-    children: foldersList?.map(
-      (item): MenuItem => ({
-        key: item.key,
-        style: item.type === FolderType.all ? menuItemStyle : {},
-        icon:
-          item.type === FolderType.folder ? (
-            <FolderFilled style={{ fontSize: '16px' }} />
-          ) : (
-            <ArrowRight style={{ fontSize: '14px' }} />
-          ),
-        label:
-          item.type === FolderType.folder ? (
-            <>
-              <SecondaryText title={item.name}>
-                {item.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH
-                  ? item.name.substring(0, VARIABLES.MAX_PROJECT_TITLE_LENGTH) + '...'
-                  : item.name}
-              </SecondaryText>
-              {<SecondaryText> ({item.count})</SecondaryText>}
-            </>
-          ) : (
-            <>
-              <SecondaryText>{item.name}</SecondaryText>
-            </>
-          ),
-      })
-    ),
-    label: <MenuText>Move To</MenuText>,
-    popupClassName: 'project-menu-action',
-    popupOffset: [-25],
-  },
-  {
-    key: 'edit',
-    disabled: isSharedPage,
-    icon: <Edit />,
-    label: <MenuText>Edit</MenuText>,
-  },
-  {
-    key: 'delete',
-    icon: <Delete />,
-    label: <MenuText>Delete</MenuText>,
-  },
-];
+const menuItems = (foldersList: FoldersList[], isSharedPage = false): MenuItem[] =>
+  [
+    {
+      key: '1',
+      icon: <MoveTo />,
+      disabled: isSharedPage,
+      children: foldersList?.map(
+        (item): MenuItem => ({
+          key: item.key,
+          style: item.type === FolderType.all ? menuItemStyle : {},
+          icon:
+            item.type === FolderType.folder ? (
+              <FolderFilled style={{ fontSize: '16px' }} />
+            ) : (
+              <ArrowRight style={{ fontSize: '14px' }} />
+            ),
+          label:
+            item.type === FolderType.folder ? (
+              <>
+                <SecondaryText title={item.name}>
+                  {item.name.length > VARIABLES.MAX_PROJECT_TITLE_LENGTH
+                    ? item.name.substring(0, VARIABLES.MAX_PROJECT_TITLE_LENGTH) + '...'
+                    : item.name}
+                </SecondaryText>
+                {<SecondaryText> ({item.count})</SecondaryText>}
+              </>
+            ) : (
+              <>
+                <SecondaryText>{item.name}</SecondaryText>
+              </>
+            ),
+        })
+      ),
+      label: <MenuText>Move To</MenuText>,
+      popupClassName: 'project-menu-action',
+      popupOffset: [-25],
+    },
+    {
+      key: 'edit',
+      disabled: isSharedPage,
+      icon: <Edit />,
+      label: <MenuText>Edit</MenuText>,
+    },
+    {
+      key: 'delete',
+      icon: <Delete />,
+      label: <MenuText>Delete</MenuText>,
+    },
+  ].filter((item) => !item.disabled);
 
 const menuItemsFolder: MenuItem[] = [
   {

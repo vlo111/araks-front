@@ -1,8 +1,10 @@
-import { useDeleteProject } from 'api/projects/use-delete-project';
+import { PROJECT_DELETE_URL, SHARED_PROJECT_DELETE_URL, useDeleteProject } from 'api/projects/use-delete-project';
 import { Button } from 'components/button';
 import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
+import { PATHS } from 'helpers/constants';
+import { useLocation } from 'react-router-dom';
 
 type Props = {
   isModalOpen: boolean;
@@ -13,7 +15,12 @@ type Props = {
 };
 
 export const DeleteProjectModal = ({ isModalOpen, setIsModalOpen, folderId, projectId, isPublic }: Props) => {
-  const { mutate } = useDeleteProject({ projectId, folderId });
+  const location = useLocation();
+  const { mutate } = useDeleteProject({
+    projectId,
+    folderId,
+    url: location.pathname === PATHS.SHARED ? SHARED_PROJECT_DELETE_URL : PROJECT_DELETE_URL,
+  });
 
   const handleCancel = () => {
     setIsModalOpen(false);
