@@ -46,9 +46,6 @@ export function processDataWithType(
       //csv
       const cellValue = row[mapData.importedFieldsIndex || (mapData.importedFields as string)] as unknown;
 
-      // eslint-disable-next-line no-console
-      console.log('cellValue', cellValue, row, mapData.importedFieldsIndex);
-
       if (mapData.property.default_property && (cellValue === null || cellValue === undefined || cellValue === '')) {
         dataToMap.splice(index, 1);
         wrongValueCount.count++;
@@ -153,34 +150,6 @@ export function processDataWithType(
         }
       }
 
-      //csv
-      //   row[mapData?.importedFields as string] = convertedValue as string;
-
-      // eslint-disable-next-line no-console
-      //   console.log('dataResult', dataResult[index], [
-      //     ...(dataResult[index] || ([] as DataResultItem[])),
-      //     {
-      //       ...mapData.property,
-      //       key: mapData.key,
-      //       value: convertedValue,
-      //       //   wrongValueCount,
-      //     },
-      //   ]);
-
-      //   dataResult = {
-      //     ...dataResult,
-      //     [index]: [
-      //       ...(dataResult[index] || []),
-      //       {
-      //         ...mapData.property,
-      //         key: mapData.key,
-      //         value: convertedValue,
-      //         //   wrongValueCount,
-      //       },
-      //     ],
-      //   };
-      // eslint-disable-next-line no-console
-
       dataResult[index] = [
         ...(dataResult[index] || ([] as DataResultItem[])),
         {
@@ -190,17 +159,8 @@ export function processDataWithType(
         },
       ];
 
-      // eslint-disable-next-line no-console
-      //   console.log('Innereeeeeeeeeeeeeeeeeeeeeeee', dataResult, dataResult[index] || ([] as DataResultItem[]), {
-      //     ...mapData.property,
-      //     key: mapData.key,
-      //     value: convertedValue,
-      //   });
-
       dataWrongResult[mapData.key] = wrongValueCount;
     }
-    // eslint-disable-next-line no-console
-    // console.log('dataResultEEEEND', dataResult);
   });
 
   return {

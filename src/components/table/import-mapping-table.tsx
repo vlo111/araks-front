@@ -82,19 +82,8 @@ export const ImportMappingTable = () => {
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log('data', rowData);
-
   const save = async (key: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as Item;
-
-      // eslint-disable-next-line no-console
-      console.log('row', row);
-    } catch (errInfo) {
-      // eslint-disable-next-line no-console
-      console.log('Validate Failed:', errInfo);
-    }
+    return key;
   };
 
   const columns = [

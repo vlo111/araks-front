@@ -10,8 +10,6 @@ import { ImportActionType, useImport } from 'context/import-context';
  */
 export const ImportCsv = () => {
   const { state, dispatch } = useImport();
-  // eslint-disable-next-line no-console
-  console.log('state', state);
 
   return (
     <VerticalSpace size="large">

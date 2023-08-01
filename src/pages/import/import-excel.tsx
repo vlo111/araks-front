@@ -33,8 +33,6 @@ export const ImportExcel = () => {
       dispatch({ type: ImportActionType.IMPORT_SHEET_SELECT_DATA, payload: { activeTab: +activeTab } });
     }
   }, [activeTab, dispatch, state.step]);
-  // eslint-disable-next-line no-console
-  console.log('state', state);
 
   return (
     <VerticalSpace size="large">

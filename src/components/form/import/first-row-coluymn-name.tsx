@@ -18,8 +18,6 @@ export const FirstRowColumnName = () => {
   }, [form, state.firstRowIsColumn]);
 
   const onFinish = (values: FirstRowISColumn) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
     dispatch({
       type: ImportActionType.IMPORT_CLEANING_FIRST_ROW_AS_HEADER,
       payload: { firstRowIsColumn: values.firstRowIsColumn },

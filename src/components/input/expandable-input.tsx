@@ -41,8 +41,6 @@ export const ExpandableInput = ({ setSearchText }: Props) => {
   const handleSearch = (value: string) => {
     setText(value); // update the input value
   };
-  // eslint-disable-next-line no-console
-  console.log('type, text', type, text);
 
   const handlePrefixClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();

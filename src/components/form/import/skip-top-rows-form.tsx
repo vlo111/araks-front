@@ -12,8 +12,6 @@ type SkipTopRows = {
 export const SkipTopRowsForm = () => {
   const [form] = Form.useForm();
   const { state, dispatch } = useImport();
-  // eslint-disable-next-line no-console
-  console.log('state', state);
 
   useEffect(() => {
     if (state.skipRowsCount) {

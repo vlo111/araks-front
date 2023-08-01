@@ -22,17 +22,12 @@ const handleFileUpload = (file: RcFile): Promise<boolean> => {
     // Extract the file extension
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
-    // eslint-disable-next-line no-console
-    // console.log('Cheeeeeck', allowedFileTypes.includes(fileExtension || ''), fileExtension);
     // Check if the file extension is valid
     if (!allowedFileTypes.includes(fileExtension || '')) {
       message.error(`Invalid file type. Only ${fileExtensionsToString} files are allowed.`);
       resolve(false);
       return;
     }
-
-    // Proceed with file processing
-    // ... (your logic here)
 
     resolve(true);
   });
@@ -45,8 +40,7 @@ const props: UploadProps = {
   accept: fileExtensionsToString,
 
   onDrop(e) {
-    // eslint-disable-next-line no-console
-    // console.log('Dropped files', e.dataTransfer.files);
+    return e;
   },
 };
 
@@ -128,12 +122,8 @@ export const ImportDrawer = () => {
               setIsUploading(status === 'uploading');
 
               if (status !== 'uploading') {
-                // eslint-disable-next-line no-console
-                // console.log(info.file, info.fileList);
               }
               if (status === 'done') {
-                // eslint-disable-next-line no-console
-                // console.log('info.file done', info.file);
                 const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
 
                 dispatch({
