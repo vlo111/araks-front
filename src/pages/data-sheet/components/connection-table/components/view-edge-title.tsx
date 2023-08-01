@@ -1,13 +1,21 @@
 import { Space } from 'antd';
+import { UserProjectRole } from 'api/types';
 import { DeleteEdgeModal } from 'components/modal/delete-edge-modal';
 import { Title } from 'components/typography';
 import { useViewDatasheetEdge } from 'context/datasheet-edge-view-vontext';
+import { useProject } from 'context/project-context';
 
 type ViewNodeProps = {
   onClose: () => void;
 };
 
+/**
+ *
+ * Connection edge view title
+ * @returns
+ */
 export const ViewEdgeTitle = ({ onClose }: ViewNodeProps) => {
+  const { projectInfo } = useProject();
   const { state: selectedView } = useViewDatasheetEdge();
 
   return (
@@ -18,7 +26,9 @@ export const ViewEdgeTitle = ({ onClose }: ViewNodeProps) => {
         <Title level={3}>{selectedView?.target.name}</Title>
       </Space>
       <div>
-        <DeleteEdgeModal id={selectedView?.id || ''} onClose={onClose} />
+        {projectInfo?.role !== UserProjectRole.Viewer && (
+          <DeleteEdgeModal id={selectedView?.id || ''} onClose={onClose} />
+        )}
       </div>
     </Space>
   );

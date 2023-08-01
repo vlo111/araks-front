@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { Button, ButtonProps } from 'antd';
-// import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { useCallback } from 'react';
-// import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
 import { COLORS, screenSize } from 'helpers/constants';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 type WrapperProps = ButtonProps & {
   position: number;
@@ -50,16 +50,12 @@ type Props = {
 };
 
 export const HorizontalButton = ({ tableHead, openForm, formIsOpened }: Props) => {
-  // const {
-  //   dispatch,
-  //   state: { addTypeisOpened },
-  // } = useTypeProperty();
+  const { projectInfo } = useProject();
   const handlePropertyAddClick = useCallback(() => {
     openForm();
-    // dispatch({ type: TypePropertyActionKind.ADD_TYPE_START, payload: {} });
   }, [openForm]);
 
-  return !formIsOpened ? (
+  return !formIsOpened && projectInfo?.role !== UserProjectRole.Viewer ? (
     <Wrapper onClick={handlePropertyAddClick} position={tableHead + 20}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>

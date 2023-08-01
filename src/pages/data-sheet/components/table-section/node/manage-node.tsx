@@ -36,17 +36,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
 
   const { mutate } = useManageNodes();
 
-  // const containerStyle: React.CSSProperties = {
-  //   position: 'absolute',
-  //   height: '100%',
-  //   width: '100%',
-  //   right: 0,
-  //   top: 0,
-  //   overflow: 'hidden',
-  //   textAlign: 'center',
-  //   paddingLeft: '64px',
-  //   paddingRight: '64px',
-  // };
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
@@ -95,7 +84,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   return (
     <>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
-      {/* <div style={containerStyle}> */}
       <Drawer
         title={`Add New Node / ${titleText}`}
         placement="top"
@@ -130,7 +118,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
         </Form>
       </Drawer>
-      {/* </div> */}
     </>
   );
 };

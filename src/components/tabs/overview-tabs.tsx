@@ -12,8 +12,8 @@ import { SchemaWrapper } from 'components/layouts/components/schema/wrapper';
 import { useOverview } from 'context/overview-context';
 import { useGetProject } from 'api/projects/use-get-project';
 import { VisualisationWrapper } from '../layouts/components/visualisation/wrapper';
-import { useProjectInfo } from 'components/routes/private-route';
 import { PerspectiveUser, UserProjectRole } from 'api/types';
+import { useProject } from 'context/project-context';
 
 const Tabs = styled(TabsComponent)`
   .ant-tabs-nav-wrap {
@@ -87,7 +87,7 @@ const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
 };
 
 export const OverviewTabs = () => {
-  const { updateRole } = useProjectInfo();
+  const { updateRole } = useProject();
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();

@@ -6,6 +6,8 @@ import { COLORS } from 'helpers/constants';
 import { AddNodeTypePopover } from 'components/popover';
 import { VerticalButtonWrapper } from './vertical-button-wrapper';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 type Props = {
   columnWidth?: number;
@@ -13,6 +15,8 @@ type Props = {
 };
 
 export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_TYPE_START }: Props) => {
+  const { projectInfo } = useProject();
+
   const [dataSheetTableSize, setDataSheetTableSize] = useState<number>(1);
   const [open, setOpen] = useState(false);
 
@@ -29,6 +33,9 @@ export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_
     setDataSheetTableSize(document.querySelectorAll('#datasheet-data')?.[0]?.clientWidth ?? 0);
   }, []);
 
+  if (projectInfo?.role !== UserProjectRole.Owner) {
+    return <></>;
+  }
   return (
     <AddNodeTypePopover
       content={<AddTypePropertyForm hide={hide} />}

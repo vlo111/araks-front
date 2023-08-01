@@ -9,9 +9,13 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { AddNewConnection } from './connection-types/add-new-connection';
 import { TableStyleBasedOnTab } from '../types';
 import { AddAction } from 'components/actions/add';
+import { UserProjectRole } from 'api/types';
+import { useProject } from 'context/project-context';
 
 export const TabTables = ({ isCheckable = false, noColors = false, hideConnection = false }: TableStyleBasedOnTab) => {
   const { startAddType, allTypeSelected } = useDataSheetWrapper();
+  const { projectInfo } = useProject();
+
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
 
@@ -35,7 +39,7 @@ export const TabTables = ({ isCheckable = false, noColors = false, hideConnectio
               searchVisible={searchVisible}
             />
           ),
-          extra: !allTypeSelected && (
+          extra: !allTypeSelected && projectInfo?.role === UserProjectRole.Owner && (
             <AddAction onClick={(event) => handleExtraClick(event, startAddType)} helpText="Add Type" />
           ),
         },
@@ -52,7 +56,7 @@ export const TabTables = ({ isCheckable = false, noColors = false, hideConnectio
                     searchVisible={searchConnectionVisible}
                   />
                 ),
-                extra: !allTypeSelected && <AddNewConnection />,
+                extra: !allTypeSelected && projectInfo?.role === UserProjectRole.Owner && <AddNewConnection />,
               },
             ]
           : []),

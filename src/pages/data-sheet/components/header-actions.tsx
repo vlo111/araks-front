@@ -1,10 +1,13 @@
 import { Space } from 'antd';
+import { UserProjectRole } from 'api/types';
 import { DownloadAction, UploadAction } from 'components/actions';
 import { EditType, EditTypeProps } from 'components/button/edit-type';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useProject } from 'context/project-context';
 import { COLORS } from 'helpers/constants';
 
 export const HeaderActions = () => {
+  const { projectInfo } = useProject();
   const { startEditType, finishEditType, editTypeisOpened, nodeTypeId, isConnectionType } = useDataSheetWrapper();
   const iconProps = nodeTypeId ? { style: { color: COLORS.PRIMARY.GRAY_DARK } } : {};
 
@@ -21,9 +24,13 @@ export const HeaderActions = () => {
 
   return (
     <Space size={8}>
-      <DownloadAction icon={iconProps} />
-      {!isConnectionType && <UploadAction icon={iconProps} />}
-      <EditType icon={iconProps} {...editTypeProps} />
+      {projectInfo?.role !== UserProjectRole.Viewer && (
+        <>
+          <DownloadAction icon={iconProps} />
+          {!isConnectionType && <UploadAction icon={iconProps} />}{' '}
+        </>
+      )}
+      {projectInfo?.role === UserProjectRole.Owner && <EditType icon={iconProps} {...editTypeProps} />}
     </Space>
   );
 };
