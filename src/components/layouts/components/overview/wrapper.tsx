@@ -1,4 +1,4 @@
-import { Col, Row as RowComponent } from 'antd';
+import { Col, Row as RowComponent, Spin } from 'antd';
 import { UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
 import { Share } from 'pages/project-overview/share';
@@ -37,16 +37,18 @@ export const OverviewWrapper = () => {
   const spanNumber = projectInfo?.role === UserProjectRole.Owner ? 8 : 12;
 
   return (
-    <Row className="overview" hasProject={!!params.id}>
-      <Col span={spanNumber} className="overview__section project-save">
-        <Outlet />
-      </Col>
-      {projectInfo?.role !== UserProjectRole.Viewer && (
-        <Col span={8} className="overview__section project-share">
-          <Share />
+    <Spin spinning={!projectInfo}>
+      <Row className="overview" hasProject={!!params.id}>
+        <Col span={spanNumber} className="overview__section project-save">
+          <Outlet />
         </Col>
-      )}
-      <Col span={spanNumber} className="overview__section project-comments"></Col>
-    </Row>
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
+          <Col span={8} className="overview__section project-share">
+            <Share />
+          </Col>
+        )}
+        <Col span={spanNumber} className="overview__section project-comments"></Col>
+      </Row>
+    </Spin>
   );
 };
