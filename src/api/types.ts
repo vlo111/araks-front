@@ -46,6 +46,16 @@ export type CreateOverviewFormData = {
   folder_id: string;
 };
 
+export enum UserProjectRole {
+  Owner = 'owner',
+  Editor = 'edit',
+  Viewer = 'view',
+}
+
+export type PerspectiveUser = {
+  role: UserProjectRole;
+};
+
 export type ProjectFullInfo = {
   color: string;
   created_at: string;
@@ -60,6 +70,7 @@ export type ProjectFullInfo = {
   token: string;
   updated_at: string;
   user_id: string;
+  perspective_users: PerspectiveUser[];
 };
 
 export type ProjectInfoReturnData = {

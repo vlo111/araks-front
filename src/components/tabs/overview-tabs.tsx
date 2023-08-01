@@ -12,6 +12,8 @@ import { SchemaWrapper } from 'components/layouts/components/schema/wrapper';
 import { useOverview } from 'context/overview-context';
 import { useGetProject } from 'api/projects/use-get-project';
 import { VisualisationWrapper } from '../layouts/components/visualisation/wrapper';
+import { useProjectInfo } from 'components/routes/private-route';
+import { PerspectiveUser, UserProjectRole } from 'api/types';
 
 const Tabs = styled(TabsComponent)`
   .ant-tabs-nav-wrap {
@@ -71,7 +73,21 @@ const items = [
   },
 ];
 
+const priorityRoles: UserProjectRole[] = [UserProjectRole.Owner, UserProjectRole.Editor, UserProjectRole.Viewer];
+
+const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
+  for (const priorityRole of priorityRoles) {
+    const userRoleObj = perspectiveUsers.find((roleObj) => roleObj.role === priorityRole);
+    if (userRoleObj) {
+      return userRoleObj.role;
+    }
+  }
+
+  return null;
+};
+
 export const OverviewTabs = () => {
+  const { updateRole } = useProjectInfo();
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -82,6 +98,7 @@ export const OverviewTabs = () => {
       enabled: !!params.id,
       onSuccess: ({ data }) => {
         dispatch(data.title);
+        updateRole(getUserRoleForProject(data.perspective_users));
       },
     }
   );

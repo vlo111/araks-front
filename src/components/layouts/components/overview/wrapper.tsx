@@ -1,4 +1,6 @@
 import { Col, Row as RowComponent } from 'antd';
+import { UserProjectRole } from 'api/types';
+import { useProjectInfo } from 'components/routes/private-route';
 import { Share } from 'pages/project-overview/share';
 import { Outlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -31,16 +33,20 @@ const Row = styled(({ hasProject, ...props }) => <RowComponent {...props} />)`
 
 export const OverviewWrapper = () => {
   const params = useParams();
+  const { projectInfo } = useProjectInfo();
+  const spanNumber = projectInfo?.role === UserProjectRole.Owner ? 8 : 12;
 
   return (
     <Row className="overview" hasProject={!!params.id}>
-      <Col span={8} className="overview__section project-save">
+      <Col span={spanNumber} className="overview__section project-save">
         <Outlet />
       </Col>
-      <Col span={8} className="overview__section project-share">
-        <Share />
-      </Col>
-      <Col span={8} className="overview__section project-comments"></Col>
+      {projectInfo?.role !== UserProjectRole.Viewer && (
+        <Col span={8} className="overview__section project-share">
+          <Share />
+        </Col>
+      )}
+      <Col span={spanNumber} className="overview__section project-comments"></Col>
     </Row>
   );
 };
