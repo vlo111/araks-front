@@ -11,6 +11,8 @@ import { Icon } from 'components/icon';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { useOverview } from 'context/overview-context';
 import { useEffect } from 'react';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 const ProjectInfo = styled.div`
   display: flex;
@@ -28,6 +30,8 @@ const ProjectInfo = styled.div`
 `;
 
 export const ProjectOverview = () => {
+  const { projectInfo } = useProject();
+
   const isXXl = useIsXXlScreen();
   const { dispatch } = useOverview();
   const navigate = useNavigate();
@@ -56,13 +60,15 @@ export const ProjectOverview = () => {
                 <MenuText ellipsis strong>
                   {data?.title}
                 </MenuText>
-                <Icon
-                  color="#3D487C"
-                  icon="edit-pencil"
-                  size={isXXl ? 25 : 18}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))}
-                />
+                {projectInfo && projectInfo?.role === UserProjectRole.Owner && (
+                  <Icon
+                    color="#3D487C"
+                    icon="edit-pencil"
+                    size={isXXl ? 25 : 18}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))}
+                  />
+                )}
               </Space>
               <Divider style={{ margin: '0', backgroundColor: '#95A2E1' }} />
               <ProjectUserInfo

@@ -3,7 +3,7 @@ import { useGetProject } from 'api/projects/use-get-project';
 import { Input as InputComponent, TextArea } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { FormItem } from 'components/form/form-item';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AddColorIcon } from './components/add-color-icon';
 import { ProjectType } from './components/project-type';
@@ -14,6 +14,7 @@ import { ProjectUserInfo } from './components/project-user-info';
 import { Text } from 'components/typography';
 // import { logedInUser } from "helpers/utils";
 import { useAuth } from 'context/auth-context';
+import { PATHS } from 'helpers/constants';
 
 const Row = styled(RowComponent)`
   &.overview {
@@ -62,6 +63,7 @@ type Props = {
 export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes.Post }: Props) => {
   const params = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { user: logedInUser } = useAuth();
   const [form] = Form.useForm();
@@ -84,6 +86,7 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
 
   const handleCancel = () => {
     form.resetFields();
+    navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id as string));
   };
   const { data, isInitialLoading } = useGetProject(
     { id: params.id },
