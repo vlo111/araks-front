@@ -55,7 +55,7 @@ export const HorizontalButton = ({ tableHead, openForm, formIsOpened }: Props) =
     openForm();
   }, [openForm]);
 
-  return !formIsOpened && projectInfo?.role !== UserProjectRole.Viewer ? (
+  return !formIsOpened && projectInfo && projectInfo?.role !== UserProjectRole.Viewer ? (
     <Wrapper onClick={handlePropertyAddClick} position={tableHead + 20}>
       <PlusAction />
       <Text className="property-text" color={COLORS.PRIMARY.BLUE}>

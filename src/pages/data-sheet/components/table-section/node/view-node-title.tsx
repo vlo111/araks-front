@@ -30,7 +30,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
         <Text>{selectedView?.name}</Text>
       </div>
       <Space>
-        {projectInfo?.role !== UserProjectRole.Viewer && (
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
           <Button
             type="link"
             disabled={isEdit}
@@ -41,7 +41,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
         <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
         <Button type="link" disabled icon={<Icon color="#414141" icon="chat_bubble_outline_black" size={24} />} />
         <Button type="link" disabled icon={<DownloadOutlined style={{ color: '#414141', fontSize: '24px' }} />} />
-        {projectInfo?.role !== UserProjectRole.Viewer && <DeleteNodeModal id={id} onClose={onClose} />}
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && <DeleteNodeModal id={id} onClose={onClose} />}
       </Space>
     </Space>
   );

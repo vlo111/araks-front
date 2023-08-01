@@ -26,7 +26,7 @@ export const ViewEdgeTitle = ({ onClose }: ViewNodeProps) => {
         <Title level={3}>{selectedView?.target.name}</Title>
       </Space>
       <div>
-        {projectInfo?.role !== UserProjectRole.Viewer && (
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
           <DeleteEdgeModal id={selectedView?.id || ''} onClose={onClose} />
         )}
       </div>

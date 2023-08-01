@@ -24,7 +24,7 @@ export const HeaderActions = () => {
 
   return (
     <Space size={8}>
-      {projectInfo?.role !== UserProjectRole.Viewer && (
+      {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
         <>
           <DownloadAction icon={iconProps} />
           {!isConnectionType && <UploadAction icon={iconProps} />}{' '}
