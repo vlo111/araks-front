@@ -197,10 +197,12 @@ const importReducer = (state: ImportState, action: ImportAction) => {
   switch (type) {
     case ImportActionType.IMPORT_OPEN:
       return {
+        ...importInitialState,
         importOpen: true,
       };
     case ImportActionType.IMPORT_CLOSE:
       return {
+        ...importInitialState,
         importOpen: false,
       };
     case ImportActionType.IMPORT_SUCCESS_CONFIRM:
@@ -244,6 +246,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
       };
     case ImportActionType.IMPORT_SUCCESS_BACK:
       return {
+        ...importInitialState,
         importConfirm: false,
         importOpen: true,
       };

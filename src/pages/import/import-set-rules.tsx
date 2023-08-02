@@ -6,18 +6,18 @@ import { Title } from 'components/typography';
 
 export const ImportSetRules = () => {
   return (
-    <Row justify="space-between">
-      <Col span={11}>
-        <VerticalSpace>
-          <Title level={3} style={{ marginTop: '40px' }}>
-            Merging columns
-          </Title>
-          <MergeTable />
-        </VerticalSpace>
-      </Col>
-      <Col span={12}>
-        <ImportSetRulesDrawer />
-      </Col>
-    </Row>
+    <>
+      <Row justify="space-between">
+        <Col span={11}>
+          <VerticalSpace>
+            <Title level={3} style={{ marginTop: '40px' }}>
+              Merging columns
+            </Title>
+            <MergeTable />
+          </VerticalSpace>
+        </Col>
+      </Row>
+      <ImportSetRulesDrawer />
+    </>
   );
 };

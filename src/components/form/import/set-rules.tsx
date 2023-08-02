@@ -33,7 +33,7 @@ export const SetRules = () => {
   return (
     <Form name="import-set-rules" form={form} onFinish={onFinish} autoComplete="off" layout="vertical">
       <FormItem
-        name="setRulesSkipOverwrite"
+        name="setRulesSkip"
         label={
           <Text strong color={COLORS.PRIMARY.GRAY_DARK}>
             Choose the option that best suits your needs to proceed with the import.
@@ -42,7 +42,7 @@ export const SetRules = () => {
         onChange={() => {
           form.submit();
         }}
-        initialValue={SetImportRule.Skip}
+        //initialValue={SetImportRule.Skip}
       >
         <Radio.Group>
           {options.map((option) => (

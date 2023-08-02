@@ -43,7 +43,7 @@ export const ImportSetRulesDrawer = () => {
                     })
                   : mutate({
                       rule: state.setRulesSkipOverwrite,
-                      data: state.dataToSave,
+                      datas: state.dataToSave,
                     })
               }
             >
@@ -56,8 +56,8 @@ export const ImportSetRulesDrawer = () => {
       getContainer={false}
       destroyOnClose
       contentWrapperStyle={{
-        width: '100%',
-        height: '130%',
+        width: '50%',
+        height: '100%',
       }}
       mask={false}
     >
