@@ -20,6 +20,7 @@ enum ImportActionType {
   IMPORT_MAPPING_CLEAR_WARNING = 'IMPORT_MAPPING_CLEAR_WARNING', // Clear warning when user clicks ignore warnings
   IMPORT_MAPPING_RESULT = 'IMPORT_MAPPING_RESULT', // See result in table
   IMPORT_MAPPING_SAVE_DATA = 'IMPORT_MAPPING_SAVE_DATA', // See result in table
+  IMPORT_MAPPING_CLEAR_DATA = 'IMPORT_MAPPING_CLEAR_DATA', // CLEAR SAVED DATA ONCE USER CLEARS DEFAULT SELECTED VALUE
   IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
   IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
   // IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
@@ -100,7 +101,7 @@ const importInitialState = {
   firstRowIsColumn: 'no',
   mapping: [],
   mappingSaved: false,
-  mappingHasWarning: false,
+  mappingHasWarning: true,
   showMapping: false,
   showMappingResult: false,
   setRulesSkipOverwrite: SetImportRule.Skip,
@@ -348,6 +349,15 @@ const importReducer = (state: ImportState, action: ImportAction) => {
             return obj;
           })
         ),
+      };
+    case ImportActionType.IMPORT_MAPPING_CLEAR_DATA:
+      return {
+        ...state,
+        mappingSaved: true,
+        dataToSave: undefined,
+        mapping: [],
+        mappingHasWarning: true,
+        ...payload,
       };
     case ImportActionType.IMPORT_MAPPING_CLEAR_WARNING:
       return {

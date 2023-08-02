@@ -7,11 +7,13 @@ import { Input } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text, Title } from 'components/typography';
 import { useProject } from 'context/project-context';
-import { COLORS } from 'helpers/constants';
+import { COLORS, PATHS } from 'helpers/constants';
+import { useLocation } from 'react-router-dom';
 import { SharedWith } from './components/share/shared-with';
 
 export const Share = () => {
   const { projectInfo } = useProject();
+  const location = useLocation();
 
   const [form] = Form.useForm();
 
@@ -27,7 +29,7 @@ export const Share = () => {
         </Title>
         <Form name="share" form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <VerticalSpace size={48}>
-            {projectInfo?.role === UserProjectRole.Owner && (
+            {(location.pathname === PATHS.PROJECT_CREATE || projectInfo?.role === UserProjectRole.Owner) && (
               <VerticalSpace size={19}>
                 <Row>
                   <Col span={24}>
@@ -60,7 +62,7 @@ export const Share = () => {
               </VerticalSpace>
             )}
             <VerticalSpace size={8}>
-              {projectInfo?.role === UserProjectRole.Owner && (
+              {(projectInfo?.role === UserProjectRole.Owner || location.pathname === PATHS.PROJECT_CREATE) && (
                 <>
                   <Space size={9} style={{ lineHeight: 1 }}>
                     <Icon color="#C5C5C5" icon="public" size={20} />

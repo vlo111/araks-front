@@ -34,31 +34,54 @@ export function processDataWithType(
   const dataResult: DataResult = {};
   const dataWrongResult = {} as DataWrongResult;
   const dataToMap = dataArr.slice();
+  const uniqueValues = new Set<unknown>();
 
-  dataMapping.forEach((mapData) => {
-    const wrongValueCount = { count: 0, allData: dataToMap.length, emptyValue: 0 };
-    const uniqueValues = new Set<unknown>();
+  rowloop: for (let i = dataToMap.length; i > 0; i--) {
+    const index = i - 1;
 
-    for (let i = dataToMap.length; i > 0; i--) {
-      const index = i - 1;
-      const row = dataToMap[index] as CsvType;
+    const row = dataToMap[index] as CsvType;
 
+    if (!row.length) {
+      dataToMap.splice(index, 1);
+      // wrongValueCount.count++;
+      // wrongValueCount.emptyValue++;
+      continue;
+    }
+    for (const mapData of dataMapping) {
+      const wrongValueCount = dataWrongResult[mapData.key] ?? { count: 0, allData: dataToMap.length, emptyValue: 0 };
       //csv
-      const cellValue = row[mapData.importedFieldsIndex || (mapData.importedFields as string)] as unknown;
+      const cellValue = row[mapData.importedFieldsIndex ?? (mapData.importedFields as string)] as unknown;
 
       if (mapData.property.default_property && (cellValue === null || cellValue === undefined || cellValue === '')) {
         dataToMap.splice(index, 1);
         wrongValueCount.count++;
         wrongValueCount.emptyValue++;
-        break;
+        continue rowloop;
       }
 
       if (cellValue === null || cellValue === undefined || cellValue === '') {
         wrongValueCount.emptyValue++;
+        if (mapData.property.required_type) {
+          dataToMap.splice(index, 1);
+          wrongValueCount.count++;
+          delete dataResult[index];
+
+          continue rowloop;
+        }
+        dataResult[index] = [
+          ...(dataResult[index] || ([] as DataResultItem[])),
+          {
+            ...mapData.property,
+            key: mapData.key,
+            value: '',
+          },
+        ];
+
+        dataWrongResult[mapData.key] = wrongValueCount;
+        continue;
       }
 
       let convertedValue;
-
       switch (mapData.property.ref_property_type_id) {
         case PropertyTypes.Text:
           if (typeof cellValue !== 'string') {
@@ -76,6 +99,7 @@ export function processDataWithType(
         case PropertyTypes.Date:
         case PropertyTypes.DateTime:
           const dateObj = new Date(cellValue as string);
+
           const isValidDate = !isNaN(dateObj.getTime());
           if (isValidDate) {
             convertedValue = dateObj.toISOString();
@@ -141,12 +165,16 @@ export function processDataWithType(
 
       //   // If isUnique is true, check for uniqueness
       if (mapData.property.unique_type && convertedValue) {
-        if (uniqueValues.has(convertedValue)) {
-          dataToMap.splice(index, 1);
-          wrongValueCount.count++;
-          break;
+        if (uniqueValues.has(convertedValue + mapData.key)) {
+          if (mapData.property.required_type) {
+            dataToMap.splice(index, 1);
+            delete dataResult[index];
+            wrongValueCount.count++;
+            continue rowloop;
+          }
+          convertedValue = '';
         } else {
-          uniqueValues.add(convertedValue);
+          uniqueValues.add(convertedValue + mapData.key);
         }
       }
 
@@ -161,7 +189,7 @@ export function processDataWithType(
 
       dataWrongResult[mapData.key] = wrongValueCount;
     }
-  });
+  }
 
   return {
     data: Object.values(dataResult),

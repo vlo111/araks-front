@@ -1,8 +1,9 @@
 import { Col, Row as RowComponent, Spin } from 'antd';
 import { UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
+import { PATHS } from 'helpers/constants';
 import { Share } from 'pages/project-overview/share';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Row = styled(({ hasProject, ...props }) => <RowComponent {...props} />)`
@@ -33,16 +34,19 @@ const Row = styled(({ hasProject, ...props }) => <RowComponent {...props} />)`
 
 export const OverviewWrapper = () => {
   const params = useParams();
+  const location = useLocation();
   const { projectInfo } = useProject();
-  const spanNumber = projectInfo?.role === UserProjectRole.Owner ? 8 : 12;
+  const spanNumber =
+    location.pathname === PATHS.PROJECT_CREATE || projectInfo?.role !== UserProjectRole.Viewer ? 8 : 12;
 
   return (
-    <Spin spinning={!projectInfo}>
+    <Spin spinning={!projectInfo && location.pathname !== PATHS.PROJECT_CREATE}>
       <Row className="overview" hasProject={!!params.id}>
         <Col span={spanNumber} className="overview__section project-save">
           <Outlet />
         </Col>
-        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
+        {((projectInfo && projectInfo?.role !== UserProjectRole.Viewer) ||
+          location.pathname === PATHS.PROJECT_CREATE) && (
           <Col span={8} className="overview__section project-share">
             <Share />
           </Col>

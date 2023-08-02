@@ -5,10 +5,13 @@ import { SHARE_OPTIONS } from 'components/dropdown/constants';
 import { Text } from 'components/typography';
 import { useAuth } from 'context/auth-context';
 import { useProject } from 'context/project-context';
+import { PATHS } from 'helpers/constants';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { useLocation } from 'react-router-dom';
 
 export const SharedWith = () => {
   const { projectInfo } = useProject();
+  const location = useLocation();
 
   const isXXl = useIsXXlScreen();
   const { user: logedInUser } = useAuth();
@@ -26,7 +29,7 @@ export const SharedWith = () => {
       renderItem={(item, index) => (
         <List.Item
           actions={[
-            projectInfo?.role === UserProjectRole.Owner ? (
+            location.pathname === PATHS.PROJECT_CREATE || projectInfo?.role === UserProjectRole.Owner ? (
               <Share defaultValue={item.value} key={item.title} />
             ) : (
               SHARE_OPTIONS.find((option) => option.value === item.value)?.label

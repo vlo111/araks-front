@@ -54,21 +54,28 @@ export const ImportTable: React.FC = () => {
     },
   });
 
-  const clearRowData = useCallback((record: ItemMapping) => {
+  const clearRowData = useCallback((record: ItemMapping, isDefaultProperty = false) => {
     setRowData((prevData) =>
       prevData?.map(({ check, importedFields, ...item }) => ({
         ...item,
-        ...(item.key !== record.key ? { check, importedFields } : {}),
+        ...(item.key !== record.key && !isDefaultProperty ? { check, importedFields } : {}),
       }))
     );
   }, []);
 
   const handleFieldChange = useCallback(
-    (record: ItemMapping, value?: unknown) => {
+    (record: ItemMapping, value?: unknown, isDefaultProperty = false) => {
       let dataToProcess;
       if (!value) {
         clearRowData(record);
         dataToProcess = [...rowData?.filter((item) => !!item.importedFields && item.key !== record.key)];
+        if (isDefaultProperty) {
+          dispatch({
+            type: ImportActionType.IMPORT_MAPPING_CLEAR_DATA,
+            payload: {},
+          });
+          return;
+        }
       } else {
         setRowData((prevData) =>
           prevData?.map((item) =>
@@ -80,6 +87,12 @@ export const ImportTable: React.FC = () => {
                 } as ItemMapping)
               : item
           )
+        );
+        // eslint-disable-next-line no-console
+        console.log(
+          'state.columnRow?.findIndex((item) => item === value)',
+          state.columnRow?.findIndex((item) => item === value),
+          value
         );
         dataToProcess = [
           ...rowData?.filter((item) => !!item.importedFields && item.key !== record.key),
@@ -133,6 +146,9 @@ export const ImportTable: React.FC = () => {
     return Math.round(((record?.check.allData - record?.check.emptyValue) * 100) / record?.check.allData);
   };
 
+  // eslint-disable-next-line no-console
+  console.log('rowData', state);
+
   const columns: ColumnsType<ItemMapping> = [
     {
       title: 'Data schema fields',
@@ -170,15 +186,15 @@ export const ImportTable: React.FC = () => {
           {index === 0 && <SecondaryText color={COLORS.PRIMARY.BLUE}>Default property </SecondaryText>}
           <Select
             allowClear
-            disabled={!!(!rowData.length && index)}
+            disabled={!!(!state.mapping?.length && index)}
             style={{ width: '100%' }}
             placeholder="Select"
             value={record.importedFields} // Bind the selected value to the state
             onChange={(value) => {
-              handleFieldChange(record, value);
+              handleFieldChange(record, value, !index);
             }}
             onClear={() => {
-              clearRowData(record);
+              clearRowData(record, !index);
             }}
           >
             {state.columnRow?.map((item) => (
