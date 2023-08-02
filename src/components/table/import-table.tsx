@@ -88,12 +88,7 @@ export const ImportTable: React.FC = () => {
               : item
           )
         );
-        // eslint-disable-next-line no-console
-        console.log(
-          'state.columnRow?.findIndex((item) => item === value)',
-          state.columnRow?.findIndex((item) => item === value),
-          value
-        );
+
         dataToProcess = [
           ...rowData?.filter((item) => !!item.importedFields && item.key !== record.key),
           {
@@ -105,7 +100,6 @@ export const ImportTable: React.FC = () => {
       }
 
       const processResult = processDataWithType(dataToProcess, (state.sheetData as ExcelType).data);
-
       if (processResult.wrongDataInfo && !!value) {
         // just for testing if not matches
         setRowData((prevData) =>
@@ -139,15 +133,12 @@ export const ImportTable: React.FC = () => {
   );
 
   const calcPercent = (record: ItemMapping) => {
-    if (!record?.check?.allData || !Number.isNaN(record?.check.allData) || !Number.isNaN(record?.check.emptyValue)) {
+    if (!record?.check?.allData || Number.isNaN(record?.check.allData) || Number.isNaN(record?.check.emptyValue)) {
       return 0;
     }
 
     return Math.round(((record?.check.allData - record?.check.emptyValue) * 100) / record?.check.allData);
   };
-
-  // eslint-disable-next-line no-console
-  console.log('rowData', state);
 
   const columns: ColumnsType<ItemMapping> = [
     {

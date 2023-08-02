@@ -22,8 +22,6 @@ export const SetRules = () => {
   const { count: dataCount } = useGetTypeNodes({ page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE }, state.type_id, {
     enabled: true,
   });
-  // eslint-disable-next-line no-console
-  console.log('dataCount', dataCount);
 
   useEffect(() => {
     if (state.setRulesSkipOverwrite) {
