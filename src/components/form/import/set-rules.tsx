@@ -1,7 +1,8 @@
 import { Form, Radio } from 'antd';
+import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { Text } from 'components/typography';
 import { ImportActionType, SetImportRule, useImport } from 'context/import-context';
-import { COLORS } from 'helpers/constants';
+import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useEffect } from 'react';
 import { FormItem } from '../form-item';
 
@@ -18,6 +19,12 @@ export const SetRules = () => {
   const [form] = Form.useForm();
   const { state, dispatch } = useImport();
 
+  const { count: dataCount } = useGetTypeNodes({ page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE }, state.type_id, {
+    enabled: true,
+  });
+  // eslint-disable-next-line no-console
+  console.log('dataCount', dataCount);
+
   useEffect(() => {
     if (state.setRulesSkipOverwrite) {
       form.setFieldValue('setRulesSkip', state.setRulesSkipOverwrite);
@@ -25,8 +32,6 @@ export const SetRules = () => {
   }, [form, state.setRulesSkipOverwrite]);
 
   const onFinish = (values: FirstRowISColumn) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
     dispatch({
       type: ImportActionType.IMPORT_SET_RULE_ACTION,
       payload: { setRulesSkipOverwrite: values.setRulesSkip },
@@ -44,9 +49,8 @@ export const SetRules = () => {
         onChange={() => {
           form.submit();
         }}
-        //initialValue={SetImportRule.Skip}
       >
-        <Radio.Group>
+        <Radio.Group disabled={!dataCount}>
           {options.map((option) => (
             <Radio key={option} value={option} style={{ textTransform: 'capitalize' }}>
               <Text color={COLORS.PRIMARY.GRAY_DARK}>{option}</Text>
