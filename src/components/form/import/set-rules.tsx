@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { FormItem } from '../form-item';
 
 type FirstRowISColumn = {
-  setRulesSkipOverwrite: SetImportRule;
+  setRulesSkip: SetImportRule;
 };
 
 /**
@@ -25,9 +25,11 @@ export const SetRules = () => {
   }, [form, state.setRulesSkipOverwrite]);
 
   const onFinish = (values: FirstRowISColumn) => {
+    // eslint-disable-next-line no-console
+    console.log('values', values);
     dispatch({
       type: ImportActionType.IMPORT_SET_RULE_ACTION,
-      payload: { setRulesSkipOverwrite: values.setRulesSkipOverwrite },
+      payload: { setRulesSkipOverwrite: values.setRulesSkip },
     });
   };
   return (
