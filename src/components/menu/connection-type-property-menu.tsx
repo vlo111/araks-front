@@ -56,6 +56,7 @@ export const ConnectionTypePropertyMenu = ({ propertyId, closeManageNodes }: Pro
       <PropertyMenu
         style={{ width: 256 }}
         mode="vertical"
+        selectable={false}
         items={menuItems}
         forceSubMenuRender={false}
         onClick={onClick}

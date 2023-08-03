@@ -75,6 +75,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeMa
       <PropertyMenu
         style={{ width: 256 }}
         mode="vertical"
+        selectable={false}
         items={menuItems(isDefault, canSetDefault)}
         forceSubMenuRender={false}
         onClick={onClick}

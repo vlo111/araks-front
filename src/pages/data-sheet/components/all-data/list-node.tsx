@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
-import { AllDataPageParameters } from 'api/types';
+import { AllDataPageParameters, UserProjectRole } from 'api/types';
 import { Checkbox } from 'components/checkbox';
 import { NodePagination } from 'components/pagination';
 import { Text } from 'components/typography';
@@ -12,6 +12,7 @@ import { AllDataResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { Button } from 'components/button';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
+import { useProject } from 'context/project-context';
 
 type TypeInfoProps = {
   color?: string;
@@ -57,6 +58,7 @@ type Props = {
 
 export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
   const { dispatch } = useViewDatasheet();
+  const { projectInfo } = useProject();
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -84,12 +86,14 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
         renderItem={(item, index) => {
           return (
             <StyledListItem key={item.id} color={item.nodeType?.color}>
-              <Checkbox
-                className="all-data-checkbox"
-                style={{ marginRight: '16px' }}
-                checked={checkedItems.includes(item.id)}
-                onClick={() => handleItemClick(item)}
-              />
+              {projectInfo?.role !== UserProjectRole.Viewer && (
+                <Checkbox
+                  className="all-data-checkbox"
+                  style={{ marginRight: '16px' }}
+                  checked={checkedItems.includes(item.id)}
+                  onClick={() => handleItemClick(item)}
+                />
+              )}
               <List.Item.Meta
                 avatar={<Avatar src={item.default_image} />}
                 title={
