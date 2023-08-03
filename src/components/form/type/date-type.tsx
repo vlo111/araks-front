@@ -12,6 +12,8 @@ type Props = {
   data: ProjectTypePropertyReturnData;
 };
 
+const dateFormat = 'DD/MM/YYYY';
+
 export const DateType = ({ data }: Props) => {
   const label = (
     <Space>
@@ -40,7 +42,7 @@ export const DateType = ({ data }: Props) => {
                       key={field.key}
                       rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
                     >
-                      <Datepicker style={{ width: '100%' }} />
+                      <Datepicker style={{ width: '100%' }} format={dateFormat} />
                     </FormItem>
                   </TypeWrapper>
                 ))}

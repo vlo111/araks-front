@@ -14,6 +14,7 @@ import { ManageConnection } from '../table-section/node/manage-connection';
 import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { convertByType } from 'helpers/utils';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -41,7 +42,7 @@ export const ConnectionTableSection = () => {
         ...row.properties?.reduce((curr: DataType, item: EdgesCreateProperties) => {
           return {
             ...curr,
-            [item.edge_type_property_id]: item.data,
+            [item.edge_type_property_id]: convertByType(item.data, item.edge_type_property_type, true),
           };
         }, {} as DataType),
       }));

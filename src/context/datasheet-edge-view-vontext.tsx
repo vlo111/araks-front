@@ -10,6 +10,8 @@ import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-pro
 import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { ViewEdgeTitle } from 'pages/data-sheet/components/connection-table/components/view-edge-title';
 import { useManageEdge } from 'api/edges/use-manage-edge';
+import { PropertyTypes } from 'components/form/property/types';
+import { convertByType } from 'helpers/utils';
 
 type VIewDataType = ETypeEdgeData | undefined;
 
@@ -61,14 +63,16 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
             target_type_id: data.target.id,
             target_id: selectedView?.target.id,
             name: selectedView?.target.name,
-            id: data.id,
+            ccccid: data.id,
           },
         ],
         ...data.properties.reduce((acc, prop) => {
           const currentValue = selectedView?.properties?.find((property) => property.edge_type_property_id === prop.id);
+          const newValue = convertByType(currentValue?.data, prop.ref_property_type_id as PropertyTypes);
+
           return {
             ...acc,
-            [prop.name]: currentValue ? [currentValue.data] : [null],
+            [prop.name]: newValue ? [newValue] : [null],
           };
         }, {}),
       });
@@ -102,13 +106,17 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
       source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
       properties: data?.properties.reduce((curr, item) => {
         const property = selectedView?.properties?.find((prop) => prop.edge_type_property_id === item.id);
+
         return [
           ...curr,
           {
             id: property?.id,
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data: (values[item.name] as (string | number)[])[0],
+            data:
+              item.ref_property_type_id === PropertyTypes.Integer || item.ref_property_type_id === PropertyTypes.Decimal
+                ? +(values[item.name] as (string | number)[])[0]
+                : (values[item.name] as (string | number)[])[0],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),

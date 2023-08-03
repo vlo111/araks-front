@@ -1,3 +1,6 @@
+import { PropertyTypes } from 'components/form/property/types';
+import { Dayjs } from 'dayjs';
+
 export interface EEdgeNodeType {
   id: string;
   name: string;
@@ -13,8 +16,8 @@ export interface EEdgeType {
 export type EdgesCreateProperties = {
   id?: string;
   edge_type_property_id: string;
-  edge_type_property_type: string;
-  data: string | number;
+  edge_type_property_type: PropertyTypes;
+  data: string | number | Dayjs;
 };
 
 export type ETypeEdgeData = {

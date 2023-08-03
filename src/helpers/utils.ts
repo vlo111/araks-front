@@ -3,6 +3,8 @@ import { iconsList } from 'components/icon';
 import { AxiosError } from 'axios';
 import { Modal } from 'antd';
 import { CustomError } from 'api/types';
+import { PropertyTypes } from 'components/form/property/types';
+import dayjs from 'dayjs';
 
 export const noop = () => {
   return;
@@ -29,4 +31,25 @@ export const errorMessage = (er: unknown) => {
     footer: false,
     closable: true,
   });
+};
+
+export const convertByType = (value: unknown, type: PropertyTypes, addFromatForDate = false) => {
+  switch (type) {
+    case PropertyTypes.DateTime:
+      if (addFromatForDate) {
+        return dayjs(value as string).format('DD/MM/YYYY HH:mm');
+      }
+      return dayjs(value as string);
+    case PropertyTypes.Date:
+      if (addFromatForDate) {
+        return dayjs(value as string).format('DD/MM/YYYY');
+      }
+      return dayjs(value as string);
+    case PropertyTypes.Integer:
+    case PropertyTypes.Decimal:
+      return Number.isNaN(+(value as string)) ? +(value as string) : 0;
+    default:
+      return value;
+  }
+  return value;
 };
