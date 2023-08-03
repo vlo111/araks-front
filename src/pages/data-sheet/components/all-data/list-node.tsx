@@ -108,7 +108,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
                             <Text color={COLORS.PRIMARY.GRAY_DARK}>{item.nodeType?.name}</Text>
                           </TypeInfo>
                         </Col>
-                        <Col>
+                        <Col span={6}>
                           <Text color={COLORS.PRIMARY.GRAY}>
                             {item?.updated_at ? dayjs(item?.updated_at).format('DD MMMM [at] HH:mm') : ''}
                           </Text>

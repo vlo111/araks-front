@@ -5,7 +5,8 @@ import { Sort } from 'components/dropdown';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
-import { useCallback } from 'react';
+import { useSort } from 'context/sort-context';
+import { useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
 type Props = {
@@ -17,12 +18,26 @@ type Props = {
 };
 
 export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
+  const { state: sortState } = useSort();
+
   const setSearchText = useCallback(
     ({ text, type }: SearchText) => {
       setFilterValue((prevValue) => ({ ...prevValue, search: text, type }));
     },
     [setFilterValue]
   );
+
+  useEffect(() => {
+    const [orderName, order] = sortState?.split(' ') || [];
+
+    if (orderName && order) {
+      setFilterValue((prev) => ({
+        ...prev,
+        sortField: orderName,
+        sortOrder: order,
+      }));
+    }
+  }, [setFilterValue, sortState]);
 
   return (
     <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>

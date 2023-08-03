@@ -1,12 +1,10 @@
-import { Fragment, useCallback } from 'react';
+import { Fragment } from 'react';
 import { Avatar, Col, Divider, List, Row, Skeleton, Spin } from 'antd';
 import { AllDataPageParameters } from 'api/types';
-import { Checkbox } from 'components/checkbox';
 import { NodePagination } from 'components/pagination';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import styled from 'styled-components';
-import { AllDataDocumentResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { useGetProjectAllDocuments } from 'api/all-data/use-get-project-all-documents';
 import { Button } from 'components/button';
@@ -57,16 +55,6 @@ type Props = {
 };
 
 export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
-  const handleItemClick = useCallback(
-    (item: AllDataDocumentResponse) => {
-      const updatedCheckedItems = checkedItems.includes(item.node_id)
-        ? checkedItems.filter((i) => i !== item.node_id)
-        : [...checkedItems, item.node_id];
-      setCheckedItems(updatedCheckedItems);
-    },
-    [checkedItems, setCheckedItems]
-  );
-
   const {
     rowsData,
     count: pageCount,
@@ -83,12 +71,6 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
         renderItem={(item, index) => {
           return (
             <StyledListItem key={item.node_id} color={item.color}>
-              <Checkbox
-                className="all-data-checkbox"
-                style={{ marginRight: '16px' }}
-                checked={checkedItems.includes(item.node_id)}
-                onClick={() => handleItemClick(item)}
-              />
               <List.Item.Meta
                 avatar={<Avatar src={item.default_image} />}
                 title={
