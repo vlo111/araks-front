@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../../types';
 import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { filterTreeData } from '../../utils';
 import { ReactComponent as CaretDown } from 'components/icons/caret-down.svg';
 import { ReactComponent as CaretRight } from 'components/icons/caret-right.svg';
 import { QueriesNodeTree } from 'components/tree/queries-node-tree';
+import { createQueriesNodesTree } from 'components/layouts/components/data-sheet/utils';
 
 const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean }) => {
   if (isLeaf) {
@@ -25,7 +24,6 @@ type Props = PropsSetState & TableStyleBasedOnTab;
 export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const { color, nodeTypeId, selectNodeTypeFinished, allTypeSelected } = useDataSheetWrapper();
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
@@ -33,18 +31,15 @@ export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable 
       projectId: params.id || '',
     },
     {
-      enabled: !!(params.id && !allTypeSelected),
+      enabled: !!params.id,
+      onSuccess(data) {
+        // eslint-disable-next-line no-console
+        console.log('data', createQueriesNodesTree(data.data));
+        setFilteredData(createQueriesNodesTree(data.data));
+      },
     },
     noColors
   );
-
-  useEffect(() => {
-    if (nodesList && nodesList.length) {
-      setFilteredData(nodesList);
-    } else {
-      setFilteredData([]);
-    }
-  }, [nodesList]);
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     // eslint-disable-next-line no-console
@@ -67,7 +62,7 @@ export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable 
     setFilteredData(nodesList);
   }, [nodesList]);
 
-  return !selectNodeTypeFinished || isInitialLoading ? (
+  return isInitialLoading ? (
     <Skeleton />
   ) : (
     <>
@@ -84,13 +79,10 @@ export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable 
         showSearch
         checkable={isCheckable}
         switcherIcon={switcherIcon}
-        selectedKeys={[nodeTypeId]}
-        defaultExpandedKeys={[nodeTypeId]}
         treeData={filteredData}
         autoExpandParent
         blockNode
         defaultExpandAll
-        color={color}
       />
     </>
   );

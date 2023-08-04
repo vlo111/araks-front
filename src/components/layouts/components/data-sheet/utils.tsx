@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ReactComponent as Connection } from 'components/icons/connection.svg';
 import { ReactComponent as ConnectionInverse } from 'components/icons/connection-inverse.svg';
 import { ReactComponent as ConnectionOneDirection } from 'components/icons/connection-one-direction.svg';
+import { COLORS } from 'helpers/constants';
 
 const StyledBadge = styled(({ defaultProprtyId, ...props }) => <Badge {...props} />)`
   && {
@@ -47,6 +48,44 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], noColors = f
     for (let j = 0; j < nodesList.length; j += 1) {
       treeNode.children = createNodesTree(nodesList, noColors, nodesList[i].id);
     }
+
+    list.push(treeNode);
+  }
+  return list;
+};
+
+export const createQueriesNodesTree = (nodesList: ProjectTreeReturnData[], noColors = false, parentId?: string) => {
+  const list = [];
+  for (let i = 0; i < nodesList.length; i += 1) {
+    const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_property === true)?.id || '';
+    const key = nodesList[i].id;
+    const treeNode: TreeNodeType = {
+      title: noColors ? (
+        <Text>{nodesList[i].name}</Text>
+      ) : (
+        <StyledBadge
+          color={nodesList[i].color}
+          text={<Text>{nodesList[i].name}</Text>}
+          defaultProprtyId={defaultProprtyId}
+        />
+      ),
+      label: nodesList[i].name,
+      value: key,
+      disabled: true,
+      key,
+      children: nodesList[i].properties?.map((item) => ({
+        label: item.name,
+        title: (
+          <>
+            <Text color={COLORS.PRIMARY.GRAY}>{nodesList[i].name}</Text>
+            <Text color={COLORS.PRIMARY.BLUE}>.{item.name}</Text>
+          </>
+        ),
+        value: item.id,
+        key: item.id,
+      })),
+      ...nodesList[i],
+    };
 
     list.push(treeNode);
   }
