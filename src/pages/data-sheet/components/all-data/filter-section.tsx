@@ -19,7 +19,7 @@ type Props = {
 };
 
 export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
-  const { setHideLeftSection } = useOverview();
+  const { setHideLeftSection, hideLeftSection } = useOverview();
 
   const { state: sortState } = useSort();
 
@@ -62,11 +62,13 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
           <Col>
             <DownloadAction />
           </Col>
-          <Col>
-            <Button type="primary" block onClick={() => setHideLeftSection((prev) => !prev)}>
-              Queries
-            </Button>
-          </Col>
+          {!hideLeftSection && (
+            <Col>
+              <Button type="primary" block onClick={() => setHideLeftSection((prev) => !prev)}>
+                Queries
+              </Button>
+            </Col>
+          )}
         </Row>
       </Col>
     </Row>
