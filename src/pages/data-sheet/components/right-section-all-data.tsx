@@ -1,7 +1,10 @@
+import { Col, Row } from 'antd';
 import { AllDataPageParameters } from 'api/types';
+import { QueriesButton } from 'components/button/queries-button';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
+import { useOverview } from 'context/overview-context';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useState } from 'react';
 import { AllDataFilterSection } from './all-data/filter-section';
@@ -21,22 +24,30 @@ export const defaultAllDataFilter: AllDataPageParameters = {
 export const RightSectionAllData = () => {
   const [filterValue, setFilterValue] = useState(defaultAllDataFilter); // state to store the input value
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const { hideLeftSection } = useOverview();
 
   return (
-    <VerticalSpace>
-      <AllDataFilterSection
-        setFilterValue={setFilterValue}
-        checkedItems={checkedItems}
-        setCheckedItems={setCheckedItems}
-      />
-      <ViewDatasheetProvider>
-        <AllDataList
-          setFilterValue={setFilterValue}
-          checkedItems={checkedItems}
-          setCheckedItems={setCheckedItems}
-          filterValue={filterValue}
-        />
-      </ViewDatasheetProvider>
-    </VerticalSpace>
+    <Row gutter={32}>
+      <Col span={hideLeftSection ? 18 : 24}>
+        <VerticalSpace>
+          <AllDataFilterSection
+            setFilterValue={setFilterValue}
+            checkedItems={checkedItems}
+            setCheckedItems={setCheckedItems}
+          />
+          <ViewDatasheetProvider>
+            <AllDataList
+              setFilterValue={setFilterValue}
+              checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+              filterValue={filterValue}
+            />
+          </ViewDatasheetProvider>
+        </VerticalSpace>
+      </Col>
+      <Col span={hideLeftSection ? 6 : 0}>
+        <QueriesButton />
+      </Col>
+    </Row>
   );
 };

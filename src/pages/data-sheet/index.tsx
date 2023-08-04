@@ -1,4 +1,5 @@
 import { Col, Row as RowComponent } from 'antd';
+import { useOverview } from 'context/overview-context';
 import styled from 'styled-components';
 import { LeftSection } from './components/left-section';
 import { RightSection } from './components/right-section';
@@ -23,14 +24,18 @@ const Row = styled((props) => <RowComponent {...props} />)`
 `;
 
 export const DataSheet = () => {
+  const { hideLeftSection } = useOverview();
+
   return (
     <TypePropertyProvider>
       <Row className="overview">
         {/* zIndex greated than table on right side and lower than header has */}
-        <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list" style={{ zIndex: 3 }}>
-          <LeftSection />
-        </Col>
-        <Col xs={18} xxl={18} className="overview__section project-share" id="datasheet-data">
+        {!hideLeftSection && (
+          <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list" style={{ zIndex: 3 }}>
+            <LeftSection />
+          </Col>
+        )}
+        <Col span={!hideLeftSection ? 18 : 24} className="overview__section project-share" id="datasheet-data">
           <RightSection />
         </Col>
       </Row>

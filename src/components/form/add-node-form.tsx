@@ -22,6 +22,7 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
+
   return (
     <VerticalSpace>
       <Row justify="center">
