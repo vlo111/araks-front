@@ -4,6 +4,7 @@ import { LongTitle } from 'components/typography';
 import { VARIABLES } from 'helpers/constants';
 import { CsvType, ExcelType } from 'pages/import/types';
 import { createContext, Dispatch, ReactNode, useContext, useMemo, useReducer } from 'react';
+import { ImportNodesResponse } from 'api/import/types';
 
 enum ImportActionType {
   IMPORT_OPEN = 'IMPORT_OPEN',
@@ -23,7 +24,8 @@ enum ImportActionType {
   IMPORT_MAPPING_CLEAR_DATA = 'IMPORT_MAPPING_CLEAR_DATA', // CLEAR SAVED DATA ONCE USER CLEARS DEFAULT SELECTED VALUE
   IMPORT_SET_RULE = 'IMPORT_SET_RULE', // Set rule step
   IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
-  // IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
+  IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
+  IMPORT_MERGE_RESULT = 'IMPORT_MERGE_RESULT', // Merge step
 }
 
 export interface ItemMapping {
@@ -65,6 +67,7 @@ export type ImportState = {
   columnRow?: [string, string] | undefined;
   data?: unknown[];
   dataSource?: unknown[][];
+  dataToSave?: DataResultItem[];
   fileName?: string; //uploaded file name
   firstRowIsColumn?: string; //filter in second step
   importConfirm?: boolean; //confirm modal open
@@ -74,6 +77,7 @@ export type ImportState = {
   mapping?: ItemMapping[];
   mappingSaved?: boolean;
   mappingHasWarning?: boolean;
+  mergedData?: ImportNodesResponse;
   showMapping?: boolean; //show mapping data in third step, there we also have grid data show that's why we need this, if false show grid
   showMappingResult?: boolean; //show mapping result in a greid
   skipRowsCount?: number; //filter in second step
@@ -81,7 +85,6 @@ export type ImportState = {
   type_id?: string;
   step?: number; //step number, start from 0 as first page
   setRulesSkipOverwrite?: SetImportRule;
-  dataToSave?: DataResultItem[];
 };
 type ImportAction = {
   type: ImportActionType;
@@ -381,12 +384,17 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...state,
         ...payload,
       };
-    // case ImportActionType.IMPORT_MERGE:
-    //   return {
-    //     ...state,
-    //     ...payload,
-    //     step: 4,
-    //   };
+    case ImportActionType.IMPORT_MERGE:
+      return {
+        ...state,
+        ...payload,
+        step: 4,
+      };
+    case ImportActionType.IMPORT_MERGE_RESULT:
+      return {
+        ...state,
+        ...payload,
+      };
     default:
       return state;
   }
