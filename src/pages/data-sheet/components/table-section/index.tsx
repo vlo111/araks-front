@@ -95,6 +95,9 @@ export const TableSection = () => {
   useEffect(() => {
     if (columns.length) {
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
+      if (!rowData) {
+        setTableHead(summaryHeight);
+      }
       const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
 
       const firstFourElements = Array.from(columnsProperty).slice(0, data.length ?? 0);
@@ -104,7 +107,7 @@ export const TableSection = () => {
 
       setTableHead(summaryHeight);
     }
-  }, [columns, data.length]);
+  }, [columns, data.length, rowData]);
 
   return (
     <div style={{ position: 'relative' }}>
