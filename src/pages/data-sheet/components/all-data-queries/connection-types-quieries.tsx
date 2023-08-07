@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd';
+import { Form, Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
@@ -14,14 +14,23 @@ import { filterConnectionTreeData } from 'pages/data-sheet/utils';
 import { NodeEdgeTypesReturnData } from 'api/types';
 import { QueriesNodeTree } from 'components/tree/queries-node-tree';
 
-type Props = PropsSetState & TableStyleBasedOnTab;
+type Props = PropsSetState &
+  TableStyleBasedOnTab & {
+    setOpenTable: (openTable: boolean) => void;
+    add: () => void;
+    fieldsLength: number;
+  };
 
 export const ConnectionTypesQueries = ({
   searchVisible,
   setSearchVisible,
   isCheckable = false,
   noColors = false,
+  setOpenTable,
+  add,
+  fieldsLength,
 }: Props) => {
+  const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
   const { color, nodeTypeId } = useDataSheetWrapper();
@@ -46,8 +55,14 @@ export const ConnectionTypesQueries = ({
   );
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeConnectionType> }) => {
+    setOpenTable(false);
+    add();
     // eslint-disable-next-line no-console
-    console.log('selectedKeys', selectedKeys);
+    console.log('filteredData', selectedKeys, filteredData);
+    form.setFieldValue('queriesList', {
+      ...(form.getFieldValue('queriesList') || {}),
+      [fieldsLength]: filteredData.find((item) => item.value === selectedKeys[0]),
+    });
   };
 
   const onSearch = useCallback(
