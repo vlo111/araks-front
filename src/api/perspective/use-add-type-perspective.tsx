@@ -5,8 +5,9 @@ import { useParams } from 'react-router-dom';
 import { errorMessage } from 'helpers/utils';
 
 export const URL_ADD_PERSPECTIVE_TYPE = '/perspectives/add-node-type';
+export const URL_REMOVE_PERSPECTIVE_TYPE = '/perspectives/remove-node-type';
 
-type ReturnData = {
+export type ReturnPerspectiveTypeData = {
   data: {
     id: string;
     perspective_id: string;
@@ -23,15 +24,15 @@ type RequestData = {
 };
 
 type QueryResponse = {
-  data: ReturnData;
+  data: ReturnPerspectiveTypeData;
 };
 
-type Options = UseQueryOptions<QueryResponse, Error, ReturnData>;
+type Options = UseQueryOptions<QueryResponse, Error, ReturnPerspectiveTypeData>;
 
 export const useAddPerspectiveType = (options?: Options) => {
   const params = useParams();
 
-  const mutation = useMutation<ReturnData, unknown, RequestData>({
+  const mutation = useMutation<ReturnPerspectiveTypeData, unknown, RequestData>({
     mutationFn: ({ type_id }: RequestData) => {
       return client[RequestTypes.Post](URL_ADD_PERSPECTIVE_TYPE, { project_id: params?.id, type_id });
     },

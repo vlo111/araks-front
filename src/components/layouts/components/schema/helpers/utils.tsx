@@ -1,8 +1,15 @@
 import client from 'api/client';
 import { TYPE_POSITION_URL } from 'api/schema/type/use-update-types-position';
 import { closeTypeEye, openTypeEye, PATH } from './constants';
-import { AddTypePerspective, AnimateGraphFit, ChangeTypePosition, GetTypeColors, SwitchTypePermission } from '../types';
-import { URL_ADD_PERSPECTIVE_TYPE } from 'api/perspective/use-add-type-perspective';
+import {
+  AddTypePerspective,
+  AnimateGraphFit,
+  ChangeTypePosition,
+  GetTypeColors,
+  ISelectedPerspective,
+  SwitchTypePermission,
+} from '../types';
+import { URL_ADD_PERSPECTIVE_TYPE, URL_REMOVE_PERSPECTIVE_TYPE } from 'api/perspective/use-add-type-perspective';
 
 export const animateGraphFit: AnimateGraphFit = (graph, sec) => {
   const stage = graph.view.stage.parentElement as HTMLElement;
@@ -27,8 +34,25 @@ export const switchTypePermission: SwitchTypePermission = (node, isAllow) => {
   else node.setAttrs(openTypeEye);
 };
 
-export const addTypePerspective: AddTypePerspective = (type_id, { perspectiveId, project_id }) =>
-  client.post(`${URL_ADD_PERSPECTIVE_TYPE}/${perspectiveId}`, {
+const getPerspectiveData = (): ISelectedPerspective | null => {
+  const data = localStorage.getItem('selected-perspective');
+  return data ? JSON.parse(data) : null;
+};
+
+export const addTypePerspective: AddTypePerspective = (type_id) => {
+  const { perspectiveId, project_id } = getPerspectiveData() ?? {};
+
+  return client.post(`${URL_ADD_PERSPECTIVE_TYPE}/${perspectiveId}`, {
     project_id,
     type_id,
   });
+};
+
+export const removeTypePerspective: AddTypePerspective = (type_id) => {
+  const { perspectiveId, project_id } = getPerspectiveData() ?? {};
+
+  return client.put(`${URL_REMOVE_PERSPECTIVE_TYPE}/${perspectiveId}`, {
+    project_id,
+    type_id,
+  });
+};

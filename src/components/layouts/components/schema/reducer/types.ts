@@ -58,15 +58,9 @@ export type SchemaState = {
   type_port?: ITypePortState;
   edge_port?: IEdgePortState;
   perspective?: IPerspectiveState;
-  selected_perspective?: ISelectedPerspective;
 };
 
 export interface SchemaActionType {
   type: SchemaAction;
   payload: SchemaState;
 }
-
-export type ISelectedPerspective = {
-  perspectiveId: string;
-  project_id: string;
-};

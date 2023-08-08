@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => {
   const params = useParams();
 
-  const { graph, setSelectedPerspective } = useSchema();
+  const { graph } = useSchema();
 
   const { list } = usePanels(panels);
 
@@ -28,10 +28,13 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
           const hasType = mainId === activeKey || data.nodeType.some(({ project_node_type_id: id }) => id === node.id);
           switchTypePermission(node, !hasType);
         });
-        setSelectedPerspective({
-          perspectiveId: data.id,
-          project_id: params.id ?? '',
-        });
+        localStorage.setItem(
+          'selected-perspective',
+          JSON.stringify({
+            perspectiveId: data.id,
+            project_id: params.id ?? '',
+          })
+        );
       }
     },
   });
@@ -45,6 +48,7 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
   useEffect(() => {
     if (isInitialMount.current && panels.length) {
       isInitialMount.current = false;
+      setActiveKey(panels.find((a) => a.status === 'main')?.id ?? '');
     }
   }, [panels]);
 

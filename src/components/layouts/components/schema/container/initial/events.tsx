@@ -1,6 +1,12 @@
 import { Graph } from '@antv/x6';
 import { removeSelected, selectNode } from '../../helpers/selection';
-import { changeTypePosition, getTypeColors, switchTypePermission } from '../../helpers/utils';
+import {
+  addTypePerspective,
+  changeTypePosition,
+  getTypeColors,
+  removeTypePerspective,
+  switchTypePermission,
+} from '../../helpers/utils';
 import { ElementStyle, InitEvents, InitPerspectiveEvents } from '../../types';
 import { PATH, SELECTORS } from '../../helpers/constants';
 
@@ -91,14 +97,22 @@ export const initSchemaEvents: InitEvents = (
  * The Events are provides perspective permission switchers
  * @param graph
  */
-export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, selected_perspective) => {
-  graph.on('node:click', ({ node, e: { target } }) => {
+export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph) => {
+  graph.on('node:click', async ({ node, e: { target } }) => {
     if (target.closest('.x6-port-body')) return;
-
-    // const response = addTypePerspective(node.id, selected_perspective);
 
     const isAllow = node?.attrs?.body.allow as boolean;
 
-    switchTypePermission(node, isAllow);
+    let response;
+
+    if (!isAllow) {
+      response = await addTypePerspective(node.id);
+    } else {
+      response = await removeTypePerspective(node.id);
+    }
+
+    if (response.data) {
+      switchTypePermission(node, isAllow);
+    }
   });
 };

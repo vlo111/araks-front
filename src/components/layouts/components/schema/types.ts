@@ -9,12 +9,12 @@ import {
   IEdgePortState,
   IEdgeState,
   IPerspectiveState,
-  ISelectedPerspective,
   ISelectNode,
   ITypePortState,
   ITypeState,
 } from './reducer/types';
 import { PropertyTypes } from '../../../form/property/types';
+import { ReturnPerspectiveTypeData } from '../../../../api/perspective/use-add-type-perspective';
 
 export interface IStroke {
   type: string;
@@ -122,7 +122,7 @@ export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextTyp
 export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: PickSchemaContextType) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
-export type InitPerspectiveEvents = (graph: Graph, selectedPerspective: ISelectedPerspective) => void;
+export type InitPerspectiveEvents = (graph: Graph) => void;
 
 export type ElementBox = Element & {
   getBBox: () => { height: number; width: number };
@@ -165,10 +165,9 @@ export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolea
 
 export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
 
-export type AddTypePerspective = (type_id: string, params: ISelectedPerspective) => void;
+export type AddTypePerspective = (type_id: string) => Promise<ReturnPerspectiveTypeData>;
 
 export type SchemaReducerState = {
-  selected_perspective: ISelectedPerspective;
   graph: Graph;
   nodes: IProjectType[];
   edges: ProjectEdgeResponse[];
@@ -185,7 +184,6 @@ export type SchemaReducerSetState = {
   setNodes: (nodes: IProjectType[]) => void;
   setEdges: (nodes: ProjectEdgeResponse[]) => void;
   setSelected: (selectData: ISelectNode) => void;
-  setSelectedPerspective: (types?: ISelectedPerspective) => void;
 
   startEdgeType: (edge?: IEdgeState) => void;
   startType: (type?: ITypeState) => void;
@@ -205,13 +203,7 @@ export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => voi
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  | 'selected_perspective'
-  | 'startType'
-  | 'startEdgeType'
-  | 'startTypePort'
-  | 'startEdgePort'
-  | 'setSelected'
-  | 'selected'
+  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
 >;
 
 export type NodeEdgeTypesForm = {
@@ -225,4 +217,9 @@ export type NodeEdgeTypesForm = {
   multiple: boolean;
   ref_property_type_id?: PropertyTypes.Connection;
   propertyId?: string;
+};
+
+export type ISelectedPerspective = {
+  perspectiveId: string;
+  project_id: string;
 };

@@ -5,14 +5,7 @@ import { IProjectType } from 'api/types';
 import { Graph } from '@antv/x6';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { SchemaAction, schemaInitialState, schemaReducer } from './reducer/schema-manager';
-import {
-  IEdgePortState,
-  IEdgeState,
-  IPerspectiveState,
-  ISelectedPerspective,
-  ITypePortState,
-  ITypeState,
-} from './reducer/types';
+import { IEdgePortState, IEdgeState, IPerspectiveState, ITypePortState, ITypeState } from './reducer/types';
 
 export const SchemaWrapper: React.FC = () => {
   const [state, dispatch] = useReducer(schemaReducer, schemaInitialState);
@@ -36,8 +29,6 @@ export const SchemaWrapper: React.FC = () => {
       startPerspectiveShare: (payload: IPerspectiveState) =>
         handleAction(SchemaAction.SET_PERSPECTIVE_SHARE_START, payload),
       finishPerspectiveShare: () => handleAction(SchemaAction.SET_PERSPECTIVE_SHARE_FINISH),
-      setSelectedPerspective: (payload: ISelectedPerspective) =>
-        handleAction(SchemaAction.SET_SELECTED_PERSPECTIVE, payload),
     }),
     [handleAction]
   );
