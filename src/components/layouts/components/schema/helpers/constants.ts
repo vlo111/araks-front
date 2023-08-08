@@ -43,20 +43,12 @@ const {
 
 export const openPropertyEye = {
   allow: true,
-  [SELECTORS.PORT_EYE_PATH]: {
-    d: EyeD,
-    fill: GRAY,
-  },
   [SELECTORS.PORT_NAME_TEXT]: { fill: GRAY_DARK },
   [SELECTORS.PORT_TYPE_TEXT]: { fill: GRAY_DARK },
 };
 
 export const closePropertyEye = {
   allow: false,
-  [SELECTORS.PORT_EYE_PATH]: {
-    d: EyeClosedD,
-    fill: colorPerspectiveIconClose,
-  },
   [SELECTORS.PORT_NAME_TEXT]: { fill: colorPerspectiveTextClose },
   [SELECTORS.PORT_TYPE_TEXT]: { fill: colorPerspectiveTextClose },
 };

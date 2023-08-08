@@ -1,8 +1,8 @@
 import { Graph } from '@antv/x6';
 import { removeSelected, selectNode } from '../../helpers/selection';
-import { changeTypePosition, getTypeColors, switchPermission, switchTypePermission } from '../../helpers/utils';
-import { ElementStyle, InitEvents } from '../../types';
-import { PATH, SELECTORS } from "../../helpers/constants";
+import { changeTypePosition, getTypeColors, switchTypePermission } from '../../helpers/utils';
+import { ElementStyle, InitEvents, InitPerspectiveEvents } from '../../types';
+import { PATH, SELECTORS } from '../../helpers/constants';
 
 export const initSchemaEvents: InitEvents = (
   graph,
@@ -91,29 +91,14 @@ export const initSchemaEvents: InitEvents = (
  * The Events are provides perspective permission switchers
  * @param graph
  */
-export const initPerspectiveEvents = (graph: Graph) => {
-  graph.on('node:port:click', ({ node, port: portId }) => {
-    const { eye, allow } = node.getPort(portId || '')?.attrs || {};
-
-    /** return for edge property */
-    if (eye === undefined) return;
-
-    switchPermission(node, portId, allow as unknown as boolean);
-
-    const ports = node.getPorts().find((g) => g.attrs?.eye && g.attrs.allow);
-
-    switchTypePermission(node, !ports);
-  });
-
+export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, selected_perspective) => {
   graph.on('node:click', ({ node, e: { target } }) => {
     if (target.closest('.x6-port-body')) return;
 
-    const ports = node.getPorts().filter((g) => g.attrs?.eye);
+    // const response = addTypePerspective(node.id, selected_perspective);
 
     const isAllow = node?.attrs?.body.allow as boolean;
 
     switchTypePermission(node, isAllow);
-
-    for (const { id } of ports) switchPermission(node, id, isAllow);
   });
 };

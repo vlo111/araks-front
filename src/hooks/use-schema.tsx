@@ -5,7 +5,9 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useSchemaRef = () => {
-  const { graph, setGraph, ...params } = useSchema() ?? {};
+  const data = useSchema() ?? {};
+
+  const { graph, setGraph, ...params } = data;
 
   const ref: GraphRef = React.useRef(null);
 

@@ -9,6 +9,7 @@ import {
   IEdgePortState,
   IEdgeState,
   IPerspectiveState,
+  ISelectedPerspective,
   ISelectNode,
   ITypePortState,
   ITypeState,
@@ -121,6 +122,7 @@ export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextTyp
 export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: PickSchemaContextType) => void;
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
+export type InitPerspectiveEvents = (graph: Graph, selectedPerspective: ISelectedPerspective) => void;
 
 export type ElementBox = Element & {
   getBBox: () => { height: number; width: number };
@@ -159,13 +161,14 @@ export type GetTypeColors = (edge: Edge<Properties>) => string[];
 
 export type InsertProperty = (prop: ITypeProperty & { color: string; allow: boolean }) => IPort;
 
-export type SwitchPermission = (node: Node<Node.Properties>, portId: string | undefined, isAllow: boolean) => void;
-
 export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
 
 export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
 
+export type AddTypePerspective = (type_id: string, params: ISelectedPerspective) => void;
+
 export type SchemaReducerState = {
+  selected_perspective: ISelectedPerspective;
   graph: Graph;
   nodes: IProjectType[];
   edges: ProjectEdgeResponse[];
@@ -182,6 +185,7 @@ export type SchemaReducerSetState = {
   setNodes: (nodes: IProjectType[]) => void;
   setEdges: (nodes: ProjectEdgeResponse[]) => void;
   setSelected: (selectData: ISelectNode) => void;
+  setSelectedPerspective: (types?: ISelectedPerspective) => void;
 
   startEdgeType: (edge?: IEdgeState) => void;
   startType: (type?: ITypeState) => void;
@@ -201,7 +205,13 @@ export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => voi
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
+  | 'selected_perspective'
+  | 'startType'
+  | 'startEdgeType'
+  | 'startTypePort'
+  | 'startEdgePort'
+  | 'setSelected'
+  | 'selected'
 >;
 
 export type NodeEdgeTypesForm = {
