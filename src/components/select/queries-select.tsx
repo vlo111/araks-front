@@ -7,7 +7,7 @@ export enum QueryFilterTypes {
   CONTAINS = 'Contains',
   IS_NOT_NULL = 'Is not Null',
   IS_NULL = 'Is Null',
-  Between = 'Between',
+  BETWEEN = 'Between',
   IS = 'Is',
   IS_NOT = 'Is not',
   EQUAL_TO = 'Equal to',

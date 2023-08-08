@@ -1,11 +1,48 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Collapse, Form } from 'antd';
-import { QueriesSelect } from 'components/select/queries-select';
+import { Collapse, Form, Space } from 'antd';
+import { Input } from 'components/input';
+import { InputNumber } from 'components/input-number';
+import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 
 type Props = {
   remove: (x: number) => void;
   fieldName: number;
+};
+
+type ContentType = {
+  fieldName: number;
+};
+
+export const QueriesContent = ({ fieldName }: ContentType) => {
+  const type = Form.useWatch(['queries', fieldName, 'type']);
+  // eslint-disable-next-line no-console
+  console.log('type', type);
+  switch (type) {
+    case QueryFilterTypes.CONTAINS:
+    case QueryFilterTypes.IS:
+    case QueryFilterTypes.IS_NOT:
+      return <Input />;
+    case QueryFilterTypes.GREATHER_THAN:
+      return <InputNumber addonAfter="<" style={{ width: '100%' }} />;
+    case QueryFilterTypes.LESS_THAN:
+      return <InputNumber addonBefore="<" style={{ width: '100%' }} />;
+    case QueryFilterTypes.IS_NOT_NULL:
+    case QueryFilterTypes.IS_NULL:
+      return <></>;
+    case QueryFilterTypes.BETWEEN:
+      return (
+        <Space>
+          <InputNumber />
+          <span>-</span>
+          <InputNumber />
+        </Space>
+      );
+    case QueryFilterTypes.EQUAL_TO:
+      return <InputNumber addonBefore="=" style={{ width: '100%' }} />;
+    default:
+      return <></>;
+  }
 };
 
 export const PropertySection = ({ remove, fieldName }: Props) => {
@@ -30,19 +67,21 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
     <Collapse
       defaultActiveKey={['1']}
       onChange={onChange}
-      //   expandIconPosition={expandIconPosition}
       items={[
         {
           key: '1',
           label: queriesList[fieldName].labelName,
           children: (
             <VerticalSpace>
-              <Form.Item
-                label="Sight"
-                name={[fieldName, 'sight']}
-                rules={[{ required: true, message: 'Missing sight' }]}
-              >
+              <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
                 <QueriesSelect />
+              </Form.Item>
+              <Form.Item
+                name={[fieldName, 'typeText']}
+                rules={[{ required: true, message: 'Missing type text' }]}
+                noStyle
+              >
+                <QueriesContent fieldName={fieldName} />
               </Form.Item>
             </VerticalSpace>
           ),

@@ -1,6 +1,7 @@
 import { CaretRightOutlined } from '@ant-design/icons';
-import { Col, Drawer, Form, Row, Space } from 'antd';
+import { Col, Drawer, Form, Row, Space, Switch } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
 import { Button } from '.';
 
@@ -37,7 +38,14 @@ export const QueriesButton = () => {
                 Queries
               </Space>
             </Col>
-            <Col span={6}></Col>
+            <Col span={6}>
+              <Space>
+                <UsefulInformationTooltip infoText="Inherit parent options" />
+                <Form.Item name="switchField" noStyle>
+                  <Switch checkedChildren="And" unCheckedChildren="Or" defaultChecked />
+                </Form.Item>
+              </Space>
+            </Col>
           </Row>
         }
         placement="right"
@@ -62,7 +70,7 @@ export const QueriesButton = () => {
               </Button>
             </Col>
             <Col span={65}>
-              <Button type="primary" onClick={() => form.submit()} block>
+              <Button type="primary" htmlType="submit" block>
                 Run Search
               </Button>
             </Col>

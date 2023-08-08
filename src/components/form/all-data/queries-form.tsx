@@ -1,15 +1,12 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Popover, Space } from 'antd';
-import { QueriesSelect } from 'components/select/queries-select';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Form, Popover } from 'antd';
+import { VerticalSpace } from 'components/space/vertical-space';
 import { TabTablesQueries } from 'pages/data-sheet/components/all-data-queries/tab-tables-queries';
 import { useState } from 'react';
 import { PropertySection } from './property-section';
 
 export const QueriesForm = () => {
   const [openTable, setOpenTable] = useState(false);
-  const form = Form.useFormInstance();
-  // eslint-disable-next-line no-console
-  console.log('form', form.getFieldValue('queriesList'));
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpenTable(newOpen);
@@ -18,43 +15,9 @@ export const QueriesForm = () => {
   return (
     <Form.List name="queries">
       {(fields, { add, remove }) => (
-        <>
+        <VerticalSpace>
           {fields.map((field) => {
-            // eslint-disable-next-line no-console
-            console.log('fields', fields);
-            return (
-              <Space key={field.key} align="baseline">
-                <PropertySection remove={() => remove(field.name)} fieldName={field.name} />
-                <Form.Item
-                  noStyle
-                  shouldUpdate={(prevValues, curValues) =>
-                    prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
-                  }
-                >
-                  {() => (
-                    <Form.Item
-                      {...field}
-                      label="Sight"
-                      name={[field.name, 'sight']}
-                      rules={[{ required: true, message: 'Missing sight' }]}
-                    >
-                      {/* <Select disabled={!form.getFieldValue('area')} style={{ width: 130 }} options={[]} /> */}
-                      <QueriesSelect />
-                    </Form.Item>
-                  )}
-                </Form.Item>
-                <Form.Item
-                  {...field}
-                  label="Price"
-                  name={[field.name, 'price']}
-                  rules={[{ required: true, message: 'Missing price' }]}
-                >
-                  <Input />
-                </Form.Item>
-
-                <MinusCircleOutlined onClick={() => remove(field.name)} />
-              </Space>
-            );
+            return <PropertySection key={field.key} remove={() => remove(field.name)} fieldName={field.name} />;
           })}
 
           <Form.Item>
@@ -71,11 +34,11 @@ export const QueriesForm = () => {
               overlayInnerStyle={{ height: '100%', width: '100%', overflow: 'auto' }}
             >
               <Button type="dashed" onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
-                Add Property
+                Add
               </Button>
             </Popover>
           </Form.Item>
-        </>
+        </VerticalSpace>
       )}
     </Form.List>
   );
