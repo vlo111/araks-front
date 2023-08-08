@@ -165,7 +165,7 @@ export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolea
 
 export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
 
-export type AddTypePerspective = (type_id: string) => Promise<ReturnPerspectiveTypeData>;
+export type AddTypePerspective = (type_id: string) => Promise<ReturnPerspectiveTypeData> | null;
 
 export type SchemaReducerState = {
   graph: Graph;

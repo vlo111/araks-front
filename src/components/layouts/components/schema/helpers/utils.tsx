@@ -34,7 +34,7 @@ export const switchTypePermission: SwitchTypePermission = (node, isAllow) => {
   else node.setAttrs(openTypeEye);
 };
 
-const getPerspectiveData = (): ISelectedPerspective | null => {
+export const getPerspectiveData = (): ISelectedPerspective | null => {
   const data = localStorage.getItem('selected-perspective');
   return data ? JSON.parse(data) : null;
 };
@@ -42,17 +42,11 @@ const getPerspectiveData = (): ISelectedPerspective | null => {
 export const addTypePerspective: AddTypePerspective = (type_id) => {
   const { perspectiveId, project_id } = getPerspectiveData() ?? {};
 
-  return client.post(`${URL_ADD_PERSPECTIVE_TYPE}/${perspectiveId}`, {
-    project_id,
-    type_id,
-  });
+  return perspectiveId ? client.post(`${URL_ADD_PERSPECTIVE_TYPE}/${perspectiveId}`, { project_id, type_id }) : null;
 };
 
 export const removeTypePerspective: AddTypePerspective = (type_id) => {
   const { perspectiveId, project_id } = getPerspectiveData() ?? {};
 
-  return client.put(`${URL_REMOVE_PERSPECTIVE_TYPE}/${perspectiveId}`, {
-    project_id,
-    type_id,
-  });
+  return perspectiveId ? client.put(`${URL_REMOVE_PERSPECTIVE_TYPE}/${perspectiveId}`, { project_id, type_id }) : null;
 };

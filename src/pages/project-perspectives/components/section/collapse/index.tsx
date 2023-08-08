@@ -28,13 +28,16 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
           const hasType = mainId === activeKey || data.nodeType.some(({ project_node_type_id: id }) => id === node.id);
           switchTypePermission(node, !hasType);
         });
-        localStorage.setItem(
-          'selected-perspective',
-          JSON.stringify({
-            perspectiveId: data.id,
-            project_id: params.id ?? '',
-          })
-        );
+        if (mainId === activeKey) {
+          localStorage.setItem('selected-perspective', '');
+        } else
+          localStorage.setItem(
+            'selected-perspective',
+            JSON.stringify({
+              perspectiveId: data.id,
+              project_id: params.id ?? '',
+            })
+          );
       }
     },
   });
