@@ -111,7 +111,7 @@ export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph) => {
       response = await removeTypePerspective(node.id);
     }
 
-    if (response.data) {
+    if (response?.data) {
       switchTypePermission(node, isAllow);
     }
   });
