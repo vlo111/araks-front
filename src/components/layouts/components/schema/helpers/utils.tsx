@@ -1,6 +1,6 @@
 import client from 'api/client';
 import { TYPE_POSITION_URL } from 'api/schema/type/use-update-types-position';
-import { closeTypeEye, openTypeEye, PATH } from './constants';
+import { closePropertyEye, closeTypeEye, openPropertyEye, openTypeEye, PATH } from './constants';
 import {
   AddTypePerspective,
   AnimateGraphFit,
@@ -31,8 +31,15 @@ export const changeTypePosition: ChangeTypePosition = (id, { x, y }) =>
   client.put(`${TYPE_POSITION_URL.replace(':id', id)}`, { fx: x, fy: y });
 
 export const switchTypePermission: SwitchTypePermission = (node, isAllow) => {
-  if (isAllow) node.setAttrs(closeTypeEye);
-  else node.setAttrs(openTypeEye);
+  const ports = node.getPorts();
+
+  if (isAllow) {
+    node.setAttrs(closeTypeEye);
+    for (const { id } of ports) node.setPortProp(id ?? '', 'attrs', closePropertyEye);
+  } else {
+    node.setAttrs(openTypeEye);
+    for (const { id } of ports) node.setPortProp(id ?? '', 'attrs', openPropertyEye);
+  }
 };
 
 export const getPerspectiveData = (): ISelectedPerspective | null => {

@@ -43,24 +43,26 @@ const {
 
 export const openPropertyEye = {
   allow: true,
+  [SELECTORS.PORT_BODY_RECT]: { fill: '#F2F2F2', stroke: '#F2F2F2' },
   [SELECTORS.PORT_NAME_TEXT]: { fill: GRAY_DARK },
   [SELECTORS.PORT_TYPE_TEXT]: { fill: GRAY_DARK },
 };
 
 export const closePropertyEye = {
   allow: false,
+  [SELECTORS.PORT_BODY_RECT]: { fill: '#ebebeb', stroke: '#ebebeb' },
   [SELECTORS.PORT_NAME_TEXT]: { fill: colorPerspectiveTextClose },
   [SELECTORS.PORT_TYPE_TEXT]: { fill: colorPerspectiveTextClose },
 };
 
 export const openTypeEye = {
-  body: { allow: true },
+  body: { allow: true, fill: '#F5F5F5', strokeOpacity: 1 },
   text: { fill: GRAY_DARK },
   [SELECTORS.PORT_EYE_PATH]: { d: EyeD, fill: GRAY },
 };
 
 export const closeTypeEye = {
-  body: { allow: false },
+  body: { allow: false, fill: '#ebebeb', strokeOpacity: 0.2 },
   text: { fill: colorPerspectiveTextClose },
   [SELECTORS.PORT_EYE_PATH]: { d: EyeClosedD, fill: colorPerspectiveIconClose },
 };
