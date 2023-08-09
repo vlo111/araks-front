@@ -75,12 +75,14 @@ export const NodeTypesQueries = ({
     setOpenTable(false);
     // eslint-disable-next-line no-console
     console.log('filteredData', selectedKeys, filteredData, findChildrenProperties(filteredData, selectedKeys[0]));
-    add();
+    // add();
 
-    form.setFieldValue('queriesList', {
-      ...(form.getFieldValue('queriesList') || {}),
-      [fieldsLength]: findChildrenProperties(filteredData, selectedKeys[0]),
-    });
+    // eslint-disable-next-line no-console
+    console.log('form.getFieldVal', form.getFieldValue('queries'));
+    form.setFieldValue('queries', [
+      ...(form.getFieldValue('queries') || []),
+      findChildrenProperties(filteredData, selectedKeys[0]),
+    ]);
   };
 
   const onSearch = useCallback(

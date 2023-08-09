@@ -59,8 +59,8 @@ export const ConnectionTypesQueries = ({
     add();
     // eslint-disable-next-line no-console
     console.log('filteredData', selectedKeys, filteredData);
-    form.setFieldValue('queriesList', {
-      ...(form.getFieldValue('queriesList') || {}),
+    form.setFieldValue('queries', {
+      ...(form.getFieldValue('queries') || {}),
       [fieldsLength]: filteredData.find((item) => item.value === selectedKeys[0]),
     });
   };
