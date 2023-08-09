@@ -40,6 +40,11 @@ export interface IPerspectiveState extends IIsOpen {
   sharedUsers?: ISharedPerspectiveData[];
 }
 
+export interface IPerspectiveInfo {
+  typesLength: number;
+  propertiesLength: number;
+}
+
 export interface IEdgePortState extends IIsOpen {
   id?: string;
   name?: string;
@@ -58,6 +63,7 @@ export type SchemaState = {
   type_port?: ITypePortState;
   edge_port?: IEdgePortState;
   perspective?: IPerspectiveState;
+  perspective_info?: IPerspectiveInfo;
 };
 
 export interface SchemaActionType {

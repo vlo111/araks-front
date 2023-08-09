@@ -97,22 +97,21 @@ export const initSchemaEvents: InitEvents = (
  * The Events are provides perspective permission switchers
  * @param graph
  */
-export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph) => {
+export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo) => {
   graph.on('node:click', async ({ node, e: { target } }) => {
-    if (target.closest('.x6-port-body')) return;
+    if (!target.closest('.x6-port-body')) {
+      const isAllow = !!node?.attrs?.body.allow;
 
-    const isAllow = node?.attrs?.body.allow as boolean;
+      const response = isAllow ? await removeTypePerspective(node.id) : await addTypePerspective(node.id);
 
-    let response;
+      if (response?.data) switchTypePermission(node, isAllow);
 
-    if (!isAllow) {
-      response = await addTypePerspective(node.id);
-    } else {
-      response = await removeTypePerspective(node.id);
-    }
+      const nodes = graph.getNodes();
 
-    if (response?.data) {
-      switchTypePermission(node, isAllow);
+      setPerspectiveInfo({
+        typesLength: nodes.filter((a) => a.attrs?.body.allow).length,
+        propertiesLength: nodes.flatMap((a) => (a.attrs?.body.allow ? a.ports.items : [])).length,
+      });
     }
   });
 };

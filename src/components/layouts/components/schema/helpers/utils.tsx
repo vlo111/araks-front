@@ -7,6 +7,7 @@ import {
   ChangeTypePosition,
   GetTypeColors,
   ISelectedPerspective,
+  SetPerspectiveData,
   SwitchTypePermission,
 } from '../types';
 import { URL_ADD_PERSPECTIVE_TYPE, URL_REMOVE_PERSPECTIVE_TYPE } from 'api/perspective/use-add-type-perspective';
@@ -37,6 +38,15 @@ export const switchTypePermission: SwitchTypePermission = (node, isAllow) => {
 export const getPerspectiveData = (): ISelectedPerspective | null => {
   const data = localStorage.getItem('selected-perspective');
   return data ? JSON.parse(data) : null;
+};
+
+export const setPerspectiveData: SetPerspectiveData = (items) => {
+  localStorage.setItem(
+    'selected-perspective',
+    JSON.stringify({
+      ...items,
+    })
+  );
 };
 
 export const addTypePerspective: AddTypePerspective = (type_id) => {

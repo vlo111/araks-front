@@ -1,9 +1,9 @@
 import { PerspectiveActionPopover } from 'components/popover';
-import { ReactComponent as MoreSvg } from '../icons/more.svg';
+import { ReactComponent as MoreSvg } from '../../icons/more.svg';
 import { ExtraMenu } from './extra-menu';
 import { useState } from 'react';
-import { EditPerspectiveModal } from '../modals/edit-perspective';
-import { DeletePerspectiveModal } from '../modals/delete-perspective';
+import { EditPerspectiveModal } from '../../modals/edit-perspective';
+import { DeletePerspectiveModal } from '../../modals/delete-perspective';
 
 export enum ExtraSelect {
   CLOSE = '',

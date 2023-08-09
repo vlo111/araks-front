@@ -89,7 +89,7 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  if (isPerspective()) initPerspectiveEvents(graph);
+  if (isPerspective()) initPerspectiveEvents(graph, _params.setPerspectiveInfo);
   else initSchemaEvents(graph, _params);
 
   graph.use(

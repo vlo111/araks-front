@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { Extra } from './extra';
-import { FooterPanel } from './footer';
-import { IResponsePerspectiveData } from "api/types";
+import { Extra } from './components/extra';
+import { FooterPanel } from './components/footer';
+import { IResponsePerspectiveData } from 'api/types';
 
 export type PanelList = {
   children: ReactNode;

@@ -10,6 +10,7 @@ export enum ITEM {
   SET_EDGES = 'edges',
   SELECT_NODE = 'selected',
   PERSPECTIVE = 'perspective',
+  PERSPECTIVE_INFO = 'perspective_info',
 }
 
 interface Param {
@@ -31,6 +32,7 @@ export enum SchemaAction {
   SET_SELECT_NODE = 'SET_SELECT_NODE',
   SET_PERSPECTIVE_SHARE_START = 'SET_PERSPECTIVE_SHARE_START',
   SET_PERSPECTIVE_SHARE_FINISH = 'SET_PERSPECTIVE_SHARE_FINISH',
+  SET_PERSPECTIVE_INFO = 'SET_PERSPECTIVE_INFO',
 }
 
 const initState = {
@@ -122,6 +124,8 @@ export function schemaReducer(state: SchemaState, action: SchemaActionType) {
       return start(ITEM.PERSPECTIVE);
     case SchemaAction.SET_PERSPECTIVE_SHARE_FINISH:
       return end(ITEM.PERSPECTIVE);
+    case SchemaAction.SET_PERSPECTIVE_INFO:
+      return insert(ITEM.PERSPECTIVE_INFO);
     default:
       return state;
   }

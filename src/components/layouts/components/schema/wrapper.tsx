@@ -29,6 +29,7 @@ export const SchemaWrapper: React.FC = () => {
       startPerspectiveShare: (payload: IPerspectiveState) =>
         handleAction(SchemaAction.SET_PERSPECTIVE_SHARE_START, payload),
       finishPerspectiveShare: () => handleAction(SchemaAction.SET_PERSPECTIVE_SHARE_FINISH),
+      setPerspectiveInfo: (payload: IPerspectiveState) => handleAction(SchemaAction.SET_PERSPECTIVE_INFO, payload),
     }),
     [handleAction]
   );
