@@ -75,6 +75,7 @@ export const createQueriesNodesTree = (nodesList: ProjectTreeReturnData[], noCol
       key,
       children: nodesList[i].properties?.map((item) => ({
         label: item.name,
+        color: nodesList[i].color,
         title: (
           <>
             <Text color={COLORS.PRIMARY.GRAY}>{nodesList[i].name}</Text>

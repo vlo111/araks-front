@@ -71,6 +71,9 @@ export const NodeTypesQueries = ({
     noColors
   );
 
+  // eslint-disable-next-line no-console
+  console.log('filteredData', filteredData);
+
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     setOpenTable(false);
     // eslint-disable-next-line no-console

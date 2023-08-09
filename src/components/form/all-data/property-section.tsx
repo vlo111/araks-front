@@ -84,7 +84,7 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
 
   return (
     <VerticalSpace size={0}>
-      <div style={{ backgroundColor: 'red', height: '8px' }} />
+      <div style={{ backgroundColor: queriesList[fieldName].color, height: '8px' }} />
       <StyledCollapse
         defaultActiveKey={['1']}
         onChange={onChange}
