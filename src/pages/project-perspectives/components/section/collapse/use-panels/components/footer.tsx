@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ISharedPerspectiveData } from 'api/types';
 import React from 'react';
+import { InfoSection } from './sections';
 
 type Props = React.FC<{ id: string; description: string; shared: ISharedPerspectiveData[] }>;
 
@@ -50,6 +51,7 @@ export const FooterPanel: Props = ({ id, description, shared }) => {
 
   return (
     <>
+      <InfoSection />
       <span>{description}</span>
       <Wrapper>
         <Row gutter={30}>

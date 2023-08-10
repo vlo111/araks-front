@@ -4,18 +4,16 @@ import { initData } from '../components/layouts/components/visualisation/contain
 import { formattedData } from '../components/layouts/components/visualisation/container/helpers/format-node';
 import { AllDataResponse } from '../types/node';
 import { useGetVEdges } from '../api/visualisation/use-get-edges';
-import { useGetNodes } from "../api/visualisation/use-get-nodes";
+import { useGetNodes } from '../api/visualisation/use-get-nodes';
 
 export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse[] } = () => {
   const { graph, ...params } = useGraph() ?? {};
 
-  const { nodes, isInitialLoading } = useGetNodes(
-    {
-      onSuccess: (data) => {
-        params.setNodes(data.rows);
-      },
-    }
-  );
+  const { nodes, isInitialLoading } = useGetNodes({
+    onSuccess: (data) => {
+      params.setNodes(data.rows);
+    },
+  });
 
   useGetVEdges({
     onSuccess: (edges) => {
