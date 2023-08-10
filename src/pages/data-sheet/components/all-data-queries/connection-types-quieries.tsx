@@ -6,7 +6,7 @@ import { PropsSetState, TableStyleBasedOnTab, TreeConnectionType } from '../../t
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
-import { createConnectionTree } from 'components/layouts/components/data-sheet/utils';
+import { createQueriesConnectionTree, findConnectionChildrenProperties } from 'components/layouts/components/data-sheet/utils';
 import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
@@ -20,6 +20,7 @@ type Props = PropsSetState &
     add: () => void;
     fieldsLength: number;
   };
+
 
 export const ConnectionTypesQueries = ({
   searchVisible,
@@ -48,7 +49,9 @@ export const ConnectionTypesQueries = ({
     {
       enabled: !!params.id,
       onSuccess: (data) => {
-        const connectionList = createConnectionTree(data.data);
+        const connectionList = createQueriesConnectionTree(data.data);
+        // eslint-disable-next-line no-console
+        console.log('connectionList', connectionList);
         setFilteredData(connectionList);
       },
     }
@@ -56,13 +59,17 @@ export const ConnectionTypesQueries = ({
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeConnectionType> }) => {
     setOpenTable(false);
-    add();
+    // add();
     // eslint-disable-next-line no-console
-    console.log('filteredData', selectedKeys, filteredData);
-    form.setFieldValue('queries', {
-      ...(form.getFieldValue('queries') || {}),
-      [fieldsLength]: filteredData.find((item) => item.value === selectedKeys[0]),
-    });
+    // console.log('filteredData', selectedKeys, filteredData);
+    // form.setFieldValue('queries', {
+    //   ...(form.getFieldValue('queries') || {}),
+    //   [fieldsLength]: filteredData.find((item) => item.value === selectedKeys[0]),
+    // });
+    form.setFieldValue('queries', [
+      ...(form.getFieldValue('queries') || []),
+      findConnectionChildrenProperties(filteredData, selectedKeys[0]),
+    ]);
   };
 
   const onSearch = useCallback(
@@ -72,7 +79,7 @@ export const ConnectionTypesQueries = ({
       debounce(() => {
         // setFilteredData(connectionList);
         const filteredData = filterConnectionTreeData(connectionData as NodeEdgeTypesReturnData[], searchText);
-        const connectionList = createConnectionTree(filteredData as NodeEdgeTypesReturnData[]);
+        const connectionList = createQueriesConnectionTree(filteredData as NodeEdgeTypesReturnData[]);
         setFilteredData(connectionList);
       }, 500)();
     },

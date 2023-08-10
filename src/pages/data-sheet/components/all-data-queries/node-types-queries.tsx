@@ -63,25 +63,15 @@ export const NodeTypesQueries = ({
     {
       enabled: !!params.id,
       onSuccess(data) {
-        // eslint-disable-next-line no-console
-        console.log('data', createQueriesNodesTree(data.data));
         setFilteredData(createQueriesNodesTree(data.data));
       },
     },
     noColors
   );
 
-  // eslint-disable-next-line no-console
-  console.log('filteredData', filteredData);
-
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     setOpenTable(false);
-    // eslint-disable-next-line no-console
-    console.log('filteredData', selectedKeys, filteredData, findChildrenProperties(filteredData, selectedKeys[0]));
     // add();
-
-    // eslint-disable-next-line no-console
-    console.log('form.getFieldVal', form.getFieldValue('queries'));
     form.setFieldValue('queries', [
       ...(form.getFieldValue('queries') || []),
       findChildrenProperties(filteredData, selectedKeys[0]),
