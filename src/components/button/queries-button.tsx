@@ -1,11 +1,28 @@
 import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons';
-import { Col, Drawer, Form, Row, Space, Switch } from 'antd';
+import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { Button, ButtonWithIcon } from '.';
+
+const StyledRadioButton = styled(Radio.Group)`
+  .ant-radio-button-wrapper {
+    border: none;
+
+    &.ant-radio-button-wrapper-checked {
+      border-radius: 4px;
+      background: #232f6a;
+      padding: 4px 16px 4px 8px;
+    }
+  }
+
+  .ant-radio-button-wrapper:nth-child(2)::before {
+    content: none;
+  }
+`;
 
 export const QueriesButton = () => {
   const [openTable, setOpenTable] = useState(false);
@@ -43,11 +60,19 @@ export const QueriesButton = () => {
                 Queries
               </Space>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <Space>
                 <UsefulInformationTooltip infoText="Inherit parent options" />
-                <Form.Item name="switchField" noStyle valuePropName="checked" initialValue={true}>
-                  <Switch checkedChildren="And" unCheckedChildren="Or" defaultChecked />
+                <Form.Item name="switchField" noStyle initialValue={'and'}>
+                  <StyledRadioButton
+                    size="small"
+                    options={[
+                      { label: 'And', value: 'and' },
+                      { label: 'Or', value: 'or' },
+                    ]}
+                    optionType="button"
+                    buttonStyle="solid"
+                  />
                 </Form.Item>
               </Space>
             </Col>
