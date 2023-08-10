@@ -1,4 +1,4 @@
-import { Skeleton } from 'antd';
+import { Form, Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../../types';
@@ -19,9 +19,39 @@ const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean
   return expanded ? <CaretDown /> : <CaretRight />;
 };
 
-type Props = PropsSetState & TableStyleBasedOnTab;
+type Props = PropsSetState &
+  TableStyleBasedOnTab & {
+    setOpenTable: (openTable: boolean) => void;
+    add: () => void;
+    fieldsLength: number;
+  };
 
-export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
+function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
+  for (const element of arr) {
+    if (element.children) {
+      for (const child of element.children) {
+        if (child.value === selectedValue) {
+          return {
+            ...child,
+            labelName: `${element.name}.${child.label}`,
+          };
+        }
+      }
+    }
+  }
+  return null;
+}
+
+export const NodeTypesQueries = ({
+  searchVisible,
+  setSearchVisible,
+  isCheckable = false,
+  noColors = false,
+  setOpenTable,
+  add,
+  fieldsLength,
+}: Props) => {
+  const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
 
@@ -41,9 +71,21 @@ export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable 
     noColors
   );
 
+  // eslint-disable-next-line no-console
+  console.log('filteredData', filteredData);
+
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
+    setOpenTable(false);
     // eslint-disable-next-line no-console
-    console.log('selectedKeys', selectedKeys);
+    console.log('filteredData', selectedKeys, filteredData, findChildrenProperties(filteredData, selectedKeys[0]));
+    // add();
+
+    // eslint-disable-next-line no-console
+    console.log('form.getFieldVal', form.getFieldValue('queries'));
+    form.setFieldValue('queries', [
+      ...(form.getFieldValue('queries') || []),
+      findChildrenProperties(filteredData, selectedKeys[0]),
+    ]);
   };
 
   const onSearch = useCallback(

@@ -7,7 +7,13 @@ import { NodeTypesQueries } from './node-types-queries';
 import { ConnectionTypesQueries } from './connection-types-quieries';
 import { QueriesSiderCollapse } from 'components/collapse/queries-sider-collapse';
 
-export const TabTablesQueries = ({ isCheckable = false, noColors = false }: TableStyleBasedOnTab) => {
+type Props = TableStyleBasedOnTab & {
+  setOpenTable: (openTable: boolean) => void;
+  add: () => void;
+  fieldsLength: number;
+};
+
+export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpenTable, add, fieldsLength }: Props) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
 
@@ -24,6 +30,9 @@ export const TabTablesQueries = ({ isCheckable = false, noColors = false }: Tabl
               noColors={noColors}
               setSearchVisible={setSearchVisible}
               searchVisible={searchVisible}
+              setOpenTable={setOpenTable}
+              add={add}
+              fieldsLength={fieldsLength}
             />
           ),
         },
@@ -36,6 +45,9 @@ export const TabTablesQueries = ({ isCheckable = false, noColors = false }: Tabl
               noColors={noColors}
               setSearchVisible={setSearchConnectionVisible}
               searchVisible={searchConnectionVisible}
+              setOpenTable={setOpenTable}
+              add={add}
+              fieldsLength={fieldsLength}
             />
           ),
         },

@@ -6,6 +6,7 @@ import { ImportActionType, useImport } from 'context/import-context';
 import { ImportClean } from 'pages/import/import-clean';
 import { ImportCsv } from 'pages/import/import-csv';
 import { ImportExcel } from 'pages/import/import-excel';
+import { ImportMerge } from 'pages/import/import-merge';
 import { ImportSetRules } from 'pages/import/import-set-rules';
 import { CSSProperties } from 'react';
 
@@ -64,30 +65,46 @@ export const ImportStepsDrawer = () => {
         title={<Steps current={state.step} items={items} labelPlacement="vertical" />}
         footer={
           state.step !== 1 && state.step !== 3 ? (
-            <Row justify="end" gutter={32}>
-              <Col xs={4} xxl={2}>
-                <ImportCancelButton name="Cancel" type={ImportActionType.IMPORT_CLOSE} />
-              </Col>
-              <Col xs={4} xxl={2}>
-                <Button
-                  block
-                  type="primary"
-                  disabled={state.step === 2 && (!state.mappingSaved || state.mappingHasWarning)}
-                  onClick={() => {
-                    let type = ImportActionType.IMPORT_CLEANING_STEP;
-                    if (state.step === 2 && state.mappingSaved) {
-                      type = !state.showMappingResult
-                        ? ImportActionType.IMPORT_MAPPING_RESULT
-                        : ImportActionType.IMPORT_SET_RULE;
-                    }
+            state.step === 4 ? (
+              <Row justify="end" gutter={32}>
+                <Col xs={4} xxl={2}>
+                  <Button
+                    block
+                    type="primary"
+                    onClick={() => {
+                      dispatch({ type: ImportActionType.IMPORT_CLOSE, payload: {} });
+                    }}
+                  >
+                    Ok
+                  </Button>
+                </Col>
+              </Row>
+            ) : (
+              <Row justify="end" gutter={32}>
+                <Col xs={4} xxl={2}>
+                  <ImportCancelButton name="Cancel" type={ImportActionType.IMPORT_CLOSE} />
+                </Col>
+                <Col xs={4} xxl={2}>
+                  <Button
+                    block
+                    type="primary"
+                    disabled={state.step === 2 && (!state.mappingSaved || state.mappingHasWarning)}
+                    onClick={() => {
+                      let type = ImportActionType.IMPORT_CLEANING_STEP;
+                      if (state.step === 2 && state.mappingSaved) {
+                        type = !state.showMappingResult
+                          ? ImportActionType.IMPORT_MAPPING_RESULT
+                          : ImportActionType.IMPORT_SET_RULE;
+                      }
 
-                    dispatch({ type, payload: {} });
-                  }}
-                >
-                  Next
-                </Button>
-              </Col>
-            </Row>
+                      dispatch({ type, payload: {} });
+                    }}
+                  >
+                    Next
+                  </Button>
+                </Col>
+              </Row>
+            )
           ) : null
         }
         placement="top"
@@ -109,6 +126,8 @@ export const ImportStepsDrawer = () => {
         <div style={{ position: 'relative', height: '100%' }}>
           {state.step === 3 ? (
             <ImportSetRules />
+          ) : state.step === 4 ? (
+            <ImportMerge />
           ) : (
             <>
               {state.isCSV ? <ImportCsv /> : <ImportExcel />}

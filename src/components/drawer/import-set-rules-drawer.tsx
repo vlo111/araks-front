@@ -1,5 +1,6 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Drawer, Modal, notification, Row } from 'antd';
+import { ImportNodesResponse } from 'api/import/types';
 import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
@@ -13,7 +14,11 @@ export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
   const [api, contextHolder] = notification.useNotification();
 
-  const { mutate } = useImportNodes();
+  const { mutate } = useImportNodes({
+    onSuccess: (data) => {
+      dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
+    },
+  });
 
   const handleCancel = () => {
     Modal.confirm({

@@ -1,10 +1,14 @@
-import { CaretRightOutlined } from '@ant-design/icons';
-import { Col, Drawer, Form, Row, Space } from 'antd';
+import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons';
+import { Col, Drawer, Form, Row, Space, Switch } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
+import { VerticalSpace } from 'components/space/vertical-space';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
-import { Button } from '.';
+import { useState } from 'react';
+import { Button, ButtonWithIcon } from '.';
 
 export const QueriesButton = () => {
+  const [openTable, setOpenTable] = useState(false);
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
 
@@ -26,18 +30,27 @@ export const QueriesButton = () => {
       autoComplete="off"
       layout="vertical"
       requiredMark={false}
+      scrollToFirstError
     >
       <Drawer
         className="queries-filter-drawer"
+        headerStyle={{ background: '#F2F2F2', padding: '12px 16px 12px 12px' }}
         title={
           <Row justify="space-between">
             <Col span={6}>
               <Space>
-                <CaretRightOutlined onClick={onClose} />
+                <CaretRightOutlined onClick={onClose} style={{ fontSize: '32px' }} />
                 Queries
               </Space>
             </Col>
-            <Col span={6}></Col>
+            <Col span={6}>
+              <Space>
+                <UsefulInformationTooltip infoText="Inherit parent options" />
+                <Form.Item name="switchField" noStyle valuePropName="checked" initialValue={true}>
+                  <Switch checkedChildren="And" unCheckedChildren="Or" defaultChecked />
+                </Form.Item>
+              </Space>
+            </Col>
           </Row>
         }
         placement="right"
@@ -54,22 +67,28 @@ export const QueriesButton = () => {
         width="100%"
         contentWrapperStyle={{ height: '100%', overflowY: 'auto' }}
         footerStyle={{ zIndex: 3, background: '#F2F2F2' }}
+        bodyStyle={{ background: '#F2F2F2', paddingLeft: '0', paddingRight: '0' }}
         footer={
-          <Row gutter={16} justify="center">
-            <Col span={6}>
-              <Button style={{ marginRight: 8 }} onClick={onClose} block>
-                Save
-              </Button>
-            </Col>
-            <Col span={65}>
-              <Button type="primary" onClick={() => form.submit()} block>
-                Run Search
-              </Button>
-            </Col>
-          </Row>
+          <VerticalSpace>
+            <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
+              Add
+            </ButtonWithIcon>
+            <Row gutter={16} justify="center">
+              <Col span={8}>
+                <Button style={{ marginRight: 8 }} onClick={() => form.resetFields()} block>
+                  Claen All
+                </Button>
+              </Col>
+              <Col span={8}>
+                <Button type="primary" htmlType="submit" block>
+                  Run Search
+                </Button>
+              </Col>
+            </Row>
+          </VerticalSpace>
         }
       >
-        <QueriesForm />
+        <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
       </Drawer>
     </Form>
   );
