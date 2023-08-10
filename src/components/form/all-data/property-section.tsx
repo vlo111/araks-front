@@ -23,38 +23,80 @@ const StyledCollapse = styled(Collapse)`
 
 export const QueriesContent = ({ fieldName }: ContentType) => {
   const type = Form.useWatch(['queries', fieldName, 'type']);
+  // const formItemLayout = {
+  //   labelCol: {
+  //     xs: { span: 24 },
+  //     sm: { span: 4 },
+  //   },
+  //   wrapperCol: {
+  //     xs: { span: 24 },
+  //     sm: { span: 20 },
+  //   },
+  // };
+
+  // const formItemLayoutWithOutLabel = {
+  //   wrapperCol: {
+  //     xs: { span: 24, offset: 0 },
+  //     sm: { span: 20, offset: 4 },
+  //   },
+  // };
 
   return (
     <>
       {(type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && (
-        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Missing type text' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <Input />
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
-        <Form.Item name={[fieldName, 'greaterText']} rules={[{ required: true, message: 'Missing type text' }]}>
+        <Form.Item name={[fieldName, 'greaterText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonAfter="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.LESS_THAN && (
-        <Form.Item name={[fieldName, 'lessText']} rules={[{ required: true, message: 'Missing type text' }]}>
+        <Form.Item name={[fieldName, 'lessText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
       {(type === QueryFilterTypes.IS_NOT || type === QueryFilterTypes.IS_NULL) && <></>}
       {type === QueryFilterTypes.BETWEEN && (
-        <Space>
-          <Form.Item name={[fieldName, 'betweenStart']} rules={[{ required: true, message: 'Missing type text' }]}>
-            <InputNumber />
-          </Form.Item>
-          <span>-</span>
-          <Form.Item name={[fieldName, 'betweenEnd']} rules={[{ required: true, message: 'Missing type text' }]}>
-            <InputNumber />
-          </Form.Item>
-        </Space>
+        <Form.Item
+          name="betweenValidation"
+          rules={[
+            ({ getFieldValue }) => ({
+              async validator(_, value) {
+                if (
+                  !getFieldValue(['queries', fieldName, 'betweenStart']) ||
+                  !getFieldValue(['queries', fieldName, 'betweenEnd'])
+                ) {
+                  return Promise.reject(new Error('The fields are required'));
+                }
+
+                if (
+                  getFieldValue(['queries', fieldName, 'betweenStart']) >
+                  getFieldValue(['queries', fieldName, 'betweenEnd'])
+                ) {
+                  return Promise.reject(new Error('Start value should be lower than end value'));
+                }
+
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
+          <Space align="start">
+            <Form.Item name={[fieldName, 'betweenStart']} dependencies={['queries', fieldName, 'betweenEnd']}>
+              <InputNumber />
+            </Form.Item>
+            <span>-</span>
+            <Form.Item name={[fieldName, 'betweenEnd']} noStyle dependencies={['queries', fieldName, 'betweenStart']}>
+              <InputNumber />
+            </Form.Item>
+          </Space>
+        </Form.Item>
       )}
       {type === QueryFilterTypes.EQUAL_TO && (
-        <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Missing type text' }]}>
+        <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
         </Form.Item>
       )}
@@ -75,6 +117,7 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
 
   const genExtra = () => (
     <CloseOutlined
+      style={{ fontSize: '16px' }}
       onClick={(event) => {
         event.stopPropagation();
         remove(fieldName);

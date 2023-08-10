@@ -30,14 +30,16 @@ export const QueriesButton = () => {
       autoComplete="off"
       layout="vertical"
       requiredMark={false}
+      scrollToFirstError
     >
       <Drawer
         className="queries-filter-drawer"
+        headerStyle={{ background: '#F2F2F2', padding: '12px 16px 12px 12px' }}
         title={
           <Row justify="space-between">
             <Col span={6}>
               <Space>
-                <CaretRightOutlined onClick={onClose} />
+                <CaretRightOutlined onClick={onClose} style={{ fontSize: '32px' }} />
                 Queries
               </Space>
             </Col>
