@@ -77,6 +77,8 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
       });
     },
   });
+  // eslint-disable-next-line no-console
+  console.log('data', data);
 
   const [form] = Form.useForm();
 
@@ -186,7 +188,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
               </Button>
             )}
             {isEdit ? (
-              <Button block type="text" onClick={onHandleDelete}>
+              <Button block type="text" onClick={onHandleDelete} disabled={data?.default_property}>
                 Delete
               </Button>
             ) : (
