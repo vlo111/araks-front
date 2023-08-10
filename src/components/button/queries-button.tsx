@@ -95,16 +95,20 @@ export const QueriesButton = () => {
         bodyStyle={{ background: '#F2F2F2', paddingLeft: '0', paddingRight: '0' }}
         footer={
           <VerticalSpace>
-            <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
-              Add
-            </ButtonWithIcon>
             <Row gutter={16} justify="center">
-              <Col span={8}>
+              <Col span={20}>
+                <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
+                  Add
+                </ButtonWithIcon>
+              </Col>
+            </Row>
+            <Row gutter={32} justify="center">
+              <Col span={10}>
                 <Button style={{ marginRight: 8 }} onClick={() => form.resetFields()} block>
                   Claen All
                 </Button>
               </Col>
-              <Col span={8}>
+              <Col span={10}>
                 <Button type="primary" htmlType="submit" block>
                   Run Search
                 </Button>
