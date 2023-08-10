@@ -1,4 +1,4 @@
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
 import { Collapse, Form, Space } from 'antd';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
@@ -84,11 +84,11 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
             }),
           ]}
         >
-          <Space align="start">
-            <Form.Item name={[fieldName, 'betweenStart']} dependencies={['queries', fieldName, 'betweenEnd']}>
+          <Space align="center">
+            <Form.Item name={[fieldName, 'betweenStart']} dependencies={['queries', fieldName, 'betweenEnd']} noStyle>
               <InputNumber />
             </Form.Item>
-            <span>-</span>
+            <MinusOutlined />
             <Form.Item name={[fieldName, 'betweenEnd']} noStyle dependencies={['queries', fieldName, 'betweenStart']}>
               <InputNumber />
             </Form.Item>
