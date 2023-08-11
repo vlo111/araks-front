@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import dotsImage from '../icons/dots.svg';
 
 const contextMenu = css`
   .g6-component-contextmenu {
@@ -38,5 +39,9 @@ const contextMenu = css`
 export const Wrapper = styled.div`
   margin-left: 300px;
   z-index: 0;
-  ${contextMenu}
+  ${contextMenu};
+
+  canvas {
+    background: url(${dotsImage});
+  }
 `;

@@ -10,9 +10,12 @@ export enum ITEM {
   SET_EDGES = 'edges',
   SELECT_NODE = 'selected',
   PERSPECTIVE = 'perspective',
+  PERSPECTIVE_INFO = 'perspective_info',
 }
 
-interface Param { isConnector: boolean}
+interface Param {
+  isConnector: boolean;
+}
 
 export enum SchemaAction {
   ADD_EDGE_START = 'ADD_EDGE_START',
@@ -29,6 +32,7 @@ export enum SchemaAction {
   SET_SELECT_NODE = 'SET_SELECT_NODE',
   SET_PERSPECTIVE_SHARE_START = 'SET_PERSPECTIVE_SHARE_START',
   SET_PERSPECTIVE_SHARE_FINISH = 'SET_PERSPECTIVE_SHARE_FINISH',
+  SET_PERSPECTIVE_INFO = 'SET_PERSPECTIVE_INFO',
 }
 
 const initState = {
@@ -64,8 +68,8 @@ export const schemaInitialState: SchemaState = {
   },
   perspective: {
     openShare: false,
-    sharedUsers: []
-  }
+    sharedUsers: [],
+  },
 };
 
 export function schemaReducer(state: SchemaState, action: SchemaActionType) {
@@ -87,10 +91,7 @@ export function schemaReducer(state: SchemaState, action: SchemaActionType) {
 
   const end = (item: ITEM, param?: Param) => ({
     ...state,
-    [item]: { ...state[item],
-      ...param,
-      isOpened: false
-    },
+    [item]: { ...state[item], ...param, isOpened: false },
   });
 
   switch (type) {
@@ -123,6 +124,8 @@ export function schemaReducer(state: SchemaState, action: SchemaActionType) {
       return start(ITEM.PERSPECTIVE);
     case SchemaAction.SET_PERSPECTIVE_SHARE_FINISH:
       return end(ITEM.PERSPECTIVE);
+    case SchemaAction.SET_PERSPECTIVE_INFO:
+      return insert(ITEM.PERSPECTIVE_INFO);
     default:
       return state;
   }
