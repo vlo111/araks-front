@@ -11,6 +11,7 @@ export const StyledCollapse = styled(Collapse)`
       align-items: center;
 
       .ant-collapse-expand-icon {
+        display: none;
         position: absolute;
         left: -15px;
         scale: 1.5;
