@@ -4,7 +4,7 @@ import { QueriesForm } from 'components/form/all-data/queries-form';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, ButtonWithIcon } from '.';
 
@@ -26,6 +26,8 @@ const StyledRadioButton = styled(Radio.Group)`
 
 export const QueriesButton = () => {
   const [openTable, setOpenTable] = useState(false);
+  const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
+
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
 
@@ -38,6 +40,15 @@ export const QueriesButton = () => {
     // eslint-disable-next-line no-console
     console.log('values', values);
   };
+
+  useEffect(() => {
+    const headerHeight = document.getElementById('overview-header')?.clientHeight;
+    const headerTabsHeight = document.querySelector('#overview-header-tabs .ant-tabs-nav')?.clientHeight;
+
+    // Calculate the content height and set it to state
+    const contentHeight = `calc(100vh - ${headerHeight}px - ${headerTabsHeight}px - 20px)`;
+    setDrawerContentHeight(contentHeight);
+  }, []);
 
   return (
     <Form
@@ -90,7 +101,7 @@ export const QueriesButton = () => {
           }
         }}
         width="100%"
-        contentWrapperStyle={{ height: '100%', overflowY: 'auto' }}
+        contentWrapperStyle={{ height: drawerContentHeight, overflowY: 'auto' }}
         footerStyle={{ zIndex: 3, background: '#F2F2F2' }}
         bodyStyle={{ background: '#F2F2F2', paddingLeft: '0', paddingRight: '0' }}
         footer={

@@ -122,6 +122,7 @@ export const OverviewTabs = () => {
   );
   return (
     <Tabs
+      id="overview-header-tabs"
       className="tabs"
       destroyInactiveTabPane
       defaultActiveKey={activeItem?.key}
