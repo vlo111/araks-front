@@ -1,7 +1,7 @@
 import { Graph } from '@antv/g6';
-import { IOpenNodeCreate, IOpenNodeState } from "./reducer/types";
-import { ProjectEdgeResponse } from "types/project-edge";
-import { Nodes } from "api/visualisation/use-get-nodes";
+import { IOpenNodeCreate, IOpenNodeState } from './reducer/types';
+import { ProjectEdgeResponse } from 'types/project-edge';
+import { Nodes } from 'api/visualisation/use-get-nodes';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
@@ -18,14 +18,14 @@ export type VisualisationReducerState = {
   nodes: Nodes;
   edges: ProjectEdgeResponse[];
   openNode: IOpenNodeState;
-  openNodeCreate: IOpenNodeCreate
+  openNodeCreate: IOpenNodeCreate;
 };
 
 export interface VisualisationContextType extends VisualisationReducerSetState, VisualisationReducerState {}
 
-export type PickSchemaContextType = Pick<VisualisationContextType, 'startOpenNode' | 'startOpenNodeCreate'>;
+export type PickVisualizationContextType = Pick<VisualisationContextType, 'startOpenNode' | 'startOpenNodeCreate'>;
 
-export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
+export type InitGraph = (container: HTMLDivElement, params: PickVisualizationContextType) => Graph;
 
 export type Node = {
   id: string;
@@ -41,3 +41,5 @@ export type GraphData = {
 };
 
 export type InitNodes = (graph: Graph, data: GraphData) => void;
+
+export type InitGraphEvents = (graph: Graph, params: PickVisualizationContextType) => void;

@@ -96,6 +96,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       const { properties } = node;
 
       for (const property of properties) {
+        if (property.name === 'node_icon') continue;
         const props = {
           allow: isPerspective(),
           color: node.color,
