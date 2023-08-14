@@ -195,8 +195,7 @@ const createColumns = (firstRow: [string, string] | undefined) => [
 
 const importReducer = (state: ImportState, action: ImportAction) => {
   const { type, payload } = action;
-  // eslint-disable-next-line no-console
-  console.log('type, payload', type, payload);
+
   switch (type) {
     case ImportActionType.IMPORT_OPEN:
       return {

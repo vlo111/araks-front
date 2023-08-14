@@ -128,7 +128,9 @@ export const QueriesButton = () => {
           </VerticalSpace>
         }
       >
-        <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
+        <div id="queries-form-body">
+          <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
+        </div>
       </Drawer>
     </Form>
   );
