@@ -13,7 +13,24 @@ export enum QueryFilterTypes {
   EQUAL_TO = 'Equal to',
 }
 
-export const QueriesSelect = (props: Partial<RefSelectProps>) => {
-  const data = Object.values(QueryFilterTypes).map((item) => ({ name: item, value: item }));
+const getOptions = (depth: number, isConnection: boolean) => {
+  switch (true) {
+    case (!isConnection && depth === 1) || (isConnection && (depth === 1 || depth === 2)):
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+      ];
+    default:
+      return Object.values(QueryFilterTypes).map((item) => ({ name: item, value: item }));
+  }
+};
+
+type Props = Partial<RefSelectProps> & {
+  depth: number;
+  isConnection: boolean;
+};
+
+export const QueriesSelect = (props: Props) => {
+  const data = getOptions(props.depth, !!props?.isConnection);
   return <Select style={{ width: '100%' }} placeholder="Please select" options={data} {...props} />;
 };

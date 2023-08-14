@@ -147,7 +147,10 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
               <VerticalSpace>
                 {queriesList[fieldName]?.labelHead}
                 <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
-                  <QueriesSelect />
+                  <QueriesSelect
+                    depth={queriesList[fieldName].depth}
+                    isConnection={queriesList[fieldName].isConnection}
+                  />
                 </Form.Item>
 
                 <QueriesContent fieldName={fieldName} />
