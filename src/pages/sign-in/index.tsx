@@ -25,7 +25,7 @@ export const SignIn = () => {
   }
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+    <Row justify="center" align="middle" style={{ minHeight: '70vh' }}>
       <Col span={24}>
         <Form name="signin" form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <VerticalSpace size="large">
