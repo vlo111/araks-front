@@ -1,5 +1,5 @@
 import { Graph } from '@antv/g6';
-import { GraphData } from '../../types';
+import { GraphData } from '../types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Nodes } from 'api/visualisation/use-get-nodes';
 
