@@ -5,7 +5,7 @@ import { GraphAction, graphInitialState, graphReducer } from './reducer/graph-ma
 import { VisualisationContextType } from './types';
 import { IProjectType } from 'api/types';
 import { INodeOpen, ProjectEdgeResponse } from 'types/project-edge';
-import { IIsOpen } from "./reducer/types";
+import { IIsOpen } from './reducer/types';
 
 export const VisualisationWrapper: React.FC = () => {
   const [state, dispatch] = useReducer(graphReducer, graphInitialState);
@@ -19,6 +19,8 @@ export const VisualisationWrapper: React.FC = () => {
       setEdges: (payload: ProjectEdgeResponse[]) => handleAction(GraphAction.SET_EDGES, payload),
       startOpenNode: (payload: INodeOpen) => handleAction(GraphAction.OPEN_NODE_START, payload),
       finishOpenNode: () => handleAction(GraphAction.OPEN_NODE_FINISH),
+      startDeleteNode: (payload: INodeOpen) => handleAction(GraphAction.DELETE_NODE_START, payload),
+      finishDeleteNode: () => handleAction(GraphAction.DELETE_NODE_FINISH),
       startOpenNodeCreate: (payload: IIsOpen) => handleAction(GraphAction.OPEN_CREATE_NODE_START, payload),
       finishOpenNodeCreate: () => handleAction(GraphAction.OPEN_CREATE_NODE_FINISH),
     }),

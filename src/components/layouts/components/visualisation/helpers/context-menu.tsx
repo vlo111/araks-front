@@ -4,6 +4,7 @@ import G6, { IG6GraphEvent } from '@antv/g6';
 export const contextMenuPlugin: (items: PickVisualizationContextType) => void = ({
   startOpenNodeCreate,
   startOpenNode,
+  startDeleteNode,
 }) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
@@ -38,9 +39,15 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
     getContent,
     handleMenuClick: (target, item) => {
       if (item?._cfg?.type === 'node') {
-        startOpenNode({
-          id: item.getID(),
-        });
+        if (target.className === 'delete') {
+          startDeleteNode({
+            id: item.getID(),
+          });
+        } else {
+          startOpenNode({
+            id: item.getID(),
+          });
+        }
       } else if (item?._cfg?.type === 'edge') {
       } else {
         startOpenNodeCreate({ isOpened: true });

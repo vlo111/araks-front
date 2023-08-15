@@ -15,7 +15,7 @@ import { setNodeDataValue } from '../../../data-sheet/components/table-section/n
 import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
 
-export const NodeEdit: React.FC = () => {
+export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
 

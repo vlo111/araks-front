@@ -11,6 +11,8 @@ export type VisualisationReducerSetState = {
   finishOpenNode: VoidFunction;
   startOpenNodeCreate: (item?: IOpenNodeCreate) => void;
   finishOpenNodeCreate: VoidFunction;
+  startDeleteNode: (item?: IOpenNodeState) => void;
+  finishDeleteNode: VoidFunction;
 };
 
 export type VisualisationReducerState = {
@@ -18,12 +20,16 @@ export type VisualisationReducerState = {
   nodes: Nodes;
   edges: ProjectEdgeResponse[];
   openNode: IOpenNodeState;
+  deleteNode: IOpenNodeState;
   openNodeCreate: IOpenNodeCreate;
 };
 
 export interface VisualisationContextType extends VisualisationReducerSetState, VisualisationReducerState {}
 
-export type PickVisualizationContextType = Pick<VisualisationContextType, 'startOpenNode' | 'startOpenNodeCreate'>;
+export type PickVisualizationContextType = Pick<
+  VisualisationContextType,
+  'startOpenNode' | 'startOpenNodeCreate' | 'startDeleteNode'
+>;
 
 export type InitGraph = (container: HTMLDivElement, params: PickVisualizationContextType) => Graph;
 

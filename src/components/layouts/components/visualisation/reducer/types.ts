@@ -22,6 +22,7 @@ export type GraphState = {
   edges?: ProjectEdgeResponse[];
   openNode?: IOpenNodeState;
   openNodeCreate?: IIsOpen;
+  deleteNode?: IIsOpen;
 };
 
 export interface GraphActionType {
