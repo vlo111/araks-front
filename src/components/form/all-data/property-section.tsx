@@ -6,10 +6,14 @@ import { InputNumber } from 'components/input-number';
 import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import styled from 'styled-components';
+import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
+import { SelectIcon } from 'pages/project-overview/components/select-icon';
+import { SelectColor } from 'pages/project-scheme/components/action-bar/components/select-color';
 
 type Props = {
   remove: (x: number) => void;
   fieldName: number;
+  isVisualisation?:boolean
 };
 
 type ContentType = {
@@ -18,8 +22,16 @@ type ContentType = {
 
 const StyledCollapse = styled(Collapse)`
   background: linear-gradient(137deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
-  box-shadow: -1px 4px 4px 0px rgba(128, 128, 128, 0.1);
+  box-shadow: -1px 4px 4px 0 rgba(128, 128, 128, 0.1);
   border-radius: 0;
+
+  .ant-collapse-content-box {
+    padding: 16px 0 !important;
+  }
+`;
+
+const StyledColorWrapper = styled.div`
+  margin-bottom: 16px;
 `;
 
 export const QueriesContent = ({ fieldName }: ContentType) => {
@@ -105,7 +117,7 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
   );
 };
 
-export const PropertySection = ({ remove, fieldName }: Props) => {
+export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) => {
   const form = Form.useFormInstance();
   const onChange = (key: string | string[]) => {
     // eslint-disable-next-line no-console
@@ -144,14 +156,27 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
               </Space>
             ),
             children: (
-              <VerticalSpace>
-                {queriesList[fieldName]?.labelHead}
-                <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
-                  <QueriesSelect />
-                </Form.Item>
+              <>
+                { isVisualisation && (
+                  <>
+                    <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
+                      <SizeComponent />
+                    </Form.Item>
+                    <SelectIcon />
+                    <StyledColorWrapper>
+                    <SelectColor />
+                    </StyledColorWrapper>
+                  </>
+                )}
 
-                <QueriesContent fieldName={fieldName} />
-              </VerticalSpace>
+                <VerticalSpace>
+                  {queriesList[fieldName]?.labelHead}
+                  <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
+                    <QueriesSelect />
+                  </Form.Item>
+                  <QueriesContent fieldName={fieldName} />
+                </VerticalSpace>
+              </>
             ),
             extra: genExtra(),
             showArrow: false,

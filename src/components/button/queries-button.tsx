@@ -116,7 +116,7 @@ export const QueriesButton = () => {
             <Row gutter={32} justify="center">
               <Col span={10}>
                 <Button style={{ marginRight: 8 }} onClick={() => form.resetFields()} block>
-                  Claen All
+                  Clean All
                 </Button>
               </Col>
               <Col span={10}>

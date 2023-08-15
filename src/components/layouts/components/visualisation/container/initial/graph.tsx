@@ -109,7 +109,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
   const graph = new Graph({
     container: container,
     height: window.innerHeight - 165,
-    width: window.innerWidth - 300,
+    width: window.innerWidth - 480,
     fitCenter: true,
     modes: {
       default: ['drag-canvas', 'drag-node', 'zoom-canvas'],

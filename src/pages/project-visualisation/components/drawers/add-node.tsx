@@ -23,8 +23,7 @@ export const NodeEdit: React.FC = () => {
 
   const { mutate } = useManageNodes({
     onSuccess: ({ data }) => {
-
-      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }, default_image: string };
+      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }; default_image: string };
 
       const node = {
         id: nodeData.id,
