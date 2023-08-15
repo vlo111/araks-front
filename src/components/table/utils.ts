@@ -29,7 +29,7 @@ export function getColumnType(initType: PropertyTypes): AcceptedType {
 export function processDataWithType(
   dataMapping: ItemMapping[],
   dataArr: [string, string][] | CsvType[],
-  excellIndex?: number
+  isCSV?: boolean
 ) {
   const dataResult: DataResult = {};
   const dataWrongResult = {} as DataWrongResult;
@@ -41,7 +41,7 @@ export function processDataWithType(
 
     const row = dataToMap[index] as CsvType;
 
-    if (!row.length) {
+    if (!row.length && !isCSV) {
       dataToMap.splice(index, 1);
       // wrongValueCount.count++;
       // wrongValueCount.emptyValue++;

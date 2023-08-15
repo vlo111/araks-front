@@ -99,7 +99,7 @@ export const ImportTable: React.FC = () => {
         ];
       }
 
-      const processResult = processDataWithType(dataToProcess, (state.sheetData as ExcelType).data);
+      const processResult = processDataWithType(dataToProcess, (state.sheetData as ExcelType).data, state.isCSV);
       if (processResult.wrongDataInfo && !!value) {
         // just for testing if not matches
         setRowData((prevData) =>
