@@ -1,12 +1,14 @@
 import { Form, Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeConnectionType } from '../../types';
 import { CaretDownFilled } from '@ant-design/icons';
 import { COLORS } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
-import { createQueriesConnectionTree, findConnectionChildrenProperties } from 'components/layouts/components/data-sheet/utils';
+import {
+  createQueriesConnectionTree,
+  findConnectionChildrenProperties,
+} from 'components/layouts/components/data-sheet/utils';
 import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
@@ -17,10 +19,9 @@ import { QueriesNodeTree } from 'components/tree/queries-node-tree';
 type Props = PropsSetState &
   TableStyleBasedOnTab & {
     setOpenTable: (openTable: boolean) => void;
-    add: () => void;
-    fieldsLength: number;
+    // add: () => void;
+    // fieldsLength: number;
   };
-
 
 export const ConnectionTypesQueries = ({
   searchVisible,
@@ -28,13 +29,13 @@ export const ConnectionTypesQueries = ({
   isCheckable = false,
   noColors = false,
   setOpenTable,
-  add,
-  fieldsLength,
-}: Props) => {
+}: // setOpenTable,
+// add,
+// fieldsLength,
+Props) => {
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
-  const { color, nodeTypeId } = useDataSheetWrapper();
 
   const {
     formatted: connectionList,
@@ -50,8 +51,7 @@ export const ConnectionTypesQueries = ({
       enabled: !!params.id,
       onSuccess: (data) => {
         const connectionList = createQueriesConnectionTree(data.data);
-        // eslint-disable-next-line no-console
-        console.log('connectionList', connectionList);
+
         setFilteredData(connectionList);
       },
     }
@@ -59,13 +59,7 @@ export const ConnectionTypesQueries = ({
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeConnectionType> }) => {
     setOpenTable(false);
-    // add();
-    // eslint-disable-next-line no-console
-    // console.log('filteredData', selectedKeys, filteredData);
-    // form.setFieldValue('queries', {
-    //   ...(form.getFieldValue('queries') || {}),
-    //   [fieldsLength]: filteredData.find((item) => item.value === selectedKeys[0]),
-    // });
+
     form.setFieldValue('queries', [
       ...(form.getFieldValue('queries') || []),
       findConnectionChildrenProperties(filteredData, selectedKeys[0]),
@@ -108,8 +102,8 @@ export const ConnectionTypesQueries = ({
         switcherIcon={<CaretDownFilled style={{ color: COLORS.PRIMARY.GRAY, fontSize: 16 }} />}
         treeData={filteredData}
         blockNode
-        color={color}
-        selectedKeys={[nodeTypeId]}
+        // color={color}
+        // selectedKeys={[nodeTypeId]}
       />
     </>
   );

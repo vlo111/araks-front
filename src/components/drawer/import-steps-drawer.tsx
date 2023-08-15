@@ -9,6 +9,77 @@ import { ImportExcel } from 'pages/import/import-excel';
 import { ImportMerge } from 'pages/import/import-merge';
 import { ImportSetRules } from 'pages/import/import-set-rules';
 import { CSSProperties } from 'react';
+import styled from 'styled-components';
+
+const StyledSteps = styled(Steps)`
+  .ant-steps-item {
+    .ant-steps-icon {
+      color: #c3c3c3;
+    }
+
+    .ant-steps-item-icon {
+      background-color: transparent;
+      border-color: #c3c3c3;
+    }
+
+    .ant-steps-item-tail {
+      &::after {
+        height: 1.5px;
+      }
+    }
+
+    .ant-steps-item-title .ant-typography {
+      color: #c3c3c3;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500px;
+    }
+
+    &.ant-steps-item-active {
+      .ant-steps-icon {
+        color: #ffffff;
+      }
+
+      .ant-steps-item-icon {
+        background-color: #89d9b3;
+        border-color: #89d9b3;
+      }
+
+      .ant-steps-item-tail {
+        &::after {
+          background: linear-gradient(270deg, #808080 0.27%, #89d9b3 99.42%);
+        }
+      }
+
+      .ant-steps-item-title .ant-typography {
+        color: #000;
+        font-weight: 600px;
+      }
+    }
+
+    &.ant-steps-item-finish {
+      .ant-steps-icon {
+        color: #ffffff;
+      }
+
+      .ant-steps-item-icon {
+        background-color: #89d9b3;
+        border-color: #89d9b3;
+      }
+
+      .ant-steps-item-tail {
+        &::after {
+          background: linear-gradient(270deg, #cde4d9 0.27%, #89d9b3 99.42%);
+        }
+      }
+
+      .ant-steps-item-title .ant-typography {
+        color: #89d9b3;
+        font-weight: 600px;
+      }
+    }
+  }
+`;
 
 const steps = [
   {
@@ -62,7 +133,7 @@ export const ImportStepsDrawer = () => {
     <>
       <Drawer
         open={state.importSteps}
-        title={<Steps current={state.step} items={items} labelPlacement="vertical" />}
+        title={<StyledSteps current={state.step} items={items} labelPlacement="vertical" />}
         footer={
           state.step !== 1 && state.step !== 3 ? (
             state.step === 4 ? (

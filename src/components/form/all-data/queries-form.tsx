@@ -1,8 +1,7 @@
 // import { PlusOutlined } from '@ant-design/icons';
-import { Form } from 'antd';
+import { Form, Popover } from 'antd';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { TabTablesQueries } from 'pages/data-sheet/components/all-data-queries/tab-tables-queries';
-import { useEffect, useRef } from 'react';
 // import { useState } from 'react';
 import { PropertySection } from './property-section';
 import { Buttons } from '../../../pages/project-visualisation/components/buttons';
@@ -15,20 +14,20 @@ type Props = {
 
 export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }: Props) => {
   // const [openTable, setOpenTable] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  // const ref = useRef<HTMLDivElement>(null);
   const [form] = Form.useForm();
 
   // const handleOpenChange = (newOpen: boolean) => {
   //   setOpenTable(newOpen);
   // };
-  useEffect(() => {
-    if (openTable && ref.current) {
-      ref.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  }, [openTable]);
+  // useEffect(() => {
+  //   if (openTable && ref.current) {
+  //     ref.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //       block: 'start',
+  //     });
+  //   }
+  // }, [openTable]);
 
   const onFinish = (values: unknown) => {
     // eslint-disable-next-line no-console
@@ -62,17 +61,20 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
               </Button>
             </Popover>
           </Form.Item> */}
-            <div ref={ref}>
-              {openTable && (
-                <TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />
-              )}
-            </div>
-
+          <Popover
+            open={openTable}
+            placement="bottom"
+            arrow={false}
+            getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
+            overlayStyle={{ width: '90%' }}
+            destroyTooltipOnHide
+            content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
+          >
+            <div />
+          </Popover>
             {isVisualisation && <Buttons setOpenTable={setOpenTable} />}
-          </VerticalSpace>
-
-        )}
-      </Form.List>
-    </Form>
+        </VerticalSpace>
+      )}
+    </Form.List>
   );
 };

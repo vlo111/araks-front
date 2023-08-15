@@ -77,8 +77,6 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
       });
     },
   });
-  // eslint-disable-next-line no-console
-  console.log('data', data);
 
   const [form] = Form.useForm();
 

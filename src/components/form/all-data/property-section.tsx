@@ -157,26 +157,32 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
             ),
             children: (
               <>
-                { isVisualisation && (
-                  <>
-                    <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
-                      <SizeComponent />
-                    </Form.Item>
-                    <SelectIcon />
-                    <StyledColorWrapper>
-                    <SelectColor />
-                    </StyledColorWrapper>
-                  </>
-                )}
-
                 <VerticalSpace>
                   {queriesList[fieldName]?.labelHead}
-                  <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
-                    <QueriesSelect />
+                  <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
+                    <QueriesSelect
+                      depth={queriesList[fieldName].depth}
+                      isConnection={queriesList[fieldName].isConnection}
+                    />
                   </Form.Item>
+
                   <QueriesContent fieldName={fieldName} />
                 </VerticalSpace>
+                <>
+                  { isVisualisation && (
+                    <>
+                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
+                        <SizeComponent />
+                      </Form.Item>
+                      <SelectIcon />
+                      <StyledColorWrapper>
+                        <SelectColor />
+                      </StyledColorWrapper>
+                    </>
+                  )}
+                </>
               </>
+
             ),
             extra: genExtra(),
             showArrow: false,

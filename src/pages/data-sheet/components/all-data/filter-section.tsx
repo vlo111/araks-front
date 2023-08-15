@@ -46,10 +46,10 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
     <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
       <Col span={16}>
         <Row gutter={24}>
-          <Col xxl={8}>
+          <Col span={8}>
             <Sort prefix="Sort By:" sortItems={ALL_DATA_SORT_BY} fullWidth />
           </Col>
-          <Col xxl={8}>
+          <Col span={14}>
             <ExpandableInput setSearchText={setSearchText} />
           </Col>
         </Row>

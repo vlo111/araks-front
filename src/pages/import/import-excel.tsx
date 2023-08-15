@@ -38,7 +38,7 @@ export const ImportExcel = () => {
     <VerticalSpace size="large">
       {getTabNames && state.step === 0 && (
         <Row>
-          <Col span={8}>
+          <Col span={10}>
             <ImportTabs
               tabBarGutter={40}
               tabBarStyle={{

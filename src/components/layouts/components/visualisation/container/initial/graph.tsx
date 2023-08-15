@@ -1,5 +1,6 @@
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { InitGraph } from '../../types';
+import { initGraphEvents } from './events';
 
 const defaultEdge = {
   labelCfg: {
@@ -129,11 +130,7 @@ export const initGraph: InitGraph = (container, { startOpenNode, startOpenNodeCr
     },
   });
 
-  graph.on('dblclick', (evt) => {
-    startOpenNode({
-      id: evt.item?.getID() ?? '',
-    });
-  });
+  initGraphEvents(graph, { startOpenNode, startOpenNodeCreate });
 
   return graph;
 };
