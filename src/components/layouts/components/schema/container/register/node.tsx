@@ -46,10 +46,6 @@ const ports = {
           tagName: 'text',
           selector: PORT_TYPE_TEXT,
         },
-        {
-          tagName: 'path',
-          selector: PORT_EYE_PATH,
-        },
       ],
       attrs: {
         [PORT_BODY_RECT]: {

@@ -1,7 +1,7 @@
 import { Graph, Node } from '@antv/x6';
 import { SchemaAction } from './schema-manager';
-import { IProjectType, ISharedPerspectiveData } from "api/types";
-import { ProjectEdgeResponse } from "types/project-edge";
+import { IProjectType, ISharedPerspectiveData } from 'api/types';
+import { ProjectEdgeResponse } from 'types/project-edge';
 
 export interface IIsOpen {
   isOpened?: boolean;
@@ -17,8 +17,8 @@ export interface IEdgeState extends IIsOpen {
 
 export interface ISelectNode {
   id?: string;
-  node?: Node<Node.Properties>
-  selected?: boolean
+  node?: Node<Node.Properties>;
+  selected?: boolean;
 }
 
 export interface ITypeState extends IIsOpen {
@@ -35,9 +35,14 @@ export interface ITypePortState extends IIsOpen {
 }
 
 export interface IPerspectiveState extends IIsOpen {
-  id?: string,
-  openShare: boolean,
-  sharedUsers?: ISharedPerspectiveData[]
+  id?: string;
+  openShare: boolean;
+  sharedUsers?: ISharedPerspectiveData[];
+}
+
+export interface IPerspectiveInfo {
+  typesLength: number;
+  propertiesLength: number;
 }
 
 export interface IEdgePortState extends IIsOpen {
@@ -57,11 +62,11 @@ export type SchemaState = {
   type?: ITypeState;
   type_port?: ITypePortState;
   edge_port?: IEdgePortState;
-  perspective?: IPerspectiveState
+  perspective?: IPerspectiveState;
+  perspective_info?: IPerspectiveInfo;
 };
 
 export interface SchemaActionType {
   type: SchemaAction;
   payload: SchemaState;
 }
-

@@ -46,9 +46,6 @@ const insertProperty: InsertProperty = ({ id, color, name, ref_property_type_id,
   attrs: {
     [PORT_TYPE_TEXT]: { text: ref_property_type_id, refX: isPerspective() ? 85 : 95 },
     [PORT_BODY_RECT]: setPropertyColor(ref_property_type_id, color),
-    [PORT_EYE_PATH]: props.allow
-      ? { d: EyeD, refX: 130, refY: 11, fill: colorPropertyType, cursor: 'pointer' }
-      : undefined,
     [PORT_NAME_TEXT]: { text: name },
     ref_property_type_id,
     ...props,
@@ -99,6 +96,7 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
       const { properties } = node;
 
       for (const property of properties) {
+        if (property.name === 'node_icon') continue;
         const props = {
           allow: isPerspective(),
           color: node.color,

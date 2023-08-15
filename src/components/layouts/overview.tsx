@@ -44,7 +44,7 @@ export const Overview = () => {
 
   return (
     <Layout className="layout">
-      <Header>
+      <Header id="overview-header">
         <Logo margin={screenSize.xxl ? '0' : '15px 0'} />
         <HeaderSearch />
       </Header>

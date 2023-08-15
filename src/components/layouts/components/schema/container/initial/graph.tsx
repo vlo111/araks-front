@@ -7,7 +7,7 @@ import { isPerspective } from '../../helpers/utils';
 import { InitGraph } from '../../types';
 
 import Connecting = Options.Connecting;
-import { PATH } from "../../helpers/constants";
+import { PATH } from '../../helpers/constants';
 
 export const initGraph: InitGraph = (container, _params) => {
   const connecting: Partial<Connecting> = {
@@ -89,7 +89,7 @@ export const initGraph: InitGraph = (container, _params) => {
 
   const graph = new Graph(options);
 
-  if (isPerspective()) initPerspectiveEvents(graph);
+  if (isPerspective()) initPerspectiveEvents(graph, _params.setPerspectiveInfo);
   else initSchemaEvents(graph, _params);
 
   graph.use(

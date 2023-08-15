@@ -1,16 +1,30 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Popover } from 'antd';
+// import { PlusOutlined } from '@ant-design/icons';
+import { Form, Popover } from 'antd';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { TabTablesQueries } from 'pages/data-sheet/components/all-data-queries/tab-tables-queries';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { PropertySection } from './property-section';
 
-export const QueriesForm = () => {
-  const [openTable, setOpenTable] = useState(false);
+type Props = {
+  openTable: boolean;
+  setOpenTable: (openTable: boolean) => void;
+};
 
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpenTable(newOpen);
-  };
+export const QueriesForm = ({ openTable, setOpenTable }: Props) => {
+  // const [openTable, setOpenTable] = useState(false);
+  // const ref = useRef<HTMLDivElement>(null);
+
+  // const handleOpenChange = (newOpen: boolean) => {
+  //   setOpenTable(newOpen);
+  // };
+  // useEffect(() => {
+  //   if (openTable && ref.current) {
+  //     ref.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //       block: 'start',
+  //     });
+  //   }
+  // }, [openTable]);
 
   return (
     <Form.List name="queries">
@@ -20,7 +34,7 @@ export const QueriesForm = () => {
             return <PropertySection key={field.key} remove={() => remove(field.name)} fieldName={field.name} />;
           })}
 
-          <Form.Item>
+          {/* <Form.Item>
             <Popover
               content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
               trigger="click"
@@ -37,7 +51,18 @@ export const QueriesForm = () => {
                 Add
               </Button>
             </Popover>
-          </Form.Item>
+          </Form.Item> */}
+          <Popover
+            open={openTable}
+            placement="bottom"
+            arrow={false}
+            getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
+            overlayStyle={{ width: '90%' }}
+            destroyTooltipOnHide
+            content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
+          >
+            <div />
+          </Popover>
         </VerticalSpace>
       )}
     </Form.List>

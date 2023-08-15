@@ -128,6 +128,10 @@ export interface IProjectType {
   properties: ITypeProperty[];
 }
 
+export interface IPerspectiveTypes {
+  project_node_type_id: string;
+}
+
 export interface IProjectTypeData extends ProjectFullInfo {
   projectsNodeTypes: IProjectType[];
 }
@@ -201,19 +205,24 @@ export type NodeEdgeTypesReturnData = {
   source: {
     id: string;
     name: string;
+    color?: string;
   };
   target: {
     id: string;
     name: string;
+    color?: string;
   };
   target_attribute_id: string;
   target_id: string;
   updated_at: string;
   user_id: string;
+  properties: ProjectTypePropertyReturnData[];
 };
 
 export interface CustomError {
-  message: string;
+  errors: {
+    message: string;
+  };
 }
 
 export interface ISharedPerspectiveData {
@@ -234,6 +243,7 @@ export interface IResponsePerspectiveData {
   project_id: string;
   status: string;
   title: string;
+  nodeType: { project_node_type_id: string }[];
   shared: ISharedPerspectiveData[];
 }
 

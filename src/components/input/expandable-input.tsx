@@ -69,9 +69,16 @@ export const ExpandableInput = ({ setSearchText }: Props) => {
       <StyleInput
         suffix={<SearchOutlined onClick={handlePrefixClick} style={{ color: COLORS.PRIMARY.GRAY }} />}
         placeholder="search"
-        onChange={(e) => debouncedSearch(e.target.value)}
+        onChange={(e) => {
+          debouncedSearch(e.target.value);
+          if (!e.target.value) {
+            setSearchText({ text: '', type });
+          }
+        }}
         // addonAfter={selectAfter}
         addonBefore={selectAfter}
+        onPressEnter={() => setSearchText({ text, type })}
+        allowClear
       />
     </div>
   );

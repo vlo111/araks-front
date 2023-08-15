@@ -91,7 +91,7 @@ export const OverviewTabs = () => {
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
-  const { state, dispatch } = useOverview();
+  const { state, dispatch, setHideLeftSection } = useOverview();
   useGetProject(
     { id: params.id },
     {
@@ -106,8 +106,9 @@ export const OverviewTabs = () => {
   const handleTabClick = useCallback(
     (key: string) => {
       navigate(key.replace(':id', params.id || ''));
+      setHideLeftSection(false);
     },
-    [navigate, params.id]
+    [navigate, params.id, setHideLeftSection]
   );
 
   const activeItem = useMemo(
@@ -122,6 +123,7 @@ export const OverviewTabs = () => {
   );
   return (
     <Tabs
+      id="overview-header-tabs"
       className="tabs"
       destroyInactiveTabPane
       defaultActiveKey={activeItem?.key}

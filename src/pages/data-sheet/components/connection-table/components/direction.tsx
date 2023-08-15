@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icons';
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { Skeleton } from 'antd';
+import { TreeConnectionType } from 'pages/data-sheet/types';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const StyledCustomColumn = styled.div`
 `;
 
 type Props = {
-  data: EdgeTypePropertiesResponse | undefined;
+  data: EdgeTypePropertiesResponse | TreeConnectionType | undefined;
 };
 export const EdgeDirection = ({ data }: Props) => {
   if (!data) {

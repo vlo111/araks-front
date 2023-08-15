@@ -8,12 +8,14 @@ import { Highlighter } from '@antv/x6/lib/registry';
 import {
   IEdgePortState,
   IEdgeState,
+  IPerspectiveInfo,
   IPerspectiveState,
   ISelectNode,
   ITypePortState,
   ITypeState,
 } from './reducer/types';
 import { PropertyTypes } from '../../../form/property/types';
+import { ReturnPerspectiveTypeData } from 'api/perspective/use-add-type-perspective';
 
 export interface IStroke {
   type: string;
@@ -122,6 +124,8 @@ export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: P
 
 export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
 
+export type InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo: (info: IPerspectiveInfo) => void) => void;
+
 export type ElementBox = Element & {
   getBBox: () => { height: number; width: number };
 };
@@ -159,11 +163,13 @@ export type GetTypeColors = (edge: Edge<Properties>) => string[];
 
 export type InsertProperty = (prop: ITypeProperty & { color: string; allow: boolean }) => IPort;
 
-export type SwitchPermission = (node: Node<Node.Properties>, portId: string | undefined, isAllow: boolean) => void;
-
 export type SwitchTypePermission = (node: Node<Node.Properties>, isAllow: boolean) => void;
 
 export type ChangeTypePosition = (id: string, position: Point.PointLike) => void;
+
+export type AddTypePerspective = (type_id: string) => Promise<ReturnPerspectiveTypeData> | null;
+
+export type SetPerspectiveData = (items: { perspectiveId?: string; project_id?: string } | null) => void;
 
 export type SchemaReducerState = {
   graph: Graph;
@@ -175,6 +181,7 @@ export type SchemaReducerState = {
   type_port: ITypePortState;
   edge_port: IEdgePortState;
   perspective: IPerspectiveState;
+  perspective_info: IPerspectiveInfo;
 };
 
 export type SchemaReducerSetState = {
@@ -182,6 +189,7 @@ export type SchemaReducerSetState = {
   setNodes: (nodes: IProjectType[]) => void;
   setEdges: (nodes: ProjectEdgeResponse[]) => void;
   setSelected: (selectData: ISelectNode) => void;
+  setPerspectiveInfo: (info: IPerspectiveInfo) => void;
 
   startEdgeType: (edge?: IEdgeState) => void;
   startType: (type?: ITypeState) => void;
@@ -201,7 +209,7 @@ export type OnEdgeLabelRendered = (args: Options.OnEdgeLabelRenderedArgs) => voi
 
 export type PickSchemaContextType = Pick<
   SchemaContextType,
-  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected'
+  'startType' | 'startEdgeType' | 'startTypePort' | 'startEdgePort' | 'setSelected' | 'selected' | 'setPerspectiveInfo'
 >;
 
 export type NodeEdgeTypesForm = {
@@ -215,4 +223,9 @@ export type NodeEdgeTypesForm = {
   multiple: boolean;
   ref_property_type_id?: PropertyTypes.Connection;
   propertyId?: string;
+};
+
+export type ISelectedPerspective = {
+  perspectiveId: string;
+  project_id: string;
 };

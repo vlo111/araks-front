@@ -1,8 +1,14 @@
 import { Graph } from '@antv/x6';
 import { removeSelected, selectNode } from '../../helpers/selection';
-import { changeTypePosition, getTypeColors, switchPermission, switchTypePermission } from '../../helpers/utils';
-import { ElementStyle, InitEvents } from '../../types';
-import { PATH, SELECTORS } from "../../helpers/constants";
+import {
+  addTypePerspective,
+  changeTypePosition,
+  getTypeColors,
+  removeTypePerspective,
+  switchTypePermission,
+} from '../../helpers/utils';
+import { ElementStyle, InitEvents, InitPerspectiveEvents } from '../../types';
+import { PATH, SELECTORS } from '../../helpers/constants';
 
 export const initSchemaEvents: InitEvents = (
   graph,
@@ -91,29 +97,21 @@ export const initSchemaEvents: InitEvents = (
  * The Events are provides perspective permission switchers
  * @param graph
  */
-export const initPerspectiveEvents = (graph: Graph) => {
-  graph.on('node:port:click', ({ node, port: portId }) => {
-    const { eye, allow } = node.getPort(portId || '')?.attrs || {};
+export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo) => {
+  graph.on('node:click', async ({ node, e: { target } }) => {
+    if (!target.closest('.x6-port-body')) {
+      const isAllow = !!node?.attrs?.body.allow;
 
-    /** return for edge property */
-    if (eye === undefined) return;
+      const response = isAllow ? await removeTypePerspective(node.id) : await addTypePerspective(node.id);
 
-    switchPermission(node, portId, allow as unknown as boolean);
+      if (response?.data) switchTypePermission(node, isAllow);
 
-    const ports = node.getPorts().find((g) => g.attrs?.eye && g.attrs.allow);
+      const nodes = graph.getNodes();
 
-    switchTypePermission(node, !ports);
-  });
-
-  graph.on('node:click', ({ node, e: { target } }) => {
-    if (target.closest('.x6-port-body')) return;
-
-    const ports = node.getPorts().filter((g) => g.attrs?.eye);
-
-    const isAllow = node?.attrs?.body.allow as boolean;
-
-    switchTypePermission(node, isAllow);
-
-    for (const { id } of ports) switchPermission(node, id, isAllow);
+      setPerspectiveInfo({
+        typesLength: nodes.filter((a) => a.attrs?.body.allow).length,
+        propertiesLength: nodes.flatMap((a) => (a.attrs?.body.allow ? a.ports.items : [])).length,
+      });
+    }
   });
 };
