@@ -18,6 +18,7 @@ export type ProjectEdgeResponse = {
   target?: IEdgeType;
   source?: IEdgeType;
   edgeTypes?: { name: string };
+  project_edge_type_id?: string;
 } & { project_id?: string };
 
 export type ProjectEdgeForm = {

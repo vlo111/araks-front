@@ -23,10 +23,12 @@ export const VisualisationWrapper: React.FC = () => {
       finishDeleteNode: () => handleAction(GraphAction.DELETE_NODE_FINISH),
       startOpenNodeCreate: (payload: IIdOpen) => handleAction(GraphAction.OPEN_CREATE_NODE_START, payload),
       finishOpenNodeCreate: () => handleAction(GraphAction.OPEN_CREATE_NODE_FINISH),
-      startOpenEdge: (payload: IOpenEdge) => handleAction(GraphAction.OPEN_EDGE_START, payload),
+      startOpenEdge: (payload: IIdOpen) => handleAction(GraphAction.OPEN_EDGE_START, payload),
       finishOpenEdge: () => handleAction(GraphAction.OPEN_EDGE_FINISH),
       startDeleteEdge: (payload: IOpenId) => handleAction(GraphAction.DELETE_EDGE_START, payload),
       finishDeleteEdge: () => handleAction(GraphAction.DELETE_EDGE_FINISH),
+      startOpenEdgeCreate: (payload: IOpenEdge) => handleAction(GraphAction.OPEN_CREATE_EDGE_START, payload),
+      finishOpenEdgeCreate: () => handleAction(GraphAction.OPEN_CREATE_EDGE_FINISH),
     }),
     [handleAction]
   );

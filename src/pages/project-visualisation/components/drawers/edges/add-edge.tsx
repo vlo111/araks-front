@@ -17,24 +17,24 @@ export const EdgeCreate: React.FC = () => {
 
   const { id } = useParams();
 
-  const { graph, openEdge, finishOpenEdge } = useGraph() || {};
+  const { graph, openEdgeCreate, finishOpenEdgeCreate } = useGraph() || {};
 
   const selectedEdgeId = Form.useWatch('selectedEdgeId', { form, preserve: true });
 
-  const edge = useMemo(() => openEdge?.edge._cfg?.model, [openEdge?.edge]);
+  const edge = useMemo(() => openEdgeCreate?.edge._cfg?.model, [openEdgeCreate?.edge]);
 
-  const sourceId = useMemo(() => openEdge?.edge.getSource()._cfg?.model?.nodeType, [openEdge?.edge]);
+  const sourceId = useMemo(() => openEdgeCreate?.edge.getSource()._cfg?.model?.nodeType, [openEdgeCreate?.edge]);
 
-  const targetId = useMemo(() => openEdge?.edge.getTarget()._cfg?.model?.nodeType, [openEdge?.edge]);
+  const targetId = useMemo(() => openEdgeCreate?.edge.getTarget()._cfg?.model?.nodeType, [openEdgeCreate?.edge]);
 
   const { mutate } = useManageEdge(undefined, {
     onSuccess: () => {
       const edgeName = filteredEdges?.find((f) => f.id === selectedEdgeId)?.name ?? '';
 
-      graph.updateItem(openEdge?.edge.getID(), {
+      graph.updateItem(openEdgeCreate?.edge.getID(), {
         label: edgeName,
       });
-      finishOpenEdge();
+      finishOpenEdgeCreate();
     },
   });
 
@@ -76,10 +76,10 @@ export const EdgeCreate: React.FC = () => {
   };
 
   const onClose = () => {
-    finishOpenEdge();
+    finishOpenEdgeCreate();
     form.resetFields();
 
-    graph.removeItem(openEdge.edge.getID());
+    graph.removeItem(openEdgeCreate.edge.getID());
   };
 
   return (
@@ -123,7 +123,7 @@ export const EdgeCreate: React.FC = () => {
             </Row>
           )
         }
-        open={openEdge?.isOpened}
+        open={openEdgeCreate?.isOpened}
       >
         <AddNodeForm data={data?.properties} isInitialLoading={isInitialLoading} />
       </Drawer>

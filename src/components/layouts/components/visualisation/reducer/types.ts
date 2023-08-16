@@ -27,6 +27,7 @@ export type GraphState = {
   openNode?: IOpenIdState;
   openEdge?: IOpenEdgeState;
   openNodeCreate?: IIdOpen;
+  openEdgeCreate?: IIdOpen;
   deleteNode?: IIdOpen;
   deleteEdge?: IIdOpen;
 };

@@ -20,6 +20,7 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
     })),
     edges: edgeList.map((e) => ({
       id: e.id,
+      project_edge_type_id: e.project_edge_type_id,
       source: e.source_id,
       target: e.target_id,
       label: e.edgeTypes?.name ?? '',
