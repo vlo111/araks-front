@@ -305,6 +305,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           ...state,
           ...payload,
           columns: createDraftColumns(state.columnRow?.length || 0) as ColumnsType<unknown[]> | undefined,
+          columnRow: getExcelColumnNames(1, state.columnRow?.length || 0) as [string, string] | undefined,
           dataSource: createTableData(dataToReturn.slice(0, 6)),
           sheetData: {
             ...(state.sheetData as ExcelType),
