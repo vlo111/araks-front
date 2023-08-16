@@ -1,17 +1,17 @@
-import { useDeleteNode } from 'api/node/use-delete-node';
 import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
+import { useDeleteEdge } from 'api/edges/use-delete-edge';
 
-export const NodeDelete = () => {
-  const { graph, deleteNode, finishDeleteNode } = useGraph() ?? {};
+export const EdgeDelete = () => {
+  const { graph, deleteEdge, finishDeleteEdge } = useGraph() ?? {};
 
-  const { mutate } = useDeleteNode(deleteNode?.id, {
+  const { mutate } = useDeleteEdge(deleteEdge?.id, {
     onSuccess: () => {
-      graph.removeItem(deleteNode.id);
-      finishDeleteNode();
+      graph.removeItem(deleteEdge.id);
+      finishDeleteEdge();
     },
   });
 
@@ -22,8 +22,8 @@ export const NodeDelete = () => {
   return (
     <>
       <Modal
-        title={<Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this node?</Text>}
-        open={deleteNode?.isOpened}
+        title={<Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this edge?</Text>}
+        open={deleteEdge?.isOpened}
         footer={false}
         closable={false}
         className="project-modal"
@@ -36,7 +36,7 @@ export const NodeDelete = () => {
             block
             type="default"
             onClick={() => {
-              finishDeleteNode();
+              finishDeleteEdge();
             }}
           >
             Cancel

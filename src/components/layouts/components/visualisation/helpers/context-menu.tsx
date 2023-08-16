@@ -5,6 +5,7 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
   startOpenNodeCreate,
   startOpenNode,
   startDeleteNode,
+  startDeleteEdge,
 }) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
@@ -49,6 +50,9 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
           });
         }
       } else if (item?._cfg?.type === 'edge') {
+        startDeleteEdge({
+          id: item.getID(),
+        });
       } else {
         startOpenNodeCreate({ isOpened: true });
       }

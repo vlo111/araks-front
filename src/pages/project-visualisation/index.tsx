@@ -5,6 +5,7 @@ import { NodeCreate } from './components/drawers/nodes/add-node';
 import { Settings } from './components/settings';
 import { NodeDelete } from './components/modals/delete-node';
 import { EdgeCreate } from './components/drawers/edges/add-edge';
+import { EdgeDelete } from './components/modals/delete-edge';
 
 export const ProjectVisualisation = () => {
   useNodes();
@@ -16,6 +17,7 @@ export const ProjectVisualisation = () => {
       <NodeCreate />
       <NodeView />
       <NodeDelete />
+      <EdgeDelete />
       <EdgeCreate />
     </div>
   );

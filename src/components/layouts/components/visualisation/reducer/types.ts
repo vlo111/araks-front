@@ -3,19 +3,19 @@ import { GraphAction } from './graph-manager';
 import { IProjectType } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 
-export interface IIsOpen {
+export interface IIdOpen {
   isOpened?: boolean;
 }
 
-export interface IOpenIdState extends IIsOpen {
+export interface IOpenIdState extends IIdOpen {
   id: string;
 }
 
-export interface IOpenEdgeState extends IIsOpen {
+export interface IOpenEdgeState extends IIdOpen {
   edge: Edge;
 }
 
-export interface IOpenNodeCreate extends IIsOpen {
+export interface IOpenNodeCreate extends IIdOpen {
   x?: number;
   y?: number;
 }
@@ -26,8 +26,9 @@ export type GraphState = {
   edges?: ProjectEdgeResponse[];
   openNode?: IOpenIdState;
   openEdge?: IOpenEdgeState;
-  openNodeCreate?: IIsOpen;
-  deleteNode?: IIsOpen;
+  openNodeCreate?: IIdOpen;
+  deleteNode?: IIdOpen;
+  deleteEdge?: IIdOpen;
 };
 
 export interface GraphActionType {

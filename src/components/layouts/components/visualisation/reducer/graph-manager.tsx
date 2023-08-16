@@ -11,6 +11,7 @@ export enum ITEM {
   OPEN_NODE = 'openNode',
   OPEN_EDGE = 'openEdge',
   DELETE_NODE = 'deleteNode',
+  DELETE_EDGE = 'deleteEdge',
   OPEN_CREATE_NODE = 'openNodeCreate',
 }
 
@@ -26,6 +27,8 @@ export enum GraphAction {
   DELETE_NODE_FINISH = 'DELETE_NODE_FINISH',
   OPEN_EDGE_START = 'OPEN_EDGE_START',
   OPEN_EDGE_FINISH = 'OPEN_EDGE_FINISH',
+  DELETE_EDGE_START = 'DELETE_EDGE_START',
+  DELETE_EDGE_FINISH = 'DELETE_EDGE_FINISH',
 }
 
 export const graphInitialState: GraphState = {
@@ -86,6 +89,10 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       return start(ITEM.OPEN_EDGE);
     case GraphAction.OPEN_EDGE_FINISH:
       return end(ITEM.OPEN_EDGE);
+    case GraphAction.DELETE_EDGE_START:
+      return start(ITEM.DELETE_EDGE);
+    case GraphAction.DELETE_EDGE_FINISH:
+      return end(ITEM.DELETE_EDGE);
     default:
       return state;
   }
