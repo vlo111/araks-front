@@ -2,9 +2,10 @@ import { Col, Layout as LayoutComponent, Row } from 'antd';
 import { Navigate, Outlet } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { COLORS, PATHS } from 'helpers/constants';
+import { PATHS } from 'helpers/constants';
 import { Logo } from 'components/logo';
 import { useAuth } from 'context/auth-context';
+import { HelpVisualization } from '../../pages/sign-in/components/help-visualization';
 
 const Layout = styled(LayoutComponent)`
   background: #fdfdfd;
@@ -45,7 +46,9 @@ export const PublicRoutes = () => {
             <Outlet />
           </Content>
         </Col>
-        <Col span={12} style={{ backgroundColor: COLORS.PRIMARY.GRAY_LIGHT }}></Col>
+        <Col span={12}>
+          <HelpVisualization />
+        </Col>
       </Row>
     </Layout>
   );

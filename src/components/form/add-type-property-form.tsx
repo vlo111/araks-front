@@ -186,7 +186,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
               </Button>
             )}
             {isEdit ? (
-              <Button block type="text" onClick={onHandleDelete}>
+              <Button block type="text" onClick={onHandleDelete} disabled={data?.default_property}>
                 Delete
               </Button>
             ) : (

@@ -9,8 +9,8 @@ import { QueriesSiderCollapse } from 'components/collapse/queries-sider-collapse
 
 type Props = TableStyleBasedOnTab & {
   setOpenTable: (openTable: boolean) => void;
-  add: () => void;
-  fieldsLength: number;
+  add?: () => void;
+  fieldsLength?: number;
 };
 
 export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpenTable, add, fieldsLength }: Props) => {
@@ -31,8 +31,8 @@ export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpe
               setSearchVisible={setSearchVisible}
               searchVisible={searchVisible}
               setOpenTable={setOpenTable}
-              add={add}
-              fieldsLength={fieldsLength}
+              // add={add}
+              // fieldsLength={fieldsLength}
             />
           ),
         },
@@ -46,8 +46,8 @@ export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpe
               setSearchVisible={setSearchConnectionVisible}
               searchVisible={searchConnectionVisible}
               setOpenTable={setOpenTable}
-              add={add}
-              fieldsLength={fieldsLength}
+              // add={add}
+              // fieldsLength={fieldsLength}
             />
           ),
         },

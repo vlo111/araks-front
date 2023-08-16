@@ -1,5 +1,6 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
 import { Collapse, Form, Space } from 'antd';
+import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
 import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-select';
@@ -127,18 +128,29 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
 
   return (
     <VerticalSpace size={0}>
-      <div style={{ backgroundColor: queriesList[fieldName].color, height: '8px' }} />
+      {queriesList[fieldName]?.color && (
+        <div style={{ backgroundColor: queriesList[fieldName]?.color, height: '8px' }} />
+      )}
       <StyledCollapse
         defaultActiveKey={['1']}
         onChange={onChange}
         items={[
           {
             key: '1',
-            label: queriesList[fieldName].labelName,
+            label: (
+              <Space>
+                <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
+                {queriesList[fieldName].labelName}
+              </Space>
+            ),
             children: (
               <VerticalSpace>
+                {queriesList[fieldName]?.labelHead}
                 <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
-                  <QueriesSelect />
+                  <QueriesSelect
+                    depth={queriesList[fieldName].depth}
+                    isConnection={queriesList[fieldName].isConnection}
+                  />
                 </Form.Item>
 
                 <QueriesContent fieldName={fieldName} />

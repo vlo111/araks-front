@@ -5,6 +5,7 @@ import { VARIABLES } from 'helpers/constants';
 import { CsvType, ExcelType } from 'pages/import/types';
 import { createContext, Dispatch, ReactNode, useContext, useMemo, useReducer } from 'react';
 import { ImportNodesResponse } from 'api/import/types';
+import { getExcelColumnNames } from 'helpers/utils';
 
 enum ImportActionType {
   IMPORT_OPEN = 'IMPORT_OPEN',
@@ -168,11 +169,16 @@ const createDraftColumns = (count: number) => [
       return index + 1;
     },
   },
-  ...[...Array(count)].map((_, i) => ({
-    title: 'None',
-    key: i,
+  ...getExcelColumnNames(1, count).map((name, i) => ({
+    title: name,
+    key: name,
     dataIndex: `import${i}`,
   })),
+  // ...[...Array(count)].map((_, i) => ({
+  //   title: 'None',
+  //   key: i,
+  //   dataIndex: `import${i}`,
+  // })),
 ];
 
 const createColumns = (firstRow: [string, string] | undefined) => [
@@ -195,8 +201,7 @@ const createColumns = (firstRow: [string, string] | undefined) => [
 
 const importReducer = (state: ImportState, action: ImportAction) => {
   const { type, payload } = action;
-  // eslint-disable-next-line no-console
-  console.log('type, payload', type, payload);
+
   switch (type) {
     case ImportActionType.IMPORT_OPEN:
       return {
@@ -262,6 +267,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         ...payload,
         dataSource: createTableData(dataTorWorkSelect),
         sheetData: sheetDataSelect,
+        columnRow: getExcelColumnNames(1, sheetDataSelect.data[0].length) as [string, string] | undefined,
         columns: createDraftColumns(sheetDataSelect.data[0].length) as ColumnsType<unknown[]> | undefined,
       };
     case ImportActionType.IMPORT_CLEANING_STEP: // Second step, TODO: remove everything related to step 3 for back operation
@@ -299,6 +305,7 @@ const importReducer = (state: ImportState, action: ImportAction) => {
           ...state,
           ...payload,
           columns: createDraftColumns(state.columnRow?.length || 0) as ColumnsType<unknown[]> | undefined,
+          columnRow: getExcelColumnNames(1, state.columnRow?.length || 0) as [string, string] | undefined,
           dataSource: createTableData(dataToReturn.slice(0, 6)),
           sheetData: {
             ...(state.sheetData as ExcelType),

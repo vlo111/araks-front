@@ -27,7 +27,7 @@ export const stripTrailingSlash = (str: string) => {
 export const errorMessage = (er: unknown) => {
   Modal.error({
     title: 'Error',
-    content: (er as AxiosError<CustomError>).response?.data.message,
+    content: (er as AxiosError<CustomError>).response?.data.errors.message,
     footer: false,
     closable: true,
   });
@@ -53,3 +53,26 @@ export const convertByType = (value: unknown, type: PropertyTypes, addFromatForD
   }
   return value;
 };
+
+function getColumnLetter(columnNumber: number): string {
+  let columnLetter = '';
+
+  while (columnNumber > 0) {
+    const remainder = (columnNumber - 1) % 26;
+    columnLetter = String.fromCharCode(65 + remainder) + columnLetter;
+    columnNumber = Math.floor((columnNumber - 1) / 26);
+  }
+
+  return columnLetter;
+}
+
+export function getExcelColumnNames(startColumn: number, endColumn: number): string[] {
+  const columnNames: string[] = [];
+
+  for (let i = startColumn; i <= endColumn; i++) {
+    const columnName = getColumnLetter(i);
+    columnNames.push(columnName);
+  }
+
+  return columnNames;
+}

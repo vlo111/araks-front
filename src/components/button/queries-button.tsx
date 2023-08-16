@@ -1,14 +1,33 @@
 import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons';
-import { Col, Drawer, Form, Row, Space, Switch } from 'antd';
+import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { Button, ButtonWithIcon } from '.';
+
+const StyledRadioButton = styled(Radio.Group)`
+  .ant-radio-button-wrapper {
+    border: none;
+
+    &.ant-radio-button-wrapper-checked {
+      border-radius: 4px;
+      background: #232f6a;
+      padding: 4px 16px 4px 8px;
+    }
+  }
+
+  .ant-radio-button-wrapper:nth-child(2)::before {
+    content: none;
+  }
+`;
 
 export const QueriesButton = () => {
   const [openTable, setOpenTable] = useState(false);
+  const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
+
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
 
@@ -21,6 +40,15 @@ export const QueriesButton = () => {
     // eslint-disable-next-line no-console
     console.log('values', values);
   };
+
+  useEffect(() => {
+    const headerHeight = document.getElementById('overview-header')?.clientHeight;
+    const headerTabsHeight = document.querySelector('#overview-header-tabs .ant-tabs-nav')?.clientHeight;
+
+    // Calculate the content height and set it to state
+    const contentHeight = `calc(100vh - ${headerHeight}px - ${headerTabsHeight}px - 20px)`;
+    setDrawerContentHeight(contentHeight);
+  }, []);
 
   return (
     <Form
@@ -43,11 +71,19 @@ export const QueriesButton = () => {
                 Queries
               </Space>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <Space>
                 <UsefulInformationTooltip infoText="Inherit parent options" />
-                <Form.Item name="switchField" noStyle valuePropName="checked" initialValue={true}>
-                  <Switch checkedChildren="And" unCheckedChildren="Or" defaultChecked />
+                <Form.Item name="switchField" noStyle initialValue={'and'}>
+                  <StyledRadioButton
+                    size="small"
+                    options={[
+                      { label: 'And', value: 'and' },
+                      { label: 'Or', value: 'or' },
+                    ]}
+                    optionType="button"
+                    buttonStyle="solid"
+                  />
                 </Form.Item>
               </Space>
             </Col>
@@ -65,21 +101,25 @@ export const QueriesButton = () => {
           }
         }}
         width="100%"
-        contentWrapperStyle={{ height: '100%', overflowY: 'auto' }}
+        contentWrapperStyle={{ height: drawerContentHeight, overflowY: 'auto' }}
         footerStyle={{ zIndex: 3, background: '#F2F2F2' }}
         bodyStyle={{ background: '#F2F2F2', paddingLeft: '0', paddingRight: '0' }}
         footer={
           <VerticalSpace>
-            <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
-              Add
-            </ButtonWithIcon>
             <Row gutter={16} justify="center">
-              <Col span={8}>
+              <Col span={20}>
+                <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
+                  Add
+                </ButtonWithIcon>
+              </Col>
+            </Row>
+            <Row gutter={32} justify="center">
+              <Col span={10}>
                 <Button style={{ marginRight: 8 }} onClick={() => form.resetFields()} block>
                   Claen All
                 </Button>
               </Col>
-              <Col span={8}>
+              <Col span={10}>
                 <Button type="primary" htmlType="submit" block>
                   Run Search
                 </Button>
@@ -88,7 +128,9 @@ export const QueriesButton = () => {
           </VerticalSpace>
         }
       >
-        <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
+        <div id="queries-form-body">
+          <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
+        </div>
       </Drawer>
     </Form>
   );

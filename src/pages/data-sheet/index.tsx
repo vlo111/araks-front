@@ -30,11 +30,15 @@ export const DataSheet = () => {
     <TypePropertyProvider>
       <Row className="overview">
         {/* zIndex greated than table on right side and lower than header has */}
-        {!hideLeftSection && (
-          <Col xs={6} xxl={6} className="overview__section project-save" id="datasheet-tree-list" style={{ zIndex: 3 }}>
-            <LeftSection />
-          </Col>
-        )}
+        <Col
+          xs={hideLeftSection ? 0 : 6}
+          xxl={hideLeftSection ? 0 : 6}
+          className="overview__section project-save"
+          id="datasheet-tree-list"
+          style={{ zIndex: 3 }}
+        >
+          <LeftSection />
+        </Col>
         <Col span={!hideLeftSection ? 18 : 24} className="overview__section project-share" id="datasheet-data">
           <RightSection />
         </Col>

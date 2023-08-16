@@ -160,3 +160,26 @@ export type AllDataDocumentListResponse = {
   count: number;
   rows: AllDataDocumentResponse[];
 };
+
+export type AllDataHelp = {
+  id: string;
+  name: string;
+  color: string;
+  description: string;
+  status: string;
+  user_id: string;
+  size: number;
+  fy: number;
+  fx: number;
+  created_at: string;
+  updated_at: string;
+  target: {
+    id: string;
+    name: string;
+    target_id: string;
+    source_id: string;
+    user_id: string;
+    created_at: string;
+    updated_at: string;
+  }[];
+};

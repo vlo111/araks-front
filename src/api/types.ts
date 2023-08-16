@@ -205,19 +205,24 @@ export type NodeEdgeTypesReturnData = {
   source: {
     id: string;
     name: string;
+    color?: string;
   };
   target: {
     id: string;
     name: string;
+    color?: string;
   };
   target_attribute_id: string;
   target_id: string;
   updated_at: string;
   user_id: string;
+  properties: ProjectTypePropertyReturnData[];
 };
 
 export interface CustomError {
-  message: string;
+  errors: {
+    message: string;
+  };
 }
 
 export interface ISharedPerspectiveData {

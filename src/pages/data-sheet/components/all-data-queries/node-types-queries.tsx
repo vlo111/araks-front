@@ -22,17 +22,25 @@ const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean
 type Props = PropsSetState &
   TableStyleBasedOnTab & {
     setOpenTable: (openTable: boolean) => void;
-    add: () => void;
-    fieldsLength: number;
+    // add: () => void;
+    // fieldsLength: number;
   };
 
 function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
   for (const element of arr) {
     if (element.children) {
+      if (element.value === selectedValue) {
+        return {
+          ...element,
+          depth: 1,
+          labelName: element.label,
+        };
+      }
       for (const child of element.children) {
         if (child.value === selectedValue) {
           return {
             ...child,
+            depth: 2,
             labelName: `${element.name}.${child.label}`,
           };
         }
@@ -48,9 +56,10 @@ export const NodeTypesQueries = ({
   isCheckable = false,
   noColors = false,
   setOpenTable,
-  add,
-  fieldsLength,
-}: Props) => {
+}: // setOpenTable,
+// add,
+// fieldsLength,
+Props) => {
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
@@ -63,25 +72,15 @@ export const NodeTypesQueries = ({
     {
       enabled: !!params.id,
       onSuccess(data) {
-        // eslint-disable-next-line no-console
-        console.log('data', createQueriesNodesTree(data.data));
         setFilteredData(createQueriesNodesTree(data.data));
       },
     },
     noColors
   );
 
-  // eslint-disable-next-line no-console
-  console.log('filteredData', filteredData);
-
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => {
     setOpenTable(false);
-    // eslint-disable-next-line no-console
-    console.log('filteredData', selectedKeys, filteredData, findChildrenProperties(filteredData, selectedKeys[0]));
-    // add();
 
-    // eslint-disable-next-line no-console
-    console.log('form.getFieldVal', form.getFieldValue('queries'));
     form.setFieldValue('queries', [
       ...(form.getFieldValue('queries') || []),
       findChildrenProperties(filteredData, selectedKeys[0]),
