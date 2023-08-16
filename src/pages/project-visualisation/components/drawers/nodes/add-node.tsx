@@ -8,7 +8,7 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
+import { AllDataResponse, NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import { useManageNodes } from 'api/node/use-manage-node';
@@ -17,11 +17,14 @@ import './add-node-select.css';
 
 export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
-  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
+  const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
 
   const { mutate } = useManageNodes({
     onSuccess: ({ data }) => {
-      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }; default_image: string };
+      const nodeData = data as NodePropertiesValues & {
+        nodeType: { color: string; id: string; name: string };
+        default_image: string;
+      };
 
       const node = {
         id: nodeData.id,
@@ -36,6 +39,25 @@ export const NodeCreate: React.FC = () => {
       };
 
       graph.addItem('node', node);
+
+      const createNode: AllDataResponse = {
+        id: nodeData.id,
+        default_image: nodeData.default_image,
+        name: nodeData.name as unknown as string,
+        nodeType: {
+          id: nodeData.nodeType.id,
+          name: nodeData.nodeType.name,
+          color: nodeData.nodeType.color,
+        },
+        project_id: nodeData.project_id,
+        project_type_id: nodeData.project_type_id,
+        updated_at: nodeData.updated_at,
+      };
+
+      setNodes([...nodeList, createNode]);
+
+      form.resetFields();
+      finishOpenNodeCreate();
     },
   });
 
@@ -92,9 +114,6 @@ export const NodeCreate: React.FC = () => {
       edges: dataToSubmitEdges?.flat() || [],
       project_type_id: parent_id || '',
     } as NodeDataSubmit);
-
-    form.resetFields();
-    finishOpenNodeCreate();
   };
 
   return (

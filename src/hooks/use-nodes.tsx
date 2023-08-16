@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useGraph } from '../components/layouts/components/visualisation/wrapper';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
@@ -27,7 +28,7 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse
 
       if (data !== undefined) initData(graph, data);
     }
-  }, [graph, params.edges, params.nodes, nodes]);
+  }, [graph, params.edges, nodes]);
 
   return { nodes, isInitialLoading };
 };

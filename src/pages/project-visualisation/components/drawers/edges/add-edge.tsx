@@ -16,6 +16,7 @@ export const EdgeCreate: React.FC = () => {
   const [form] = Form.useForm();
 
   const { id } = useParams();
+
   const { graph, openEdge, finishOpenEdge } = useGraph() || {};
 
   const selectedEdgeId = Form.useWatch('selectedEdgeId', { form, preserve: true });
@@ -23,6 +24,7 @@ export const EdgeCreate: React.FC = () => {
   const edge = useMemo(() => openEdge?.edge._cfg?.model, [openEdge?.edge]);
 
   const sourceId = useMemo(() => openEdge?.edge.getSource()._cfg?.model?.nodeType, [openEdge?.edge]);
+
   const targetId = useMemo(() => openEdge?.edge.getTarget()._cfg?.model?.nodeType, [openEdge?.edge]);
 
   const { mutate } = useManageEdge(undefined, {
