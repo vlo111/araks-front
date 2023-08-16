@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button, Col, Form, Modal, Row } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { NodeBody } from 'types/node';
@@ -10,8 +10,6 @@ import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-pro
 import { AddNodeForm } from 'components/form/add-node-form';
 import { EdgesCreate, EdgesCreateProperties } from 'types/edges';
 import { useManageEdge } from 'api/edges/use-manage-edge';
-import { AxiosError } from 'axios/index';
-import { CustomErrorArray } from 'api/types';
 import './add-edge-select.css';
 
 export const EdgeCreate: React.FC = () => {
@@ -35,14 +33,6 @@ export const EdgeCreate: React.FC = () => {
         label: edgeName,
       });
       finishOpenEdge();
-    },
-    onError: (data) => {
-      Modal.error({
-        title: 'Error',
-        content: (data as AxiosError<CustomErrorArray>).response?.data.errors.message[0].message,
-        footer: false,
-        closable: true,
-      });
     },
   });
 
