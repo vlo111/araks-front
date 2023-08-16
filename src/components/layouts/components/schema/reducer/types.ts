@@ -3,11 +3,11 @@ import { SchemaAction } from './schema-manager';
 import { IProjectType, ISharedPerspectiveData } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 
-export interface IIdOpen {
+export interface IIsOpen {
   isOpened?: boolean;
 }
 
-export interface IEdgeState extends IIdOpen {
+export interface IEdgeState extends IIsOpen {
   id?: string;
   source?: string;
   target?: string;
@@ -21,12 +21,12 @@ export interface ISelectNode {
   selected?: boolean;
 }
 
-export interface ITypeState extends IIdOpen {
+export interface ITypeState extends IIsOpen {
   x?: number;
   y?: number;
 }
 
-export interface ITypePortState extends IIdOpen {
+export interface ITypePortState extends IIsOpen {
   portId?: string;
   isUpdate?: boolean;
   node?: Node<Node.Properties>;
@@ -34,7 +34,7 @@ export interface ITypePortState extends IIdOpen {
   y?: number;
 }
 
-export interface IPerspectiveState extends IIdOpen {
+export interface IPerspectiveState extends IIsOpen {
   id?: string;
   openShare: boolean;
   sharedUsers?: ISharedPerspectiveData[];
@@ -45,7 +45,7 @@ export interface IPerspectiveInfo {
   propertiesLength: number;
 }
 
-export interface IEdgePortState extends IIdOpen {
+export interface IEdgePortState extends IIsOpen {
   id?: string;
   name?: string;
   x?: number;
