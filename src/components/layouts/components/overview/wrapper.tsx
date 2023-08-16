@@ -2,6 +2,7 @@ import { Col, Row as RowComponent, Spin } from 'antd';
 import { UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
 import { PATHS } from 'helpers/constants';
+import { CommentLike } from 'pages/project-overview/comment-like';
 import { Share } from 'pages/project-overview/share';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -51,7 +52,9 @@ export const OverviewWrapper = () => {
             <Share />
           </Col>
         )}
-        <Col span={spanNumber} className="overview__section project-comments"></Col>
+        <Col span={spanNumber} className="overview__section project-comments">
+          <CommentLike />
+        </Col>
       </Row>
     </Spin>
   );
