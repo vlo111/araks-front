@@ -88,7 +88,7 @@ export const EdgeView = () => {
           isEdit && (
             <Row gutter={16} justify="center">
               <Col span={4}>
-                <Button style={{ marginRight: 8 }} onClick={onClose} block>
+                <Button style={{ marginRight: 8 }} onClick={() => setIsEdit(false)} block>
                   Cancel
                 </Button>
               </Col>
