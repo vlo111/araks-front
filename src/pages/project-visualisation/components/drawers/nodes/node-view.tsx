@@ -5,7 +5,7 @@ import {
   getRowData,
   groupedData,
   setNodeDataUpdateValue,
-} from '../../../data-sheet/components/table-section/node/utils';
+} from '../../../../data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { COLORS } from 'helpers/constants';
 import { Col, Form, Image, Row } from 'antd';

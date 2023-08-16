@@ -1,3 +1,5 @@
+import { Edge } from '@antv/x6';
+
 interface IEdgeType {
   id: string;
   name: string;
@@ -26,6 +28,10 @@ export type ProjectEdgeForm = {
   multiple: boolean;
 };
 
-export type INodeOpen = {
+export type IOpenId = {
   id: string;
+};
+
+export type IOpenEdge = {
+  edge: Edge;
 };

@@ -16,7 +16,10 @@ import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
 
-type Props = { data: ProjectTypePropertyReturnData[]; isInitialLoading: boolean };
+type Props = {
+  data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
+  isInitialLoading: boolean;
+};
 
 export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
   if (isInitialLoading) {

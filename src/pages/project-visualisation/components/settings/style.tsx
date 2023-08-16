@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   cursor: pointer;
   transition: height 1s ease;
   padding: 0 0 1.25rem 0;
-  z-index: 2;
+  z-index: 1;
   background: #fff;
   overflow: hidden;
   display: flex;

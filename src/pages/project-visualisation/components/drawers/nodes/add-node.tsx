@@ -5,15 +5,15 @@ import { useGetTypes } from 'api/schema/type/use-get-types';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import './add-node-select.css';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { setNodeDataValue } from '../../../data-sheet/components/table-section/node/utils';
+import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
+import './add-node-select.css';
 
 export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
@@ -98,7 +98,14 @@ export const NodeCreate: React.FC = () => {
   };
 
   return (
-    <Form name="add-node-drawer" form={form} autoComplete="off" layout="vertical" requiredMark={false}>
+    <Form
+      name="add-node-drawer"
+      form={form}
+      autoComplete="off"
+      layout="vertical"
+      requiredMark={false}
+      onFinish={onFinish}
+    >
       <Drawer
         headerStyle={{
           borderTop: `6px solid ${parent_id ? nodes?.find((n) => n.id === parent_id)?.color : '#CDCDCD'}`,
@@ -137,16 +144,7 @@ export const NodeCreate: React.FC = () => {
         }
         open={openNodeCreate?.isOpened}
       >
-        <Form
-          name="project-node-manage"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-          requiredMark={false}
-        >
-          <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
-        </Form>
+        <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
       </Drawer>
     </Form>
   );

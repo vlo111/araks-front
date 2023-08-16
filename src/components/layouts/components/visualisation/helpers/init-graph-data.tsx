@@ -74,7 +74,7 @@ export const options = {
   fitCenter: true,
   animate: true,
   modes: {
-    default: ['drag-canvas', 'drag-node', 'zoom-canvas'],
+    default: ['drag-canvas', 'drag-node', 'zoom-canvas', 'create-edge'],
   },
   defaultEdge,
   defaultNode,
