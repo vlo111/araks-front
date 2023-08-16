@@ -49,7 +49,7 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
           {
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data: (values[item.name] as (string | number)[])[0],
+            data: [(values[item.name] as (string | number)[])[0]],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),

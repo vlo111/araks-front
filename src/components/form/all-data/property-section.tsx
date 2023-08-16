@@ -1,11 +1,15 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
-import { Collapse, Form, Space } from 'antd';
+import { Collapse, DatePicker, Form, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
 import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import styled from 'styled-components';
+
+const dateFormat = 'DD/MM/YYYY';
+
+const { RangePicker } = DatePicker;
 
 type Props = {
   remove: (x: number) => void;
@@ -96,6 +100,11 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
           </Space>
         </Form.Item>
       )}
+      {type === QueryFilterTypes.RANGE && (
+        <Form.Item name={[fieldName, 'rangeDates']}>
+          <RangePicker format={dateFormat} style={{ width: '100%' }} />
+        </Form.Item>
+      )}
       {type === QueryFilterTypes.EQUAL_TO && (
         <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
@@ -149,7 +158,8 @@ export const PropertySection = ({ remove, fieldName }: Props) => {
                 <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
                   <QueriesSelect
                     depth={queriesList[fieldName].depth}
-                    isConnection={queriesList[fieldName].isConnection}
+                    isConnection={queriesList[fieldName].isConnectionType}
+                    propertyType={queriesList[fieldName]?.ref_property_type_id}
                   />
                 </Form.Item>
 

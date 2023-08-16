@@ -113,10 +113,11 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
             id: property?.id,
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data:
+            data: [
               item.ref_property_type_id === PropertyTypes.Integer || item.ref_property_type_id === PropertyTypes.Decimal
                 ? +(values[item.name] as (string | number)[])[0]
                 : (values[item.name] as (string | number)[])[0],
+            ],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),

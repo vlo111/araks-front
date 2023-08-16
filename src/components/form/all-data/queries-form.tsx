@@ -57,7 +57,8 @@ export const QueriesForm = ({ openTable, setOpenTable }: Props) => {
             placement="bottom"
             arrow={false}
             getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
-            overlayStyle={{ width: '90%' }}
+            overlayStyle={{ width: '90%', zIndex: 0 }}
+            overlayInnerStyle={{ width: '90%', height: '50vh', overflow: 'auto' }}
             destroyTooltipOnHide
             content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
           >

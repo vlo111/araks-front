@@ -1,5 +1,6 @@
 import { Select } from '.';
 import { RefSelectProps } from 'antd';
+import { PropertyTypes } from 'components/form/property/types';
 
 export enum QueryFilterTypes {
   GREATHER_THAN = 'Greather than',
@@ -11,11 +12,62 @@ export enum QueryFilterTypes {
   IS = 'Is',
   IS_NOT = 'Is not',
   EQUAL_TO = 'Equal to',
+  RANGE = 'Range',
 }
 
-const getOptions = (depth: number, isConnection: boolean) => {
+const getOptions = (depth: number, isConnection = false, propertyType?: PropertyTypes) => {
   switch (true) {
     case (!isConnection && depth === 1) || (isConnection && (depth === 1 || depth === 2)):
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+      ];
+    case propertyType === PropertyTypes.Integer || propertyType === PropertyTypes.Decimal:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.GREATHER_THAN, value: QueryFilterTypes.GREATHER_THAN },
+        { name: QueryFilterTypes.LESS_THAN, value: QueryFilterTypes.LESS_THAN },
+        { name: QueryFilterTypes.EQUAL_TO, value: QueryFilterTypes.EQUAL_TO },
+        { name: QueryFilterTypes.BETWEEN, value: QueryFilterTypes.BETWEEN },
+      ];
+    case propertyType === PropertyTypes.Date || propertyType === PropertyTypes.DateTime:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
+        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
+        { name: QueryFilterTypes.RANGE, value: QueryFilterTypes.RANGE },
+      ];
+    case propertyType === PropertyTypes.Text:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
+        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
+        { name: QueryFilterTypes.CONTAINS, value: QueryFilterTypes.CONTAINS },
+      ];
+    case propertyType === PropertyTypes.Boolean:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
+        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
+      ];
+    case propertyType === PropertyTypes.URL:
+    case propertyType === PropertyTypes.IMAGE_URL:
+    case propertyType === PropertyTypes.Document:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+      ];
+    case propertyType === PropertyTypes.Location:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.CONTAINS, value: QueryFilterTypes.CONTAINS },
+      ];
+    case propertyType === PropertyTypes.Connection:
       return [
         { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
         { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
@@ -28,9 +80,10 @@ const getOptions = (depth: number, isConnection: boolean) => {
 type Props = Partial<RefSelectProps> & {
   depth: number;
   isConnection: boolean;
+  propertyType?: PropertyTypes;
 };
 
-export const QueriesSelect = (props: Props) => {
-  const data = getOptions(props.depth, !!props?.isConnection);
+export const QueriesSelect = ({ depth, isConnection, propertyType, ...props }: Props) => {
+  const data = getOptions(depth, !!isConnection, propertyType);
   return <Select style={{ width: '100%' }} placeholder="Please select" options={data} {...props} />;
 };
