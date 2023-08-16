@@ -225,6 +225,12 @@ export interface CustomError {
   };
 }
 
+export interface CustomErrorArray {
+  errors: {
+    message: { message: string }[];
+  };
+}
+
 export interface ISharedPerspectiveData {
   created_at: string;
   id: string;

@@ -38,7 +38,10 @@ export const useManageEdge = (edgeId?: string, options?: Options) => {
       ]);
       options?.onSuccess?.(data);
     },
-    onError: errorMessage,
+    onError: (data) => {
+      errorMessage(data);
+      options?.onError?.(data as Error);
+    },
   });
   return mutation;
 };

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button, Col, Form, Row } from 'antd';
+import { Button, Col, Form, Modal, Row } from 'antd';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { NodeBody } from 'types/node';
@@ -8,10 +8,11 @@ import { useParams } from 'react-router-dom';
 import { Select } from 'components/select';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
+import { EdgesCreate, EdgesCreateProperties } from 'types/edges';
+import { useManageEdge } from 'api/edges/use-manage-edge';
+import { AxiosError } from 'axios/index';
+import { CustomErrorArray } from 'api/types';
 import './add-edge-select.css';
-import { EdgesCreate, EdgesCreateProperties, EdgeSourceData, EdgeTargetData } from '../../../../../types/edges';
-import { PropertyTypes } from '../../../../../components/form/property/types';
-import { useManageEdge } from '../../../../../api/edges/use-manage-edge';
 
 export const EdgeCreate: React.FC = () => {
   const [form] = Form.useForm();
@@ -21,12 +22,27 @@ export const EdgeCreate: React.FC = () => {
 
   const selectedEdgeId = Form.useWatch('selectedEdgeId', { form, preserve: true });
 
+  const edge = useMemo(() => openEdge?.edge._cfg?.model, [openEdge?.edge]);
+
   const sourceId = useMemo(() => openEdge?.edge.getSource()._cfg?.model?.nodeType, [openEdge?.edge]);
   const targetId = useMemo(() => openEdge?.edge.getTarget()._cfg?.model?.nodeType, [openEdge?.edge]);
 
-  const { mutate } = useManageEdge(selectedEdgeId || '', {
+  const { mutate } = useManageEdge(undefined, {
     onSuccess: () => {
-      onClose();
+      const edgeName = filteredEdges?.find((f) => f.id === selectedEdgeId)?.name ?? '';
+
+      graph.updateItem(openEdge?.edge.getID(), {
+        label: edgeName,
+      });
+      finishOpenEdge();
+    },
+    onError: (data) => {
+      Modal.error({
+        title: 'Error',
+        content: (data as AxiosError<CustomErrorArray>).response?.data.errors.message[0].message,
+        footer: false,
+        closable: true,
+      });
     },
   });
 
@@ -46,31 +62,25 @@ export const EdgeCreate: React.FC = () => {
   );
 
   const onFinish = (values: NodeBody) => {
-    debugger;
     const dataToSubmit = {
-      target_id: (values.targetData as EdgeTargetData[])[0].target_id,
-      source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
+      project_edge_type_id: selectedEdgeId,
+      target_type_id: targetId,
+      target_id: edge?.target,
+      source_type_id: sourceId,
+      source_id: edge?.source,
       properties: data?.properties.reduce((curr, item) => {
-        // const property = data?.properties?.find((prop) => prop.edge_type_property_id === item.id);
-
         return [
           ...curr,
           {
-            id: 'property?.id',
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data:
-              item.ref_property_type_id === PropertyTypes.Integer || item.ref_property_type_id === PropertyTypes.Decimal
-                ? +(values[item.name] as (string | number)[])[0]
-                : (values[item.name] as (string | number)[])[0],
+            data: (values[item.name] as (string | number)[])[0],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),
     } as EdgesCreate;
 
     mutate(dataToSubmit);
-
-    onClose();
   };
 
   const onClose = () => {
@@ -106,18 +116,20 @@ export const EdgeCreate: React.FC = () => {
           </Form.Item>
         }
         footer={
-          <Row gutter={16} justify="center">
-            <Col span={10}>
-              <Button style={{ marginRight: 8 }} onClick={onClose} block>
-                Cancel
-              </Button>
-            </Col>
-            <Col span={10}>
-              <Button type="primary" onClick={() => form.submit()} block>
-                Save
-              </Button>
-            </Col>
-          </Row>
+          selectedEdgeId && (
+            <Row gutter={16} justify="center">
+              <Col span={10}>
+                <Button style={{ marginRight: 8 }} onClick={onClose} block>
+                  Cancel
+                </Button>
+              </Col>
+              <Col span={10}>
+                <Button type="primary" onClick={() => form.submit()} block>
+                  Save
+                </Button>
+              </Col>
+            </Row>
+          )
         }
         open={openEdge?.isOpened}
       >
