@@ -14,8 +14,8 @@ import { EdgeViewTitle } from './edge-view-title';
 import { Button } from 'components/button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { SourceView } from './view/source';
-import { useManageEdge } from '../../../../../api/edges/use-manage-edge';
-import { EdgesCreate } from '../../../../../types/edges';
+import { useManageEdge } from 'api/edges/use-manage-edge';
+import { EdgesCreate } from 'types/edges';
 
 export const EdgeView = () => {
   const [form] = Form.useForm();
