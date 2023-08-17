@@ -71,6 +71,13 @@ export type ProjectFullInfo = {
   updated_at: string;
   user_id: string;
   perspective_users: PerspectiveUser[];
+  projectsNodeTypes: IProjectType[];
+  projectsEdgeTypes: {
+    id: string;
+    source_id: string;
+    target_id: string;
+    name: string;
+  }[];
 };
 
 export type ProjectInfoReturnData = {
@@ -132,9 +139,7 @@ export interface IPerspectiveTypes {
   project_node_type_id: string;
 }
 
-export interface IProjectTypeData extends ProjectFullInfo {
-  projectsNodeTypes: IProjectType[];
-}
+export type IProjectTypeData = ProjectFullInfo;
 
 export type ProjectTypePropertyReturnData = {
   created_at: string;
@@ -261,6 +266,7 @@ export interface ISharedPerspectiveUserData {
   role: string;
   perspective_users: ISharedPerspectiveUser;
 }
+
 export interface IResponsePerspectiveUsers {
   id: string;
   title: string;
