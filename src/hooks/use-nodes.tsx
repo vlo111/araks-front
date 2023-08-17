@@ -12,13 +12,13 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse
 
   const { nodes, isInitialLoading } = useGetNodes({
     onSuccess: (data) => {
-      params.setNodes(data.rows);
+      params.setNodes && params.setNodes(data.rows);
     },
   });
 
   useGetVEdges({
     onSuccess: (edges) => {
-      params.setEdges(edges.data);
+      params.setEdges && params.setEdges(edges.data);
     },
   });
 
