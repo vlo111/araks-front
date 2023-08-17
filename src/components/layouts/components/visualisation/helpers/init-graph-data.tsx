@@ -43,7 +43,7 @@ const defaultNode = {
   clipCfg: {
     show: true,
     type: 'circle',
-    r: 30,
+    r: 20,
     rx: 10,
     ry: 15,
     width: 15,
@@ -72,6 +72,7 @@ export const options = {
   height: window.innerHeight - 165,
   width: window.innerWidth - 300,
   fitCenter: true,
+  fitView: true,
   animate: true,
   modes: {
     default: ['drag-canvas', 'drag-node', 'zoom-canvas', 'create-edge'],
