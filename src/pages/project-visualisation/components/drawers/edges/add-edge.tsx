@@ -92,6 +92,7 @@ export const EdgeCreate: React.FC = () => {
       onFinish={onFinish}
     >
       <Drawer
+        className="add-edge-drawer"
         onClose={onClose}
         closable={false}
         title={

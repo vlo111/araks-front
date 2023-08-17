@@ -5,10 +5,8 @@ import { Col, Form, Row } from 'antd';
 import { NodeBody } from 'types/node';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { getRowData } from '../../../../data-sheet/components/table-section/node/utils';
-import './add-edge-select.css';
 import * as React from 'react';
 import { EdgeViewTitle } from './edge-view-title';
 import { Button } from 'components/button';
@@ -16,6 +14,7 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { SourceView } from './view/source';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgesCreate } from 'types/edges';
+import './add-edge-select.css';
 
 export const EdgeView = () => {
   const [form] = Form.useForm();
@@ -73,6 +72,7 @@ export const EdgeView = () => {
       onFinish={onFinish}
     >
       <Drawer
+        className="add-edge-drawer"
         closable={false}
         open={openEdge?.isOpened}
         title={
@@ -115,10 +115,6 @@ export const EdgeView = () => {
           <AddNodeForm data={data?.properties} isInitialLoading={isInitialLoading} />
         ) : (
           <VerticalSpace>
-            <VerticalSpace>
-              <Text color={COLORS.PRIMARY.BLUE}>name</Text>
-              <Text>{data?.name}</Text>
-            </VerticalSpace>
             {data?.properties ? (
               data.properties.map((d) => {
                 return (

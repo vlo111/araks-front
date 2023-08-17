@@ -5,11 +5,11 @@
   width: 15rem !important;
 }
 
-.ant-select-selection-placeholder {
+.add-edge-drawer .ant-select-selection-placeholder {
   color: #232F6A !important;
 }
 
-.ant-select-selector {
+.add-edge-drawer .ant-select-selector {
   align-items: center;
 }
 
@@ -24,15 +24,15 @@
   margin-top: 0;
 }
 
-.ant-drawer {
+.add-edge-drawer {
   z-index: 1;
 }
 
-.ant-drawer-mask {
+.add-edge-drawer .ant-drawer-mask {
   z-index: 0;
 }
 
-.ant-drawer-header {
+.add-edge-drawer .ant-drawer-header {
   border-top: 6px solid #f0f0f0;
   border-radius: 0.25rem 0.25rem 0rem 0rem;
   background: #F2F2F2;
