@@ -43,7 +43,7 @@ const defaultNode = {
   clipCfg: {
     show: true,
     type: 'circle',
-    r: 30,
+    r: 20,
     rx: 10,
     ry: 15,
     width: 15,
@@ -65,7 +65,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
-  size: 60,
+  size: 40,
 };
 
 export const options = {
