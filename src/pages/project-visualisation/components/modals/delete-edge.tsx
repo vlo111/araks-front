@@ -8,7 +8,7 @@ import { useDeleteEdge } from 'api/edges/use-delete-edge';
 export const EdgeDelete = () => {
   const { graph, deleteEdge, finishDeleteEdge } = useGraph() ?? {};
 
-  const { mutate } = useDeleteEdge(deleteEdge?.id, {
+  const { mutateAsync } = useDeleteEdge(deleteEdge?.id, {
     onSuccess: () => {
       graph.removeItem(deleteEdge.id);
       finishDeleteEdge();
@@ -16,7 +16,7 @@ export const EdgeDelete = () => {
   });
 
   const deleteNodeHandle = async () => {
-    await mutate();
+    await mutateAsync();
   };
 
   return (
