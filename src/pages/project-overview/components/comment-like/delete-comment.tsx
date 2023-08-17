@@ -4,6 +4,7 @@ import { useDeleteComment } from 'api/comments/use-delete-comment';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
+import { COLORS } from 'helpers/constants';
 import { useState } from 'react';
 
 type Props = {
@@ -20,7 +21,7 @@ export const DeleteComment = ({ id }: Props) => {
   };
   return (
     <>
-      <CloseOutlined key="delete" onClick={() => setDeleteStart(true)} />
+      <CloseOutlined key="delete" onClick={() => setDeleteStart(true)} style={{ color: COLORS.PRIMARY.GRAY }} />
       <Modal
         title={<Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this comment?</Text>}
         open={isDeleteStart}
