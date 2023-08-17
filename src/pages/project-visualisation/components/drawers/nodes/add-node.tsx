@@ -5,23 +5,26 @@ import { useGetTypes } from 'api/schema/type/use-get-types';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
-import './add-node-select.css';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
+import { AllDataResponse, NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { setNodeDataValue } from '../../../data-sheet/components/table-section/node/utils';
+import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
+import './add-node-select.css';
 
-export const NodeEdit: React.FC = () => {
+export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
-  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
+  const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
 
   const { mutate } = useManageNodes({
     onSuccess: ({ data }) => {
-      const nodeData = data as NodePropertiesValues & { nodeType: { color: string }; default_image: string };
+      const nodeData = data as NodePropertiesValues & {
+        nodeType: { color: string; id: string; name: string };
+        default_image: string;
+      };
 
       const node = {
         id: nodeData.id,
@@ -36,6 +39,25 @@ export const NodeEdit: React.FC = () => {
       };
 
       graph.addItem('node', node);
+
+      const createNode: AllDataResponse = {
+        id: nodeData.id,
+        default_image: nodeData.default_image,
+        name: nodeData.name as unknown as string,
+        nodeType: {
+          id: nodeData.nodeType.id,
+          name: nodeData.nodeType.name,
+          color: nodeData.nodeType.color,
+        },
+        project_id: nodeData.project_id,
+        project_type_id: nodeData.project_type_id,
+        updated_at: nodeData.updated_at,
+      };
+
+      setNodes([...nodeList, createNode]);
+
+      form.resetFields();
+      finishOpenNodeCreate();
     },
   });
 
@@ -92,13 +114,17 @@ export const NodeEdit: React.FC = () => {
       edges: dataToSubmitEdges?.flat() || [],
       project_type_id: parent_id || '',
     } as NodeDataSubmit);
-
-    form.resetFields();
-    finishOpenNodeCreate();
   };
 
   return (
-    <Form name="add-node-drawer" form={form} autoComplete="off" layout="vertical" requiredMark={false}>
+    <Form
+      name="add-node-drawer"
+      form={form}
+      autoComplete="off"
+      layout="vertical"
+      requiredMark={false}
+      onFinish={onFinish}
+    >
       <Drawer
         headerStyle={{
           borderTop: `6px solid ${parent_id ? nodes?.find((n) => n.id === parent_id)?.color : '#CDCDCD'}`,
@@ -137,16 +163,7 @@ export const NodeEdit: React.FC = () => {
         }
         open={openNodeCreate?.isOpened}
       >
-        <Form
-          name="project-node-manage"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-          requiredMark={false}
-        >
-          <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
-        </Form>
+        <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
       </Drawer>
     </Form>
   );

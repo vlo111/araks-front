@@ -1,0 +1,40 @@
+.edge-type-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15rem !important;
+}
+
+.add-edge-drawer .ant-select-selection-placeholder {
+  color: #232F6A !important;
+}
+
+.add-edge-drawer .ant-select-selector {
+  align-items: center;
+}
+
+.edge-type-select .ant-select-selector {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.edge-type-select .ant-select-arrow {
+  position: relative !important;
+  margin-top: 0;
+}
+
+.add-edge-drawer {
+  z-index: 1;
+}
+
+.add-edge-drawer .ant-drawer-mask {
+  z-index: 0;
+}
+
+.add-edge-drawer .ant-drawer-header {
+  border-top: 6px solid #f0f0f0;
+  border-radius: 0.25rem 0.25rem 0rem 0rem;
+  background: #F2F2F2;
+  box-shadow: 0px 10px 10px 0px rgba(111, 111, 111, 0.10)
+}
