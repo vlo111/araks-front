@@ -8,8 +8,8 @@ import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { LongTitle, Text } from 'components/typography';
+import { ShowSafeText } from 'components/typography/show-safe-text';
 import dayjs from 'dayjs';
-import DOMPurify from 'dompurify';
 import { centerImageStyle, COLORS } from 'helpers/constants';
 import {
   NodeBody,
@@ -195,8 +195,6 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     return <Text color={COLORS.PRIMARY.GRAY}>(No Value)</Text>;
   }
 
-  const sanitizedHTML = DOMPurify.sanitize(text);
-
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
       return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
@@ -210,7 +208,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
     case PropertyTypes.Location:
       return <LocationView text={text} location={nodeData as ResponseLocationType} />;
     case PropertyTypes.RichText:
-      return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />;
+      return <ShowSafeText text={text} />;
     case PropertyTypes.Date:
       return (
         <Space>

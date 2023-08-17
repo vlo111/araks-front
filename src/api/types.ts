@@ -289,5 +289,21 @@ export type ProjectCommentListParams = {
 export type ProjectCommentManage = {
   comments: string;
   project_id?: string;
-  parent_id?: string;
+  parent_id?: string | null;
+};
+
+export type CommentData = {
+  id: string;
+  comments: string;
+  parent_id: null;
+  project_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  user: ISharedPerspectiveUser;
+};
+
+export type CommentsResponse = {
+  count: number;
+  rows: CommentData[];
 };

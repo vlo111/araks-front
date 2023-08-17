@@ -1,12 +1,13 @@
-import { Button, Form, Skeleton } from 'antd';
-import { useGetComments } from 'api/comments/use-get-comments';
+import { Button, Form } from 'antd';
 import { useManageComment } from 'api/comments/use-manage-comment';
 import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
-import { Title } from 'components/typography';
-import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { VALIDATE_MESSAGES } from 'helpers/constants';
 import ReactQuill from 'react-quill';
 import { useParams } from 'react-router-dom';
+import { CommentData } from './comment-data';
+
+import 'react-quill/dist/quill.snow.css';
 
 // Define custom toolbar options with only bold, italic, and underline styles
 const toolbarOptions = [['bold', 'italic', 'underline']];
@@ -23,16 +24,14 @@ export const Comments = () => {
   const params = useParams();
 
   const [form] = Form.useForm();
-  const { data, isLoading } = useGetComments(params.id, { enabled: !!params.id });
+
   const { mutate } = useManageComment();
   const onFinish = (values: ProjectCommentManage) => {
     // eslint-disable-next-line no-console
     console.log('values', values);
-    mutate({ ...values, project_id: params.id });
+    mutate({ ...values, project_id: params.id, parent_id: values.parent_id || null });
+    form.resetFields();
   };
-
-  // eslint-disable-next-line no-console
-  console.log('data', data);
 
   return (
     <Form
@@ -44,17 +43,9 @@ export const Comments = () => {
       style={{ height: '100%' }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-        {isLoading ? (
-          <Skeleton avatar paragraph={{ rows: 4 }} />
-        ) : data.length ? (
-          <></>
-        ) : (
-          <Title level={1} color={COLORS.PRIMARY.GRAY_DARK} align="center">
-            No comments yet
-          </Title>
-        )}
+        <CommentData />
         <div>
-          <FormItem name="comment" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
+          <FormItem name="comments" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
             <ReactQuill modules={modules} formats={formats} />
           </FormItem>
           <Button block type="primary" htmlType="submit">
