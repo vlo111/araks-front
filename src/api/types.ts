@@ -281,3 +281,13 @@ export type CheckPropertyResponse = {
   invalidCount: number;
   allCount: number;
 };
+
+export type ProjectCommentListParams = {
+  project_id: string;
+};
+
+export type ProjectCommentManage = {
+  comments: string;
+  project_id?: string;
+  parent_id?: string;
+};
