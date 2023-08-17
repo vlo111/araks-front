@@ -28,13 +28,24 @@ export const EdgeCreate: React.FC = () => {
   const targetId = useMemo(() => openEdgeCreate?.edge.getTarget()._cfg?.model?.nodeType, [openEdgeCreate?.edge]);
 
   const { mutate } = useManageEdge(undefined, {
-    onSuccess: () => {
+    onSuccess: (response) => {
       const edgeName = filteredEdges?.find((f) => f.id === selectedEdgeId)?.name ?? '';
 
-      graph.updateItem(openEdgeCreate?.edge.getID(), {
+      const edge = (response as { data: EdgesCreate }).data;
+
+      /* Remove fake edge */
+      graph.removeItem(openEdgeCreate?.edge.getID());
+
+      graph.addItem('edge', {
+        id: edge.id,
+        project_edge_type_id: edge.project_edge_type_id,
+        source: edge.source_id,
+        target: edge.target_id,
         label: edgeName,
       });
       finishOpenEdgeCreate();
+
+      form.resetFields();
     },
   });
 
@@ -66,7 +77,7 @@ export const EdgeCreate: React.FC = () => {
           {
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data: (values[item.name] as (string | number)[])[0],
+            data: values[item.name] as (string | number)[],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),

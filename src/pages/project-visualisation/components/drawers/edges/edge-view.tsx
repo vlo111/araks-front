@@ -64,7 +64,7 @@ export const EdgeView = () => {
 
   return (
     <Form
-      name="add-edge-drawer"
+      name="add-edge-view-drawer"
       form={form}
       autoComplete="off"
       layout="vertical"
