@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { CommentData } from './comment-data';
 
 import 'react-quill/dist/quill.snow.css';
+import { ReplayText } from './replay-text';
 
 // Define custom toolbar options with only bold, italic, and underline styles
 const toolbarOptions = [['bold', 'italic', 'underline']];
@@ -45,6 +46,7 @@ export const Comments = () => {
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
         <CommentData />
         <div>
+          <ReplayText />
           <FormItem name="comments" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
             <ReactQuill modules={modules} formats={formats} />
           </FormItem>
