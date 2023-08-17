@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Col, Form, Row } from 'antd';
@@ -7,7 +7,6 @@ import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-pro
 import { VerticalSpace } from 'components/space/vertical-space';
 import { COLORS } from 'helpers/constants';
 import { getRowData } from '../../../../data-sheet/components/table-section/node/utils';
-import * as React from 'react';
 import { EdgeViewTitle } from './edge-view-title';
 import { Button } from 'components/button';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -19,7 +18,7 @@ import './add-edge-select.css';
 export const EdgeView = () => {
   const [form] = Form.useForm();
 
-  const [isEdit, setIsEdit] = React.useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const { graph, nodes, openEdge, finishOpenEdge } = useGraph() ?? {};
 
@@ -64,7 +63,7 @@ export const EdgeView = () => {
 
   return (
     <Form
-      name="add-edge-drawer"
+      name="add-edge-view-drawer"
       form={form}
       autoComplete="off"
       layout="vertical"
