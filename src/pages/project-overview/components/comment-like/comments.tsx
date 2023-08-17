@@ -1,4 +1,4 @@
-import { Button, Form } from 'antd';
+import { Button, Form, Skeleton } from 'antd';
 import { useGetComments } from 'api/comments/use-get-comments';
 import { FormItem } from 'components/form/form-item';
 import { Title } from 'components/typography';
@@ -21,7 +21,7 @@ export const Comments = () => {
   const params = useParams();
 
   const [form] = Form.useForm();
-  const { data } = useGetComments({ project_id: params.id || '' }, { enabled: !!params.id });
+  const { data, isLoading } = useGetComments(params.id, { enabled: !!params.id });
   const onFinish = (values: string) => {
     // eslint-disable-next-line no-console
     console.log('values', values);
@@ -31,17 +31,32 @@ export const Comments = () => {
   console.log('data', data);
 
   return (
-    <Form name="comment-form" form={form} onFinish={onFinish} autoComplete="off" layout="vertical">
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <Title level={1} color={COLORS.PRIMARY.GRAY_DARK} align="center">
-          No comments yet
-        </Title>
-        <FormItem name="comment" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
-          <ReactQuill modules={modules} formats={formats} />
-        </FormItem>
-        <Button block type="primary" htmlType="submit">
-          Submit
-        </Button>
+    <Form
+      name="comment-form"
+      form={form}
+      onFinish={onFinish}
+      autoComplete="off"
+      layout="vertical"
+      style={{ height: '100%' }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'  }}>
+        {isLoading ? (
+          <Skeleton avatar paragraph={{ rows: 4 }} />
+        ) : data.length ? (
+          <></>
+        ) : (
+          <Title level={1} color={COLORS.PRIMARY.GRAY_DARK} align="center">
+            No comments yet
+          </Title>
+        )}
+        <div>
+          <FormItem name="comment" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
+            <ReactQuill modules={modules} formats={formats} />
+          </FormItem>
+          <Button block type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </div>
       </div>
     </Form>
   );
