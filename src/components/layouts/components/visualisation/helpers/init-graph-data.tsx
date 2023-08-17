@@ -14,9 +14,9 @@ const defaultEdge = {
   labelCfg: {
     autoRotate: true,
     style: {
-      fontSize: 14,
+      fontSize: 10,
       fontWeight: '600',
-      fill: '#000000',
+      fill: '#605f5f',
       background: {
         fill: '#F2F2F2',
         padding: [2, 2, 2, 2],
@@ -29,7 +29,7 @@ const defaultEdge = {
     stroke: '#C3C3C3',
     endArrow: {
       fill: '#C3C3C3',
-      path: G6.Arrow.triangle(15, 20, 5),
+      path: G6.Arrow.triangle(10, 15, 5),
       d: 5,
     },
   },
@@ -37,7 +37,7 @@ const defaultEdge = {
 
 const defaultNode = {
   style: {
-    lineWidth: 10,
+    lineWidth: 3,
     fill: 'white',
   },
   clipCfg: {
@@ -53,8 +53,8 @@ const defaultNode = {
   },
   labelCfg: {
     style: {
-      fontSize: 16,
-      fill: '#414141',
+      fontSize: 14,
+      fill: '#151515',
       fontWeight: '600',
       background: {
         padding: [3, 2, 3, 2],
@@ -65,7 +65,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
-  size: 60,
+  size: 40,
 };
 
 export const options = {
