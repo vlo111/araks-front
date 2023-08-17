@@ -49,6 +49,7 @@ export type EdgeTargetData = {
 };
 
 export type EdgesCreate = {
+  id?: string;
   project_id: string;
   project_edge_type_id: string;
   target_type_id: string;
