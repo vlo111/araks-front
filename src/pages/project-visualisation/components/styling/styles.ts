@@ -9,16 +9,16 @@ export const StyledCollape = styled(Collapse)`
     }
     .ant-collapse-header {
       background: #ffffffe5;
-      //box-shadow: -1px 4px 4px 0 rgba(128, 128, 128, 0.1);
-      border: none !important;
+      border: none ;
     }
   }
 `;
 
 export const StyledMainWrapper = styled.div`
-  padding: 12px 0;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding: 12px 0;
 `;
 
 export const StyledContainsWrapper = styled.div`

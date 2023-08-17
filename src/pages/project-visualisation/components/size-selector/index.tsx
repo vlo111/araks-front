@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import {useCallback, useState} from "react";
+import {Form} from "antd";
 import {
   StyledSizeWrapper,
   StyledSize,
@@ -8,27 +9,36 @@ import {
   StyledNumber,
 } from './styles';
 
-type SizeType = number | null;
+type SizeType = number ;
 
-export const SizeComponent = () => {
-  const circleSizes = [10, 20, 30, 40, 50, 60, 70];
-  const [selectedSize, setSelectedSize] = useState<SizeType>(30);
+type Props = {
+  initialSize: SizeType;
+  fieldName: number | string;
+}
+export const SizeComponent = ({initialSize,fieldName}:Props) => {
+  const form = Form.useFormInstance();
+  const circleSizes = [20, 40, 60, 80,100];
+  const [size, setSize] = useState(initialSize || 60);
 
-  const handleSizeChange = (size: number) => {
-    setSelectedSize(size);
-  };
+  const setValue = useCallback(
+    (size: number) => {
+      form.setFieldValue(['queries', fieldName, 'size'], size);
+      setSize(size)
+    },
+    [form, fieldName]
+  );
 
   return (
     <StyledSizeWrapper>
       <StyledSize>Size</StyledSize>
       <StyledCircleOptions>
-        {circleSizes.map((size) => (
-          <StyledCircleOption key={size} onClick={() => handleSizeChange(size)}>
+        {circleSizes.map((item) => (
+          <StyledCircleOption key={item} onClick={() => setValue(item)}>
             <StyledCircle
-              isSelected={selectedSize === size}
-              size={size}
+              isSelected={size === item}
+              size={item}
             />
-            <StyledNumber>{size}</StyledNumber>
+            <StyledNumber>{item}</StyledNumber>
           </StyledCircleOption>
         ))}
       </StyledCircleOptions>

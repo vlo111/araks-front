@@ -1,7 +1,8 @@
-import { TabsProps, Col, Row as RowComponent } from 'antd';
+import { TabsProps, Row as RowComponent, Col } from 'antd';
 import { Styling } from '../styling';
 import styled from 'styled-components';
 import { StyledDataVisualisationSiderTabs } from './styles';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 export const Items: TabsProps['items'] = [
   {
     key: '1',
@@ -20,7 +21,7 @@ export const Items: TabsProps['items'] = [
 
 const Row = styled((props) => <RowComponent {...props} />)`
     &.overview {
-      height: calc(100vh - 152px);
+      height: 100%;
       width: 100%;
       .ant-col.overview__section {
         &:first-child {
@@ -35,15 +36,26 @@ const Row = styled((props) => <RowComponent {...props} />)`
     }
   `;
 
+export const StyledCol = styled(Col)`
+  position: absolute;
+  left: 0;
+  height: calc(100vh - 150px);
+  overflow-y: auto;
+  width: 480px;
+  z-index: 99;
+`
 
 export const LeftSection = () => {
+  const isXXL = useIsXXlScreen();
+
   return (
     <Row >
       <Row className="overview">
-        <Col className="overview__section project-save" id="datasheet-tree-list" style={{ zIndex: 3, width: "480px"}}>
+        <StyledCol className="overview__section project-save" id="datasheet-tree-list">
           <StyledDataVisualisationSiderTabs
+            tabBarGutter={isXXL ? 50 : 30}
             destroyInactiveTabPane
-            defaultActiveKey="1"
+            defaultActiveKey="3"
             items={Items.map((item) => ({
               ...item,
               children:
@@ -56,7 +68,7 @@ export const LeftSection = () => {
                 ),
             }))}
           />
-        </Col>
+        </StyledCol>
       </Row>
     </Row>
   );

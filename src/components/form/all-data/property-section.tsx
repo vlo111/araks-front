@@ -1,5 +1,5 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
-import { Collapse, Form, Space } from 'antd';
+import { Collapse, Form, Space, Typography } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
@@ -8,7 +8,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import styled from 'styled-components';
 import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { SelectIcon } from 'pages/project-overview/components/select-icon';
-import { SelectColor } from 'pages/project-scheme/components/action-bar/components/select-color';
+import { ColorSelect } from '../../select/color-select';
 
 type Props = {
   remove: (x: number) => void;
@@ -17,21 +17,25 @@ type Props = {
 };
 
 type ContentType = {
-  fieldName: number;
+  fieldName: number | string;
 };
 
 const StyledCollapse = styled(Collapse)`
   background: linear-gradient(137deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: -1px 4px 4px 0 rgba(128, 128, 128, 0.1);
   border-radius: 0;
-
-  .ant-collapse-content-box {
-    padding: 16px 0 !important;
-  }
 `;
+const Text = Typography
+
+export const StyledText = styled(Text)`
+  color: #414141;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  margin-bottom: 8px;
+`
 
 const StyledColorWrapper = styled.div`
-  margin-bottom: 16px;
 `;
 
 export const QueriesContent = ({ fieldName }: ContentType) => {
@@ -119,14 +123,14 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
 
 export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) => {
   const form = Form.useFormInstance();
+  const queriesList = form.getFieldValue('queries');
+
   const onChange = (key: string | string[]) => {
     // eslint-disable-next-line no-console
     console.log(key);
   };
 
-  const queriesList = form.getFieldValue('queries');
   // eslint-disable-next-line no-console
-  console.log('queriesList', queriesList);
 
   const genExtra = () => (
     <CloseOutlined
@@ -156,33 +160,47 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
               </Space>
             ),
             children: (
-              <>
-                <VerticalSpace>
-                  {queriesList[fieldName]?.labelHead}
-                  <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
-                    <QueriesSelect
-                      depth={queriesList[fieldName].depth}
-                      isConnection={queriesList[fieldName].isConnection}
-                    />
-                  </Form.Item>
-
-                  <QueriesContent fieldName={fieldName} />
-                </VerticalSpace>
                 <>
                   { isVisualisation && (
                     <>
-                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
-                        <SizeComponent />
+                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]} >
+                        <SizeComponent initialSize={queriesList[fieldName]?.size} fieldName={fieldName} />
                       </Form.Item>
-                      <SelectIcon />
-                      <StyledColorWrapper>
-                        <SelectColor />
-                      </StyledColorWrapper>
+                      <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing size' }]}>
+                        <StyledText>Select Icon</StyledText>
+                        <SelectIcon initialIcon={queriesList[fieldName]?.icon} fieldName={fieldName}  />
+                      </Form.Item>
+                      <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing size' }]}>
+                        <StyledColorWrapper>
+                          <ColorSelect initialColor={queriesList[fieldName]?.color} fieldName={fieldName}/>
+                        </StyledColorWrapper>
+                      </Form.Item>
+                      {queriesList[fieldName].depth !== 1 && (
+                        <VerticalSpace>
+                          {queriesList[fieldName]?.labelHead}
+                          <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
+                            <QueriesSelect
+                              depth={queriesList[fieldName].depth}
+                              isConnection={queriesList[fieldName].isConnection}
+                            />
+                          </Form.Item>
+                          <QueriesContent fieldName={fieldName} />
+                        </VerticalSpace>
+                      )}
                     </>
                   )}
-                </>
-              </>
 
+                  {!isVisualisation && <VerticalSpace>
+                    {queriesList[fieldName]?.labelHead}
+                    <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
+                      <QueriesSelect
+                        depth={queriesList[fieldName].depth}
+                        isConnection={queriesList[fieldName].isConnection}
+                      />
+                    </Form.Item>
+                    <QueriesContent fieldName={fieldName} />
+                  </VerticalSpace>}
+                </>
             ),
             extra: genExtra(),
             showArrow: false,

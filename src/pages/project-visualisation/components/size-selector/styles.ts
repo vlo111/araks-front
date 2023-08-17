@@ -32,7 +32,7 @@ export const StyledCircleOption = styled.div`
 
 export const StyledCircle = styled.div<{ isSelected: boolean,size:number }>`
   background: ${(props) => (props.isSelected ? '#232F6A' : 'transparent')};
-  border: ${(props) => (props.isSelected ? 'none' : '3px solid #808080')};
+  border: ${(props) => (props.isSelected ? 'none' : '2px solid #808080')};
   width: ${(props) => props.size}px;
   height:  ${(props) => props.size}px;
   border-radius: 50%;

@@ -4,7 +4,6 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { TabTablesQueries } from 'pages/data-sheet/components/all-data-queries/tab-tables-queries';
 // import { useState } from 'react';
 import { PropertySection } from './property-section';
-import { Buttons } from '../../../pages/project-visualisation/components/buttons';
 
 type Props = {
   openTable: boolean;
@@ -15,8 +14,6 @@ type Props = {
 export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }: Props) => {
   // const [openTable, setOpenTable] = useState(false);
   // const ref = useRef<HTMLDivElement>(null);
-  const [form] = Form.useForm();
-
   // const handleOpenChange = (newOpen: boolean) => {
   //   setOpenTable(newOpen);
   // };
@@ -29,21 +26,16 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
   //   }
   // }, [openTable]);
 
-  const onFinish = (values: unknown) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
-  };
-
   return (
-    <Form form={form} onFinish={onFinish}>
       <Form.List name="queries">
-        {(fields, { add, remove }) => (
-          <VerticalSpace>
-            {fields.map((field) => {
-              return <PropertySection key={field.key} remove={() => remove(field.name)} fieldName={field.name} isVisualisation={isVisualisation} />;
-            })}
+        {(fields, { add, remove }) => {
+          return(
+            <VerticalSpace>
+              {fields.map((field) => {
+                return <PropertySection key={field.key} remove={() => remove(field.name)} fieldName={field.name} isVisualisation={isVisualisation} />;
+              })}
 
-            {/* <Form.Item>
+              {/* <Form.Item>
             <Popover
               content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
               trigger="click"
@@ -61,20 +53,19 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
               </Button>
             </Popover>
           </Form.Item> */}
-          <Popover
-            open={openTable}
-            placement="bottom"
-            arrow={false}
-            getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
-            overlayStyle={{ width: '90%' }}
-            destroyTooltipOnHide
-            content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} />}
-          >
-            <div />
-          </Popover>
-            {isVisualisation && <Buttons setOpenTable={setOpenTable} />}
-        </VerticalSpace>
-      )}
-    </Form.List>
+              <Popover
+                open={openTable}
+                placement="bottom"
+                arrow={false}
+                getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
+                overlayStyle={{ width: '460px' }}
+                destroyTooltipOnHide
+                content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} isVisualisation={isVisualisation} />}
+              >
+                <div />
+              </Popover>
+            </VerticalSpace>
+          )}}
+      </Form.List>
   );
 };

@@ -6,8 +6,8 @@ export const StyledButtonsWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: auto;
   padding: 24px 44px 16px;
+  margin-top: auto;
 `;
 
 export const StyledDiv = styled.div`

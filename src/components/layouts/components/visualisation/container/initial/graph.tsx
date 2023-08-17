@@ -29,7 +29,7 @@ const defaultEdge = {
 
 const defaultNode = {
   style: {
-    lineWidth: 10,
+    lineWidth: 3,
     fill: 'white',
   },
   clipCfg: {

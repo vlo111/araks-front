@@ -6,14 +6,13 @@ import { textSizeMedia } from '../../../../components/typography/text';
 export const StyledDataVisualisationSiderTabs = styled(TabsComponent)`
   &&& {
     height: 100%;
-
+    width: 100%;
     .ant-tabs-content {
       height: 100%;
       background: #F2F2F2;
-      //box-shadow: 10px 0 rgba(111, 111, 111, 0.10);
-
       .ant-tabs-tabpane {
         height: 100%;
+        width: 100%;
       }
     }
     .ant-tabs-nav {
