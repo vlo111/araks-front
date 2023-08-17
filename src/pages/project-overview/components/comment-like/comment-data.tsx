@@ -6,6 +6,8 @@ import { ShowSafeText } from 'components/typography/show-safe-text';
 import { COLORS } from 'helpers/constants';
 import { DeleteComment } from './delete-comment';
 
+import './index.css';
+
 export const CommentData = () => {
   const { rowsData, count, isInitialLoading, isFetched } = useGetComments();
   const form = Form.useFormInstance();
@@ -20,10 +22,10 @@ export const CommentData = () => {
 
   return (
     <List
-      className="demo-loadmore-list"
+      className="scroll-container"
+      style={{ height: '100%', overflow: 'auto' }}
       loading={isInitialLoading}
       itemLayout="horizontal"
-      //   loadMore={loadMore}
       dataSource={rowsData}
       renderItem={(item) => (
         <List.Item

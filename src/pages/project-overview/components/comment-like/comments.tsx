@@ -29,8 +29,8 @@ export const Comments = () => {
   const { mutate } = useManageComment();
   const onFinish = (values: ProjectCommentManage) => {
     // eslint-disable-next-line no-console
-    console.log('values', values);
-    mutate({ ...values, project_id: params.id, parent_id: values.parent_id || null });
+    console.log('values', values, form.getFieldValue('parent_id'));
+    mutate({ ...values, project_id: params.id, parent_id: form.getFieldValue('parent_id') || null });
     form.resetFields();
   };
 
@@ -42,6 +42,7 @@ export const Comments = () => {
       autoComplete="off"
       layout="vertical"
       style={{ height: '100%' }}
+      initialValues={{ parent_id: null }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
         <CommentData />
