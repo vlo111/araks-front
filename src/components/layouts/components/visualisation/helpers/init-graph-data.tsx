@@ -72,6 +72,7 @@ export const options = {
   height: window.innerHeight - 165,
   width: window.innerWidth - 300,
   fitCenter: true,
+  fitView: true,
   animate: true,
   modes: {
     default: ['drag-canvas', 'drag-node', 'zoom-canvas', 'create-edge'],
