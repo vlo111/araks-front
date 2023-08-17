@@ -65,7 +65,7 @@ const defaultNode = {
     offset: 10,
     position: 'bottom',
   },
-  size: 40,
+  size: 60,
 };
 
 export const options = {
