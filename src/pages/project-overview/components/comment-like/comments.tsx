@@ -1,5 +1,7 @@
 import { Button, Form, Skeleton } from 'antd';
 import { useGetComments } from 'api/comments/use-get-comments';
+import { useManageComment } from 'api/comments/use-manage-comment';
+import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
 import { Title } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
@@ -22,9 +24,11 @@ export const Comments = () => {
 
   const [form] = Form.useForm();
   const { data, isLoading } = useGetComments(params.id, { enabled: !!params.id });
-  const onFinish = (values: string) => {
+  const { mutate } = useManageComment();
+  const onFinish = (values: ProjectCommentManage) => {
     // eslint-disable-next-line no-console
     console.log('values', values);
+    mutate({ ...values, project_id: params.id });
   };
 
   // eslint-disable-next-line no-console
@@ -39,7 +43,7 @@ export const Comments = () => {
       layout="vertical"
       style={{ height: '100%' }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%'  }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
         {isLoading ? (
           <Skeleton avatar paragraph={{ rows: 4 }} />
         ) : data.length ? (

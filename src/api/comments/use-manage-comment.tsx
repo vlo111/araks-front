@@ -5,7 +5,7 @@ import client from '../client';
 import { errorMessage } from 'helpers/utils';
 import { URL_COMMENTS_LIST, URL_COMMENT_CREATE } from './constants';
 
-export const useManageFolder = (url = URL_COMMENT_CREATE, type: RequestType = RequestTypes.Post) => {
+export const useManageComment = (url = URL_COMMENT_CREATE, type: RequestType = RequestTypes.Post) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values: ProjectCommentManage) => {
