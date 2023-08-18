@@ -1,5 +1,5 @@
 import { Graph } from './components/graph'
-import { LeftSection } from './components/left-section';;
+import { LeftSection } from './components/left-section';
 import { useNodes } from 'hooks/use-nodes';
 import { NodeView } from './components/drawers/nodes/node-view';
 import { NodeCreate } from './components/drawers/nodes/add-node';

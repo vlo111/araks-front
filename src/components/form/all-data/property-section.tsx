@@ -169,17 +169,6 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
             ),
             children: (
               <>
-                <VerticalSpace>
-                  {queriesList[fieldName]?.labelHead}
-                  <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
-                    <QueriesSelect
-                      depth={queriesList[fieldName].depth}
-                      isConnection={queriesList[fieldName].isConnectionType}
-                      propertyType={queriesList[fieldName]?.ref_property_type_id}
-                    />
-                  </Form.Item>
-                  <QueriesContent fieldName={fieldName} />
-                </VerticalSpace>
                 <>
                   { isVisualisation && (
                     <>

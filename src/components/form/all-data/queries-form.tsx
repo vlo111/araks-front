@@ -67,7 +67,7 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
             <div />
           </Popover>
         </VerticalSpace>
-      )}
+      )}}
     </Form.List>
   );
 };
