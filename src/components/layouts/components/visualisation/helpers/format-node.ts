@@ -1,5 +1,5 @@
 import { Graph } from '@antv/g6';
-import { GraphData } from '../../types';
+import { GraphData } from '../types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Nodes } from 'api/visualisation/use-get-nodes';
 
@@ -15,10 +15,12 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
       },
       img: n.default_image,
       type: n.default_image ? 'image' : 'circle',
+      nodeType: n?.nodeType?.id,
       cluster: n.nodeType,
     })),
     edges: edgeList.map((e) => ({
       id: e.id,
+      project_edge_type_id: e.project_edge_type_id,
       source: e.source_id,
       target: e.target_id,
       label: e.edgeTypes?.name ?? '',

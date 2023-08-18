@@ -71,6 +71,13 @@ export type ProjectFullInfo = {
   updated_at: string;
   user_id: string;
   perspective_users: PerspectiveUser[];
+  projectsNodeTypes: IProjectType[];
+  projectsEdgeTypes: {
+    id: string;
+    source_id: string;
+    target_id: string;
+    name: string;
+  }[];
 };
 
 export type ProjectInfoReturnData = {
@@ -132,9 +139,7 @@ export interface IPerspectiveTypes {
   project_node_type_id: string;
 }
 
-export interface IProjectTypeData extends ProjectFullInfo {
-  projectsNodeTypes: IProjectType[];
-}
+export type IProjectTypeData = ProjectFullInfo;
 
 export type ProjectTypePropertyReturnData = {
   created_at: string;
@@ -261,6 +266,7 @@ export interface ISharedPerspectiveUserData {
   role: string;
   perspective_users: ISharedPerspectiveUser;
 }
+
 export interface IResponsePerspectiveUsers {
   id: string;
   title: string;
@@ -280,4 +286,30 @@ export type CheckPropertyBody = {
 export type CheckPropertyResponse = {
   invalidCount: number;
   allCount: number;
+};
+
+export type ProjectCommentListParams = {
+  project_id: string;
+};
+
+export type ProjectCommentManage = {
+  comments: string;
+  project_id?: string;
+  parent_id?: string | null;
+};
+
+export type CommentData = {
+  id: string;
+  comments: string;
+  parent_id: null;
+  project_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  user: ISharedPerspectiveUser;
+};
+
+export type CommentsResponse = {
+  count: number;
+  rows: CommentData[];
 };

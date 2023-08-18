@@ -1,5 +1,5 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
-import { Collapse, Form, Space, Typography } from 'antd';
+import { Collapse, DatePicker, Typography, Form, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
@@ -9,6 +9,10 @@ import styled from 'styled-components';
 import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { SelectIcon } from 'pages/project-overview/components/select-icon';
 import { ColorSelect } from '../../select/color-select';
+
+const dateFormat = 'DD/MM/YYYY';
+
+const { RangePicker } = DatePicker;
 
 type Props = {
   remove: (x: number) => void;
@@ -112,6 +116,11 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
           </Space>
         </Form.Item>
       )}
+      {type === QueryFilterTypes.RANGE && (
+        <Form.Item name={[fieldName, 'rangeDates']}>
+          <RangePicker format={dateFormat} style={{ width: '100%' }} />
+        </Form.Item>
+      )}
       {type === QueryFilterTypes.EQUAL_TO && (
         <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
@@ -130,7 +139,6 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
     console.log(key);
   };
 
-  // eslint-disable-next-line no-console
 
   const genExtra = () => (
     <CloseOutlined
@@ -160,6 +168,18 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
               </Space>
             ),
             children: (
+              <>
+                <VerticalSpace>
+                  {queriesList[fieldName]?.labelHead}
+                  <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
+                    <QueriesSelect
+                      depth={queriesList[fieldName].depth}
+                      isConnection={queriesList[fieldName].isConnectionType}
+                      propertyType={queriesList[fieldName]?.ref_property_type_id}
+                    />
+                  </Form.Item>
+                  <QueriesContent fieldName={fieldName} />
+                </VerticalSpace>
                 <>
                   { isVisualisation && (
                     <>
@@ -189,7 +209,7 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
                       )}
                     </>
                   )}
-
+              </>
                   {!isVisualisation && <VerticalSpace>
                     {queriesList[fieldName]?.labelHead}
                     <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>

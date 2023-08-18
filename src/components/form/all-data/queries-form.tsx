@@ -14,6 +14,7 @@ type Props = {
 export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }: Props) => {
   // const [openTable, setOpenTable] = useState(false);
   // const ref = useRef<HTMLDivElement>(null);
+
   // const handleOpenChange = (newOpen: boolean) => {
   //   setOpenTable(newOpen);
   // };
@@ -53,19 +54,20 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
               </Button>
             </Popover>
           </Form.Item> */}
-              <Popover
-                open={openTable}
-                placement="bottom"
-                arrow={false}
-                getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
-                overlayStyle={{ width: '460px' }}
-                destroyTooltipOnHide
-                content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} isVisualisation={isVisualisation} />}
-              >
-                <div />
-              </Popover>
-            </VerticalSpace>
-          )}}
-      </Form.List>
+          <Popover
+            open={openTable}
+            placement="bottom"
+            arrow={false}
+            getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
+            overlayStyle={{ width: '460px', zIndex: 0 }}
+            overlayInnerStyle={{ width: '460px', height: '50vh', overflow: 'auto' }}
+            destroyTooltipOnHide
+            content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} isVisualisation={isVisualisation} />}
+          >
+            <div />
+          </Popover>
+        </VerticalSpace>
+      )}
+    </Form.List>
   );
 };

@@ -10,11 +10,19 @@ type Props = {
   isModalOpen: boolean;
   isPublic?: boolean;
   folderId?: string;
+  closePreview?: () => void;
   setIsModalOpen: (value: boolean | ((prevVar: boolean) => boolean)) => void;
   projectId: string;
 };
 
-export const DeleteProjectModal = ({ isModalOpen, setIsModalOpen, folderId, projectId, isPublic }: Props) => {
+export const DeleteProjectModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  folderId,
+  projectId,
+  isPublic,
+  closePreview,
+}: Props) => {
   const location = useLocation();
   const { mutate } = useDeleteProject({
     projectId,
@@ -29,6 +37,7 @@ export const DeleteProjectModal = ({ isModalOpen, setIsModalOpen, folderId, proj
   const deleteFolder = () => {
     mutate();
     setIsModalOpen(false);
+    if (closePreview) closePreview();
   };
 
   return (

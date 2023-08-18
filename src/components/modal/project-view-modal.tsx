@@ -6,23 +6,35 @@ import { Button } from 'components/button';
 import { MenuText, Text } from 'components/typography';
 import styled from 'styled-components';
 import { Col, Drawer, Row, Space } from 'antd';
-import { COLORS, PATHS } from 'helpers/constants';
+import { PATHS } from 'helpers/constants';
 import { ProjectLogo } from 'components/project/project-logo';
 import { ProjectButtonContent, ProjectList, ProjectStatisticsType } from 'types/project';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { ProjectStatistics } from 'components/project/project-statistics';
-import { useGetProjectInfo } from 'api/projects/use-get-project-info';
+import dotImage from '../../pages/project-visualisation/components/icons/dots.svg';
+import React, { Dispatch, useCallback, useState } from 'react';
+import { ProjectActionContent } from '../../pages/projects/components/project-action-content';
+import { ProjectActionPopover } from '../popover';
+import { ProjectActionTitle } from '../../pages/projects/components/project-action-title';
+import { DeleteProjectModal } from './delete-project-modal';
+import { Graph } from '@antv/g6';
+import { ProjectInfoReturnData } from '../../api/types';
 
 type Props = {
   isModalOpen: boolean;
   setIsModalOpen: (value: undefined | string) => void;
-  projectId: string;
+  projectData: ProjectInfoReturnData;
+  graph: { destroy: (() => void) | null; graph: Graph | null };
+  setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
 };
 
 type TitleProps = ProjectButtonContent &
   ProjectStatisticsType & {
     handleCancel: () => void;
+    isClicked: boolean;
+    setClicked: Dispatch<React.SetStateAction<boolean>>;
+    openModal: () => void;
   };
 
 const ProjectWrapModal = styled(Drawer)`
@@ -53,11 +65,11 @@ const ProjectWrapModal = styled(Drawer)`
       }
 
       .ant-drawer-body {
-        background-color: ${COLORS.PRIMARY.GRAY_LIGHT};
+        overflow: unset;
         padding: 0;
 
         .project-content {
-          height: calc(100vh - 228px);
+          height: calc(100vh - 270px);
         }
       }
     }
@@ -72,6 +84,12 @@ const TitleWrapper = styled(Space)`
   background: transparent;
 `;
 
+const StyledContainer = styled.div`
+  & canvas {
+    background: url(${dotImage});
+  }
+`;
+
 const FooterWrapper = styled.div`
   height: 40px;
   background: linear-gradient(119.84deg, rgba(255, 255, 255, 0.5) 88.78%, rgba(255, 255, 255, 0.49) 165.43%);
@@ -79,7 +97,28 @@ const FooterWrapper = styled.div`
   padding: 42px 0;
 `;
 
-const Title = ({ project, comments, likes, views, size, handleCancel }: TitleProps) => (
+const StyledDotWrapper = styled.div`
+  padding: 4px;
+
+  &:hover {
+    border-color: transparent;
+    background-color: rgba(35, 47, 106, 0.1);
+    padding: 4px;
+    border-radius: 8px;
+  }
+`;
+
+const Title = ({
+  project,
+  comments,
+  likes,
+  views,
+  size,
+  handleCancel,
+  isClicked,
+  setClicked,
+  openModal,
+}: TitleProps) => (
   <>
     <LeftCircle className="back-link" onClick={handleCancel} />
     <TitleWrapper>
@@ -90,30 +129,56 @@ const Title = ({ project, comments, likes, views, size, handleCancel }: TitlePro
       <Space size={30}>
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
         <Public width="16px" style={{ marginTop: '4px' }} />
-        <DotsVertical />
+        <ProjectActionPopover
+          align={{ offset: [-20, -5] }}
+          title={<ProjectActionTitle />}
+          open={isClicked}
+          onOpenChange={(open: boolean) => {
+            !open && setClicked(false);
+            return open;
+          }}
+          content={
+            <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
+          }
+        >
+          <StyledDotWrapper onClick={() => setClicked(true)}>
+            <DotsVertical />
+          </StyledDotWrapper>
+        </ProjectActionPopover>
       </Space>
     </TitleWrapper>
   </>
 );
 
-export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Props) => {
+export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, graph, setGraph }: Props) => {
   const navigate = useNavigate();
 
-  const { data } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
+  const [isClicked, setClicked] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
   const handleCancel = () => {
     setIsModalOpen(undefined);
+    if (graph.destroy) {
+      setGraph({ destroy: null, graph: null });
+      graph.destroy();
+    }
   };
 
+  const openModal = useCallback(() => {
+    setClicked(false);
+    setIsDeleteModalOpen(true);
+  }, [setClicked]);
+
   const project: ProjectList =
-    data && data.result
+    projectData && projectData.result
       ? {
-          id: data.result.id,
-          color: data.result.color,
-          name: data.result.title,
-          folderId: data.result.folder_id,
-          type: data.result.privacy,
-          dateTime: dayjs(data.result.updated_at).format('YYYY-MM-DD HH:mm'),
-          icon: data.result.icon,
+          id: projectData.result.id,
+          color: projectData.result.color,
+          name: projectData.result.title,
+          folderId: projectData.result.folder_id,
+          type: projectData.result.privacy,
+          dateTime: dayjs(projectData.result.updated_at).format('YYYY-MM-DD HH:mm'),
+          icon: projectData.result.icon,
         }
       : ({} as ProjectList);
 
@@ -127,9 +192,12 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
               handleCancel={handleCancel}
               project={project}
               size={20}
-              comments={data?.comments || 0}
-              likes={data?.likes || 0}
-              views={data?.views || 0}
+              comments={projectData?.comments || 0}
+              likes={projectData?.likes || 0}
+              views={projectData?.views || 0}
+              isClicked={isClicked}
+              setClicked={setClicked}
+              openModal={openModal}
             />
           ) : (
             ''
@@ -156,8 +224,15 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId }: Pro
         placement="right"
         width="50vw"
       >
-        <div className="project-content"></div>
+        <StyledContainer className="project-content" id={'juJSlsfk'} />
       </ProjectWrapModal>
+      <DeleteProjectModal
+        isModalOpen={isDeleteModalOpen}
+        setIsModalOpen={setIsDeleteModalOpen}
+        folderId={project.folderId}
+        projectId={project.id}
+        closePreview={handleCancel}
+      />
     </>
   );
 };

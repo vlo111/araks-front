@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useGraph } from '../components/layouts/components/visualisation/wrapper';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
-import { formattedData } from '../components/layouts/components/visualisation/container/helpers/format-node';
+import { formattedData } from '../components/layouts/components/visualisation/helpers/format-node';
 import { AllDataResponse } from '../types/node';
 import { useGetVEdges } from '../api/visualisation/use-get-edges';
 import { useGetNodes } from '../api/visualisation/use-get-nodes';
@@ -11,13 +11,13 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse
 
   const { nodes, isInitialLoading } = useGetNodes({
     onSuccess: (data) => {
-      params.setNodes(data.rows);
+      params.setNodes && params.setNodes(data.rows);
     },
   });
 
   useGetVEdges({
     onSuccess: (edges) => {
-      params.setEdges(edges.data);
+      params.setEdges && params.setEdges(edges.data);
     },
   });
 
