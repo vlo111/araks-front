@@ -1,4 +1,4 @@
-import { PlusAction } from '../../../../components/actions/plus';
+import { PlusAction } from 'components/actions/plus';
 import { StyledButtonsWrapper, StyledAddButton, StyledDiv, StyledCleanButton, StyledRunButton } from './styles';
 import {  useState } from 'react';
 

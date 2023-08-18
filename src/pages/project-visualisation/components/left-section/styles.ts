@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Tabs as TabsComponent } from 'antd';
-import { COLORS } from '../../../../helpers/constants';
-import { textSizeMedia } from '../../../../components/typography/text';
+import { COLORS } from 'helpers/constants';
+import { textSizeMedia } from 'components/typography/text';
 
 export const StyledDataVisualisationSiderTabs = styled(TabsComponent)`
   &&& {
