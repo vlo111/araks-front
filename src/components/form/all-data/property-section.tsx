@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { SelectIcon } from 'pages/project-overview/components/select-icon';
 import { ColorSelect } from '../../select/color-select';
+import { CircleColor } from 'pages/project-visualisation/components/circle-color';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -163,6 +164,7 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
             key: '1',
             label: (
               <Space>
+                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color}/>}
                 <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
                 {queriesList[fieldName].labelName}
               </Space>
