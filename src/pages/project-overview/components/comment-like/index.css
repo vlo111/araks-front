@@ -12,3 +12,24 @@
 .scroll-container::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.5); /* Darker color on hover */
 }
+
+.ql-mention-list-container {
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.ql-mention-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ql-mention-list-item {
+  font-size: 16px;
+  padding: 12px 32px;
+}
+
+.ql-mention-list-item.selected {
+  background-color: #dbdbdb;
+  cursor: pointer;
+}

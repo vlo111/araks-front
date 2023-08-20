@@ -3,23 +3,13 @@ import { useManageComment } from 'api/comments/use-manage-comment';
 import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
 import { VALIDATE_MESSAGES } from 'helpers/constants';
-import ReactQuill from 'react-quill';
 import { useParams } from 'react-router-dom';
 import { CommentData } from './comment-data';
-
-import 'react-quill/dist/quill.snow.css';
 import { ReplayText } from './replay-text';
 
-// Define custom toolbar options with only bold, italic, and underline styles
-const toolbarOptions = [['bold', 'italic', 'underline']];
-
-// Customize the formats allowed in the editor to only include bold, italic, and underline styles
-const formats = ['bold', 'italic', 'underline'];
-
-// Override the default module with the customized toolbar and formats
-const modules = {
-  toolbar: toolbarOptions,
-};
+import 'react-quill/dist/quill.snow.css';
+import 'quill-mention';
+import { CommentInput } from './comment-input';
 
 export const Comments = () => {
   const params = useParams();
@@ -28,8 +18,6 @@ export const Comments = () => {
 
   const { mutate } = useManageComment();
   const onFinish = (values: ProjectCommentManage) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values, form.getFieldValue('parent_id'));
     mutate({ ...values, project_id: params.id, parent_id: form.getFieldValue('parent_id') || null });
     form.resetFields();
   };
@@ -49,7 +37,7 @@ export const Comments = () => {
         <div>
           <ReplayText />
           <FormItem name="comments" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
-            <ReactQuill modules={modules} formats={formats} />
+            <CommentInput />
           </FormItem>
           <Button block type="primary" htmlType="submit">
             Submit

@@ -9,8 +9,6 @@ export const ReplayText = () => {
   const form = Form.useFormInstance();
 
   const parentId = Form.useWatch('parent_id', { preserve: true });
-  // eslint-disable-next-line no-console
-  console.log('parentId', parentId);
 
   if (!parentId) {
     return <></>;
