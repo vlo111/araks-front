@@ -17,9 +17,6 @@ export const HelpChart = (
     container: ref,
     fitCenter: true,
     renderer: 'canvas',
-    layout: {
-      type: 'grid',
-    },
     defaultNode: {
       size: 40,
       style: {

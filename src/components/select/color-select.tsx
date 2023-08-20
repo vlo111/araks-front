@@ -28,25 +28,26 @@ const ButtonColor = styled(
 
 type Props = {
   initialColor?: string;
+  fieldName?: string | number;
 };
 
 const state = {
   hue: 50,
 };
 
-export const ColorSelect = ({ initialColor }: Props) => {
+export const ColorSelect = ({ initialColor,fieldName }: Props) => {
   const [color, setColor] = useState(initialColor || '#DDDDDD');
   const form = Form.useFormInstance();
   const setValue = useCallback(
     (color: string) => {
-      form.setFieldValue('color', color);
+      form.setFieldValue(['queries', fieldName, 'color'], color);
       setColor(color);
     },
-    [form]
+    [form, fieldName]
   );
   return (
     <SelectColorPopover
-      content={<SketchPicker color={color} onChange={(color) => setValue(color.hex)} {...state} />}
+      content={<SketchPicker color={color} onChange={(color?) => setValue(color.hex)} {...state} />}
       overlayStyle={{ width: 220 }}
     >
       <ButtonColor block type="primary" color={color}>
