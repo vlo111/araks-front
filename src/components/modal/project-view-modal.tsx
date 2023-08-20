@@ -19,12 +19,12 @@ import { ProjectActionPopover } from '../popover';
 import { ProjectActionTitle } from '../../pages/projects/components/project-action-title';
 import { DeleteProjectModal } from './delete-project-modal';
 import { Graph } from '@antv/g6';
-import { ProjectInfoReturnData } from '../../api/types';
+import { ProjectFullInfo } from '../../api/types';
 
 type Props = {
   isModalOpen: boolean;
   setIsModalOpen: (value: undefined | string) => void;
-  projectData: ProjectInfoReturnData;
+  projectData: ProjectFullInfo;
   graph: { destroy: (() => void) | null; graph: Graph | null };
   setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
 };

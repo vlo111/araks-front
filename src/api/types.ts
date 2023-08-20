@@ -78,6 +78,9 @@ export type ProjectFullInfo = {
     target_id: string;
     name: string;
   }[];
+  commentCount?: number;
+  favoriteCount?: number;
+  views?: number;
 };
 
 export type ProjectInfoReturnData = {
