@@ -15,6 +15,8 @@ import { PropertyDataConnectionTypeSelect } from 'components/select/property-dat
 import { useManageProjectNodeTypeProperty } from 'api/node-edge-type/use-manage-project-edge-type-property';
 import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
+import { EditEdgePropertyTypeInfoModal } from 'components/modal/edit-edge-property-type-info-modal';
+import { ConnectionPropertyTypes } from './property/types';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -38,7 +40,7 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId
     },
   });
 
-  useGetProjectEdgeTypeProperty(propertyId, {
+  const { data } = useGetProjectEdgeTypeProperty(propertyId, {
     enabled: !!propertyId,
     onSuccess: (data) => {
       form.setFieldsValue({
@@ -123,13 +125,19 @@ export const AddConnectionTypePropertyForm = ({ isEdit = false, hide, propertyId
           label="Data type"
           rules={[{ required: true, message: 'Connection property data type is required' }]}
         >
-          <PropertyDataConnectionTypeSelect />
+          <PropertyDataConnectionTypeSelect
+            propertyTypeId={data?.ref_property_type_id as ConnectionPropertyTypes | undefined}
+          />
         </FormItem>
         <FormItem>
           <VerticalSpace>
-            <Button block type="primary" htmlType="submit">
-              Save
-            </Button>
+            {isEdit ? (
+              <EditEdgePropertyTypeInfoModal id={data?.id} initPropertyType={data?.ref_property_type_id} />
+            ) : (
+              <Button block type="primary" htmlType="submit">
+                Save
+              </Button>
+            )}
             {isEdit ? (
               <Button block type="text" onClick={onHandleDelete}>
                 Delete
