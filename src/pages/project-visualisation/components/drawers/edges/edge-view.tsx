@@ -33,9 +33,15 @@ export const EdgeView = () => {
     },
   });
 
-  const source = useMemo(() => nodes?.find((n) => n?.id === edge?.getModel()?.source), [nodes, edge]);
+  const source = useMemo(
+    () => nodes?.records?.find((n) => n?._fields[0].properties.id === edge?.getModel()?.source),
+    [nodes, edge]
+  );
 
-  const target = useMemo(() => nodes?.find((n) => n?.id === edge?.getModel()?.target), [nodes, edge]);
+  const target = useMemo(
+    () => nodes?.records.find((n) => n?._fields[0].properties.id === edge?.getModel()?.target),
+    [nodes, edge]
+  );
 
   const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(
     (edge?.getModel() as { project_edge_type_id: string })?.project_edge_type_id,
@@ -55,8 +61,8 @@ export const EdgeView = () => {
 
   const onFinish = (values: NodeBody) => {
     mutate({
-      source_id: source?.id,
-      target_id: target?.id,
+      source_id: source?._fields[0].properties.id,
+      target_id: target?._fields[0].properties.id,
       ...values,
     } as EdgesCreate);
   };
@@ -103,11 +109,25 @@ export const EdgeView = () => {
       >
         <Row gutter={8} style={{ margin: '1rem 0' }}>
           <Col span={8}>
-            <SourceView sourceData={source?.nodeType} nodeName={source?.name} />
+            <SourceView
+              sourceData={{
+                id: source?._fields[0].properties.parent_node_type_id ?? '',
+                name: source?._fields[0].labels[0] ?? '',
+                color: source?._fields[0].properties.color ?? '',
+              }}
+              nodeName={source?._fields[0].properties.name}
+            />
           </Col>
           <Col span={1} />
           <Col span={8}>
-            <SourceView sourceData={target?.nodeType} nodeName={target?.name} />
+            <SourceView
+              sourceData={{
+                id: target?._fields[0].properties.parent_node_type_id ?? '',
+                name: target?._fields[0].labels[0] ?? '',
+                color: target?._fields[0].properties.color ?? '',
+              }}
+              nodeName={target?._fields[0].properties.name}
+            />
           </Col>
         </Row>
         {isEdit ? (
