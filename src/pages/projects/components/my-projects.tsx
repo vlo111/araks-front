@@ -69,12 +69,13 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
   const dataToDraw = useMemo(() => (state === ViewTypes.Block ? propsProjectBlockView : propsProjectGridView), [state]);
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
+  console.log(projectData, 'projectDataprojectDataprojectData');
 
-  if (projectData?.result && !graph.graph && document.getElementById('juJSlsfk')) {
+  if (projectData && !graph.graph && document.getElementById('juJSlsfk')) {
     setGraph(
       PreviewChart({
-        nodes: projectData.result.projectsNodeTypes,
-        edges: PreviewEdgeFormat(projectData.result.projectsEdgeTypes),
+        nodes: projectData.projectsNodeTypes,
+        edges: PreviewEdgeFormat(projectData.projectsEdgeTypes),
       })
     );
   }

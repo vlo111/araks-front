@@ -169,18 +169,17 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
     setIsDeleteModalOpen(true);
   }, [setClicked]);
 
-  const project: ProjectList =
-    projectData && projectData.result
-      ? {
-          id: projectData.result.id,
-          color: projectData.result.color,
-          name: projectData.result.title,
-          folderId: projectData.result.folder_id,
-          type: projectData.result.privacy,
-          dateTime: dayjs(projectData.result.updated_at).format('YYYY-MM-DD HH:mm'),
-          icon: projectData.result.icon,
-        }
-      : ({} as ProjectList);
+  const project: ProjectList = projectData
+    ? {
+        id: projectData.id,
+        color: projectData.color,
+        name: projectData.title,
+        folderId: projectData.folder_id,
+        type: projectData.privacy,
+        dateTime: dayjs(projectData.updated_at).format('YYYY-MM-DD HH:mm'),
+        icon: projectData.icon,
+      }
+    : ({} as ProjectList);
 
   return (
     <>
@@ -192,8 +191,8 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
               handleCancel={handleCancel}
               project={project}
               size={20}
-              comments={projectData?.comments || 0}
-              likes={projectData?.likes || 0}
+              comments={projectData?.commentCount || 0}
+              likes={projectData?.favoriteCount || 0}
               views={projectData?.views || 0}
               isClicked={isClicked}
               setClicked={setClicked}
