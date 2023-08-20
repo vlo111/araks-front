@@ -74,8 +74,8 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
   if (projectData && !graph.graph && document.getElementById('juJSlsfk')) {
     setGraph(
       PreviewChart({
-        nodes: projectData.projectsNodeTypes,
-        edges: PreviewEdgeFormat(projectData.projectsEdgeTypes),
+        nodes: projectData?.projectsNodeTypes,
+        edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
       })
     );
   }

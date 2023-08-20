@@ -81,10 +81,7 @@ export type ProjectFullInfo = {
 };
 
 export type ProjectInfoReturnData = {
-  comments: number;
-  likes: number;
   result: ProjectFullInfo;
-  views: number;
 };
 
 export type UserData = {

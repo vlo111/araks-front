@@ -1,4 +1,4 @@
-import { ProjectInfoReturnData } from 'api/types';
+import { ProjectFullInfo } from 'api/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 
@@ -11,7 +11,7 @@ type GetProjectParam = {
 type QueryKey = GetProjectParam | string;
 
 type ReturnData = {
-  data: ProjectInfoReturnData;
+  data: ProjectFullInfo;
 };
 
 type QueryResponse = {
@@ -19,7 +19,7 @@ type QueryResponse = {
 };
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
-type Result = UseQueryResult<ProjectInfoReturnData>;
+type Result = UseQueryResult<ProjectFullInfo>;
 
 export const useGetProjectInfo = (params: GetProjectParam, options: Options = { enabled: true }): Result => {
   const url = GET_PROJECT_INFO_DATA.replace(':id', params?.id || '');
@@ -32,6 +32,6 @@ export const useGetProjectInfo = (params: GetProjectParam, options: Options = { 
   const { data, isSuccess } = result;
   return {
     ...result,
-    data: isSuccess ? data.data : ({} as ProjectInfoReturnData),
+    data: isSuccess ? data.data : ({} as ProjectFullInfo),
   } as Result;
 };
