@@ -69,7 +69,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
   const dataToDraw = useMemo(() => (state === ViewTypes.Block ? propsProjectBlockView : propsProjectGridView), [state]);
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
-  console.log(projectData, 'projectDataprojectDataprojectData');
 
   if (projectData && !graph.graph && document.getElementById('juJSlsfk')) {
     setGraph(
