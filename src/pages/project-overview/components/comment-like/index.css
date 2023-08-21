@@ -33,3 +33,11 @@
   background-color: #dbdbdb;
   cursor: pointer;
 }
+
+.comment-description p {
+  margin: 0;
+}
+
+.comment-description .mention {
+  color: #232f6a;
+}

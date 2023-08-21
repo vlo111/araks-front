@@ -30,17 +30,17 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
         renderItem={(item) => {
           const childData = rowsData.filter((comment) => comment.parent_id === item.id);
           return (
-            <VerticalSpace>
+            <VerticalSpace size={0}>
               <List.Item style={{ paddingLeft: level * 30 }}>
                 <List.Item.Meta
                   avatar={<Avatar src={item.user.avatar} />}
                   title={
                     <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <VerticalSpace size={0}>
-                        <Text
+                        <SecondaryText
                           strong
                           color={COLORS.PRIMARY.BLUE}
-                        >{`${item.user.first_name} ${item.user.last_name}`}</Text>
+                        >{`${item.user.first_name} ${item.user.last_name}`}</SecondaryText>
                         <SecondaryText color={COLORS.PRIMARY.GRAY}>
                           {dayjs(item.created_at).format('DD MM YYYY')}
                         </SecondaryText>
@@ -58,15 +58,21 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
                       </Space>
                     </Space>
                   }
-                  description={<ShowSafeText text={item.comments} />}
+                  style={{ margin: 0 }}
+                  description={
+                    <Text color="#424242" className="comment-description">
+                      <ShowSafeText text={item.comments} />
+                    </Text>
+                  }
                 />
               </List.Item>
+              <Divider style={{ margin: '4px 0' }} />
               {childData.length ? <CommentList data={childData} rowsData={rowsData} level={level + 1} /> : <></>}
             </VerticalSpace>
           );
         }}
       />
-      {level === 0 && <Divider />}
+      {/* {level === 0 && <Divider />} */}
     </>
   );
 };
