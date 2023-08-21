@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form } from 'antd';
 import { useManageComment } from 'api/comments/use-manage-comment';
 import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
 import { VALIDATE_MESSAGES } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
-import { CommentData } from './comment-data';
+import { CommentDataShow } from './comment-data';
 import { ReplayText } from './replay-text';
+import { MentionRowsValue } from 'api/user/types';
+import { useGetUserSearch } from 'api/user/use-get-user-search';
+import { useMemo, useRef } from 'react';
+import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
 import 'quill-mention';
-import { MentionRowsValue } from 'api/user/types';
-import { useGetUserSearch } from 'api/user/use-get-user-search';
-import { useMemo } from 'react';
-import ReactQuill from 'react-quill';
 
 const formats = ['bold', 'italic', 'underline', 'mention'];
 
@@ -23,11 +24,40 @@ const toolbarOptions = [['bold', 'italic', 'underline']];
 
 type SourceRenderList = (matches: MentionRowsValue[], searchForm?: string) => void;
 
+// Function to extract mentions from Delta
+const extractMentions = (delta: any): MentionRowsValue[] => {
+  const mentions: any[] = [];
+
+  // Loop through Delta ops to find mentions
+  delta.ops.forEach((op: any) => {
+    if (op.insert && op.insert.mention) {
+      mentions.push(op.insert.mention);
+    }
+  });
+
+  return mentions;
+};
+
 export const Comments = () => {
   const params = useParams();
+  const quillRef = useRef<ReactQuill | null>(null);
 
   const [form] = Form.useForm();
   const { mutateAsync } = useGetUserSearch();
+  const { mutate } = useManageComment();
+
+  const handleGetMentions = (): MentionRowsValue[] => {
+    if (quillRef.current) {
+      const quill = quillRef.current.getEditor();
+
+      // Get the editor's content as Delta
+      const content = quill.getContents();
+
+      // Extract mentions from the content
+      return extractMentions(content);
+    }
+    return [];
+  };
 
   const modules = useMemo(
     () => ({
@@ -53,9 +83,14 @@ export const Comments = () => {
     [mutateAsync]
   );
 
-  const { mutate } = useManageComment();
   const onFinish = (values: ProjectCommentManage) => {
-    mutate({ ...values, project_id: params.id, parent_id: form.getFieldValue('parent_id') || null });
+    const mentions = handleGetMentions();
+    mutate({
+      ...values,
+      project_id: params.id,
+      parent_id: form.getFieldValue('parent_id') || null,
+      mentioned_users: [...new Set(mentions.map((item) => item.id))],
+    });
     form.resetFields();
   };
 
@@ -70,11 +105,23 @@ export const Comments = () => {
       initialValues={{ parent_id: null }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-        <CommentData />
+        <CommentDataShow />
         <div>
           <ReplayText />
-          <FormItem name="comments" rules={[{ required: true, message: VALIDATE_MESSAGES.required }]}>
-            <ReactQuill modules={modules} formats={formats} />
+          <FormItem
+            name="comments"
+            rules={[
+              {
+                required: true,
+                message: VALIDATE_MESSAGES.required,
+              },
+              {
+                max: 5120,
+                message: 'You have exceeded the allowed limit for the comment.',
+              },
+            ]}
+          >
+            <ReactQuill modules={modules} formats={formats} ref={(ref: ReactQuill) => (quillRef.current = ref)} />
           </FormItem>
           <Button block type="primary" htmlType="submit">
             Submit

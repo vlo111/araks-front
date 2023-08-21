@@ -296,6 +296,7 @@ export type ProjectCommentManage = {
   comments: string;
   project_id?: string;
   parent_id?: string | null;
+  mentioned_users?: string[];
 };
 
 export type CommentData = {
