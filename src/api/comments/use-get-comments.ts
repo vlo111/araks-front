@@ -1,18 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { CommentData, CommentsResponse } from 'api/types';
+import { useParams } from 'react-router-dom';
 import client from '../client';
 import { URL_COMMENTS_LIST } from './constants';
 
-export const useGetComments = (projectId?: string, options = { enabled: true }) => {
-  const url = URL_COMMENTS_LIST.replace(':project_id', projectId as string);
+export const useGetComments = () => {
+  const params = useParams();
+  const url = URL_COMMENTS_LIST.replace(':project_id', params.id as string);
   const result = useQuery({
     queryKey: [url],
     queryFn: () => client.get(url),
-    ...options,
-    // select: (data) => data.data,
+    enabled: !!params.id,
+    select: (data) => data.data,
   });
   const { data, isSuccess } = result;
   return {
     ...result,
-    data: isSuccess ? data.data : [],
+    data: (isSuccess ? data : {}) as CommentsResponse,
+    rowsData: (isSuccess ? data.rows : []) as CommentData[],
+    count: (isSuccess ? data.count : 0) as number,
   };
 };

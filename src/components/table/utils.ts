@@ -1,5 +1,6 @@
 import { PropertyTypes } from 'components/form/property/types';
 import { DataResult, DataResultItem, ItemMapping } from 'context/import-context';
+import dayjs from 'dayjs';
 import { CsvType } from 'pages/import/types';
 import { ResponseLocationType } from 'types/node';
 
@@ -99,11 +100,12 @@ export function processDataWithType(
         case PropertyTypes.Date:
         case PropertyTypes.DateTime:
           const dateObj = new Date(cellValue as string);
-
           const isValidDate = !isNaN(dateObj.getTime());
           if (isValidDate) {
-            convertedValue = dateObj.toISOString();
+            convertedValue = dayjs(dateObj.toISOString()).format('DD-MM-YYYY');
+            break;
           }
+
           wrongValueCount.count++;
           convertedValue = null;
           break;
@@ -112,6 +114,7 @@ export function processDataWithType(
           if (isNaN(parsedValueInt)) {
             wrongValueCount.count++;
             convertedValue = null;
+            break;
           }
           convertedValue = parsedValueInt;
           break;
@@ -120,6 +123,7 @@ export function processDataWithType(
           if (isNaN(parsedValueDec)) {
             wrongValueCount.count++;
             convertedValue = null;
+            break;
           }
           convertedValue = parsedValueDec;
           break;
@@ -142,6 +146,7 @@ export function processDataWithType(
           ) {
             wrongValueCount.count++;
             convertedValue = null;
+            break;
           }
           convertedValue = { latitude: v?.location?.latitude, longitude: v?.location?.longitude };
           break;
@@ -154,6 +159,7 @@ export function processDataWithType(
           if (typeof (cellValue as string) !== 'string' || (cellValue as string).trim() === '') {
             wrongValueCount.count++;
             convertedValue = null;
+            break;
           }
           convertedValue = cellValue as string;
           break;

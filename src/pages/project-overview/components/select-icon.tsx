@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { Col, Radio as RadioComponent, Row } from 'antd';
-
+import { useState, useEffect, useCallback } from 'react';
+import { Col, Form, Radio as RadioComponent, Row } from 'antd';
 import { Icon, iconsList } from 'components/icon';
 import { Input } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -33,11 +32,33 @@ const RadioButton = styled(RadioComponent.Button)`
   }
 `;
 
+
+type Props = {
+  initialIcon?: string;
+  fieldName?: string | number;
+}
+
 const shuffled = iconsList.sort(() => 0.5 - Math.random());
 const selected = shuffled.slice(0, 11);
 
-export const SelectIcon = () => {
+export const SelectIcon = ({initialIcon, fieldName}: Props) => {
+  const form = Form.useFormInstance();
   const [icons, setIcons] = useState<string[]>(selected);
+
+
+  const setValue = useCallback(
+    (icon: string) => {
+      form.setFieldValue(['queries', fieldName, 'icon'], icon);
+    },
+    [form, fieldName]
+  );
+
+  useEffect(() => {
+    if (initialIcon) {
+      const filteredIcons = iconsList.filter((item) => item.includes(initialIcon));
+      setIcons(filteredIcons);
+    }
+  }, [initialIcon]);
 
   const onSearch = (value: string) =>
     value.length >= 3 ? setIcons(iconsList.filter((item) => item.includes(value))) : [];
@@ -51,7 +72,7 @@ export const SelectIcon = () => {
             {icons ? (
               icons.map((item) => (
                 <Col key={item}>
-                  <RadioButton value={item}>
+                  <RadioButton value={item} onClick={() => setValue(item)}>
                     <Icon color="#808080" icon={item} size={17} />
                   </RadioButton>
                 </Col>

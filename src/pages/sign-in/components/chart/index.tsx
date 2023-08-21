@@ -6,15 +6,15 @@ export const HelpChart = (
   graphData: { nodes: HelpNodeType[]; edges: HelpEdgeType[] },
   setNode: React.Dispatch<React.SetStateAction<string>>,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setGraph: React.Dispatch<React.SetStateAction<boolean>>,
-  setEnabled: React.Dispatch<React.SetStateAction<boolean>>
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>,
+  ref: HTMLDivElement
 ) => {
   const width = window.innerWidth / 2 - 10;
   const height = window.innerHeight - 10 || 720;
   const graph = new G6.Graph({
     width: width,
     height: height,
-    container: 'aH7j3A9sa',
+    container: ref,
     fitCenter: true,
     renderer: 'canvas',
     defaultNode: {
@@ -53,9 +53,9 @@ export const HelpChart = (
     setNode(data.item?._cfg?.id as string);
     setOpen(true);
   });
-  graph.data(graphData);
 
+  graph.data(graphData);
   graph.fitCenter();
   graph.render();
-  setGraph(true);
+  return { destroy: () => graph.destroy(), graph };
 };

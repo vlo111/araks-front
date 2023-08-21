@@ -1,7 +1,7 @@
-import { IProjectType, IProjectTypeData } from 'api/types';
+import { IProjectType, ProjectFullInfo } from 'api/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from '../../client';
-import { errorMessage } from "helpers/utils";
+import { errorMessage } from 'helpers/utils';
 
 export const GET_TYPES = '/projects/:project_id/node-types';
 
@@ -13,7 +13,7 @@ type GetProjectParam = {
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
 
 type ReturnData = {
-  data: IProjectTypeData;
+  data: ProjectFullInfo;
 };
 
 type QueryResponse = {
@@ -22,7 +22,7 @@ type QueryResponse = {
 
 type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
 
-type Result = { nodes: IProjectType[], isInitialLoading: boolean };
+type Result = { nodes: IProjectType[]; isInitialLoading: boolean };
 
 export const useGetTypes = ({ ...params }: GetProjectParam, options: Options = { enabled: true }): Result => {
   const urlNodes = GET_TYPES.replace(':project_id', params?.projectId || '');

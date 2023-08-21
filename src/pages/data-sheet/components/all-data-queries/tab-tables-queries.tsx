@@ -11,9 +11,10 @@ type Props = TableStyleBasedOnTab & {
   setOpenTable: (openTable: boolean) => void;
   add?: () => void;
   fieldsLength?: number;
+  isVisualisation?:boolean;
 };
 
-export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpenTable, add, fieldsLength }: Props) => {
+export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpenTable, add, fieldsLength,isVisualisation }: Props) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchConnectionVisible, setSearchConnectionVisible] = useState(false);
 
@@ -31,6 +32,7 @@ export const TabTablesQueries = ({ isCheckable = false, noColors = false, setOpe
               setSearchVisible={setSearchVisible}
               searchVisible={searchVisible}
               setOpenTable={setOpenTable}
+              isVisualisation={isVisualisation}
               // add={add}
               // fieldsLength={fieldsLength}
             />

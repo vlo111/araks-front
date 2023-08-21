@@ -12,6 +12,10 @@ import { propsProjectBlockView, propsProjectGridView } from './constants';
 import { ProjectViewModal } from 'components/modal/project-view-modal';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from 'helpers/constants';
+import { PreviewChart } from './preview/chart';
+import { Graph } from '@antv/g6';
+import { useGetProjectInfo } from '../../../api/projects/use-get-project-info';
+import { PreviewEdgeFormat } from './preview/chart/data.format';
 
 type Props = {
   projectsUrl?: string;
@@ -21,7 +25,13 @@ type Props = {
 
 export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
   const navigate = useNavigate();
-  const [projectData, setProjectData] = useState<string | undefined>();
+  const [projectId, setProjectId] = useState<string | undefined>('');
+  const [graph, setGraph] = useState<{ destroy: (() => void) | null; graph: Graph | null }>({
+    destroy: null,
+    graph: null,
+  });
+  const { data: projectData } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
+
   const { state } = useView();
   const { state: sortState } = useSort();
 
@@ -32,7 +42,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
     if (orderName && order) {
       dispatch({ type: FolderAction.CHANGE_SORT, sortField: orderName, sortOrder: order });
     }
-  }, [order, orderName]);
+  }, [order, orderName, projectId]);
 
   const {
     data: { data, folder },
@@ -60,6 +70,15 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
+  if (projectData && !graph.graph && document.getElementById('juJSlsfk')) {
+    setGraph(
+      PreviewChart({
+        nodes: projectData?.projectsNodeTypes,
+        edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
+      })
+    );
+  }
+
   return (
     <Spin spinning={isInitialLoading}>
       <TitleSeparator name={listTitle} paginationProps={paginationProps} />
@@ -78,7 +97,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
           <Col key={item.id} {...(dataToDraw.col as ColProps)}>
             <ProjectButton
               onOpenProject={() => {
-                setProjectData(item.id);
+                setProjectId(item.id);
               }}
               project={{
                 id: item.id,
@@ -95,7 +114,13 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
         ))}
       </Row>
       {projectData && (
-        <ProjectViewModal isModalOpen={!!projectData} setIsModalOpen={setProjectData} projectId={projectData} />
+        <ProjectViewModal
+          isModalOpen={!!projectId}
+          setIsModalOpen={setProjectId}
+          projectData={projectData}
+          graph={graph}
+          setGraph={setGraph}
+        />
       )}
     </Spin>
   );

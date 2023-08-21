@@ -5,9 +5,9 @@ import { useAuth } from 'context/auth-context';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { ReactComponent as UserProfileSvg } from './icon/user-profile.svg';
 import { ReactComponent as SignOutSvg } from './icon/sign-out.svg';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import './profile.css';
-import { PATHS } from "../../helpers/constants";
+import { PATHS } from '../../helpers/constants';
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,7 +38,15 @@ export const HeaderProfile = () => {
       },
       {
         key: '1',
-        label: <div onClick={() => logout()}>Log Out</div>,
+        label: (
+          <div
+            onClick={() => {
+              logout();
+            }}
+          >
+            Log Out
+          </div>
+        ),
         icon: <SignOutSvg />,
       },
     ],
