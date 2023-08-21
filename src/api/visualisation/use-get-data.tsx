@@ -11,14 +11,14 @@ type Node = {
       updated_at: string;
       color: string;
       project_id: string;
-      d285?: string;
+      d285: string;
       parent_node_type_id: string;
-      surname?: string;
+      surname: string;
       image_url: string;
       name: string;
       created_at: string;
       id: string;
-      username?: string;
+      username: string;
     };
   }[];
 };
@@ -39,17 +39,13 @@ type Edge = {
   }[];
 };
 
-export type Nodes = {
-  records: Node[];
-};
-
-export type Edges = {
-  records: Edge[];
-};
-
 type ProjectEdgeResponse = {
-  nodes: Nodes;
-  edges: Edges;
+  nodes: {
+    records: Node[];
+  };
+  edges: {
+    records: Edge[];
+  };
 };
 
 export const GET_EDGES = '/nodes/visualize-graph/:project_id';
@@ -71,7 +67,7 @@ type QueryResponse = {
   data: ReturnData;
 };
 
-type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
+type Options = UseQueryOptions<QueryResponse, Error, Result, QueryKey[]>;
 
 type Result = {
   nodes: Node[] | undefined;

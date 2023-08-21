@@ -8,12 +8,11 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
+import { AllDataResponse, NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
-import { Nodes } from 'api/visualisation/use-get-data';
 import './add-node-select.css';
 
 export const NodeCreate: React.FC = () => {
@@ -41,32 +40,21 @@ export const NodeCreate: React.FC = () => {
 
       graph.addItem('node', node);
 
-      const createNode: Nodes = {
-        records: [
-          {
-            _fields: [
-              {
-                labels: [nodeData.nodeType.name],
-                properties: {
-                  id: nodeData.id,
-                  image_url: nodeData.default_image,
-                  name: nodeData.name as unknown as string,
-                  project_type_id: nodeData.nodeType.id,
-                  parent_node_type_id: nodeData.nodeTypeProperty.id,
-                  color: nodeData.nodeType.color,
-                  project_id: nodeData.project_id,
-                  updated_at: nodeData.updated_at,
-                  created_at: nodeData.created_at,
-                },
-              },
-            ],
-          },
-        ],
+      const createNode: AllDataResponse = {
+        id: nodeData.id,
+        default_image: nodeData.default_image,
+        name: nodeData.name as unknown as string,
+        nodeType: {
+          id: nodeData.nodeType.id,
+          name: nodeData.nodeType.name,
+          color: nodeData.nodeType.color,
+        },
+        project_id: nodeData.project_id,
+        project_type_id: nodeData.project_type_id,
+        updated_at: nodeData.updated_at,
       };
 
-      setNodes({
-        records: [...nodeList.records, ...createNode.records],
-      });
+      setNodes([...nodeList, createNode]);
 
       form.resetFields();
       finishOpenNodeCreate();

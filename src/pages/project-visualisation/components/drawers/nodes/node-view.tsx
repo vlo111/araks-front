@@ -49,10 +49,10 @@ export const NodeView = () => {
 
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const node = nodes?.records.find((n) => n?._fields[0].properties.id === openNode?.id);
+  const node = nodes?.find((n) => n?.id === openNode?.id);
 
-  const { data: nodeData } = useGetNode(node?._fields[0].properties.id ?? '', {
-    enabled: !!node?._fields[0].properties.id,
+  const { data: nodeData } = useGetNode(node?.id ?? '', {
+    enabled: !!node?.id,
     onSuccess: (nodeData) => {
       const initialAcc = {
         name: [nodeData.name],
@@ -102,15 +102,12 @@ export const NodeView = () => {
     },
   });
 
-  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(
-    node?._fields[0].properties.project_type_id,
-    {
-      enabled: !!node?._fields[0].properties.project_type_id,
-      onSuccess: (data) => {
-        // form.setFieldValue('parent_id', parent_id)
-      },
-    }
-  );
+  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.nodeType.id, {
+    enabled: !!node?.nodeType.id,
+    onSuccess: (data) => {
+      // form.setFieldValue('parent_id', parent_id)
+    },
+  });
 
   const onFinish = (values: NodeBody) => {
     const mainData = {
@@ -150,7 +147,7 @@ export const NodeView = () => {
         ...mainData,
         nodes: dataToSubmit,
         edges: dataToSubmitEdges?.flat() || [],
-        project_type_id: node?._fields[0].properties.project_type_id || '',
+        project_type_id: node?.nodeType || '',
         nodeId: nodeData.id,
       } as NodeDataSubmit);
       onClose();
@@ -166,7 +163,7 @@ export const NodeView = () => {
   return (
     <Drawer
       headerStyle={{
-        borderTop: `6px solid ${node?._fields[0].properties.color}`,
+        borderTop: `6px solid ${node?.nodeType.color}`,
       }}
       closable={false}
       onClose={onClose}
@@ -175,7 +172,7 @@ export const NodeView = () => {
           setIsEdit={setIsEdit}
           isEdit={isEdit}
           id={nodeData?.id as string}
-          name={node?._fields[0].properties.name ?? ''}
+          name={node?.nodeType.name ?? ''}
           onClose={onClose}
         />
       }
