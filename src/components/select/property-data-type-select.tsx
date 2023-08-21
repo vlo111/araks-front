@@ -7,7 +7,7 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 
-type Props = Partial<RefSelectProps> & { propertyTypeId?: PropertyTypes };
+type Props = Partial<RefSelectProps> & { propertyTypeId?: PropertyTypes; isEdit?: boolean };
 
 type PropertyDataType = {
   code: PropertyTypes;
@@ -54,7 +54,7 @@ const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_
  * @param props
  * @returns
  */
-export const PropertyDataTypeSelect = (props: Props) => {
+export const PropertyDataTypeSelect = ({ isEdit, ...props }: Props) => {
   const { nodeTypeId } = useDataSheetWrapper();
 
   const { count: dataCount, isFetched } = useGetTypeNodes(initPageData, nodeTypeId, {
@@ -71,7 +71,7 @@ export const PropertyDataTypeSelect = (props: Props) => {
           })),
         };
       }
-      return data;
+      return isEdit ? { data: data.data.filter((item) => item.code !== PropertyTypes.Connection) } : data;
     },
     enabled: (props.propertyTypeId && isFetched) || !props.propertyTypeId,
   });
