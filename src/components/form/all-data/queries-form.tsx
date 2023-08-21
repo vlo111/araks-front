@@ -12,6 +12,7 @@ type Props = {
 };
 
 export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }: Props) => {
+  const popoverStyle = isVisualisation ? {width:'460px', height: '50vh'} : {width:'90%', height: '50vh', overflow: 'auto', zIndex: 0}
   // const [openTable, setOpenTable] = useState(false);
   // const ref = useRef<HTMLDivElement>(null);
 
@@ -54,18 +55,18 @@ export const QueriesForm = ({ openTable, setOpenTable,isVisualisation = false }:
               </Button>
             </Popover>
           </Form.Item> */}
-          <Popover
-            open={openTable}
-            placement="bottom"
-            arrow={false}
-            getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
-            overlayStyle={{ width: '460px', zIndex: 0 }}
-            overlayInnerStyle={{ width: '460px', height: '50vh', overflow: 'auto' }}
-            destroyTooltipOnHide
-            content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} isVisualisation={isVisualisation} />}
-          >
-            <div />
-          </Popover>
+                <Popover
+                open={openTable}
+                placement="bottom"
+                arrow={false}
+                getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
+                overlayInnerStyle={{ width: "90%"}}
+                overlayStyle={popoverStyle}
+                destroyTooltipOnHide
+                content={<TabTablesQueries setOpenTable={setOpenTable} add={add} fieldsLength={fields.length || 0} isVisualisation={isVisualisation} />}
+              >
+                <div />
+              </Popover>
         </VerticalSpace>
       )}}
     </Form.List>

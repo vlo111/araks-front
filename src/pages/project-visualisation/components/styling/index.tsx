@@ -8,8 +8,8 @@ import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
 
 type Props = {
-  queries: Array<NodePropertiesValues & {color:string,size: number,icon:string}>;
-}
+  queries: Array<NodePropertiesValues & { color: string; size: number; icon: string }>;
+};
 
 export const Styling = () => {
   const { nodes } = useNodes();
@@ -18,26 +18,26 @@ export const Styling = () => {
   const [openTable, setOpenTable] = useState(true);
 
   const onFinish = (values: Props) => {
-    nodes.forEach(node => {
+    nodes?.forEach((node) => {
       for (const query of values.queries) {
         if (node.project_type_id === query.id) {
           graph.updateItem(node.id, {
             size: query.size,
             icon: query.icon,
             style: {
-              stroke: query.color
-            }
-          })
+              stroke: query.color,
+            },
+          });
         }
       }
-    })
+    });
   };
 
   return (
-    <Form form={form} onFinish={onFinish} style={{height: "100%"}}>
+    <Form form={form} onFinish={onFinish} style={{ height: '100%' }}>
       <StyledMainWrapper>
         <QueriesForm openTable={openTable} setOpenTable={setOpenTable} isVisualisation={true} />
-        <Buttons setOpenTable={setOpenTable}  />
+        <Buttons setOpenTable={setOpenTable} />
       </StyledMainWrapper>
     </Form>
   );
