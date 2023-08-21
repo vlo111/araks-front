@@ -1,4 +1,4 @@
-import { Avatar, List, Skeleton, Space } from 'antd';
+import { Avatar, Divider, List, Skeleton, Space } from 'antd';
 import { useGetFavorites } from 'api/favorites/use-get-favorites';
 import { LikesResponse } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -41,23 +41,26 @@ export const LikesData = ({ setUserLikedProject }: Props) => {
       dataSource={rowsData}
       renderItem={(item) => {
         return (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src={item.user.avatar} />}
-              title={
-                <VerticalSpace size={0}>
-                  <Space>
-                    <SecondaryText
-                      strong
-                      color={COLORS.PRIMARY.BLUE}
-                    >{`${item.user.first_name} ${item.user.last_name}`}</SecondaryText>
-                    <SecondaryText> liked your project</SecondaryText>
-                  </Space>
-                  <SecondaryText color={COLORS.PRIMARY.GRAY}>{formatTimeDifference(item.created_at)}</SecondaryText>
-                </VerticalSpace>
-              }
-            />
-          </List.Item>
+          <>
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar src={item.user.avatar} />}
+                title={
+                  <VerticalSpace size={0}>
+                    <Space>
+                      <SecondaryText
+                        strong
+                        color={COLORS.PRIMARY.BLUE}
+                      >{`${item.user.first_name} ${item.user.last_name}`}</SecondaryText>
+                      <SecondaryText> liked your project</SecondaryText>
+                    </Space>
+                    <SecondaryText color={COLORS.PRIMARY.GRAY}>{formatTimeDifference(item.created_at)}</SecondaryText>
+                  </VerticalSpace>
+                }
+              />
+            </List.Item>
+            <Divider style={{ margin: '0' }} />
+          </>
         );
       }}
     />
