@@ -76,3 +76,29 @@ export function getExcelColumnNames(startColumn: number, endColumn: number): str
 
   return columnNames;
 }
+
+export function formatTimeDifference(likedTime: string) {
+  const currentTime = dayjs();
+  const timeDifference = currentTime.diff(likedTime, 'second');
+
+  if (timeDifference < 60) {
+    return 'just now';
+  } else if (timeDifference < 3600) {
+    const minutes = Math.floor(timeDifference / 60);
+    return `${minutes} minutes ago`;
+  } else if (timeDifference < 86400) {
+    const hours = Math.floor(timeDifference / 3600);
+    return `${hours} hours ago`;
+  } else if (timeDifference < 2592000) {
+    // 30 days
+    const days = Math.floor(timeDifference / 86400);
+    return `${days} days ago`;
+  } else if (timeDifference < 31536000) {
+    // 365 days
+    const months = Math.floor(timeDifference / 2592000);
+    return `${months} months ago`;
+  } else {
+    const years = Math.floor(timeDifference / 31536000);
+    return `${years} years ago`;
+  }
+}

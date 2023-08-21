@@ -314,3 +314,15 @@ export type CommentsResponse = {
   count: number;
   rows: CommentData[];
 };
+
+export type LikesData = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  user: ISharedPerspectiveUser;
+};
+
+export type LikesResponse = {
+  count: number;
+  rows: LikesData[];
+};

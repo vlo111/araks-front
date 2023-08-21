@@ -3,6 +3,7 @@ import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Comments } from './components/comment-like/comments';
+import { Likes } from './components/comment-like/likes';
 
 const tabItems = [
   {
@@ -13,7 +14,7 @@ const tabItems = [
   {
     label: 'Likes',
     key: 'likes',
-    children: 'Content of Tab Pane',
+    children: <Likes />,
   },
 ];
 
