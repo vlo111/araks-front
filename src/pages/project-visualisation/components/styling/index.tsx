@@ -20,8 +20,8 @@ export const Styling = () => {
   const onFinish = (values: Props) => {
     nodes?.forEach((node) => {
       for (const query of values.queries) {
-        if (node._fields[0].properties.project_type_id === query.id) {
-          graph.updateItem(node._fields[0].properties.id, {
+        if (node.project_type_id === query.id) {
+          graph.updateItem(node.id, {
             size: query.size,
             icon: query.icon,
             style: {
