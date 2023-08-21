@@ -5,7 +5,7 @@ import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
 import { VALIDATE_MESSAGES } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
-import { CommentData } from './comment-data';
+import { CommentDataShow } from './comment-data';
 import { ReplayText } from './replay-text';
 import { MentionRowsValue } from 'api/user/types';
 import { useGetUserSearch } from 'api/user/use-get-user-search';
@@ -105,7 +105,7 @@ export const Comments = () => {
       initialValues={{ parent_id: null }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-        <CommentData />
+        <CommentDataShow />
         <div>
           <ReplayText />
           <FormItem
