@@ -5,16 +5,9 @@ import { formattedData } from '../components/layouts/components/visualisation/he
 import { AllDataResponse } from '../types/node';
 import { useGetVEdges } from '../api/visualisation/use-get-edges';
 import { useGetNodes } from '../api/visualisation/use-get-nodes';
-import { useGetData } from '../api/visualisation/use-get-data';
 
 export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse[] } = () => {
   const { graph, ...params } = useGraph() ?? {};
-
-  const data = useGetData({
-    onSuccess: (data) => {
-      debugger;
-    },
-  });
 
   const { nodes, isInitialLoading } = useGetNodes({
     onSuccess: (data) => {
