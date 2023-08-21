@@ -1,4 +1,4 @@
-import { Avatar, Form, List, Skeleton, Space } from 'antd';
+import { Avatar, Divider, Form, List, Skeleton, Space } from 'antd';
 import { useGetComments } from 'api/comments/use-get-comments';
 import { CommentData } from 'api/types';
 import { Icon } from 'components/icon';
@@ -23,45 +23,51 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
   const { user } = useAuth();
 
   return (
-    <List
-      itemLayout="horizontal"
-      dataSource={data}
-      renderItem={(item) => {
-        const childData = rowsData.filter((comment) => comment.parent_id === item.id);
-        return (
-          <VerticalSpace>
-            <List.Item style={{ paddingLeft: level * 30 }}>
-              <List.Item.Meta
-                avatar={<Avatar src={item.user.avatar} />}
-                title={
-                  <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <VerticalSpace size={0}>
-                      <Text strong color={COLORS.PRIMARY.BLUE}>{`${item.user.first_name} ${item.user.last_name}`}</Text>
-                      <SecondaryText color={COLORS.PRIMARY.GRAY}>
-                        {dayjs(item.created_at).format('DD MM YYYY')}
-                      </SecondaryText>
-                    </VerticalSpace>
-                    <Space>
-                      <Icon
-                        color={COLORS.PRIMARY.BLUE}
-                        icon="arrow-up-left1"
-                        key="reply"
-                        size={20}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => form.setFieldValue('parent_id', item.id)}
-                      />
-                      {user && item.user.id === user?.id && <DeleteComment id={item.id} key="delete" />}
+    <>
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item) => {
+          const childData = rowsData.filter((comment) => comment.parent_id === item.id);
+          return (
+            <VerticalSpace>
+              <List.Item style={{ paddingLeft: level * 30 }}>
+                <List.Item.Meta
+                  avatar={<Avatar src={item.user.avatar} />}
+                  title={
+                    <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <VerticalSpace size={0}>
+                        <Text
+                          strong
+                          color={COLORS.PRIMARY.BLUE}
+                        >{`${item.user.first_name} ${item.user.last_name}`}</Text>
+                        <SecondaryText color={COLORS.PRIMARY.GRAY}>
+                          {dayjs(item.created_at).format('DD MM YYYY')}
+                        </SecondaryText>
+                      </VerticalSpace>
+                      <Space>
+                        <Icon
+                          color={COLORS.PRIMARY.BLUE}
+                          icon="arrow-up-left1"
+                          key="reply"
+                          size={20}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => form.setFieldValue('parent_id', item.id)}
+                        />
+                        {user && item.user.id === user?.id && <DeleteComment id={item.id} key="delete" />}
+                      </Space>
                     </Space>
-                  </Space>
-                }
-                description={<ShowSafeText text={item.comments} />}
-              />
-            </List.Item>
-            {childData.length ? <CommentList data={childData} rowsData={rowsData} level={level + 1} /> : <></>}
-          </VerticalSpace>
-        );
-      }}
-    />
+                  }
+                  description={<ShowSafeText text={item.comments} />}
+                />
+              </List.Item>
+              {childData.length ? <CommentList data={childData} rowsData={rowsData} level={level + 1} /> : <></>}
+            </VerticalSpace>
+          );
+        }}
+      />
+      {level === 0 && <Divider />}
+    </>
   );
 };
 
