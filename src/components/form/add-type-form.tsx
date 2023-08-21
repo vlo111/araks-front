@@ -10,7 +10,7 @@ import { useCreateProjectNodeType } from 'api/project-node-types/use-create-proj
 import { ProjectNodeTypeSubmit } from 'types/project-node-types';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useDeleteProjectNodeType } from 'api/project-node-types/use-delete-project-node-type';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 
@@ -55,6 +55,12 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
     },
   });
   const [form] = Form.useForm();
+  const setValue = useCallback(
+    (color: string) => {
+      form.setFieldValue('color', color);
+    },
+    [form]
+  );
   useEffect(() => {
     if (isEdit) {
       form.setFieldsValue({
@@ -154,7 +160,7 @@ export const AddTypeForm = ({ isEdit = false }: Props) => {
           </Form.Item>
         )}
         <FormItem name="color" rules={[{ required: true, message: 'Node type color is required' }]}>
-          <ColorSelect initialColor={isEdit ? color : undefined} />
+          <ColorSelect setValue={setValue} initialColor={isEdit ? color : undefined}  />
         </FormItem>
         <FormItem>
           <VerticalSpace>

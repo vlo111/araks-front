@@ -38,11 +38,11 @@ const Row = styled((props) => <RowComponent {...props} />)`
 
 export const StyledCol = styled(Col)`
   position: absolute;
+  top: 0;
   left: 0;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 152px);
   overflow-y: auto;
   width: 480px;
-  z-index: 99;
 `
 
 export const LeftSection = () => {
