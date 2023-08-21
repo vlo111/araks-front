@@ -80,16 +80,6 @@ export const CommentDataShow = () => {
     return <Skeleton avatar title={false} loading={isInitialLoading} active />;
   }
 
-  const commentMap: Record<string, CommentData> = {};
-  rowsData.forEach((comment) => {
-    commentMap[comment.id] = { ...comment, children: [] };
-  });
-  rowsData.forEach((comment) => {
-    if (comment.parent_id !== null) {
-      (commentMap[comment.parent_id].children || []).push(commentMap[comment.id]);
-    }
-  });
-
   // Create a list of top-level comments (comments without parents)
   const topLevelComments = rowsData.filter((comment) => comment.parent_id === null);
 

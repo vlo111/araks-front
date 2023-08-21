@@ -308,7 +308,6 @@ export type CommentData = {
   created_at: string;
   updated_at: string;
   user: ISharedPerspectiveUser;
-  children?: CommentData[];
 };
 
 export type CommentsResponse = {
