@@ -30,6 +30,7 @@ export const ImportTable: React.FC = () => {
         (row) =>
           row.ref_property_type_id !== PropertyTypes.IMAGE_URL &&
           row.ref_property_type_id !== PropertyTypes.Document &&
+          row.ref_property_type_id !== PropertyTypes.Location &&
           row.ref_property_type_id !== PropertyTypes.Connection
       );
       setRowData(
