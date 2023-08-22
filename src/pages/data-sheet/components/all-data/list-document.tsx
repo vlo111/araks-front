@@ -1,9 +1,8 @@
 import { Fragment } from 'react';
 import { Avatar, Col, Divider, List, Row, Skeleton, Spin } from 'antd';
-import { AllDataPageParameters } from 'api/types';
 import { NodePagination } from 'components/pagination';
 import { SecondaryText, Text } from 'components/typography';
-import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
+import { COLORS, initPageData } from 'helpers/constants';
 import styled from 'styled-components';
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { useGetProjectAllDocuments } from 'api/all-data/use-get-project-all-documents';
@@ -42,8 +41,6 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
     } */
   }
 `;
-
-const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 type Props = {
   filterValue: typeof defaultAllDataFilter;

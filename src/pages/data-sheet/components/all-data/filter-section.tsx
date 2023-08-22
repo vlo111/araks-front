@@ -7,6 +7,7 @@ import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useOverview } from 'context/overview-context';
 import { useSort } from 'context/sort-context';
+import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
 import { useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
@@ -25,7 +26,7 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
 
   const setSearchText = useCallback(
     ({ text, type }: SearchText) => {
-      setFilterValue((prevValue) => ({ ...prevValue, search: text, type }));
+      setFilterValue((prevValue) => ({ ...prevValue, search: text, type, page: DEFAULT_PAGE_NUMBER }));
     },
     [setFilterValue]
   );
