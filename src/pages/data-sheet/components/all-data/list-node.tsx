@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
-import { AllDataPageParameters, UserProjectRole } from 'api/types';
+import { UserProjectRole } from 'api/types';
 import { Checkbox } from 'components/checkbox';
 import { NodePagination } from 'components/pagination';
 import { Text } from 'components/typography';
 import dayjs from 'dayjs';
-import { COLORS, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
+import { COLORS, initPageData } from 'helpers/constants';
 import styled from 'styled-components';
 import { AllDataResponse } from 'types/node';
 import { defaultAllDataFilter } from '../right-section-all-data';
@@ -44,8 +44,6 @@ const StyledListItem = styled(({ color, ...props }) => <List.Item {...props} />)
     }
   }
 `;
-
-const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 type Props = {
   filterValue: typeof defaultAllDataFilter;

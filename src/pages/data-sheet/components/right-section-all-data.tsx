@@ -5,13 +5,12 @@ import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
+import { initPageData } from 'helpers/constants';
 import { useState } from 'react';
 import { AllDataFilterSection } from './all-data/filter-section';
 import { AllDataList } from './all-data/list';
 
 const defaultSort = ALL_DATA_SORT_BY[2].key.split(' ');
-const initPageData: AllDataPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
 export const defaultAllDataFilter: AllDataPageParameters = {
   search: '',
