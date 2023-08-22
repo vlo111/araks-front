@@ -21,7 +21,7 @@ import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
-import { useManageNodes } from 'api/node/use-manage-node';
+import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -45,7 +45,7 @@ const getValue = (item: NodePropertiesValues) => {
 export const NodeView = () => {
   const [form] = Form.useForm();
 
-  const { graph, nodes, openNode, setNodes, finishOpenNode } = useGraph() ?? {};
+  const { graph, nodes, openNode, finishOpenNode } = useGraph() ?? {};
 
   const [isEdit, setIsEdit] = React.useState(false);
 
@@ -93,11 +93,15 @@ export const NodeView = () => {
     },
   });
 
-  const { mutate } = useManageNodes({
+  const { mutate } = useManageNodesGraph({
     onSuccess: (data) => {
+      debugger;
       const name = form.getFieldValue('name')[0];
+      const img = form.getFieldValue('node_icon')[0];
       graph.updateItem(openNode.id, {
         label: name,
+        img,
+        type: img ? 'image' : 'circle',
       });
     },
   });
@@ -142,6 +146,8 @@ export const NodeView = () => {
       })
       .filter(Boolean);
 
+    debugger;
+
     if (nodeData?.id) {
       mutate({
         ...mainData,
@@ -174,9 +180,6 @@ export const NodeView = () => {
           id={nodeData?.id as string}
           name={node?.nodeType.name ?? ''}
           onClose={onClose}
-          onDelete={(id) => {
-            setNodes(nodes.filter((n) => n.id !== id));
-          }}
         />
       }
       footer={

@@ -6,12 +6,14 @@ import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 
 export const NodeDelete = () => {
-  const { graph, deleteNode, finishDeleteNode } = useGraph() ?? {};
+  const { graph, nodes, setNodes, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
 
   const { mutate } = useDeleteNode(deleteNode?.id, {
     onSuccess: () => {
       graph.removeItem(deleteNode.id);
       finishDeleteNode();
+      finishOpenNode();
+      setNodes(nodes.filter((n) => n.id !== deleteNode.id));
     },
   });
 

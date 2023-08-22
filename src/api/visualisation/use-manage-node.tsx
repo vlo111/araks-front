@@ -3,10 +3,10 @@ import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-qu
 import { useParams } from 'react-router-dom';
 
 import client from '../client';
-import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from './constants';
 import { NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { errorMessage } from 'helpers/utils';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from '../node/constants';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -16,9 +16,9 @@ type ReturnData = {
   data: NodePropertiesValues;
 };
 
-type Options = UseQueryOptions<NodeDataSubmit, Error, ReturnData>;
+type Options = UseQueryOptions<NodeDataSubmit, Error, { data: NodePropertiesValues; variables: NodeDataSubmit }>;
 
-export const useManageNodes = (options?: Options) => {
+export const useManageNodesGraph = (options?: Options) => {
   const { nodeTypeId } = useDataSheetWrapper();
 
   const params = useParams();
@@ -39,7 +39,7 @@ export const useManageNodes = (options?: Options) => {
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);
-      options?.onSuccess?.(data);
+      options?.onSuccess?.({ data: data.data, variables });
     },
     onError: errorMessage,
   });

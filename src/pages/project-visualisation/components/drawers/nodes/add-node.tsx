@@ -11,20 +11,36 @@ import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/typ
 import { AllDataResponse, NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
-import { useManageNodes } from 'api/node/use-manage-node';
 import { Button } from 'components/button';
+import { getConnectionFormName } from 'components/form/type/connection-type';
+import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 import './add-node-select.css';
 
 export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
 
-  const updateNodes = (
-    nodeData: NodePropertiesValues & {
+  const createNode = (data: NodePropertiesValues) => {
+    const nodeData = data as NodePropertiesValues & {
       nodeType: { color: string; id: string; name: string };
       default_image: string;
-    }
-  ) => {
+    };
+
+    const node = {
+      id: nodeData.id,
+      label: nodeData.name as unknown as string,
+      img: nodeData.default_image,
+      type: nodeData.default_image ? 'image' : 'circle',
+      x: openNodeCreate.x,
+      y: openNodeCreate.y,
+      nodeType: nodeData.nodeType.id,
+      style: {
+        stroke: nodeData.nodeType?.color ?? '',
+      },
+    };
+
+    graph.addItem('node', node);
+
     const createNode: AllDataResponse = {
       id: nodeData.id,
       default_image: nodeData.default_image,
@@ -42,29 +58,9 @@ export const NodeCreate: React.FC = () => {
     setNodes([...nodeList, createNode]);
   };
 
-  const { mutate } = useManageNodes({
-    onSuccess: ({ data }) => {
-      const nodeData = data as NodePropertiesValues & {
-        nodeType: { color: string; id: string; name: string };
-        default_image: string;
-      };
-
-      const node = {
-        id: nodeData.id,
-        label: nodeData.name as unknown as string,
-        img: nodeData.default_image,
-        type: nodeData.default_image ? 'image' : 'circle',
-        x: openNodeCreate.x,
-        y: openNodeCreate.y,
-        nodeType: nodeData.nodeType.id,
-        style: {
-          stroke: nodeData.nodeType?.color ?? '',
-        },
-      };
-
-      graph.addItem('node', node);
-
-      updateNodes(nodeData);
+  const { mutate } = useManageNodesGraph({
+    onSuccess: ({ data, variables }) => {
+      createNode(data);
 
       form.resetFields();
       finishOpenNodeCreate();
@@ -73,7 +69,7 @@ export const NodeCreate: React.FC = () => {
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
 
-  const { isInitialLoading, data } = useGetProjectNodeTypeProperties(parent_id, {
+  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(parent_id, {
     enabled: !!parent_id,
     onSuccess: () => {
       form.resetFields();
@@ -87,7 +83,7 @@ export const NodeCreate: React.FC = () => {
 
   const onFinish = (values: NodeBody) => {
     const mainData = { name: '', default_image: '' };
-    const dataToSubmit = data
+    const dataToSubmit = properties
       ?.map((item) => {
         if (item.name === 'name') {
           mainData.name = (values.name as string[]).join('');
@@ -106,10 +102,13 @@ export const NodeCreate: React.FC = () => {
           : null;
       })
       .filter(Boolean);
-    const dataToSubmitEdges = data
+
+    const dataToSubmitEdges = properties
       ?.map((item) => {
+        const formName = getConnectionFormName(item.name, item.id);
         return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[item.name] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+          ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+              id: itemConn.rowId,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,
@@ -117,6 +116,21 @@ export const NodeCreate: React.FC = () => {
           : null;
       })
       .filter(Boolean);
+
+    // debugger;
+    //
+    // dataToSubmitEdges?.forEach((submitedEdges) => {
+    //   submitedEdges?.forEach((edge) => {
+    //     const type = properties?.find((p) => p.id === edge.project_edge_type_id);
+    //
+    //     if (edge.id) {
+    //       graph.updateItem(edge.id, {
+    //         label: type?.name,
+    //       })
+    //     }
+    //     graph.updateItem(edge.id)
+    //   })
+    // })
 
     mutate({
       ...mainData,
@@ -173,7 +187,7 @@ export const NodeCreate: React.FC = () => {
         }
         open={openNodeCreate?.isOpened}
       >
-        <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+        <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
       </Drawer>
     </Form>
   );

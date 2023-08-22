@@ -11,10 +11,9 @@ type ViewNodeProps = {
   isEdit: boolean;
   setIsEdit: (x: boolean) => void;
   onClose: () => void;
-  onDelete: (id: string) => void;
 };
 
-export const NodeViewTitle = ({ id, name, isEdit, setIsEdit, onDelete }: ViewNodeProps) => {
+export const NodeViewTitle = ({ id, name, isEdit, setIsEdit }: ViewNodeProps) => {
   const { startDeleteNode } = useGraph();
 
   return (
@@ -27,10 +26,7 @@ export const NodeViewTitle = ({ id, name, isEdit, setIsEdit, onDelete }: ViewNod
         <Button
           type="link"
           icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
-          onClick={() => {
-            startDeleteNode({ id });
-            onDelete(id);
-          }}
+          onClick={() => startDeleteNode({ id })}
         />
       </div>
     </Space>

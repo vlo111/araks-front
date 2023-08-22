@@ -31,7 +31,7 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse
 
   useEffect(() => {
     setTimeout(() => {
-      graph?.render();
+      if (graph?.render) graph?.render();
     }, 400);
   }, [graph]);
 
