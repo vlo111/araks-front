@@ -3,6 +3,7 @@ import { Avatar, Button, Image, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
 import { getConnectionFormName } from 'components/form/type/connection-type';
+import { Icon } from 'components/icon';
 import { LocationView } from 'components/location/location-view';
 import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
@@ -333,13 +334,16 @@ export const getSingleData = (nodeData: NodeDataTypes | undefined) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isUploadFileType(obj: any): obj is UploadedFileType {
-  return obj.url !== undefined;
+function isUploadFileType(obj: unknown): obj is UploadedFileType {
+  // eslint-disable-next-line no-console
+  console.log('obj', obj);
+  return (obj as UploadedFileType)?.url !== undefined;
 }
 
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   let text;
-
+  // eslint-disable-next-line no-console
+  console.log('nodeData', nodeData);
   if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
     text = nodeData as string;
   } else if (isUploadFileType(nodeData)) {
@@ -359,7 +363,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
       return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
-    case PropertyTypes.Document:
+    // case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank" icon={<LinkOutlined />}>
@@ -415,6 +419,38 @@ export const getRowData = (item: NodePropertiesValues) => {
         </Image.PreviewGroup>
       );
     case PropertyTypes.Document:
+      return (
+        <Space>
+          {item.nodes_data?.map((node) => {
+            return node ? (
+              <Button
+                type="link"
+                href={(node as UploadedFileType).url}
+                target="_blank"
+                icon={<Icon icon="file1" size={11} />}
+                key={(node as UploadedFileType).url}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  width: '100%',
+                  borderRadius: '2.324px',
+                  background: 'linear-gradient(137deg, rgba(246, 246, 246, 0.80) 0%, rgba(246, 246, 246, 0.20) 100%)',
+                  boxShadow: '0px 2.32421875px 3.486328125px 0px rgba(111, 111, 111, 0.10)',
+                }}
+              >
+                <LongTitle
+                  style={{ maxWidth: '500px' }}
+                  className="button-content__text"
+                  name={(node as UploadedFileType).name}
+                />
+              </Button>
+            ) : (
+              ''
+            );
+          })}
+        </Space>
+      );
     case PropertyTypes.URL:
       return isMultiple ? (
         <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.URL))}</Space>
