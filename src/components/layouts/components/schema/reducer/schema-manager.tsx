@@ -14,6 +14,7 @@ export enum ITEM {
 }
 
 interface Param {
+  id?: string;
   isConnector: boolean;
 }
 
@@ -98,7 +99,7 @@ export function schemaReducer(state: SchemaState, action: SchemaActionType) {
     case SchemaAction.ADD_EDGE_START:
       return start(ITEM.EDGE);
     case SchemaAction.ADD_EDGE_FINISH:
-      return end(ITEM.EDGE, { isConnector: false });
+      return end(ITEM.EDGE, { isConnector: false, id: undefined });
     case SchemaAction.ADD_TYPE_START:
       if (state.graph !== undefined) state.graph.container.style.cursor = '';
       return start(ITEM.TYPE);
