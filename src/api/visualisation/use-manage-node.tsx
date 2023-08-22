@@ -35,7 +35,6 @@ export const useManageNodesGraph = (options?: Options) => {
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
-      debugger;
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);

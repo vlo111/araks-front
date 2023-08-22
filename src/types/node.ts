@@ -18,6 +18,12 @@ export type NodeDataSubmit = {
   project_id?: string;
   project_type_id: string;
   nodes?: NodeBodySubmit[];
+  edges?: {
+    id: string;
+    project_edge_type_id: string;
+    target_id: string;
+    target_type_id: string;
+  }[];
   nodeId?: string;
   name: string;
   default_image: string;
