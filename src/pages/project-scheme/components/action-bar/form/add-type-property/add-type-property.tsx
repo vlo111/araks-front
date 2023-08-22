@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import { Node } from '@antv/x6';
-import { Form, Space, Tooltip } from 'antd';
-import { InfoCircleFilled } from '@ant-design/icons';
+import { Form, Skeleton, Space } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
 import { Button } from 'components/button';
-import { PropertyDataTypeSelect } from 'components/select/property-data-type-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
@@ -19,6 +17,11 @@ import { PropertyConnectionDetailsSchema } from './property-connection-details';
 import { PropertyTypes } from 'components/form/property/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { SELECTORS } from 'components/layouts/components/schema/helpers/constants';
+import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
+import { Rule } from 'antd/es/form';
+import { EditNodePropertyTypeInfoModal } from 'components/modal/edit-node-property-type-info-modal';
+import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
+import { PropertyDataTypeSelectSchema } from './property-data-type-select';
 
 type InitEditForm = (attrs: PortAttributes) => void;
 
@@ -57,9 +60,30 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty({}, portId);
+  const { mutate } = useCreateTypeProperty(
+    {
+      onSuccess: () => {
+        form.resetFields();
+      },
+    },
+    isUpdate ? portId : undefined
+  );
 
-  const { mutate: mutateConnection } = useCreateEdge(undefined);
+  const { mutate: mutateConnection } = useCreateEdge(undefined, {
+    onSuccess: ({ data }) => {
+      form.resetFields();
+    },
+  });
+
+  // get node type edit data
+  const { data, isInitialLoading } = useGetProjectNodeTypeProperty(portId, {
+    enabled: !!portId,
+    onSuccess: (data) => {
+      form.setFieldsValue({
+        ...data,
+      });
+    },
+  });
 
   const { mutate: mutateDelete } = useDeleteTypeProperty(portId, {
     onSuccess: () => {
@@ -100,70 +124,95 @@ export const AddSchemaTypePropertyForm = () => {
       mutate(args as ProjectNodeTypePropertySubmit);
     }
 
-    form.resetFields();
-
     finishTypePort();
   };
 
   useEffect(() => {
     if (isUpdate) initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
 
-    return () => form.resetFields();
+    return () => {
+      form.resetFields();
+    };
   }, [form, initEditForm, type, isUpdate, portId]);
 
   return (
-    <Wrapper>
-      <Form
-        name="project-node-type-property"
-        form={form}
-        onFinish={onFinish}
-        autoComplete="off"
-        layout="vertical"
-        requiredMark={false}
-      >
-        <Space size={8}>
-          <Text>{isUpdate ? 'Edit property for type' : 'Add property for type'}</Text>
-          <Tooltip title="Useful information" placement="right">
-            <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-          </Tooltip>
-        </Space>
-        <FormItem
-          name="name"
-          label="Property name"
-          rules={[
-            { required: true, message: 'Property name name is required' },
-            { min: 3, message: 'The minimum length for this field is 3 characters' },
-            { max: 30, message: 'The maximum length for this field is 30 characters' },
-          ]}
+    <Skeleton loading={isInitialLoading}>
+      <Wrapper>
+        <Form
+          name="project-node-type-property-schema"
+          form={form}
+          onFinish={onFinish}
+          autoComplete="off"
+          layout="vertical"
+          requiredMark={false}
         >
-          <FormInput placeholder="Property name" />
-        </FormItem>
-        <FormItem
-          name="ref_property_type_id"
-          label="Data type"
-          rules={[{ required: true, message: 'Node property data type is required' }]}
-        >
-          <PropertyDataTypeSelect />
-        </FormItem>
-        <PropertyConnectionDetailsSchema typeId={type.id} />
-        <PropertyBasicDetails />
-        <FormItem>
-          <VerticalSpace>
-            <Button block type="primary" htmlType="submit">
-              Save
-            </Button>
-            {isUpdate ? (
-              <Button block type="text" onClick={onHandleDelete}>
-                Delete
-              </Button>
-            ) : (
-              <Button block type="text" onClick={finishTypePort}>
-                Cancel
-              </Button>
-            )}
-          </VerticalSpace>
-        </FormItem>
-      </Form>
-    </Wrapper>
+          <Space size={8}>
+            <Text>{isUpdate ? 'Edit Property' : 'Add property for type'}</Text>
+            <UsefulInformationTooltip infoText="Inherit parent options" />
+          </Space>
+          {!data?.default_property && (
+            <FormItem
+              name="name"
+              label="Property name"
+              rules={[
+                {
+                  required: true,
+                  message: 'Property name is required',
+                },
+                { min: 3, message: 'The minimum length for this field is 3 characters' },
+                { max: 30, message: 'The maximum length for this field is 30 characters' },
+                {
+                  validator: async (_: Rule, value: string | undefined) => {
+                    if (value !== undefined) {
+                      const regex = /^[a-z0-9_]+$/;
+                      if (!regex.test(value)) {
+                        return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
+                      }
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <FormInput placeholder="Property name" />
+            </FormItem>
+          )}
+          <FormItem
+            name="ref_property_type_id"
+            label="Data type"
+            rules={[{ required: true, message: 'Node property data type is required' }]}
+            hidden={data?.default_property}
+          >
+            <PropertyDataTypeSelectSchema
+              nodeTypeId={type.id}
+              propertyTypeId={data?.ref_property_type_id}
+              isEdit={isUpdate}
+            />
+          </FormItem>
+          <PropertyBasicDetails />
+          <PropertyConnectionDetailsSchema typeId={type.id} />
+          <FormItem>
+            <VerticalSpace>
+              {isUpdate ? (
+                <EditNodePropertyTypeInfoModal id={data?.id} initPropertyType={data?.ref_property_type_id} />
+              ) : (
+                <Button block type="primary" htmlType="submit">
+                  Save
+                </Button>
+              )}
+              {isUpdate ? (
+                <Button block type="text" onClick={onHandleDelete} disabled={data?.default_property}>
+                  Delete
+                </Button>
+              ) : (
+                <Button block type="text" onClick={finishTypePort}>
+                  Cancel
+                </Button>
+              )}
+            </VerticalSpace>
+          </FormItem>
+        </Form>
+      </Wrapper>
+    </Skeleton>
   );
 };
