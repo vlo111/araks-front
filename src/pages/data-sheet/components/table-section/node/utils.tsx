@@ -88,81 +88,219 @@ export function showAvatar(imageUrl: string) {
 
 /** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
-  return item.nodes_data && item.nodes_data.length > 1 ? (
-    <ManageNodeTypePopover
-      trigger="hover"
-      content={
-        item.project_type_property_type === PropertyTypes.Document ? (
-          <Space>
-            {item.nodes_data.map((node) => {
-              return node ? (
-                <Button type="link" href={(node as UploadedFileType).url} target="_blank">
-                  {(node as UploadedFileType).name}
-                </Button>
-              ) : (
-                ''
-              );
-            })}
-          </Space>
-        ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-          <Space>
-            {item.nodes_data.map((node) => {
-              return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
-            })}
-          </Space>
-        ) : (
-          <VerticalSpace>
-            {item.nodes_data.map((node) => {
-              return (node as ResponseLocationType).address
-                ? (node as ResponseLocationType).address
-                : node
-                ? showText(item.project_type_property_type as PropertyTypes, node as string)
-                : '';
-            })}
-          </VerticalSpace>
-        )
-      }
-    >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
-  ) : showTextCondition(
+  // eslint-disable-next-line no-console
+  console.log('item.nodes_data', item.nodes_data, item.project_type_property_type);
+  switch (true) {
+    case item.nodes_data && item.nodes_data.length > 1:
+      return (
+        <ManageNodeTypePopover
+          trigger="hover"
+          content={
+            item.project_type_property_type === PropertyTypes.Document ? (
+              <Space>
+                {item.nodes_data?.map((node) => {
+                  // eslint-disable-next-line no-console
+                  console.log('node', node);
+                  return node ? (
+                    <Button
+                      type="link"
+                      href={(node as UploadedFileType).url}
+                      target="_blank"
+                      key={(node as UploadedFileType).url}
+                    >
+                      {(node as UploadedFileType).name}
+                    </Button>
+                  ) : (
+                    ''
+                  );
+                })}
+              </Space>
+            ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+              <Space>
+                {item.nodes_data?.map((node) => {
+                  return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
+                })}
+              </Space>
+            ) : (
+              <VerticalSpace>
+                {item.nodes_data?.map((node) => {
+                  return (node as ResponseLocationType).address
+                    ? (node as ResponseLocationType).address
+                    : node
+                    ? showText(item.project_type_property_type as PropertyTypes, node as string)
+                    : '';
+                })}
+              </VerticalSpace>
+            )
+          }
+        >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
+      );
+    case item.project_type_property_type === PropertyTypes.IMAGE_URL:
+      return <Avatar src={item.nodes_data?.join('') as string} size="large" />;
+    case item.project_type_property_type === PropertyTypes.Document:
+      return (
+        <Space>
+          {item.nodes_data?.map((node) => {
+            return node ? (
+              <Button
+                type="link"
+                href={(node as UploadedFileType).url}
+                target="_blank"
+                key={(node as UploadedFileType).url}
+              >
+                <LongTitle
+                  style={{ maxWidth: '500px' }}
+                  className="button-content__text"
+                  name={(node as UploadedFileType).name}
+                />
+              </Button>
+            ) : (
+              ''
+            );
+          })}
+        </Space>
+      );
+    case showTextCondition(
       item.project_type_property_type as PropertyTypes,
       (item.nodes_data?.[0] as ResponseLocationType)?.address
         ? (item.nodes_data?.[0] as ResponseLocationType).address
         : (item.nodes_data?.filter(Boolean)?.join('') as string)
-    ) ? (
-    (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
-      (item.nodes_data?.[0] as ResponseLocationType).address
-    ) : (
-      showText(
-        item.project_type_property_type as PropertyTypes,
-        item.nodes_data
-          ?.join('')
-          .replace(/<[^>]+>/g, '')
-          .replace(/&nbsp;/g, ' ') as string,
-        item,
-        row
-      )
-    )
-  ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-    <Avatar src={item.nodes_data?.join('') as string} size="large" />
-  ) : (
-    <LongTitle
-      style={{ maxWidth: '500px' }}
-      className="button-content__text"
-      name={
-        (item.nodes_data?.[0] as ResponseLocationType)?.address
-          ? (item.nodes_data?.[0] as ResponseLocationType).address
-          : (item.nodes_data
+    ):
+      return (item.nodes_data?.[0] as ResponseLocationType)?.address
+        ? (item.nodes_data?.[0] as ResponseLocationType).address
+        : showText(
+            item.project_type_property_type as PropertyTypes,
+            item.nodes_data
               ?.join('')
               .replace(/<[^>]+>/g, '')
-              .replace(/&nbsp;/g, ' ') as string)
-      }
-      titleContent={
-        (item.nodes_data?.[0] as ResponseLocationType)?.address
-          ? (item.nodes_data?.[0] as ResponseLocationType).address
-          : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
-      }
-    />
-  );
+              .replace(/&nbsp;/g, ' ') as string,
+            item,
+            row
+          );
+    default:
+      return (
+        <LongTitle
+          style={{ maxWidth: '500px' }}
+          className="button-content__text"
+          name={
+            (item.nodes_data?.[0] as ResponseLocationType)?.address
+              ? (item.nodes_data?.[0] as ResponseLocationType).address
+              : (item.nodes_data
+                  ?.join('')
+                  .replace(/<[^>]+>/g, '')
+                  .replace(/&nbsp;/g, ' ') as string)
+          }
+          titleContent={
+            (item.nodes_data?.[0] as ResponseLocationType)?.address
+              ? (item.nodes_data?.[0] as ResponseLocationType).address
+              : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
+          }
+        />
+      );
+  }
+
+  // if it has more than one node data
+  // return item.nodes_data && item.nodes_data.length > 1 ? (
+  //   <ManageNodeTypePopover
+  //     trigger="hover"
+  //     content={
+  //       item.project_type_property_type === PropertyTypes.Document ? (
+  //         <Space>
+  //           {item.nodes_data.map((node) => {
+  //             // eslint-disable-next-line no-console
+  //             console.log('node', node);
+  //             return node ? (
+  //               <Button
+  //                 type="link"
+  //                 href={(node as UploadedFileType).url}
+  //                 target="_blank"
+  //                 key={(node as UploadedFileType).url}
+  //               >
+  //                 {(node as UploadedFileType).name}
+  //               </Button>
+  //             ) : (
+  //               ''
+  //             );
+  //           })}
+  //         </Space>
+  //       ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+  //         <Space>
+  //           {item.nodes_data.map((node) => {
+  //             return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
+  //           })}
+  //         </Space>
+  //       ) : (
+  //         <VerticalSpace>
+  //           {item.nodes_data.map((node) => {
+  //             return (node as ResponseLocationType).address
+  //               ? (node as ResponseLocationType).address
+  //               : node
+  //               ? showText(item.project_type_property_type as PropertyTypes, node as string)
+  //               : '';
+  //           })}
+  //         </VerticalSpace>
+  //       )
+  //     }
+  //   >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
+  // ) : showTextCondition(
+  //     item.project_type_property_type as PropertyTypes,
+  //     (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //       ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //       : (item.nodes_data?.filter(Boolean)?.join('') as string)
+  //   ) ? (
+  //   (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
+  //     (item.nodes_data?.[0] as ResponseLocationType).address
+  //   ) : (
+  //     showText(
+  //       item.project_type_property_type as PropertyTypes,
+  //       item.nodes_data
+  //         ?.join('')
+  //         .replace(/<[^>]+>/g, '')
+  //         .replace(/&nbsp;/g, ' ') as string,
+  //       item,
+  //       row
+  //     )
+  //   )
+  // ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+  //   <Avatar src={item.nodes_data?.join('') as string} size="large" />
+  // ) : item.project_type_property_type === PropertyTypes.Document ? (
+  //   <Space>
+  //     {item.nodes_data?.map((node) => {
+  //       // eslint-disable-next-line no-console
+  //       console.log('node', node);
+  //       return node ? (
+  //         <Button
+  //           type="link"
+  //           href={(node as UploadedFileType).url}
+  //           target="_blank"
+  //           key={(node as UploadedFileType).url}
+  //         >
+  //           {(node as UploadedFileType).name}
+  //         </Button>
+  //       ) : (
+  //         ''
+  //       );
+  //     })}
+  //   </Space>
+  // ) : (
+  //   <LongTitle
+  //     style={{ maxWidth: '500px' }}
+  //     className="button-content__text"
+  //     name={
+  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //         : (item.nodes_data
+  //             ?.join('')
+  //             .replace(/<[^>]+>/g, '')
+  //             .replace(/&nbsp;/g, ' ') as string)
+  //     }
+  //     titleContent={
+  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //         : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
+  //     }
+  //   />
+  // );
 }
 
 /**

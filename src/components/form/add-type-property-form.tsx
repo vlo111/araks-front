@@ -55,6 +55,9 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           dispatch({ type: TypePropertyActionKind.ADD_TYPE_FINISH, payload: {} });
         }
       },
+      onError: () => {
+        hide?.();
+      },
     },
     isEdit ? propertyId : undefined
   );
