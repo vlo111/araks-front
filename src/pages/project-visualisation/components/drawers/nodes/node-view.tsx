@@ -45,7 +45,7 @@ const getValue = (item: NodePropertiesValues) => {
 export const NodeView = () => {
   const [form] = Form.useForm();
 
-  const { graph, nodes, openNode, finishOpenNode } = useGraph() ?? {};
+  const { graph, nodes, openNode, setNodes, finishOpenNode } = useGraph() ?? {};
 
   const [isEdit, setIsEdit] = React.useState(false);
 
@@ -174,6 +174,9 @@ export const NodeView = () => {
           id={nodeData?.id as string}
           name={node?.nodeType.name ?? ''}
           onClose={onClose}
+          onDelete={(id) => {
+            setNodes(nodes.filter((n) => n.id !== id));
+          }}
         />
       }
       footer={

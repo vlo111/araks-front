@@ -19,6 +19,29 @@ export const NodeCreate: React.FC = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
 
+  const updateNodes = (
+    nodeData: NodePropertiesValues & {
+      nodeType: { color: string; id: string; name: string };
+      default_image: string;
+    }
+  ) => {
+    const createNode: AllDataResponse = {
+      id: nodeData.id,
+      default_image: nodeData.default_image,
+      name: nodeData.name as unknown as string,
+      nodeType: {
+        id: nodeData.nodeType.id,
+        name: nodeData.nodeType.name,
+        color: nodeData.nodeType.color,
+      },
+      project_id: nodeData.project_id,
+      project_type_id: nodeData.project_type_id,
+      updated_at: nodeData.updated_at,
+    };
+
+    setNodes([...nodeList, createNode]);
+  };
+
   const { mutate } = useManageNodes({
     onSuccess: ({ data }) => {
       const nodeData = data as NodePropertiesValues & {
@@ -33,6 +56,7 @@ export const NodeCreate: React.FC = () => {
         type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,
+        nodeType: nodeData.nodeType.id,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
@@ -40,21 +64,7 @@ export const NodeCreate: React.FC = () => {
 
       graph.addItem('node', node);
 
-      const createNode: AllDataResponse = {
-        id: nodeData.id,
-        default_image: nodeData.default_image,
-        name: nodeData.name as unknown as string,
-        nodeType: {
-          id: nodeData.nodeType.id,
-          name: nodeData.nodeType.name,
-          color: nodeData.nodeType.color,
-        },
-        project_id: nodeData.project_id,
-        project_type_id: nodeData.project_type_id,
-        updated_at: nodeData.updated_at,
-      };
-
-      setNodes([...nodeList, createNode]);
+      updateNodes(nodeData);
 
       form.resetFields();
       finishOpenNodeCreate();

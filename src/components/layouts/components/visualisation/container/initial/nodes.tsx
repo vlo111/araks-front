@@ -15,7 +15,5 @@ export const initData: InitNodes = (graph, data) => {
     graph.data(data);
 
     initConnector(data.edges);
-
-    graph.render();
   }
 };
