@@ -1,5 +1,5 @@
 import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
-import { Avatar, Button, Image, Space } from 'antd';
+import { Avatar, Button, Image, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
 import { getConnectionFormName } from 'components/form/type/connection-type';
@@ -20,6 +20,7 @@ import {
   NodeEdgesGrouped,
   NodePropertiesValues,
   ResponseLocationType,
+  UploadedFileType,
 } from 'types/node';
 import { NodeViewButton } from './node-view-button';
 
@@ -59,7 +60,6 @@ const showText = (
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
       return <Avatar src={text} />;
-    case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank">
@@ -92,7 +92,19 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
     <ManageNodeTypePopover
       trigger="hover"
       content={
-        item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+        item.project_type_property_type === PropertyTypes.Document ? (
+          <Space>
+            {item.nodes_data.map((node) => {
+              return node ? (
+                <Button type="link" href={(node as UploadedFileType).url} target="_blank">
+                  {(node as UploadedFileType).name}
+                </Button>
+              ) : (
+                ''
+              );
+            })}
+          </Space>
+        ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
           <Space>
             {item.nodes_data.map((node) => {
               return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
@@ -182,11 +194,22 @@ export const getSingleData = (nodeData: NodeDataTypes | undefined) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isUploadFileType(obj: any): obj is UploadedFileType {
+  return obj.url !== undefined;
+}
+
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   let text;
 
   if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
     text = nodeData as string;
+  } else if (isUploadFileType(nodeData)) {
+    return (
+      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined />}>
+        <Text color={COLORS.PRIMARY.GRAY_DARK}>{nodeData.name}</Text>
+      </Button>
+    );
   } else {
     text = nodeData?.address;
   }
@@ -303,11 +326,23 @@ export const getRowData = (item: NodePropertiesValues) => {
 };
 
 export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: NodeBody) => {
+  // eslint-disable-next-line no-console
+  console.log(
+    'item',
+    item,
+    (values[item.name] as UploadFile[]).map((item) => item?.response?.data)
+  );
   if (!values[item.name]) {
     return null;
   }
   if (item.ref_property_type_id === PropertyTypes.Location) {
     return (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
+  }
+  if (item.ref_property_type_id === PropertyTypes.Document) {
+    return (values[item.name] as UploadFile[]).map((item) => ({
+      name: item?.response?.data.originalFileName,
+      url: item?.response?.data.uploadPath,
+    }));
   }
   if (Array.isArray(values[item.name])) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {
