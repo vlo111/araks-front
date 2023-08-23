@@ -1,9 +1,11 @@
 import { PaperClipOutlined } from '@ant-design/icons';
-import { Space, Upload } from 'antd';
+import { message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
+import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
 import { SecondaryText, Text } from 'components/typography';
-import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { AUTH_KEYS, COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { useLocalStorageGet } from 'hooks/use-local-storage-get';
 import styled from 'styled-components';
 import { FormItem } from '../form-item';
 
@@ -24,7 +26,23 @@ const StyledUpload = styled(Upload)`
   }
 `;
 
+const fileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'];
+const allowedTypes = fileTypes.join(',');
+const maxSize = 10; // in MB
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const normFile = (e: any) => {
+  // eslint-disable-next-line no-console
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};
+
 export const DocumentType = ({ data }: Props) => {
+  const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
@@ -39,8 +57,45 @@ export const DocumentType = ({ data }: Props) => {
         name={data.name}
         label={label}
         rules={[{ required: data.required_type, message: VALIDATE_MESSAGES.required }]}
+        valuePropName="fileList"
+        getValueFromEvent={normFile}
       >
-        <StyledUpload>
+        <StyledUpload
+          action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+          name="file"
+          multiple={data.multiple_type}
+          headers={{
+            Authorization: `Bearer ${token}`,
+            accept: 'document',
+          }}
+          maxCount={data.multiple_type ? 5 : 1}
+          beforeUpload={(file) => {
+            const isFileTypeAllowed = fileTypes.some((type) => file.name.toLowerCase().endsWith(type));
+            const isFileSizeAllowed = file.size / 1024 / 1024 < maxSize;
+            if (!isFileTypeAllowed) {
+              message.error(`allowed only the following file types: ${allowedTypes}.`);
+            }
+            if (!isFileSizeAllowed) {
+              message.error(`Not allowed files more than ${maxSize}MB`);
+            }
+            return (isFileTypeAllowed && isFileSizeAllowed) || Upload.LIST_IGNORE;
+          }}
+          onChange={(info) => {
+            const { status } = info.file;
+
+            if (status !== 'uploading') {
+            }
+            if (status === 'done') {
+              const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
+              // eslint-disable-next-line no-console
+              console.log('fileExtension', fileExtension, info);
+
+              // message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+              message.error(`${info.file.name} file upload failed.`);
+            }
+          }}
+        >
           <StyledButton block icon={<PaperClipOutlined />}>
             Upload File
           </StyledButton>

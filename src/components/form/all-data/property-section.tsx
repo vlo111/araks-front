@@ -10,6 +10,7 @@ import { SizeComponent } from 'pages/project-visualisation/components/size-selec
 import { SelectIcon } from 'pages/project-overview/components/select-icon';
 import { ColorSelect } from '../../select/color-select';
 import { CircleColor } from 'pages/project-visualisation/components/circle-color';
+import { useCallback } from 'react';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -135,6 +136,12 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
   const form = Form.useFormInstance();
   const queriesList = form.getFieldValue('queries');
 
+  const setValue = useCallback(
+    (color: string) => {
+      form.setFieldValue(['queries', fieldName, 'color'], color);
+    },
+    [form, fieldName]
+  );
   const onChange = (key: string | string[]) => {
     // eslint-disable-next-line no-console
     console.log(key);
@@ -183,7 +190,7 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
                       </Form.Item>
                       <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing size' }]}>
                         <StyledColorWrapper>
-                          <ColorSelect initialColor={queriesList[fieldName]?.color} fieldName={fieldName}/>
+                          <ColorSelect initialColor={queriesList[fieldName]?.color} fieldName={fieldName} setValue={setValue}/>
                         </StyledColorWrapper>
                       </Form.Item>
                       {queriesList[fieldName].depth !== 1 && (

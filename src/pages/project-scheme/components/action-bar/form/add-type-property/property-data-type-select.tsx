@@ -1,13 +1,12 @@
 import { useGetDictionary, GET_DICTIONARY_PROPERTY_TYPES } from 'api/dictionary/use-get-dictionary';
-import { Select } from '.';
 import { RefSelectProps } from 'antd';
 import { PropertyTypes } from 'components/form/property/types';
 import { PageParameters } from 'api/types';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
-import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { Select } from 'components/select';
 
-type Props = Partial<RefSelectProps> & { propertyTypeId?: PropertyTypes; isEdit?: boolean };
+type Props = Partial<RefSelectProps> & { propertyTypeId?: PropertyTypes; isEdit?: boolean; nodeTypeId: string };
 
 type PropertyDataType = {
   code: PropertyTypes;
@@ -54,9 +53,7 @@ const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_
  * @param props
  * @returns
  */
-export const PropertyDataTypeSelect = ({ isEdit, ...props }: Props) => {
-  const { nodeTypeId } = useDataSheetWrapper();
-
+export const PropertyDataTypeSelectSchema = ({ isEdit, nodeTypeId, ...props }: Props) => {
   const { count: dataCount, isFetched } = useGetTypeNodes(initPageData, nodeTypeId, {
     enabled: !!props.propertyTypeId,
   });
@@ -82,13 +79,6 @@ export const PropertyDataTypeSelect = ({ isEdit, ...props }: Props) => {
       placeholder="Please select"
       fieldNames={{ value: 'code', label: 'name' }}
       options={data}
-      // onSelect={(value) => {
-      //   setPropertyType(value as PropertyTypes);
-      //   if (props.propertyTypeId !== value) {
-      //     form.setFieldValue('hasWarning', true);
-      //   }
-      // }}
-      {...props}
     />
   );
 };

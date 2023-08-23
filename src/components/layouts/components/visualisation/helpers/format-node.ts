@@ -1,27 +1,29 @@
 import { Graph } from '@antv/g6';
 import { GraphData } from '../types';
-import { Edges, Nodes } from 'api/visualisation/use-get-data';
+import { ProjectEdgeResponse } from 'types/project-edge';
+import { Nodes } from 'api/visualisation/use-get-nodes';
 
-type FormattedData = (graph: Graph, nodesList: Nodes, edgeList: Edges) => GraphData;
+type FormattedData = (graph: Graph, nodesList: Nodes, edgeList: ProjectEdgeResponse[]) => GraphData;
 
 export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
   const data: GraphData = {
-    nodes: nodesList.records.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      label: _fields[0].properties.name,
+    nodes: nodesList.map((n) => ({
+      id: n.id,
+      label: n.name,
       style: {
-        stroke: _fields[0].properties.color ?? '',
+        stroke: n.nodeType?.color ?? '',
       },
-      img: _fields[0].properties.image_url,
-      type: _fields[0].properties.image_url ? 'image' : 'circle',
-      nodeType: _fields[0].properties.project_type_id,
+      img: n.default_image,
+      type: n.default_image ? 'image' : 'circle',
+      nodeType: n?.nodeType?.id,
+      cluster: n.nodeType,
     })),
-    edges: edgeList.records.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      project_edge_type_id: _fields[0].properties.project_edge_type_id,
-      source: _fields[0].properties.source_id,
-      target: _fields[0].properties.target_id,
-      label: _fields[0].type ?? '',
+    edges: edgeList.map((e) => ({
+      id: e.id,
+      project_edge_type_id: e.project_edge_type_id,
+      source: e.source_id,
+      target: e.target_id,
+      label: e.edgeTypes?.name ?? '',
     })),
   };
   return data;

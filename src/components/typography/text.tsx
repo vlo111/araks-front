@@ -56,7 +56,7 @@ export const SecondaryText = styled(({ color, ...props }) => <Text type="seconda
     @media (max-width: ${screenSize.xxl}) {
       font-size: 14px;
       line-height: 1.3;
-      font-weight: 400;
+      font-weight: ${(props) => (props.strong ? 700 : 400)};
     }
   }
 `;

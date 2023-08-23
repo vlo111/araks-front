@@ -9,7 +9,7 @@ import { BooleanType } from './type/boolean-type';
 import { ConnectionType } from './type/connection-type';
 import { DateTimeType } from './type/date-time-type';
 import { DateType } from './type/date-type';
-// import { DocumentType } from './type/document-type';
+import { DocumentType } from './type/document-type';
 import { LocationType } from './type/location-type';
 import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
@@ -39,7 +39,6 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
                   return <LocationType key={item.id} data={item} />;
                 case PropertyTypes.URL:
                 case PropertyTypes.IMAGE_URL:
-                case PropertyTypes.Document: // KEEP UNTIL FILE UPLOAD IS READY
                   return <UrlType key={item.id} data={item} />;
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
@@ -52,8 +51,8 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
                   return <BooleanType key={item.id} data={item} />;
                 case PropertyTypes.RichText:
                   return <RichTextType key={item.id} data={item} />;
-                // case PropertyTypes.Document:
-                //   return <DocumentType key={item.id} data={item} />;
+                case PropertyTypes.Document:
+                  return <DocumentType key={item.id} data={item} />;
                 case PropertyTypes.Connection:
                   return <ConnectionType key={item.id} data={item} />;
                 default:

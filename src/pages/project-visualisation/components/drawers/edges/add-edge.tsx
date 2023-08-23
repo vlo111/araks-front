@@ -11,7 +11,6 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { EdgesCreate, EdgesCreateProperties } from 'types/edges';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import './add-edge-select.css';
-import G6, { IEdge } from '@antv/g6';
 
 export const EdgeCreate: React.FC = () => {
   const [form] = Form.useForm();
@@ -27,21 +26,6 @@ export const EdgeCreate: React.FC = () => {
   const sourceId = useMemo(() => openEdgeCreate?.edge.getSource()._cfg?.model?.nodeType, [openEdgeCreate?.edge]);
 
   const targetId = useMemo(() => openEdgeCreate?.edge.getTarget()._cfg?.model?.nodeType, [openEdgeCreate?.edge]);
-
-  const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(selectedEdgeId, {
-    enabled: !!selectedEdgeId,
-    onSuccess: () => {
-      form.resetFields();
-      form.setFieldValue('selectedEdgeId', selectedEdgeId);
-    },
-  });
-
-  const { edges } = useGetEdges({ projectId: id ?? '' });
-
-  const filteredEdges = useMemo(
-    () => edges?.filter((p) => p.source_id === sourceId && p.target_id === targetId),
-    [edges, sourceId, targetId]
-  );
 
   const { mutate } = useManageEdge(undefined, {
     onSuccess: (response) => {
@@ -59,30 +43,26 @@ export const EdgeCreate: React.FC = () => {
         target: edge.target_id,
         label: edgeName,
       });
-
-      const edges = graph.getEdges().filter((e) => {
-        const { target, source } = e.getModel();
-
-        return (
-          (source === edge.source_id && target === edge.target_id) ||
-          (target === edge.source_id && source === edge.target_id)
-        );
-      }) as (IEdge & { curveOffset: string; curvePosition: string })[];
-
-      G6.Util.processParallelEdges(edges);
-
-      edges.forEach((edge, i) => {
-        graph.updateItem(edge, {
-          curveOffset: edges[i].curveOffset,
-          curvePosition: edges[i].curvePosition,
-        });
-      });
-
       finishOpenEdgeCreate();
 
       form.resetFields();
     },
   });
+
+  const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(selectedEdgeId, {
+    enabled: !!selectedEdgeId,
+    onSuccess: () => {
+      form.resetFields();
+      form.setFieldValue('selectedEdgeId', selectedEdgeId);
+    },
+  });
+
+  const { edges } = useGetEdges({ projectId: id ?? '' });
+
+  const filteredEdges = useMemo(
+    () => edges?.filter((p) => p.source_id === sourceId && p.target_id === targetId),
+    [edges, sourceId, targetId]
+  );
 
   const onFinish = (values: NodeBody) => {
     const dataToSubmit = {

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Form, Space } from 'antd';
+import { Form, Skeleton, Space } from 'antd';
 import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from './form-item';
@@ -55,6 +55,9 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           dispatch({ type: TypePropertyActionKind.ADD_TYPE_FINISH, payload: {} });
         }
       },
+      onError: () => {
+        hide?.();
+      },
     },
     isEdit ? propertyId : undefined
   );
@@ -69,7 +72,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   });
 
   // get node type edit data
-  const { data } = useGetProjectNodeTypeProperty(propertyId, {
+  const { data, isInitialLoading } = useGetProjectNodeTypeProperty(propertyId, {
     enabled: !!propertyId,
     onSuccess: (data) => {
       form.setFieldsValue({
@@ -126,77 +129,81 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   }, [form, isConnectionType]);
 
   return (
-    <Wrapper onClick={handlePopoverClick}>
-      <Form
-        name="project-node-type-property"
-        form={form}
-        onFinish={onFinish}
-        autoComplete="off"
-        layout="vertical"
-        requiredMark={false}
-      >
-        <Space size={8}>
-          <Text>
-            {isConnectionType ? 'Create Connection type' : isEdit ? 'Edit Property' : 'Add property for type'}
-          </Text>
-          <UsefulInformationTooltip infoText="Inherit parent options" />
-        </Space>
-        <FormItem
-          name="name"
-          label={isConnectionType ? 'Connection name' : 'Property name'}
-          rules={[
-            {
-              required: true,
-              message: isConnectionType ? 'Connection name is required' : 'Property name is required',
-            },
-            { min: 3, message: 'The minimum length for this field is 3 characters' },
-            { max: 30, message: 'The maximum length for this field is 30 characters' },
-            {
-              validator: async (_: Rule, value: string | undefined) => {
-                if (value !== undefined) {
-                  const regex = /^[a-z0-9_]+$/;
-                  if (!regex.test(value)) {
-                    return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
-                  }
-                }
-                return Promise.resolve();
-              },
-            },
-          ]}
+    <Skeleton loading={isInitialLoading}>
+      <Wrapper onClick={handlePopoverClick}>
+        <Form
+          name="project-node-type-property"
+          form={form}
+          onFinish={onFinish}
+          autoComplete="off"
+          layout="vertical"
+          requiredMark={false}
         >
-          <FormInput placeholder={isConnectionType ? 'Connection name' : 'Property name'} />
-        </FormItem>
-        <FormItem
-          name="ref_property_type_id"
-          label="Data type"
-          rules={[{ required: true, message: 'Node property data type is required' }]}
-          hidden={isConnectionType === true || form.getFieldValue('default_property')}
-        >
-          <PropertyDataTypeSelect propertyTypeId={data?.ref_property_type_id} />
-        </FormItem>
-        <PropertyBasicDetails />
-        <PropertyConnectionDetails isConnectionType={isConnectionType} />
-        <FormItem>
-          <VerticalSpace>
-            {isEdit ? (
-              <EditNodePropertyTypeInfoModal id={data?.id} initPropertyType={data?.ref_property_type_id} />
-            ) : (
-              <Button block type="primary" htmlType="submit">
-                Save
-              </Button>
-            )}
-            {isEdit ? (
-              <Button block type="text" onClick={onHandleDelete} disabled={data?.default_property}>
-                Delete
-              </Button>
-            ) : (
-              <Button block type="text" onClick={onHandleCancel}>
-                Cancel
-              </Button>
-            )}
-          </VerticalSpace>
-        </FormItem>
-      </Form>
-    </Wrapper>
+          <Space size={8}>
+            <Text>
+              {isConnectionType ? 'Create Connection type' : isEdit ? 'Edit Property' : 'Add property for type'}
+            </Text>
+            <UsefulInformationTooltip infoText="Inherit parent options" />
+          </Space>
+          {!form.getFieldValue('default_property') && (
+            <FormItem
+              name="name"
+              label={isConnectionType ? 'Connection name' : 'Property name'}
+              rules={[
+                {
+                  required: true,
+                  message: isConnectionType ? 'Connection name is required' : 'Property name is required',
+                },
+                { min: 3, message: 'The minimum length for this field is 3 characters' },
+                { max: 30, message: 'The maximum length for this field is 30 characters' },
+                {
+                  validator: async (_: Rule, value: string | undefined) => {
+                    if (value !== undefined) {
+                      const regex = /^[a-z0-9_]+$/;
+                      if (!regex.test(value)) {
+                        return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
+                      }
+                    }
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <FormInput placeholder={isConnectionType ? 'Connection name' : 'Property name'} />
+            </FormItem>
+          )}
+          <FormItem
+            name="ref_property_type_id"
+            label="Data type"
+            rules={[{ required: true, message: 'Node property data type is required' }]}
+            hidden={isConnectionType === true || form.getFieldValue('default_property')}
+          >
+            <PropertyDataTypeSelect propertyTypeId={data?.ref_property_type_id} isEdit={isEdit} />
+          </FormItem>
+          <PropertyBasicDetails />
+          <PropertyConnectionDetails isConnectionType={isConnectionType} />
+          <FormItem>
+            <VerticalSpace>
+              {isEdit ? (
+                <EditNodePropertyTypeInfoModal id={data?.id} initPropertyType={data?.ref_property_type_id} />
+              ) : (
+                <Button block type="primary" htmlType="submit">
+                  Save
+                </Button>
+              )}
+              {isEdit ? (
+                <Button block type="text" onClick={onHandleDelete} disabled={data?.default_property}>
+                  Delete
+                </Button>
+              ) : (
+                <Button block type="text" onClick={onHandleCancel}>
+                  Cancel
+                </Button>
+              )}
+            </VerticalSpace>
+          </FormItem>
+        </Form>
+      </Wrapper>
+    </Skeleton>
   );
 };

@@ -1,9 +1,9 @@
-import { Button, ButtonProps, Form } from 'antd';
+import { Button, ButtonProps } from 'antd';
 import styled from 'styled-components';
 import { COLORS } from 'helpers/constants';
 import { SelectColorPopover } from 'components/popover';
 // import { ColorList } from "components/color-list";
-import { forwardRef, useCallback, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { SketchPicker } from 'react-color';
 
 type ButtonStyleProps = ButtonProps & {
@@ -29,25 +29,23 @@ const ButtonColor = styled(
 type Props = {
   initialColor?: string;
   fieldName?: string | number;
+  setValue: (color: string) => void;
 };
 
 const state = {
   hue: 50,
 };
 
-export const ColorSelect = ({ initialColor,fieldName }: Props) => {
+export const ColorSelect = ({ initialColor,setValue}: Props) => {
   const [color, setColor] = useState(initialColor || '#DDDDDD');
-  const form = Form.useFormInstance();
-  const setValue = useCallback(
-    (color: string) => {
-      form.setFieldValue(['queries', fieldName, 'color'], color);
-      setColor(color);
-    },
-    [form, fieldName]
-  );
+
+  const  handleOnChange = (color:string) => {
+    setValue(color);
+    setColor(color);
+  }
   return (
     <SelectColorPopover
-      content={<SketchPicker color={color} onChange={(color?) => setValue(color.hex)} {...state} />}
+      content={<SketchPicker color={color} onChange={(color?) => handleOnChange(color.hex)} {...state} />}
       overlayStyle={{ width: 220 }}
     >
       <ButtonColor block type="primary" color={color}>

@@ -1,7 +1,9 @@
 import { Tabs } from 'antd';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Comments } from './components/comment-like/comments';
+import { Likes } from './components/comment-like/likes';
 
 const tabItems = [
   {
@@ -12,7 +14,7 @@ const tabItems = [
   {
     label: 'Likes',
     key: 'likes',
-    children: 'Content of Tab Pane',
+    children: <Likes />,
   },
 ];
 
@@ -21,7 +23,7 @@ const StyledTabs = styled(Tabs)`
     .ant-tabs-nav {
       background: #f2f2f2;
       box-shadow: none;
-      padding: 32px;
+      padding: 24px 32px;
 
       .ant-tabs-nav-list {
         border-bottom: 1px solid black;
@@ -50,10 +52,13 @@ const StyledTabs = styled(Tabs)`
       background: #f2f2f2;
       height: 100%;
 
+      .ant-tabs-content {
+        padding: 0 32px;
+      }
+
       .ant-tabs-content,
       .ant-tabs-tabpane {
         height: 100%;
-        padding: 0 32px;
       }
     }
   }
@@ -61,6 +66,8 @@ const StyledTabs = styled(Tabs)`
 
 export const CommentLike = () => {
   const [sectionHeight, setSectionHeight] = useState('100%');
+  const isXXl = useIsXXlScreen();
+
   useEffect(() => {
     const headerHeight = document.getElementById('overview-header')?.clientHeight;
     const headerTabsHeight = document.querySelector('#overview-header-tabs .ant-tabs-nav')?.clientHeight;
@@ -70,6 +77,12 @@ export const CommentLike = () => {
     setSectionHeight(contentHeight);
   }, []);
   return (
-    <StyledTabs defaultActiveKey="1" centered items={tabItems} tabBarGutter={185} style={{ height: sectionHeight }} />
+    <StyledTabs
+      defaultActiveKey="1"
+      centered
+      items={tabItems}
+      tabBarGutter={isXXl ? 185 : 0}
+      style={{ height: sectionHeight }}
+    />
   );
 };

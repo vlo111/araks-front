@@ -70,7 +70,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
-  if (projectData && !graph.graph && document.getElementById('juJSlsfk')) {
+  if (projectData?.projectsNodeTypes && !graph.graph && document.getElementById('juJSlsfk') && !document.querySelector('canvas') ) {
     setGraph(
       PreviewChart({
         nodes: projectData?.projectsNodeTypes,
