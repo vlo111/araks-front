@@ -7,6 +7,7 @@ import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
 import { initPageData } from 'helpers/constants';
 import { useState } from 'react';
+import { useGetNodesList } from '../hooks/use-get-nodes-list';
 import { AllDataFilterSection } from './all-data/filter-section';
 import { AllDataList } from './all-data/list';
 
@@ -24,6 +25,8 @@ export const RightSectionAllData = () => {
   const [filterValue, setFilterValue] = useState(defaultAllDataFilter); // state to store the input value
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const { hideLeftSection } = useOverview();
+
+  useGetNodesList();
 
   return (
     <Row gutter={32}>
