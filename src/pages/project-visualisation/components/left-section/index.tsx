@@ -55,7 +55,7 @@ export const LeftSection = () => {
           <StyledDataVisualisationSiderTabs
             tabBarGutter={isXXL ? 50 : 30}
             destroyInactiveTabPane
-            defaultActiveKey="3"
+            defaultActiveKey="1"
             items={Items.map((item) => ({
               ...item,
               children:

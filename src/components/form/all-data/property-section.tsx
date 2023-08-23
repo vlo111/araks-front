@@ -1,5 +1,5 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
-import { Collapse, DatePicker, Typography, Form, Space } from 'antd';
+import { Collapse, DatePicker, Form, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
@@ -7,10 +7,10 @@ import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-selec
 import { VerticalSpace } from 'components/space/vertical-space';
 import styled from 'styled-components';
 import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
-import { SelectIcon } from 'pages/project-overview/components/select-icon';
 import { ColorSelect } from '../../select/color-select';
 import { CircleColor } from 'pages/project-visualisation/components/circle-color';
 import { useCallback } from 'react';
+import { IconSelector } from 'pages/project-visualisation/components/icon-selector';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -30,18 +30,6 @@ const StyledCollapse = styled(Collapse)`
   background: linear-gradient(137deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: -1px 4px 4px 0 rgba(128, 128, 128, 0.1);
   border-radius: 0;
-`;
-const Text = Typography
-
-export const StyledText = styled(Text)`
-  color: #414141;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  margin-bottom: 8px;
-`
-
-const StyledColorWrapper = styled.div`
 `;
 
 export const QueriesContent = ({ fieldName }: ContentType) => {
@@ -184,14 +172,11 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
                       <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]} >
                         <SizeComponent initialSize={queriesList[fieldName]?.size} fieldName={fieldName} />
                       </Form.Item>
-                      <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing size' }]}>
-                        <StyledText>Select Icon</StyledText>
-                        <SelectIcon initialIcon={queriesList[fieldName]?.icon} fieldName={fieldName}  />
+                      <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing icon' }]}>
+                        <IconSelector fieldName={fieldName}/>
                       </Form.Item>
-                      <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing size' }]}>
-                        <StyledColorWrapper>
+                      <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing color' }]}>
                           <ColorSelect initialColor={queriesList[fieldName]?.color} fieldName={fieldName} setValue={setValue}/>
-                        </StyledColorWrapper>
                       </Form.Item>
                       {queriesList[fieldName].depth !== 1 && (
                         <VerticalSpace>
