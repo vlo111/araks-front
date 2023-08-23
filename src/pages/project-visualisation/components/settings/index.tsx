@@ -17,7 +17,7 @@ export const Settings = () => {
         if (layout === 'concentric') {
           graph.updateLayout({
             maxLevelDiff: 0.5,
-            sortBy: 'degree',
+            sortBy: 'topology',
             edgeLength: 10,
             preventOverlap: true,
             nodeSize: 80,
@@ -32,28 +32,23 @@ export const Settings = () => {
             condense: false,
             rows: 5,
             cols: 5,
-            sortBy: 'degree',
+            sortBy: 'topology',
             workerEnabled: true,
             ...params,
           });
         } else if (layout === 'circular') {
           graph.updateLayout({
-            radius: null,
-            startRadius: 10,
-            endRadius: 600,
-            clockwise: false,
-            divisions: 5,
-            ordering: 'degree',
-            angleRatio: 1,
+            ordering: 'topology',
             ...params,
           });
-        } else if (layout === 'force') {
+        } else if (layout === 'radial') {
           graph.updateLayout({
-            preventOverlap: true,
-            linkDistance: 200,
+            linkDistance: 400,
             maxIteration: 1000,
             unitRadius: 100,
+            preventOverlap: true,
             strictRadial: true,
+            workerEnabled: false,
             ...params,
           });
         }
@@ -66,7 +61,7 @@ export const Settings = () => {
     () => [
       {
         key: '0',
-        label: <div onClick={() => setLayout('force')}>Force</div>,
+        label: <div onClick={() => setLayout('radial')}>Radial</div>,
       },
       {
         type: 'divider',
