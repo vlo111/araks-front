@@ -24,7 +24,7 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
   const params = useParams();
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<ReturnData, unknown, ProjectNodeTypePropertySubmit>({
+  const mutation = useMutation<ReturnData, Error, ProjectNodeTypePropertySubmit>({
     mutationFn: (values: ProjectNodeTypePropertySubmit) => {
       const url = values.propertyId
         ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', values.propertyId || '')
@@ -42,7 +42,10 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
       ]);
       options?.onSuccess?.(data);
     },
-    onError: errorMessage,
+    onError: (error: Error) => {
+      options?.onError?.(error);
+      errorMessage(error);
+    },
   });
   return mutation;
 };

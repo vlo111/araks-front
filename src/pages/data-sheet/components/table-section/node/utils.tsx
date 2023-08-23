@@ -1,8 +1,9 @@
 import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
-import { Avatar, Button, Image, Space } from 'antd';
+import { Avatar, Button, Image, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
 import { getConnectionFormName } from 'components/form/type/connection-type';
+import { Icon } from 'components/icon';
 import { LocationView } from 'components/location/location-view';
 import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
@@ -20,6 +21,7 @@ import {
   NodeEdgesGrouped,
   NodePropertiesValues,
   ResponseLocationType,
+  UploadedFileType,
 } from 'types/node';
 import { NodeViewButton } from './node-view-button';
 
@@ -59,7 +61,6 @@ const showText = (
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
       return <Avatar src={text} />;
-    case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank">
@@ -88,69 +89,219 @@ export function showAvatar(imageUrl: string) {
 
 /** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
-  return item.nodes_data && item.nodes_data.length > 1 ? (
-    <ManageNodeTypePopover
-      trigger="hover"
-      content={
-        item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-          <Space>
-            {item.nodes_data.map((node) => {
-              return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
-            })}
-          </Space>
-        ) : (
-          <VerticalSpace>
-            {item.nodes_data.map((node) => {
-              return (node as ResponseLocationType).address
-                ? (node as ResponseLocationType).address
-                : node
-                ? showText(item.project_type_property_type as PropertyTypes, node as string)
-                : '';
-            })}
-          </VerticalSpace>
-        )
-      }
-    >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
-  ) : showTextCondition(
+  // eslint-disable-next-line no-console
+  console.log('item.nodes_data', item.nodes_data, item.project_type_property_type);
+  switch (true) {
+    case item.nodes_data && item.nodes_data.length > 1:
+      return (
+        <ManageNodeTypePopover
+          trigger="hover"
+          content={
+            item.project_type_property_type === PropertyTypes.Document ? (
+              <Space>
+                {item.nodes_data?.map((node) => {
+                  // eslint-disable-next-line no-console
+                  console.log('node', node);
+                  return node ? (
+                    <Button
+                      type="link"
+                      href={(node as UploadedFileType).url}
+                      target="_blank"
+                      key={(node as UploadedFileType).url}
+                    >
+                      {(node as UploadedFileType).name}
+                    </Button>
+                  ) : (
+                    ''
+                  );
+                })}
+              </Space>
+            ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+              <Space>
+                {item.nodes_data?.map((node) => {
+                  return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
+                })}
+              </Space>
+            ) : (
+              <VerticalSpace>
+                {item.nodes_data?.map((node) => {
+                  return (node as ResponseLocationType).address
+                    ? (node as ResponseLocationType).address
+                    : node
+                    ? showText(item.project_type_property_type as PropertyTypes, node as string)
+                    : '';
+                })}
+              </VerticalSpace>
+            )
+          }
+        >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
+      );
+    case item.project_type_property_type === PropertyTypes.IMAGE_URL:
+      return <Avatar src={item.nodes_data?.join('') as string} size="large" />;
+    case item.project_type_property_type === PropertyTypes.Document:
+      return (
+        <Space>
+          {item.nodes_data?.map((node) => {
+            return node ? (
+              <Button
+                type="link"
+                href={(node as UploadedFileType).url}
+                target="_blank"
+                key={(node as UploadedFileType).url}
+              >
+                <LongTitle
+                  style={{ maxWidth: '500px' }}
+                  className="button-content__text"
+                  name={(node as UploadedFileType).name}
+                />
+              </Button>
+            ) : (
+              ''
+            );
+          })}
+        </Space>
+      );
+    case showTextCondition(
       item.project_type_property_type as PropertyTypes,
       (item.nodes_data?.[0] as ResponseLocationType)?.address
         ? (item.nodes_data?.[0] as ResponseLocationType).address
         : (item.nodes_data?.filter(Boolean)?.join('') as string)
-    ) ? (
-    (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
-      (item.nodes_data?.[0] as ResponseLocationType).address
-    ) : (
-      showText(
-        item.project_type_property_type as PropertyTypes,
-        item.nodes_data
-          ?.join('')
-          .replace(/<[^>]+>/g, '')
-          .replace(/&nbsp;/g, ' ') as string,
-        item,
-        row
-      )
-    )
-  ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-    <Avatar src={item.nodes_data?.join('') as string} size="large" />
-  ) : (
-    <LongTitle
-      style={{ maxWidth: '500px' }}
-      className="button-content__text"
-      name={
-        (item.nodes_data?.[0] as ResponseLocationType)?.address
-          ? (item.nodes_data?.[0] as ResponseLocationType).address
-          : (item.nodes_data
+    ):
+      return (item.nodes_data?.[0] as ResponseLocationType)?.address
+        ? (item.nodes_data?.[0] as ResponseLocationType).address
+        : showText(
+            item.project_type_property_type as PropertyTypes,
+            item.nodes_data
               ?.join('')
               .replace(/<[^>]+>/g, '')
-              .replace(/&nbsp;/g, ' ') as string)
-      }
-      titleContent={
-        (item.nodes_data?.[0] as ResponseLocationType)?.address
-          ? (item.nodes_data?.[0] as ResponseLocationType).address
-          : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
-      }
-    />
-  );
+              .replace(/&nbsp;/g, ' ') as string,
+            item,
+            row
+          );
+    default:
+      return (
+        <LongTitle
+          style={{ maxWidth: '500px' }}
+          className="button-content__text"
+          name={
+            (item.nodes_data?.[0] as ResponseLocationType)?.address
+              ? (item.nodes_data?.[0] as ResponseLocationType).address
+              : (item.nodes_data
+                  ?.join('')
+                  .replace(/<[^>]+>/g, '')
+                  .replace(/&nbsp;/g, ' ') as string)
+          }
+          titleContent={
+            (item.nodes_data?.[0] as ResponseLocationType)?.address
+              ? (item.nodes_data?.[0] as ResponseLocationType).address
+              : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
+          }
+        />
+      );
+  }
+
+  // if it has more than one node data
+  // return item.nodes_data && item.nodes_data.length > 1 ? (
+  //   <ManageNodeTypePopover
+  //     trigger="hover"
+  //     content={
+  //       item.project_type_property_type === PropertyTypes.Document ? (
+  //         <Space>
+  //           {item.nodes_data.map((node) => {
+  //             // eslint-disable-next-line no-console
+  //             console.log('node', node);
+  //             return node ? (
+  //               <Button
+  //                 type="link"
+  //                 href={(node as UploadedFileType).url}
+  //                 target="_blank"
+  //                 key={(node as UploadedFileType).url}
+  //               >
+  //                 {(node as UploadedFileType).name}
+  //               </Button>
+  //             ) : (
+  //               ''
+  //             );
+  //           })}
+  //         </Space>
+  //       ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+  //         <Space>
+  //           {item.nodes_data.map((node) => {
+  //             return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
+  //           })}
+  //         </Space>
+  //       ) : (
+  //         <VerticalSpace>
+  //           {item.nodes_data.map((node) => {
+  //             return (node as ResponseLocationType).address
+  //               ? (node as ResponseLocationType).address
+  //               : node
+  //               ? showText(item.project_type_property_type as PropertyTypes, node as string)
+  //               : '';
+  //           })}
+  //         </VerticalSpace>
+  //       )
+  //     }
+  //   >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
+  // ) : showTextCondition(
+  //     item.project_type_property_type as PropertyTypes,
+  //     (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //       ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //       : (item.nodes_data?.filter(Boolean)?.join('') as string)
+  //   ) ? (
+  //   (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
+  //     (item.nodes_data?.[0] as ResponseLocationType).address
+  //   ) : (
+  //     showText(
+  //       item.project_type_property_type as PropertyTypes,
+  //       item.nodes_data
+  //         ?.join('')
+  //         .replace(/<[^>]+>/g, '')
+  //         .replace(/&nbsp;/g, ' ') as string,
+  //       item,
+  //       row
+  //     )
+  //   )
+  // ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
+  //   <Avatar src={item.nodes_data?.join('') as string} size="large" />
+  // ) : item.project_type_property_type === PropertyTypes.Document ? (
+  //   <Space>
+  //     {item.nodes_data?.map((node) => {
+  //       // eslint-disable-next-line no-console
+  //       console.log('node', node);
+  //       return node ? (
+  //         <Button
+  //           type="link"
+  //           href={(node as UploadedFileType).url}
+  //           target="_blank"
+  //           key={(node as UploadedFileType).url}
+  //         >
+  //           {(node as UploadedFileType).name}
+  //         </Button>
+  //       ) : (
+  //         ''
+  //       );
+  //     })}
+  //   </Space>
+  // ) : (
+  //   <LongTitle
+  //     style={{ maxWidth: '500px' }}
+  //     className="button-content__text"
+  //     name={
+  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //         : (item.nodes_data
+  //             ?.join('')
+  //             .replace(/<[^>]+>/g, '')
+  //             .replace(/&nbsp;/g, ' ') as string)
+  //     }
+  //     titleContent={
+  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
+  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
+  //         : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
+  //     }
+  //   />
+  // );
 }
 
 /**
@@ -182,11 +333,25 @@ export const getSingleData = (nodeData: NodeDataTypes | undefined) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isUploadFileType(obj: unknown): obj is UploadedFileType {
+  // eslint-disable-next-line no-console
+  console.log('obj', obj);
+  return (obj as UploadedFileType)?.url !== undefined;
+}
+
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   let text;
-
+  // eslint-disable-next-line no-console
+  console.log('nodeData', nodeData);
   if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
     text = nodeData as string;
+  } else if (isUploadFileType(nodeData)) {
+    return (
+      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined />}>
+        <Text color={COLORS.PRIMARY.GRAY_DARK}>{nodeData.name}</Text>
+      </Button>
+    );
   } else {
     text = nodeData?.address;
   }
@@ -198,7 +363,7 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
       return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
-    case PropertyTypes.Document:
+    // case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank" icon={<LinkOutlined />}>
@@ -254,6 +419,38 @@ export const getRowData = (item: NodePropertiesValues) => {
         </Image.PreviewGroup>
       );
     case PropertyTypes.Document:
+      return (
+        <Space>
+          {item.nodes_data?.map((node) => {
+            return node ? (
+              <Button
+                type="link"
+                href={(node as UploadedFileType).url}
+                target="_blank"
+                icon={<Icon icon="file1" size={11} />}
+                key={(node as UploadedFileType).url}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  width: '100%',
+                  borderRadius: '2.324px',
+                  background: 'linear-gradient(137deg, rgba(246, 246, 246, 0.80) 0%, rgba(246, 246, 246, 0.20) 100%)',
+                  boxShadow: '0px 2.32421875px 3.486328125px 0px rgba(111, 111, 111, 0.10)',
+                }}
+              >
+                <LongTitle
+                  style={{ maxWidth: '500px' }}
+                  className="button-content__text"
+                  name={(node as UploadedFileType).name}
+                />
+              </Button>
+            ) : (
+              ''
+            );
+          })}
+        </Space>
+      );
     case PropertyTypes.URL:
       return isMultiple ? (
         <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.URL))}</Space>
@@ -303,11 +500,23 @@ export const getRowData = (item: NodePropertiesValues) => {
 };
 
 export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: NodeBody) => {
+  // eslint-disable-next-line no-console
+  console.log(
+    'item',
+    item,
+    (values[item.name] as UploadFile[]).map((item) => item?.response?.data)
+  );
   if (!values[item.name]) {
     return null;
   }
   if (item.ref_property_type_id === PropertyTypes.Location) {
     return (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
+  }
+  if (item.ref_property_type_id === PropertyTypes.Document) {
+    return (values[item.name] as UploadFile[]).map((item) => ({
+      name: item?.response?.data.originalFileName,
+      url: item?.response?.data.uploadPath,
+    }));
   }
   if (Array.isArray(values[item.name])) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {

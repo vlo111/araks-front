@@ -39,6 +39,8 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
+    // eslint-disable-next-line no-console
+    console.log('values', values, data);
     const mainData = { name: '', default_image: '' };
     const dataToSubmit = data
       ?.map((item) => {
@@ -50,6 +52,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           mainData.default_image = (values.node_icon as string[]).join('');
           return;
         }
+
         return item.ref_property_type_id !== PropertyTypes.Connection
           ? {
               project_type_property_id: item.id,

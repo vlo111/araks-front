@@ -37,7 +37,12 @@ export type ResponseLocationType = {
   };
 };
 
-export type NodeDataType = ResponseLocationType | string | number | boolean;
+export type UploadedFileType = {
+  name: string;
+  url: string;
+};
+
+export type NodeDataType = ResponseLocationType | string | number | boolean | UploadedFileType;
 
 export type NodeDataTypes = NodeDataType[];
 
