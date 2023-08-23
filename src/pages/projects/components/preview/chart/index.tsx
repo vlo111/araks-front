@@ -26,20 +26,20 @@ export const PreviewChart = ({ nodes, edges }: PreviewGraphType) => {
           draggable: true,
           name: 'rect-intention',
         });
-        // group.addShape('text', {
-        //   attrs: {
-        //     x: 0,
-        //     y: 10,
-        //     text: '112',
-        //     fontSize: 18,
-        //     fill: '#000',
-        //     fontFamily: 'Rajdhani',
-        //     fontWeight: 500,
-        //     textAlign: 'center',
-        //   },
-        //   draggable: true,
-        //   name: 'rect-title',
-        // });
+        group.addShape('text', {
+          attrs: {
+            x: 0,
+            y: 10,
+            text: cfg.nodesCount,
+            fontSize: 18,
+            fill: '#000',
+            fontFamily: 'Rajdhani',
+            fontWeight: 500,
+            textAlign: 'center',
+          },
+          draggable: true,
+          name: 'rect-title',
+        });
         group.addShape('text', {
           attrs: {
             x: 0,
