@@ -3,6 +3,7 @@ import { message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
+import { AddNewFieldButton } from 'components/button/add-new-field-button';
 import { SecondaryText, Text } from 'components/typography';
 import { AUTH_KEYS, COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
@@ -92,6 +93,7 @@ export const ImageType = ({ data }: Props) => {
           <StyledButton block icon={<PaperClipOutlined />}>
             Upload File
           </StyledButton>
+          {data.multiple_type === true && <AddNewFieldButton />}
         </StyledUpload>
       </FormItem>
     </div>
