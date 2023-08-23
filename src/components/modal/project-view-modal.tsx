@@ -1,6 +1,5 @@
 import { ReactComponent as LeftCircle } from 'components/icons/right-button.svg';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
-import { ReactComponent as Public } from 'components/icons/public.svg';
 
 import { Button } from 'components/button';
 import { MenuText, Text } from 'components/typography';
@@ -128,7 +127,6 @@ const Title = ({
       </Space>
       <Space size={30}>
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
-        <Public width="16px" style={{ marginTop: '4px' }} />
         <ProjectActionPopover
           align={{ offset: [-20, -5] }}
           title={<ProjectActionTitle />}
