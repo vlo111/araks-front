@@ -1,6 +1,13 @@
-import { Col, Drawer, Form, Row, Skeleton } from 'antd';
+import { Col, Drawer, Form, Row, Skeleton, UploadFile } from 'antd';
 import * as React from 'react';
-import { NodeBody, NodeDataResponse, NodeDataSubmit, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import {
+  NodeBody,
+  NodeDataResponse,
+  NodeDataSubmit,
+  NodePropertiesValues,
+  ResponseLocationType,
+  UploadedFileType,
+} from 'types/node';
 import { VIewNode } from 'pages/data-sheet/components/table-section/node/view-node';
 import { ViewNodeTitle } from 'pages/data-sheet/components/table-section/node/view-node-title';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -16,12 +23,14 @@ import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { getConnectionFormName } from 'components/form/type/connection-type';
+import { setUploadFileStructure } from 'pages/data-sheet/utils';
 
 type VIewDataType = NodeDataResponse | undefined;
 
 type Dispatch = React.Dispatch<React.SetStateAction<string>>;
 type ViewDatasheetProviderProps = { children: React.ReactNode };
 
+/** returns value for form item */
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
     case PropertyTypes.Location:
@@ -36,6 +45,10 @@ const getValue = (item: NodePropertiesValues) => {
     case PropertyTypes.DateTime:
     case PropertyTypes.Date:
       return item.nodes_data?.map((rec) => dayjs(rec as string));
+    case PropertyTypes.IMAGE_URL:
+      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`));
+    case PropertyTypes.Document:
+      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name));
     default:
       return item.nodes_data;
   }
@@ -90,11 +103,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
     enabled: !!selectedViewId,
     onSuccess: (nodeData) => {
+      /** use this to show data for view */
       setSelectedView(nodeData);
-      const initialAcc = {
-        name: [nodeData.name],
-        node_icon: [nodeData.default_image],
-      };
 
       const fieldsData = nodeData.properties?.reduce((acc, item) => {
         if (!item.nodes_data?.length) {
@@ -104,18 +114,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         return {
           ...acc,
           [item.nodeTypeProperty.name]: getValue(item),
-          // item.project_type_property_type === PropertyTypes.Location
-          //   ? (item.nodes_data as ResponseLocationType[])?.map(
-          //       (addr: ResponseLocationType) =>
-          //         ({
-          //           address: addr.address,
-          //           lat: addr.location.latitude,
-          //           lng: addr.location.longitude,
-          //         } as Location)
-          //     )
-          //   : item.nodes_data,
         } as NodePropertiesValues;
-      }, initialAcc);
+      }, {});
       const groupList = groupedData(nodeData.edges);
 
       const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
@@ -130,11 +130,13 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           })),
         };
       }, {});
-
+      /** sets form values for edit */
       form.setFieldsValue({
         ...fieldsData,
         name: [nodeData.name],
-        node_icon: [nodeData.default_image],
+        node_icon: nodeData.default_image
+          ? [setUploadFileStructure(nodeData.default_image, 'Default image')]
+          : undefined,
         ...connectionFieldsData,
       });
     },
@@ -143,7 +145,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const onFinish = (values: NodeBody) => {
     const mainData = {
       name: (values.name as string[]).join(''),
-      default_image: (values.node_icon as string[]).join(''),
+      default_image: values.node_icon ? (values.node_icon as UploadFile[])[0].response.data.uploadPath : '',
     };
 
     const dataToSubmit = nodeData?.properties
@@ -184,6 +186,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       onClose();
     }
   };
+
   return (
     <ViewDatasheetContext.Provider value={value}>
       {children}

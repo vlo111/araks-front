@@ -22,6 +22,7 @@ import dayjs from 'dayjs';
 import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodes } from 'api/node/use-manage-node';
+import { setUploadFileStructure } from 'pages/data-sheet/utils';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -56,7 +57,7 @@ export const NodeView = () => {
     onSuccess: (nodeData) => {
       const initialAcc = {
         name: [nodeData.name],
-        node_icon: [nodeData.default_image],
+        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
       };
 
       const fieldsData = nodeData.properties?.reduce((acc, item) => {
@@ -87,7 +88,7 @@ export const NodeView = () => {
       form.setFieldsValue({
         ...fieldsData,
         name: [nodeData.name],
-        node_icon: [nodeData.default_image],
+        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
         ...connectionFieldsData,
       });
     },

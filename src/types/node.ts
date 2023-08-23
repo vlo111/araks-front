@@ -1,3 +1,5 @@
+import { UploadFile } from 'antd';
+
 export type NodeBody = {
   [x: string]: unknown;
 };
@@ -32,7 +34,7 @@ export type ResponseLocationType = {
 };
 
 export type UploadedFileType = {
-  name: string;
+  name?: string;
   url: string;
 };
 
@@ -44,7 +46,7 @@ export type NodePropertiesValues = {
   id: string;
   node_id?: string;
   name: string[];
-  node_icon: string[];
+  node_icon: UploadFile[];
   project_type_property_id?: string;
   project_type_property_type?: string;
   nodes_data?: NodeDataTypes;

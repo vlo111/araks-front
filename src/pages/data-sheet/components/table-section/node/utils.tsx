@@ -59,8 +59,8 @@ const showText = (
     return text;
   }
   switch (propertyType) {
-    case PropertyTypes.IMAGE_URL:
-      return <Avatar src={text} />;
+    // case PropertyTypes.IMAGE_URL:
+    //   return <Avatar src={text} />;
     case PropertyTypes.URL:
       return (
         <Button type="link" href={text} target="_blank">
@@ -89,8 +89,6 @@ export function showAvatar(imageUrl: string) {
 
 /** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
-  // eslint-disable-next-line no-console
-  console.log('item.nodes_data', item.nodes_data, item.project_type_property_type);
   switch (true) {
     case item.nodes_data && item.nodes_data.length > 1:
       return (
@@ -100,8 +98,6 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             item.project_type_property_type === PropertyTypes.Document ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  // eslint-disable-next-line no-console
-                  console.log('node', node);
                   return node ? (
                     <Button
                       type="link"
@@ -119,7 +115,11 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
+                  return node ? (
+                    <Avatar src={(node as UploadedFileType).url} key={(node as UploadedFileType).url} />
+                  ) : (
+                    ''
+                  );
                 })}
               </Space>
             ) : (
@@ -137,7 +137,14 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
         >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
       );
     case item.project_type_property_type === PropertyTypes.IMAGE_URL:
-      return <Avatar src={item.nodes_data?.join('') as string} size="large" />;
+      // return <Avatar src={item.nodes_data?.join('') as string} size="large" />;
+      return (
+        <Space>
+          {item.nodes_data?.map((node) => {
+            return node ? <Avatar src={(node as UploadedFileType).url} key={(node as UploadedFileType).url} /> : '';
+          })}
+        </Space>
+      );
     case item.project_type_property_type === PropertyTypes.Document:
       return (
         <Space>
@@ -152,7 +159,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
                 <LongTitle
                   style={{ maxWidth: '500px' }}
                   className="button-content__text"
-                  name={(node as UploadedFileType).name}
+                  name={(node as UploadedFileType).name as string}
                 />
               </Button>
             ) : (
@@ -199,109 +206,6 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
         />
       );
   }
-
-  // if it has more than one node data
-  // return item.nodes_data && item.nodes_data.length > 1 ? (
-  //   <ManageNodeTypePopover
-  //     trigger="hover"
-  //     content={
-  //       item.project_type_property_type === PropertyTypes.Document ? (
-  //         <Space>
-  //           {item.nodes_data.map((node) => {
-  //             // eslint-disable-next-line no-console
-  //             console.log('node', node);
-  //             return node ? (
-  //               <Button
-  //                 type="link"
-  //                 href={(node as UploadedFileType).url}
-  //                 target="_blank"
-  //                 key={(node as UploadedFileType).url}
-  //               >
-  //                 {(node as UploadedFileType).name}
-  //               </Button>
-  //             ) : (
-  //               ''
-  //             );
-  //           })}
-  //         </Space>
-  //       ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-  //         <Space>
-  //           {item.nodes_data.map((node) => {
-  //             return node ? showText(item.project_type_property_type as PropertyTypes, node as string) : '';
-  //           })}
-  //         </Space>
-  //       ) : (
-  //         <VerticalSpace>
-  //           {item.nodes_data.map((node) => {
-  //             return (node as ResponseLocationType).address
-  //               ? (node as ResponseLocationType).address
-  //               : node
-  //               ? showText(item.project_type_property_type as PropertyTypes, node as string)
-  //               : '';
-  //           })}
-  //         </VerticalSpace>
-  //       )
-  //     }
-  //   >{`${item.nodes_data.length} records`}</ManageNodeTypePopover>
-  // ) : showTextCondition(
-  //     item.project_type_property_type as PropertyTypes,
-  //     (item.nodes_data?.[0] as ResponseLocationType)?.address
-  //       ? (item.nodes_data?.[0] as ResponseLocationType).address
-  //       : (item.nodes_data?.filter(Boolean)?.join('') as string)
-  //   ) ? (
-  //   (item.nodes_data?.[0] as ResponseLocationType)?.address ? (
-  //     (item.nodes_data?.[0] as ResponseLocationType).address
-  //   ) : (
-  //     showText(
-  //       item.project_type_property_type as PropertyTypes,
-  //       item.nodes_data
-  //         ?.join('')
-  //         .replace(/<[^>]+>/g, '')
-  //         .replace(/&nbsp;/g, ' ') as string,
-  //       item,
-  //       row
-  //     )
-  //   )
-  // ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
-  //   <Avatar src={item.nodes_data?.join('') as string} size="large" />
-  // ) : item.project_type_property_type === PropertyTypes.Document ? (
-  //   <Space>
-  //     {item.nodes_data?.map((node) => {
-  //       // eslint-disable-next-line no-console
-  //       console.log('node', node);
-  //       return node ? (
-  //         <Button
-  //           type="link"
-  //           href={(node as UploadedFileType).url}
-  //           target="_blank"
-  //           key={(node as UploadedFileType).url}
-  //         >
-  //           {(node as UploadedFileType).name}
-  //         </Button>
-  //       ) : (
-  //         ''
-  //       );
-  //     })}
-  //   </Space>
-  // ) : (
-  //   <LongTitle
-  //     style={{ maxWidth: '500px' }}
-  //     className="button-content__text"
-  //     name={
-  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
-  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
-  //         : (item.nodes_data
-  //             ?.join('')
-  //             .replace(/<[^>]+>/g, '')
-  //             .replace(/&nbsp;/g, ' ') as string)
-  //     }
-  //     titleContent={
-  //       (item.nodes_data?.[0] as ResponseLocationType)?.address
-  //         ? (item.nodes_data?.[0] as ResponseLocationType).address
-  //         : showText(item.project_type_property_type as PropertyTypes, item.nodes_data?.join('') as string)
-  //     }
-  //   />
-  // );
 }
 
 /**
@@ -335,20 +239,18 @@ export const getSingleData = (nodeData: NodeDataTypes | undefined) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isUploadFileType(obj: unknown): obj is UploadedFileType {
-  // eslint-disable-next-line no-console
-  console.log('obj', obj);
   return (obj as UploadedFileType)?.url !== undefined;
 }
 
 const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   let text;
-  // eslint-disable-next-line no-console
-  console.log('nodeData', nodeData);
+
   if (typeof nodeData === 'string' || typeof nodeData === 'number' || typeof nodeData === 'boolean') {
     text = nodeData as string;
   } else if (isUploadFileType(nodeData)) {
+    /** @TODO @deprecated remove this section  */
     return (
-      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined />}>
+      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined key={nodeData.url} />}>
         <Text color={COLORS.PRIMARY.GRAY_DARK}>{nodeData.name}</Text>
       </Button>
     );
@@ -396,16 +298,12 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
       return <Text color={COLORS.PRIMARY.GRAY_DARK}>{text}</Text>;
   }
 };
-
+/** Show data in view page for each property */
 export const getRowData = (item: NodePropertiesValues) => {
   if (!item?.nodes_data) {
     return '';
   }
   const isMultiple = item.nodes_data && item.nodes_data.length > 1;
-
-  //   if (item.nodeTypeProperty.default_image) {
-  //     return <Avatar src={dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)} />;
-  //   }
 
   switch (item.project_type_property_type) {
     case PropertyTypes.IMAGE_URL:
@@ -442,7 +340,7 @@ export const getRowData = (item: NodePropertiesValues) => {
                 <LongTitle
                   style={{ maxWidth: '500px' }}
                   className="button-content__text"
-                  name={(node as UploadedFileType).name}
+                  name={(node as UploadedFileType).name as string}
                 />
               </Button>
             ) : (
@@ -499,15 +397,10 @@ export const getRowData = (item: NodePropertiesValues) => {
   }
 };
 
+/** set data for submit when create node, is similar with setNodeDataUpdateValue  */
 export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: NodeBody) => {
-  // eslint-disable-next-line no-console
-  console.log(
-    'item',
-    item,
-    (values[item.name] as UploadFile[]).map((item) => item?.response?.data)
-  );
   if (!values[item.name]) {
-    return null;
+    return [];
   }
   if (item.ref_property_type_id === PropertyTypes.Location) {
     return (values[item.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
@@ -517,6 +410,9 @@ export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: No
       name: item?.response?.data.originalFileName,
       url: item?.response?.data.uploadPath,
     }));
+  }
+  if (item.ref_property_type_id === PropertyTypes.IMAGE_URL) {
+    return (values[item.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
   if (Array.isArray(values[item.name])) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {
@@ -528,12 +424,22 @@ export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: No
   return values[item.name];
 };
 
+/** set property value when updateing, is similar with setNodeDataValue function */
 export const setNodeDataUpdateValue = (item: NodePropertiesValues, values: NodeBody) => {
   if (!values[item.nodeTypeProperty.name]) {
-    return null;
+    return [];
   }
   if (item.project_type_property_type === PropertyTypes.Location) {
     return (values[item.nodeTypeProperty.name] as Location[]).map((item) => getLocation(item)).filter(Boolean);
+  }
+  if (item.project_type_property_type === PropertyTypes.Document) {
+    return (values[item.nodeTypeProperty.name] as UploadFile[]).map((item) => ({
+      name: item?.response?.data.originalFileName,
+      url: item?.response?.data.uploadPath,
+    }));
+  }
+  if (item.project_type_property_type === PropertyTypes.IMAGE_URL) {
+    return (values[item.nodeTypeProperty.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
   if (Array.isArray(values[item.nodeTypeProperty.name])) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {
