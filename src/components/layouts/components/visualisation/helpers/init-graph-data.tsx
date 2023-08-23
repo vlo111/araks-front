@@ -1,13 +1,9 @@
 import G6 from '@antv/g6';
 
 const layout = {
-  type: 'concentric',
-  maxLevelDiff: 0.5,
-  sortBy: 'degree',
-  edgeLength: 10,
-  preventOverlap: true,
-  nodeSize: 80,
-  center: [window.innerWidth / 2, window.innerHeight / 2],
+  type: 'random',
+  width: window.innerWidth - 480,
+  height: window.innerHeight - 165,
 };
 
 const defaultEdge = {
@@ -70,7 +66,7 @@ const defaultNode = {
 
 export const options = {
   height: window.innerHeight - 165,
-  width: window.innerWidth - 300,
+  width: window.innerWidth - 480,
   fitCenter: true,
   fitView: true,
   animate: true,
