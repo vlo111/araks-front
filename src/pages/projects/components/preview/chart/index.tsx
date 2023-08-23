@@ -106,6 +106,12 @@ export const PreviewChart = ({ nodes, edges }: PreviewGraphType) => {
           fontSize: 20,
         },
       },
+      style: {
+        endArrow: {
+          fill: '#C3C3C3',
+            path: G6.Arrow.triangle()
+        }
+    }
     },
     modes: {
       default: ['drag-canvas', 'drag-node', { type: 'zoom-canvas', minZoom: 0.5, maxZoom: 1.5 }],
