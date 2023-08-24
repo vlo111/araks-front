@@ -6,6 +6,10 @@ export type ProjectListResponse = {
     updated_at: string;
     privacy: string;
     folder_id: string;
+    user: {
+        id: string;
+        first_name: string;
+    }
 }
 
 export type FullWidth = {
@@ -20,7 +24,26 @@ export type ProjectList = {
     type: string;
     id: string;
     folderId: string;
+    user?: {
+        first_name: string;
+        last_name: string;
+        id: string;
+    }
 };
+
+export type IProjectViewModal = {
+    color: string;
+    dateTime: string;
+    icon: string;
+    name: string;
+    type: string;
+    id: string;
+    folderId: string;
+    user: {
+        id: string;
+        first_name: string;
+    }
+}
 
 export type ProjectButtonContent = FullWidth & {
     project: ProjectList;
