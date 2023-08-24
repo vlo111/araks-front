@@ -8,7 +8,7 @@ import {
 } from '../../../../data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { COLORS } from 'helpers/constants';
-import { Col, Form, Image, Row } from 'antd';
+import { Col, Form, Image, Row, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -102,6 +102,7 @@ export const NodeView = () => {
   const { mutate } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
       updateEdges(data, variables);
+      updateNode();
     },
   });
 
@@ -132,6 +133,16 @@ export const NodeView = () => {
     [graph, nodeData?.edges, properties]
   );
 
+  const updateNode = useCallback(() => {
+    const name = form.getFieldValue('name')[0];
+    // const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
+    graph.updateItem(openNode.id, {
+      label: name,
+      // img,
+      // type: img ? 'image' : 'circle',
+    });
+  }, [form, graph, openNode]);
+
   const onClose = useCallback(() => {
     setIsEdit(false);
     finishOpenNode();
@@ -141,7 +152,7 @@ export const NodeView = () => {
     (values: NodeBody) => {
       const mainData = {
         name: (values.name as string[]).join(''),
-        default_image: (values.node_icon as string[]).join(''),
+        default_image: values.node_icon ? (values.node_icon as UploadFile[])[0].response.data.uploadPath : '',
       };
 
       const dataToSubmit = nodeData?.properties
