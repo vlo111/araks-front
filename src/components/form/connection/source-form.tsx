@@ -32,7 +32,7 @@ export const ConnectionSourceForm = ({ data }: Props) => {
     <VerticalSpace size={0}>
       <ConnectionAutocomplete targetId={data.source_id || ''} handleSelect={handleSelect} placeholder="Source" />
       {!showEmptyField && <div style={{ height: '40px' }} />}
-      <SelectConnectionFormItem color={data.source.color} isRequired formName={formName} />
+      <SelectConnectionFormItem color={data?.source?.color} isRequired formName={formName} />
     </VerticalSpace>
   );
 };

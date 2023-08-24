@@ -27,7 +27,7 @@ export const stripTrailingSlash = (str: string) => {
 export const errorMessage = (er: unknown) => {
   Modal.error({
     title: 'Error',
-    content: (er as AxiosError<CustomError>).response?.data.errors.message,
+    content: (er as AxiosError<CustomError>).response?.data.errors.message || 'Something happened, please try later',
     footer: false,
     closable: true,
   });

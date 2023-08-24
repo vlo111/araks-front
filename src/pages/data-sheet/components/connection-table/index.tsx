@@ -67,6 +67,7 @@ export const ConnectionTableSection = () => {
 
   useEffect(() => {
     if (columns.length) {
+      ///fix
       let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
       const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
 

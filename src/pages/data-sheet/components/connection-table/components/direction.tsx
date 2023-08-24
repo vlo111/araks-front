@@ -33,9 +33,9 @@ export const EdgeDirection = ({ data }: Props) => {
     <StyledCustomColumn>
       <div className="center">
         {data?.inverse === true ? (
-          <ConnectionInverseIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+          <ConnectionInverseIcon firstColor={data?.source?.color} secondColor={data?.target?.color} />
         ) : (
-          <ConnectionOneDirectionIcon firstColor={data?.source.color} secondColor={data?.target.color} />
+          <ConnectionOneDirectionIcon firstColor={data?.source?.color} secondColor={data?.target?.color} />
         )}
       </div>
     </StyledCustomColumn>

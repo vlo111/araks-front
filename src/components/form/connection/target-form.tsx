@@ -27,12 +27,14 @@ export const ConnectionTargetForm = ({ data }: Props) => {
       ]);
     }
   };
+  // eslint-disable-next-line no-console
+  console.log('data', data);
 
   return (
     <VerticalSpace size={0}>
       <ConnectionAutocomplete targetId={data.target_id || ''} handleSelect={handleSelect} placeholder="Target" />
       {!showEmptyField && <div style={{ height: '40px' }} />}
-      <SelectConnectionFormItem color={data.target.color} isRequired formName={formName} />
+      <SelectConnectionFormItem color={data.target?.color} isRequired formName={formName} />
     </VerticalSpace>
   );
 };
