@@ -23,6 +23,7 @@ import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 import { useCallback, useMemo } from 'react';
+import { setUploadFileStructure } from 'pages/data-sheet/utils';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
