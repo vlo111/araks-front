@@ -69,37 +69,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const [isEdit, setIsEdit] = React.useState(false);
   const value = React.useMemo(() => ({ state: selectedView, dispatch: setSelectedViewId as Dispatch }), [selectedView]);
 
-  const { data } = useGetProjectNodeTypeProperties(nodeTypeId, {
-    enabled: !!(nodeTypeId && isConnectionType === false),
-  });
-
-  const onClose = () => {
-    setSelectedView(undefined);
-    setIsEdit(false);
-    form.resetFields();
-  };
-
-  React.useEffect(() => {
-    if (selectedView) {
-      let calcWidth = 0;
-      const rightSideWidth = document.getElementById('datasheet-data');
-      const columnsProperty = document.querySelectorAll(
-        '.ant-table-thead .node-property-column.ant-table-cell-fix-left'
-      );
-
-      const firstFourElements = Array.from(columnsProperty);
-      if (!firstFourElements.length) {
-        calcWidth = isXXl ? 350 : 200;
-      }
-      firstFourElements.forEach((column: Element) => {
-        calcWidth += column.clientWidth || 0;
-      });
-      setDrawerWidth((rightSideWidth?.clientWidth ?? 0) - calcWidth);
-    }
-  }, [selectedView, isXXl]);
-
-  const { mutate } = useManageNodes();
-
   const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
     enabled: !!selectedViewId,
     onSuccess: (nodeData) => {
@@ -141,6 +110,40 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       });
     },
   });
+
+  // eslint-disable-next-line no-console
+  console.log('nodeData', nodeData);
+
+  const { data } = useGetProjectNodeTypeProperties(nodeData?.project_type_id, {
+    enabled: !!(nodeData?.project_type_id && isConnectionType === false),
+  });
+
+  const onClose = () => {
+    setSelectedView(undefined);
+    setIsEdit(false);
+    form.resetFields();
+  };
+
+  React.useEffect(() => {
+    if (selectedView) {
+      let calcWidth = 0;
+      const rightSideWidth = document.getElementById('datasheet-data');
+      const columnsProperty = document.querySelectorAll(
+        '.ant-table-thead .node-property-column.ant-table-cell-fix-left'
+      );
+
+      const firstFourElements = Array.from(columnsProperty);
+      if (!firstFourElements.length) {
+        calcWidth = isXXl ? 350 : 200;
+      }
+      firstFourElements.forEach((column: Element) => {
+        calcWidth += column.clientWidth || 0;
+      });
+      setDrawerWidth((rightSideWidth?.clientWidth ?? 0) - calcWidth);
+    }
+  }, [selectedView, isXXl]);
+
+  const { mutate } = useManageNodes();
 
   const onFinish = (values: NodeBody) => {
     const mainData = {

@@ -104,6 +104,7 @@ export type NodeDataResponse = {
   properties?: NodePropertiesValues[];
   edges: NodeEdges[];
   nodeType: EdgeType;
+  project_type_id?: string;
 };
 
 export type NodeDataListResponse = {

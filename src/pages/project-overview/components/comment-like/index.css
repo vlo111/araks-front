@@ -16,6 +16,7 @@
 .ql-mention-list-container {
   background-color: #fff;
   border-radius: 4px;
+  z-index: 1000;
 }
 
 .ql-mention-list {

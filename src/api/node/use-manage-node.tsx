@@ -7,6 +7,7 @@ import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from './constants';
 import { NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { errorMessage } from 'helpers/utils';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { URL_GET_PROJECT_ALL_DATA } from 'api/all-data/constants';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -38,6 +39,7 @@ export const useManageNodes = (options?: Options) => {
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);
+      queryClient.invalidateQueries([URL_GET_PROJECT_ALL_DATA.replace(':project_id', params.id || '')]);
       options?.onSuccess?.(data);
     },
     onError: errorMessage,

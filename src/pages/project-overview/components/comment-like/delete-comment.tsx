@@ -1,5 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
+import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
+import { URL_COMMENTS_NODES_LIST, URL_COMMENT_DELETE, URL_COMMENT_NODES_DELETE } from 'api/comments/constants';
 import { useDeleteComment } from 'api/comments/use-delete-comment';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -9,11 +11,20 @@ import { useState } from 'react';
 
 type Props = {
   id: string;
+  nodeId?: string;
 };
 
-export const DeleteComment = ({ id }: Props) => {
+export const DeleteComment = ({ id, nodeId }: Props) => {
   const [isDeleteStart, setDeleteStart] = useState(false);
-  const { mutate } = useDeleteComment(id);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useDeleteComment(id, nodeId ? URL_COMMENT_NODES_DELETE : URL_COMMENT_DELETE, {
+    onSuccess: () => {
+      if (nodeId) {
+        queryClient.invalidateQueries([URL_COMMENTS_NODES_LIST.replace(':node_id', nodeId as string)]);
+      }
+    },
+  });
 
   const handleDelete = async () => {
     await mutate();

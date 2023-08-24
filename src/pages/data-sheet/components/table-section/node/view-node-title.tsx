@@ -42,7 +42,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
         )}
         <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
         <NodeCommentDrawer>
-          <Comments />
+          <Comments nodeId={id} />
         </NodeCommentDrawer>
         <Button type="link" disabled icon={<DownloadOutlined style={{ color: '#414141', fontSize: '24px' }} />} />
         {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && <DeleteNodeModal id={id} onClose={onClose} />}

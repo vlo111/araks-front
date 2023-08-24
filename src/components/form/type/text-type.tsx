@@ -41,7 +41,7 @@ export const TextType = ({ data }: Props) => {
                       rules={[
                         { required: data.required_type, message: VALIDATE_MESSAGES.required },
                         {
-                          len: data.default_property ? 30 : 80,
+                          max: data.default_property ? 30 : 80,
                           message: `The maximum length for this field is ${data.default_property ? 30 : 80} characters`,
                         },
                       ]}

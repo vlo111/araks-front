@@ -1,5 +1,6 @@
 import { Avatar, Divider, Form, List, Skeleton, Space } from 'antd';
 import { useGetComments } from 'api/comments/use-get-comments';
+import { useGetNodeComments } from 'api/comments/use-get-node-comments';
 import { CommentData } from 'api/types';
 import { Icon } from 'components/icon';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -16,9 +17,10 @@ interface CommentListProps {
   data: CommentData[];
   level: number;
   rowsData: CommentData[];
+  nodeId?: string;
 }
 
-const CommentList = ({ data, level, rowsData }: CommentListProps) => {
+const CommentList = ({ data, level, rowsData, nodeId }: CommentListProps) => {
   const form = Form.useFormInstance();
   const { user } = useAuth();
 
@@ -56,7 +58,9 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
                             onClick={() => form.setFieldValue('parent_id', item.id)}
                           />
                         )}
-                        {user && item.user.id === user?.id && <DeleteComment id={item.id} key="delete" />}
+                        {user && item.user.id === user?.id && (
+                          <DeleteComment id={item.id} key="delete" nodeId={nodeId} />
+                        )}
                       </Space>
                     </Space>
                   }
@@ -69,7 +73,11 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
                 />
               </List.Item>
               <Divider style={{ margin: '4px 0' }} />
-              {childData.length ? <CommentList data={childData} rowsData={rowsData} level={level + 1} /> : <></>}
+              {childData.length ? (
+                <CommentList data={childData} rowsData={rowsData} level={level + 1} nodeId={nodeId} />
+              ) : (
+                <></>
+              )}
             </VerticalSpace>
           );
         }}
@@ -101,6 +109,37 @@ export const CommentDataShow = () => {
     <div style={{ height: '100%', overflow: 'auto' }} className="scroll-container">
       {topLevelComments.map((comment) => (
         <CommentList key={comment.id} data={[comment]} rowsData={rowsData} level={0} />
+      ))}
+    </div>
+  );
+};
+
+type NodeDataCommentsProps = {
+  nodeId: string;
+};
+
+export const CommentNodeDataShow = ({ nodeId }: NodeDataCommentsProps) => {
+  const { rowsData, count, isInitialLoading, isFetched } = useGetNodeComments(nodeId);
+
+  if (isFetched && !count) {
+    return (
+      <Title level={1} color={COLORS.PRIMARY.GRAY_DARK} align="center">
+        No comments yet
+      </Title>
+    );
+  }
+
+  if (isInitialLoading) {
+    return <Skeleton avatar title={false} loading={isInitialLoading} active />;
+  }
+
+  // Create a list of top-level comments (comments without parents)
+  const topLevelComments = rowsData.filter((comment) => comment.parent_id === null);
+
+  return (
+    <div style={{ height: '100%', overflow: 'auto' }} className="scroll-container">
+      {topLevelComments.map((comment) => (
+        <CommentList key={comment.id} data={[comment]} rowsData={rowsData} level={0} nodeId={nodeId} />
       ))}
     </div>
   );

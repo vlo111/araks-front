@@ -5,7 +5,7 @@ import { ProjectCommentManage } from 'api/types';
 import { FormItem } from 'components/form/form-item';
 import { VALIDATE_MESSAGES } from 'helpers/constants';
 import { useParams } from 'react-router-dom';
-import { CommentDataShow } from './comment-data';
+import { CommentDataShow, CommentNodeDataShow } from './comment-data';
 import { ReplayText } from './replay-text';
 import { MentionRowsValue } from 'api/user/types';
 import { useGetUserSearch } from 'api/user/use-get-user-search';
@@ -14,6 +14,7 @@ import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
 import 'quill-mention';
+import { useManageNodeComment } from 'api/comments/use-manage-node-comment';
 
 const formats = ['bold', 'italic', 'underline', 'mention'];
 
@@ -38,13 +39,18 @@ const extractMentions = (delta: any): MentionRowsValue[] => {
   return mentions;
 };
 
-export const Comments = () => {
+type Props = {
+  nodeId?: string;
+};
+
+export const Comments = ({ nodeId }: Props) => {
   const params = useParams();
   const quillRef = useRef<ReactQuill | null>(null);
 
   const [form] = Form.useForm();
   const { mutateAsync } = useGetUserSearch();
   const { mutate } = useManageComment();
+  const { mutate: mutateNode } = useManageNodeComment(nodeId);
 
   const handleGetMentions = (): MentionRowsValue[] => {
     if (quillRef.current) {
@@ -85,12 +91,22 @@ export const Comments = () => {
 
   const onFinish = (values: ProjectCommentManage) => {
     const mentions = handleGetMentions();
-    mutate({
-      ...values,
-      project_id: params.id,
-      parent_id: form.getFieldValue('parent_id') || null,
-      mentioned_users: [...new Set(mentions.map((item) => item.id))],
-    });
+    if (nodeId) {
+      mutateNode({
+        ...values,
+        project_id: params.id,
+        node_id: nodeId,
+        parent_id: form.getFieldValue('parent_id') || null,
+        mentioned_users: [...new Set(mentions.map((item) => item.id))],
+      });
+    } else {
+      mutate({
+        ...values,
+        project_id: params.id,
+        parent_id: form.getFieldValue('parent_id') || null,
+        mentioned_users: [...new Set(mentions.map((item) => item.id))],
+      });
+    }
     form.resetFields();
   };
 
@@ -105,9 +121,9 @@ export const Comments = () => {
       initialValues={{ parent_id: null }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-        <CommentDataShow />
+        {nodeId ? <CommentNodeDataShow nodeId={nodeId} /> : <CommentDataShow />}
         <div>
-          <ReplayText />
+          <ReplayText nodeId={nodeId} />
           <FormItem
             name="comments"
             rules={[
