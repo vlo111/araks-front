@@ -37,7 +37,7 @@ const contextMenu = css`
 `;
 
 export const Wrapper = styled.div`
-  margin-left: 300px;
+  margin-left: 480px;
   z-index: 0;
   ${contextMenu};
 

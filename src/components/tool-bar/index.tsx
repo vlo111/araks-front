@@ -7,6 +7,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { LINE_HEIGHT } from 'components/layouts/components/schema/container/register/node';
 import { animateGraphFit } from 'components/layouts/components/schema/helpers/utils';
 import { ToolbarWrapper } from './wrapper';
+import { useGraph } from '../layouts/components/visualisation/wrapper';
 
 export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
   const { graph, selected } = useSchema() || {};
@@ -59,6 +60,40 @@ export const Toolbar: React.FC<{ position: string }> = ({ position }) => {
 
   return (
     <ToolbarWrapper position={position}>
+      <FitType onCenterType={onCenterType} />
+      <FitSchema onCenterContent={onCenterContent} />
+      <div className="box zoom">
+        <ZoomIn onZoomIn={onZoomIn} />
+        <div className="separate" />
+        <ZoomOut onZoomOut={onZoomOut} />
+      </div>
+    </ToolbarWrapper>
+  );
+};
+
+export const ToolbarVisualization = () => {
+  const { graph } = useGraph() || {};
+
+  const onCenterType = useCallback(() => {
+    graph.fitCenter();
+    graph.fitView();
+  }, [graph]);
+
+  const onCenterContent = useCallback(() => {
+    graph.fitCenter();
+    graph.fitView();
+  }, [graph]);
+
+  const onZoomIn = useCallback(() => {
+    graph.zoomTo(graph.getZoom() + 0.1, { x: (window.innerWidth - 480) / 2, y: window.innerHeight / 2 });
+  }, [graph]);
+
+  const onZoomOut = useCallback(() => {
+    graph.zoomTo(graph.getZoom() - 0.1, { x: (window.innerWidth - 480) / 2, y: window.innerHeight / 2 });
+  }, [graph]);
+
+  return (
+    <ToolbarWrapper position="right">
       <FitType onCenterType={onCenterType} />
       <FitSchema onCenterContent={onCenterContent} />
       <div className="box zoom">
