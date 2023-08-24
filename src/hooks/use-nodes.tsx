@@ -29,5 +29,11 @@ export const useNodes: () => { isInitialLoading: boolean; nodes: AllDataResponse
     }
   }, [graph, params.edges, params.nodes, nodes]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (graph?.render) graph?.render();
+    }, 500);
+  }, [graph]);
+
   return { nodes, isInitialLoading };
 };

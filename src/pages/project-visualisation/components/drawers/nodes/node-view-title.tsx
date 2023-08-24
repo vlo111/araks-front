@@ -13,7 +13,7 @@ type ViewNodeProps = {
   onClose: () => void;
 };
 
-export const NodeViewTitle = ({ id, name, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+export const NodeViewTitle = ({ id, name, isEdit, setIsEdit }: ViewNodeProps) => {
   const { startDeleteNode } = useGraph();
 
   return (

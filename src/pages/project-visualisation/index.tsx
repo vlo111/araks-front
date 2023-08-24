@@ -1,4 +1,4 @@
-import { Graph } from './components/graph'
+import { Graph } from './components/graph';
 import { LeftSection } from './components/left-section';
 import { useNodes } from 'hooks/use-nodes';
 import { NodeView } from './components/drawers/nodes/node-view';
@@ -7,7 +7,8 @@ import { Settings } from './components/settings';
 import { NodeDelete } from './components/modals/delete-node';
 import { EdgeCreate } from './components/drawers/edges/add-edge';
 import { EdgeDelete } from './components/modals/delete-edge';
-import {EdgeView} from "./components/drawers/edges/edge-view";
+import { EdgeView } from './components/drawers/edges/edge-view';
+import { ToolbarVisualization } from '../../components/tool-bar';
 
 export const ProjectVisualisation = () => {
   useNodes();
@@ -15,7 +16,8 @@ export const ProjectVisualisation = () => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <Graph />
-      <LeftSection/>
+      <ToolbarVisualization />
+      <LeftSection />
       <Settings />
       <NodeCreate />
       <NodeView />

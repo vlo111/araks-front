@@ -79,6 +79,7 @@ export const PropertyDataTypeSelectSchema = ({ isEdit, nodeTypeId, ...props }: P
       placeholder="Please select"
       fieldNames={{ value: 'code', label: 'name' }}
       options={data}
+      {...props}
     />
   );
 };

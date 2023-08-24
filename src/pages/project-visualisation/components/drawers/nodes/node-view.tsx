@@ -21,8 +21,8 @@ import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
-import { useManageNodes } from 'api/node/use-manage-node';
-import { setUploadFileStructure } from 'pages/data-sheet/utils';
+import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
+import { useCallback, useMemo } from 'react';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -94,72 +94,114 @@ export const NodeView = () => {
     },
   });
 
-  const { mutate } = useManageNodes({
-    onSuccess: (data) => {
-      const name = form.getFieldValue('name')[0];
-      graph.updateItem(openNode.id, {
-        label: name,
-      });
-    },
-  });
-
   const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.nodeType.id, {
     enabled: !!node?.nodeType.id,
-    onSuccess: (data) => {
-      // form.setFieldValue('parent_id', parent_id)
+  });
+
+  const { mutate } = useManageNodesGraph({
+    onSuccess: ({ data, variables }) => {
+      updateEdges(data, variables);
     },
   });
 
-  const onFinish = (values: NodeBody) => {
-    const mainData = {
-      name: (values.name as string[]).join(''),
-      default_image: (values.node_icon as string[]).join(''),
-    };
+  const updateEdges = useCallback(
+    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
+      /* Update deleted edges  */
+      const deleteEdges = nodeData?.edges.filter(
+        (edges1) => !variables?.edges?.some((edges2) => edges1.id === edges2.id)
+      );
 
-    const dataToSubmit = nodeData?.properties
-      ?.map((item) => {
-        return item.project_type_property_type !== PropertyTypes.Connection
-          ? {
-              id: item.id,
-              project_type_property_id: item.project_type_property_id,
-              project_type_property_type: item.project_type_property_type,
-              nodes_data: setNodeDataUpdateValue(item, values),
-            }
-          : null;
-      })
-      .filter(Boolean);
+      deleteEdges?.forEach((e) => graph.removeItem(e.id));
 
-    const dataToSubmitEdges = properties
-      ?.map((item) => {
-        const formName = getConnectionFormName(item.name, item.id);
-        return item.ref_property_type_id === PropertyTypes.Connection
-          ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
-              id: itemConn.rowId,
-              target_id: itemConn.target_id,
-              target_type_id: itemConn.target_type_id,
-              project_edge_type_id: itemConn.id,
-            }))
-          : null;
-      })
-      .filter(Boolean);
+      /* Update created edges  */
+      const createEdges = variables?.edges?.filter((edges1) =>
+        nodeData?.edges.some((edges2) => edges1.id === edges2.id)
+      );
+      createEdges?.forEach((edge) => {
+        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
+        graph.addItem('edge', {
+          id: edge.id,
+          label: type?.name,
+          source: data.id,
+          target: edge.target_id,
+          project_edge_type_id: edge.project_edge_type_id,
+        });
+      });
+    },
+    [graph, nodeData?.edges, properties]
+  );
 
-    if (nodeData?.id) {
-      mutate({
-        ...mainData,
-        nodes: dataToSubmit,
-        edges: dataToSubmitEdges?.flat() || [],
-        project_type_id: node?.nodeType || '',
-        nodeId: nodeData.id,
-      } as NodeDataSubmit);
-      onClose();
-    }
-  };
-
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setIsEdit(false);
-
     finishOpenNode();
-  };
+  }, [finishOpenNode]);
+
+  const onFinish = useCallback(
+    (values: NodeBody) => {
+      const mainData = {
+        name: (values.name as string[]).join(''),
+        default_image: (values.node_icon as string[]).join(''),
+      };
+
+      const dataToSubmit = nodeData?.properties
+        ?.map((item) => {
+          return item.project_type_property_type !== PropertyTypes.Connection
+            ? {
+                id: item.id,
+                project_type_property_id: item.project_type_property_id,
+                project_type_property_type: item.project_type_property_type,
+                nodes_data: setNodeDataUpdateValue(item, values),
+              }
+            : null;
+        })
+        .filter(Boolean);
+
+      const dataToSubmitEdges = properties
+        ?.map((item) => {
+          const formName = getConnectionFormName(item.name, item.id);
+          return item.ref_property_type_id === PropertyTypes.Connection
+            ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+                id: itemConn.rowId,
+                target_id: itemConn.target_id,
+                target_type_id: itemConn.target_type_id,
+                project_edge_type_id: itemConn.id,
+              }))
+            : null;
+        })
+        .filter(Boolean);
+
+      if (nodeData?.id) {
+        mutate({
+          ...mainData,
+          nodes: dataToSubmit,
+          edges: dataToSubmitEdges?.flat() || [],
+          project_type_id: node?.nodeType || '',
+          nodeId: nodeData.id,
+        } as NodeDataSubmit);
+        onClose();
+      }
+    },
+    [mutate, node?.nodeType, nodeData, onClose, properties]
+  );
+
+  const footer = useMemo(
+    () =>
+      isEdit && (
+        <Row gutter={16} justify="center">
+          <Col span={4}>
+            <Button style={{ marginRight: 8 }} onClick={onClose} block>
+              Cancel
+            </Button>
+          </Col>
+          <Col span={4}>
+            <Button type="primary" onClick={() => form.submit()} block>
+              Save
+            </Button>
+          </Col>
+        </Row>
+      ),
+    [isEdit, onClose, form]
+  );
 
   return (
     <Drawer
@@ -177,22 +219,7 @@ export const NodeView = () => {
           onClose={onClose}
         />
       }
-      footer={
-        isEdit && (
-          <Row gutter={16} justify="center">
-            <Col span={4}>
-              <Button style={{ marginRight: 8 }} onClick={onClose} block>
-                Cancel
-              </Button>
-            </Col>
-            <Col span={4}>
-              <Button type="primary" onClick={() => form.submit()} block>
-                Save
-              </Button>
-            </Col>
-          </Row>
-        )
-      }
+      footer={footer}
       open={openNode?.isOpened}
     >
       {isEdit ? (

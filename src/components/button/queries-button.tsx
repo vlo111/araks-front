@@ -1,4 +1,4 @@
-import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -64,12 +64,9 @@ export const QueriesButton = () => {
         className="queries-filter-drawer"
         headerStyle={{ background: '#F2F2F2', padding: '12px 16px 12px 12px' }}
         title={
-          <Row justify="space-between">
+          <Row justify="space-around">
             <Col span={6}>
-              <Space>
-                <CaretRightOutlined onClick={onClose} style={{ fontSize: '32px' }} />
-                Queries
-              </Space>
+              <Space>Queries</Space>
             </Col>
             <Col span={8}>
               <Space>
@@ -86,6 +83,9 @@ export const QueriesButton = () => {
                   />
                 </Form.Item>
               </Space>
+            </Col>
+            <Col>
+              <CloseOutlined onClick={onClose} style={{ fontSize: '20px' }} />
             </Col>
           </Row>
         }
