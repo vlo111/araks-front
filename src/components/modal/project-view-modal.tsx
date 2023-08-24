@@ -1,4 +1,4 @@
-import { ReactComponent as LeftCircle } from 'components/icons/right-button.svg';
+import { ReactComponent as LeftCircle } from 'components/icons/left-button.svg';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 
 import { Button } from 'components/button';
@@ -123,7 +123,10 @@ const Title = ({
     <TitleWrapper>
       <Space>
         <ProjectLogo project={project} />
-        <Text>{project.name}</Text>
+        <Col style={{display: 'grid', gridTemplateColumns: 'auto'}}>
+          <Text>{project.name}</Text>
+          <Text>By {project?.user?.first_name}</Text>
+        </Col>
       </Space>
       <Space size={30}>
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
@@ -171,11 +174,15 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
     ? {
         id: projectData.id,
         color: projectData.color,
-        name: projectData.title,
+        name: projectData.title + '1',
         folderId: projectData.folder_id,
         type: projectData.privacy,
         dateTime: dayjs(projectData.updated_at).format('YYYY-MM-DD HH:mm'),
         icon: projectData.icon,
+        user: {
+          first_name: projectData?.user?.first_name,
+          id: projectData?.user?.id
+        }
       }
     : ({} as ProjectList);
 

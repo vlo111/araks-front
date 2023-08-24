@@ -70,6 +70,10 @@ export type ProjectFullInfo = {
   token: string;
   updated_at: string;
   user_id: string;
+  user: {
+    id: string;
+    first_name: string;
+  };
   perspective_users: PerspectiveUser[];
   projectsNodeTypes: IProjectType[];
   projectsEdgeTypes: {
