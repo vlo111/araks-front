@@ -41,7 +41,6 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
           />
         )}
         <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
-        <Button type="link" disabled icon={<Icon color="#414141" icon="chat_bubble_outline_black" size={24} />} />
         <NodeCommentDrawer>
           <Comments />
         </NodeCommentDrawer>

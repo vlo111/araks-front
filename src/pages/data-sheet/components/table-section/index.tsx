@@ -94,17 +94,17 @@ export const TableSection = () => {
 
   useEffect(() => {
     if (columns.length) {
-      let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
+      let summaryHeight = document.querySelector('#node-table .ant-table-thead')?.clientHeight || 0;
       if (!rowData) {
         setTableHead(summaryHeight);
+        return;
       }
-      const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
+      const columnsProperty = document.querySelectorAll('#node-table .ant-table-tbody .ant-table-row');
 
       const firstFourElements = Array.from(columnsProperty).slice(0, data.length ?? 0);
       firstFourElements.forEach((column: Element) => {
         summaryHeight += column.clientHeight || 0;
       });
-
       setTableHead(summaryHeight);
     }
   }, [columns, data.length, rowData]);

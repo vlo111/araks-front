@@ -16,7 +16,17 @@ type SuccessType = {
   default_image: null;
 };
 
+export type ImportedTableDataSummary = {
+  key: string;
+  existingColumns: string;
+  existingRows: number;
+  importedColumns: string;
+  importedRows: number;
+  mergedRows: number;
+};
+
 export type ImportNodesResponse = {
   success: SuccessType[];
   warnings: string[];
+  tableData: ImportedTableDataSummary[];
 };

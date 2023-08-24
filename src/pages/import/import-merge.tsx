@@ -6,13 +6,13 @@ import { useImport } from 'context/import-context';
 const columns = [
   {
     title: 'Existing columns',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'existingColumns',
+    key: 'existingColumns',
   },
   {
     title: 'Existing rows',
-    dataIndex: 'rows',
-    key: 'rows',
+    dataIndex: 'existingRows',
+    key: 'existingRows',
   },
   {
     title: 'Imported columns',
@@ -52,7 +52,7 @@ export const ImportMerge = () => {
       <Row>
         <Col span={24}>
           <Table
-            dataSource={state.mergedData?.success}
+            dataSource={state.mergedData?.tableData}
             columns={columns}
             tableLayout="fixed"
             // scroll={{ x: 'max-content' }}

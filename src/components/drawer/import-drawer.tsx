@@ -142,7 +142,7 @@ export const ImportDrawer = () => {
           >
             <VerticalSpace>
               <Icon color="#414141" icon="import-file" size={151} />
-              <Text color={COLORS.PRIMARY.GRAY}>Import other Xls or CSV file</Text>
+              <Text color={COLORS.PRIMARY.GRAY}>Import other XlS or CSV file</Text>
               <Text color={COLORS.PRIMARY.BLUE} underline>
                 Browse on your device
               </Text>
