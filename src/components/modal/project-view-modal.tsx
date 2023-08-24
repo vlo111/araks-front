@@ -125,7 +125,7 @@ const Title = ({
         <ProjectLogo project={project} />
         <Col style={{display: 'grid', gridTemplateColumns: 'auto'}}>
           <Text>{project.name}</Text>
-          <Text>By {project?.user?.first_name}</Text>
+          <Text>By {project?.user?.first_name} {project?.user?.last_name}</Text>
         </Col>
       </Space>
       <Space size={30}>
@@ -181,6 +181,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
         icon: projectData.icon,
         user: {
           first_name: projectData?.user?.first_name,
+          last_name: projectData?.user?.last_name,
           id: projectData?.user?.id
         }
       }

@@ -26,6 +26,7 @@ export type ProjectList = {
     folderId: string;
     user?: {
         first_name: string;
+        last_name: string;
         id: string;
     }
 };
