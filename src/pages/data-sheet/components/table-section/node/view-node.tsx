@@ -31,9 +31,9 @@ export const VIewNode = () => {
         <Title level={3}>{selectedView?.name}</Title>
       </VerticalSpace>
       {selectedView?.properties ? (
-        selectedView.properties.map((data) => {
+        selectedView.properties.map((data, index) => {
           return (
-            <VerticalSpace key={data.id}>
+            <VerticalSpace key={data.id + index}>
               <Text color={COLORS.PRIMARY.BLUE}>{data.nodeTypeProperty.name}</Text>
               {getRowData(data)}
             </VerticalSpace>

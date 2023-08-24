@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Form } from 'antd';
-import { useNodes } from 'hooks/use-nodes';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { QueriesForm } from 'components/form/all-data/queries-form';
 import { NodePropertiesValues } from 'types/node';
@@ -12,8 +11,7 @@ type Props = {
 };
 
 export const Styling = () => {
-  const { nodes } = useNodes();
-  const { graph } = useGraph() ?? {};
+  const { graph, nodes } = useGraph() ?? {};
   const form = Form.useFormInstance();
   const [openTable, setOpenTable] = useState(true);
 
@@ -22,8 +20,14 @@ export const Styling = () => {
       for (const query of values.queries) {
         if (node.project_type_id === query.id) {
           graph.updateItem(node.id, {
+            type: 'circle',
             size: query.size,
-            icon: query.icon,
+            icon: {
+              show: true,
+              img: query.icon,
+              width: query.size / 2,
+              height: query.size / 2,
+            },
             style: {
               stroke: query.color,
             },

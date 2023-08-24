@@ -13,6 +13,7 @@ import { ConnectionType } from './type/connection-type';
 import { DateTimeType } from './type/date-time-type';
 import { DateType } from './type/date-type';
 import { DocumentType } from './type/document-type';
+import { ImageType } from './type/image-type';
 import { LocationType } from './type/location-type';
 import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
@@ -48,16 +49,15 @@ export const AddConnectionNodeForm = ({ data, isInitialLoading }: Props) => {
         <Row justify="center">
           <Col span={8}>
             {data?.properties?.map((item) => {
-              // eslint-disable-next-line no-console
-              console.log('item', item);
               switch (item.ref_property_type_id) {
                 case PropertyTypes.Text:
                   return <TextType key={item.id} data={item} />;
                 case PropertyTypes.Location:
                   return <LocationType key={item.id} data={item} />;
                 case PropertyTypes.URL:
-                case PropertyTypes.IMAGE_URL:
                   return <UrlType key={item.id} data={item} />;
+                case PropertyTypes.IMAGE_URL:
+                  return <ImageType key={item.id} data={item} />;
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
                   return <NumericType key={item.id} data={item} />;

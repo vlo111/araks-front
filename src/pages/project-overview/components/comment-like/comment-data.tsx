@@ -46,14 +46,16 @@ const CommentList = ({ data, level, rowsData }: CommentListProps) => {
                         </SecondaryText>
                       </VerticalSpace>
                       <Space>
-                        <Icon
-                          color={COLORS.PRIMARY.BLUE}
-                          icon="arrow-up-left1"
-                          key="reply"
-                          size={20}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => form.setFieldValue('parent_id', item.id)}
-                        />
+                        {level < 2 && (
+                          <Icon
+                            color={COLORS.PRIMARY.BLUE}
+                            icon="arrow-up-left1"
+                            key="reply"
+                            size={20}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => form.setFieldValue('parent_id', item.id)}
+                          />
+                        )}
                         {user && item.user.id === user?.id && <DeleteComment id={item.id} key="delete" />}
                       </Space>
                     </Space>

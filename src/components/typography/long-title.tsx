@@ -19,6 +19,6 @@ export const LongTitle = ({
   ...props
 }: Props) => (
   <LongTextPopover title={titleContent || <Text>{name}</Text>} align={{ offset: [15, 22] }} {...props}>
-    <Text className={className}>{name.substring(0, cutPosition) + '...'}</Text>
+    <Text className={className}>{name?.substring(0, cutPosition) + '...'}</Text>
   </LongTextPopover>
 );

@@ -1,4 +1,4 @@
-import { Col, Drawer, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row, UploadFile } from 'antd';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
@@ -21,6 +21,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
 
+  /** properties to draw the form */
   const { isInitialLoading, data } = useGetProjectNodeTypeProperties(nodeTypeId, {
     enabled: !!(nodeTypeId && isConnectionType === false),
   });
@@ -39,8 +40,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: NodeBody) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values, data);
     const mainData = { name: '', default_image: '' };
     const dataToSubmit = data
       ?.map((item) => {
@@ -49,7 +48,9 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           return;
         }
         if (item.name === 'node_icon') {
-          mainData.default_image = (values.node_icon as string[]).join('');
+          mainData.default_image = values.node_icon
+            ? (values.node_icon as UploadFile[])?.[0].response.data.uploadPath
+            : '';
           return;
         }
 

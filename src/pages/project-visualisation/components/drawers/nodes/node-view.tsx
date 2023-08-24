@@ -57,7 +57,7 @@ export const NodeView = () => {
     onSuccess: (nodeData) => {
       const initialAcc = {
         name: [nodeData.name],
-        node_icon: [nodeData.default_image],
+        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
       };
 
       const fieldsData = nodeData.properties?.reduce((acc, item) => {
@@ -88,7 +88,7 @@ export const NodeView = () => {
       form.setFieldsValue({
         ...fieldsData,
         name: [nodeData.name],
-        node_icon: [nodeData.default_image],
+        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
         ...connectionFieldsData,
       });
     },

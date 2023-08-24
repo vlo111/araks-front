@@ -1,3 +1,4 @@
+import { UploadFile } from 'antd';
 import { NodeEdgeTypesReturnData } from 'api/types';
 import { TreeNodeType } from './types';
 
@@ -50,3 +51,10 @@ export function filterConnectionTreeData(
     })
     .filter((node) => node !== null) as NodeEdgeTypesReturnData[];
 }
+
+export const setUploadFileStructure = (url: string, name = 'Default image') =>
+  ({
+    url: url,
+    name: name,
+    response: { data: { uploadPath: url, originalFileName: name } },
+  } as UploadFile);

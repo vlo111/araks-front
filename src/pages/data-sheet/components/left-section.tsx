@@ -8,11 +8,11 @@ import { TabTables } from './tab-tables';
 const items: TabsProps['items'] = [
   {
     key: '1',
-    label: 'Tables',
+    label: 'All Data',
   },
   {
     key: '2',
-    label: 'All Data',
+    label: 'Tables',
   },
 ];
 
@@ -22,10 +22,10 @@ export const LeftSection = () => {
   const isXXL = useIsXXlScreen();
   const onChange = (activeKey: string) => {
     if (activeKey === '1') {
-      dispatch({ type: DataSheetActionKind.TABLES_SELECTED, payload: {} });
+      dispatch({ type: DataSheetActionKind.ALL_TYPE_SELECTED, payload: {} });
       return;
     }
-    dispatch({ type: DataSheetActionKind.ALL_TYPE_SELECTED, payload: {} });
+    dispatch({ type: DataSheetActionKind.TABLES_SELECTED, payload: {} });
     return;
   };
   return (
@@ -38,11 +38,11 @@ export const LeftSection = () => {
         children:
           item.key === '1' ? (
             <>
-              <TabTables />
+              <TabTables isCheckable noColors hideConnection />
             </>
           ) : (
             <>
-              <TabTables isCheckable noColors hideConnection />
+              <TabTables />
             </>
           ),
       }))}

@@ -27,7 +27,7 @@ const StyledUpload = styled(Upload)`
   }
 `;
 
-const fileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'];
+const fileTypes = ['.jpg', '.jpeg', '.png', '.psd', '.tiff', '.webp', '.svg'];
 const allowedTypes = fileTypes.join(',');
 const maxSize = 10; // in MB
 
@@ -39,7 +39,7 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-export const DocumentType = ({ data }: Props) => {
+export const ImageType = ({ data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
 
   const label = (
@@ -65,7 +65,6 @@ export const DocumentType = ({ data }: Props) => {
           multiple={data.multiple_type}
           headers={{
             Authorization: `Bearer ${token}`,
-            accept: 'document',
           }}
           maxCount={data.multiple_type ? 5 : 1}
           beforeUpload={(file) => {

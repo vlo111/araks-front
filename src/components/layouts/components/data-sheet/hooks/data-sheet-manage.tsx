@@ -22,13 +22,13 @@ interface DataSheetAction {
 }
 
 export const dataSheetInitialState: DataSheetState = {
-  allTypeSelected: false,
+  allTypeSelected: true,
   color: '#232F6A',
   titleText: '',
   searchText: '',
   addTypeisOpened: false,
   editTypeisOpened: false,
-  selectNodeTypeFinished: false,
+  selectNodeTypeFinished: true,
   filteredNodeTypes: [] as TreeNodeType[],
   nodeTypeId: undefined,
   parentId: undefined,
