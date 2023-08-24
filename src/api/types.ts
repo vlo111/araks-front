@@ -73,6 +73,7 @@ export type ProjectFullInfo = {
   user: {
     id: string;
     first_name: string;
+    last_name: string;
   };
   perspective_users: PerspectiveUser[];
   projectsNodeTypes: IProjectType[];
