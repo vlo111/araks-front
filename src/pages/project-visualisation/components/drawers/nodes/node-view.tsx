@@ -135,11 +135,14 @@ export const NodeView = () => {
 
   const updateNode = useCallback(() => {
     const name = form.getFieldValue('name')[0];
-    // const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
+    const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
     graph.updateItem(openNode.id, {
       label: name,
-      // img,
-      // type: img ? 'image' : 'circle',
+      img,
+      style: {
+        fill: img ? '#00000000' : 'white',
+      },
+      type: 'image',
     });
   }, [form, graph, openNode]);
 
