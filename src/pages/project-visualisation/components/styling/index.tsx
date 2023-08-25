@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form } from 'antd';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { QueriesForm } from 'components/form/all-data/queries-form';
-import { NodePropertiesValues } from 'types/node';
+import {AllDataResponse, NodePropertiesValues} from 'types/node';
 import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
 
@@ -12,36 +12,40 @@ type Props = {
 
 export const Styling = () => {
   const { graph, nodes } = useGraph() ?? {};
-  const form = Form.useFormInstance();
+  const [form] = Form.useForm();
+  const [filteredNodes, setFilteredNodes] = useState<AllDataResponse[]>([]);
   const [openTable, setOpenTable] = useState(true);
+  const initialSize = 40;
 
   const onFinish = (values: Props) => {
-    nodes?.forEach((node) => {
-      for (const query of values.queries) {
-        if (node.project_type_id === query.id) {
+    if (values.queries) {
+      values.queries.forEach(query => {
+        const filteredNodes = nodes.filter(node => node.project_type_id === query.id);
+        setFilteredNodes(prevState => [...prevState, ...filteredNodes]);
+        filteredNodes.forEach(node => {
           graph.updateItem(node.id, {
-            type: 'circle',
-            size: query.size,
+            size: query.size || initialSize,
+            type: query.icon ? query.icon : "circle",
             icon: {
-              show: true,
+              show: !!query.icon,
               img: query.icon,
-              width: query.size / 2,
-              height: query.size / 2,
+              width: query.size / 1.5,
+              height: query.size / 1.5,
             },
             style: {
               stroke: query.color,
             },
           });
-        }
-      }
-    });
-  };
+        });
+      });
+    }
+  }
 
   return (
-    <Form form={form} onFinish={onFinish} style={{ height: '100%' }}>
+    <Form form={form} name='styling' onFinish={onFinish} style={{ height: '100%' }}>
       <StyledMainWrapper>
         <QueriesForm openTable={openTable} setOpenTable={setOpenTable} isVisualisation={true} />
-        <Buttons setOpenTable={setOpenTable} />
+        <Buttons setOpenTable={setOpenTable} filteredNodes={filteredNodes} resetFields={form?.resetFields} />
       </StyledMainWrapper>
     </Form>
   );
