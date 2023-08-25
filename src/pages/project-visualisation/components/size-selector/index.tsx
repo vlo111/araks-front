@@ -18,7 +18,7 @@ type Props = {
 export const SizeComponent = ({initialSize,fieldName}:Props) => {
   const form = Form.useFormInstance();
   const circleSizes = [20, 40, 60, 80,100];
-  const [size, setSize] = useState(initialSize || 60);
+  const [size, setSize] = useState(initialSize || 40);
 
   const setValue = useCallback(
     (size: number) => {
