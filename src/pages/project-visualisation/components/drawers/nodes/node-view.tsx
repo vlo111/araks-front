@@ -138,11 +138,10 @@ export const NodeView = () => {
     const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
     graph.updateItem(openNode.id, {
       label: name,
-      img,
+      type: img ? 'image' : 'circle',
       style: {
         fill: img ? '#00000000' : 'white',
       },
-      type: 'image',
     });
   }, [form, graph, openNode]);
 
