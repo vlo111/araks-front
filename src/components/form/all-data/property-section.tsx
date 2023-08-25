@@ -158,8 +158,8 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
       style={{ fontSize: '16px' }}
       onClick={(event) => {
         event.stopPropagation();
-        removeGraphStyle(queriesList[fieldName]?.id);
         remove(fieldName);
+        removeGraphStyle(queriesList[fieldName]?.id);
       }}
     />
   );
