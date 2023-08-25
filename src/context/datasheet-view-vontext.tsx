@@ -148,7 +148,10 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const onFinish = (values: NodeBody) => {
     const mainData = {
       name: (values.name as string[]).join(''),
-      default_image: values.node_icon ? (values.node_icon as UploadFile[])[0].response.data.uploadPath : '',
+      default_image:
+        values.node_icon && (values.node_icon as [])?.length > 0
+          ? (values.node_icon as UploadFile[])[0].response.data.uploadPath
+          : '',
     };
 
     const dataToSubmit = nodeData?.properties
