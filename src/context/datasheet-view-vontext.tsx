@@ -197,6 +197,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
+        style={{
+          minHeight: 'calc(100vh - 130px)',
+        }}
         title={<ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedViewId as string} onClose={onClose} />}
         mask={false}
         placement="right"
