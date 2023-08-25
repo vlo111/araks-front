@@ -136,7 +136,7 @@ export const NodeView = () => {
   const updateNode = useCallback(() => {
     const name = form.getFieldValue('name')[0];
     const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
-    debugger;
+
     graph.updateItem(openNode.id, {
       label: name,
       type: img ? 'image' : 'circle',
