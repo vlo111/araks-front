@@ -15,7 +15,7 @@ import { AddEdgeType } from 'components/layouts/components/schema/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeSelect } from 'components/select';
-import { Rule } from "antd/es/form";
+import { Rule } from 'antd/es/form';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -90,6 +90,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
     const { id: target_attribute_id } = find(values.target_id);
 
     addEdge({
+      id,
       source_attribute_id,
       target_attribute_id,
       ...values,

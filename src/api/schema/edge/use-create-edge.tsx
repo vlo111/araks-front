@@ -21,10 +21,10 @@ export const useCreateEdge = (id?: string, options?: Options) => {
   const params = useParams();
   const queryClient = useQueryClient();
 
-  const url = id ? URL_PROJECT_EDGE_UPDATE.replace(':id', id || '') : URL_PROJECT_EDGE_CREATE;
-
   const mutation = useMutation<ReturnData, unknown, ProjectEdgeResponse>({
-    mutationFn: ({ ...values }: ProjectEdgeResponse) => {
+    mutationFn: ({ id, ...values }: ProjectEdgeResponse) => {
+      const url = id ? URL_PROJECT_EDGE_UPDATE.replace(':id', id || '') : URL_PROJECT_EDGE_CREATE;
+
       const type = id ? RequestTypes.Put : RequestTypes.Post;
       const body = { ...values };
       if (!id) body.project_id = params.id;

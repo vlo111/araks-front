@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Col, Form, Row, TreeSelect } from 'antd';
+import { Col, Form, Row, TreeSelect, UploadFile } from 'antd';
 import { useParams } from 'react-router-dom';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
@@ -109,9 +109,12 @@ export const NodeCreate: React.FC = () => {
             return;
           }
           if (item.name === 'node_icon') {
-            mainData.default_image = (values.node_icon as string[]).join('');
+            mainData.default_image = values.node_icon
+              ? (values.node_icon as UploadFile[])?.[0].response.data.uploadPath
+              : '';
             return;
           }
+
           return item.ref_property_type_id !== PropertyTypes.Connection
             ? {
                 project_type_property_id: item.id,
@@ -121,13 +124,11 @@ export const NodeCreate: React.FC = () => {
             : null;
         })
         .filter(Boolean);
-
       const dataToSubmitEdges = properties
         ?.map((item) => {
           const formName = getConnectionFormName(item.name, item.id);
           return item.ref_property_type_id === PropertyTypes.Connection
             ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
-                id: itemConn.rowId,
                 target_id: itemConn.target_id,
                 target_type_id: itemConn.target_type_id,
                 project_edge_type_id: itemConn.id,

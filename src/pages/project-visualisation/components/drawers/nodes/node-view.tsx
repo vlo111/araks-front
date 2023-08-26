@@ -135,11 +135,15 @@ export const NodeView = () => {
 
   const updateNode = useCallback(() => {
     const name = form.getFieldValue('name')[0];
-    // const img = form.getFieldValue('node_icon')[0].response.data.uploadPath;
+    const img = form.getFieldValue('node_icon')[0]?.response?.data?.uploadPath;
+
     graph.updateItem(openNode.id, {
       label: name,
-      // img,
-      // type: img ? 'image' : 'circle',
+      type: img ? 'image' : 'circle',
+      img,
+      style: {
+        fill: img ? '#00000000' : 'white',
+      },
     });
   }, [form, graph, openNode]);
 
@@ -152,7 +156,10 @@ export const NodeView = () => {
     (values: NodeBody) => {
       const mainData = {
         name: (values.name as string[]).join(''),
-        default_image: values.node_icon ? (values.node_icon as UploadFile[])[0].response.data.uploadPath : '',
+        default_image:
+          values.node_icon && (values.node_icon as [])?.length > 0
+            ? (values.node_icon as UploadFile[])[0].response.data.uploadPath
+            : '',
       };
 
       const dataToSubmit = nodeData?.properties

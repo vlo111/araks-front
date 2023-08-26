@@ -148,7 +148,10 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const onFinish = (values: NodeBody) => {
     const mainData = {
       name: (values.name as string[]).join(''),
-      default_image: values.node_icon ? (values.node_icon as UploadFile[])[0].response.data.uploadPath : '',
+      default_image:
+        values.node_icon && (values.node_icon as [])?.length > 0
+          ? (values.node_icon as UploadFile[])[0].response.data.uploadPath
+          : '',
     };
 
     const dataToSubmit = nodeData?.properties
@@ -194,6 +197,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
+        style={{
+          minHeight: 'calc(100vh - 130px)',
+        }}
         title={<ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedViewId as string} onClose={onClose} />}
         mask={false}
         placement="right"

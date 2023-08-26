@@ -11,6 +11,7 @@ import { ColorSelect } from '../../select/color-select';
 import { CircleColor } from 'pages/project-visualisation/components/circle-color';
 import { useCallback } from 'react';
 import { IconSelector } from 'pages/project-visualisation/components/icon-selector';
+import { useGraph } from '../../layouts/components/visualisation/wrapper';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -120,8 +121,9 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
   );
 };
 
-export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
+export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) => {
   const form = Form.useFormInstance();
+  const { nodes, graph } = useGraph() || {};
   const queriesList = form.getFieldValue('queries');
 
   const setValue = useCallback(
@@ -135,12 +137,29 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
     console.log(key);
   };
 
+  const removeGraphStyle = (id: string) => {
+    const filteredNodes = nodes.filter((node) => id === node.nodeType.id);
+
+    filteredNodes.forEach((node) => {
+      graph.updateItem(node.id, {
+        size: 40,
+        icon: {
+          show: false,
+        },
+        style: {
+          stroke: node.nodeType.color,
+        },
+      });
+    });
+  };
+
   const genExtra = () => (
     <CloseOutlined
       style={{ fontSize: '16px' }}
       onClick={(event) => {
         event.stopPropagation();
         remove(fieldName);
+        removeGraphStyle(queriesList[fieldName]?.id);
       }}
     />
   );
@@ -158,7 +177,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
             key: '1',
             label: (
               <Space>
-                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color} />}
+                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color}/>}
                 <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
                 {queriesList[fieldName].labelName}
               </Space>
