@@ -19,7 +19,7 @@ const { RangePicker } = DatePicker;
 type Props = {
   remove: (x: number) => void;
   fieldName: number;
-  isVisualisation?:boolean
+  isVisualisation?: boolean;
 };
 
 type ContentType = {
@@ -60,12 +60,12 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
-        <Form.Item name={[fieldName, 'greaterText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonAfter="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.LESS_THAN && (
-        <Form.Item name={[fieldName, 'lessText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
@@ -107,12 +107,12 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.RANGE && (
-        <Form.Item name={[fieldName, 'rangeDates']}>
+        <Form.Item name={[fieldName, 'typeText']}>
           <RangePicker format={dateFormat} style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.EQUAL_TO && (
-        <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
         </Form.Item>
       )}
@@ -120,7 +120,7 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
   );
 };
 
-export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) => {
+export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
   const form = Form.useFormInstance();
   const queriesList = form.getFieldValue('queries');
 
@@ -134,7 +134,6 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
     // eslint-disable-next-line no-console
     console.log(key);
   };
-
 
   const genExtra = () => (
     <CloseOutlined
@@ -159,7 +158,7 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
             key: '1',
             label: (
               <Space>
-                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color}/>}
+                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color} />}
                 <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
                 {queriesList[fieldName].labelName}
               </Space>
@@ -167,16 +166,20 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
             children: (
               <>
                 <>
-                  { isVisualisation && (
+                  {isVisualisation && (
                     <>
-                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]} >
+                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
                         <SizeComponent initialSize={queriesList[fieldName]?.size} fieldName={fieldName} />
                       </Form.Item>
                       <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing icon' }]}>
-                        <IconSelector fieldName={fieldName}/>
+                        <IconSelector fieldName={fieldName} />
                       </Form.Item>
                       <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing color' }]}>
-                          <ColorSelect initialColor={queriesList[fieldName]?.color} fieldName={fieldName} setValue={setValue}/>
+                        <ColorSelect
+                          initialColor={queriesList[fieldName]?.color}
+                          fieldName={fieldName}
+                          setValue={setValue}
+                        />
                       </Form.Item>
                       {queriesList[fieldName].depth !== 1 && (
                         <VerticalSpace>
@@ -192,8 +195,9 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
                       )}
                     </>
                   )}
-              </>
-                  {!isVisualisation && <VerticalSpace>
+                </>
+                {!isVisualisation && (
+                  <VerticalSpace>
                     {queriesList[fieldName]?.labelHead}
                     <Form.Item name={[fieldName, 'type']} rules={[{ required: true, message: 'Missing type' }]}>
                       <QueriesSelect
@@ -203,8 +207,9 @@ export const PropertySection = ({ remove, fieldName,isVisualisation }: Props) =>
                       />
                     </Form.Item>
                     <QueriesContent fieldName={fieldName} />
-                  </VerticalSpace>}
-                </>
+                  </VerticalSpace>
+                )}
+              </>
             ),
             extra: genExtra(),
             showArrow: false,
