@@ -1,9 +1,9 @@
 import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
 import { Avatar, Button, Image, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
+import { DocumentViewDrawer } from 'components/drawer/document-view-drawer';
 import { PropertyTypes } from 'components/form/property/types';
 import { getConnectionFormName } from 'components/form/type/connection-type';
-import { Icon } from 'components/icon';
 import { LocationView } from 'components/location/location-view';
 import { Location } from 'components/modal/types';
 import { ManageNodeTypePopover } from 'components/popover';
@@ -320,32 +320,7 @@ export const getRowData = (item: NodePropertiesValues) => {
       return (
         <Space>
           {item.nodes_data?.map((node) => {
-            return node ? (
-              <Button
-                type="link"
-                href={(node as UploadedFileType).url}
-                target="_blank"
-                icon={<Icon icon="file1" size={11} />}
-                key={(node as UploadedFileType).url}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  width: '100%',
-                  borderRadius: '2.324px',
-                  background: 'linear-gradient(137deg, rgba(246, 246, 246, 0.80) 0%, rgba(246, 246, 246, 0.20) 100%)',
-                  boxShadow: '0px 2.32421875px 3.486328125px 0px rgba(111, 111, 111, 0.10)',
-                }}
-              >
-                <LongTitle
-                  style={{ maxWidth: '500px' }}
-                  className="button-content__text"
-                  name={(node as UploadedFileType).name as string}
-                />
-              </Button>
-            ) : (
-              ''
-            );
+            return node ? <DocumentViewDrawer node={node as UploadedFileType} /> : '';
           })}
         </Space>
       );

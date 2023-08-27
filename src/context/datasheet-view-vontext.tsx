@@ -111,9 +111,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log('nodeData', nodeData);
-
   const { data } = useGetProjectNodeTypeProperties(nodeData?.project_type_id, {
     enabled: !!(nodeData?.project_type_id && isConnectionType === false),
   });
