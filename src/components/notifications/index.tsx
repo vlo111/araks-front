@@ -7,7 +7,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Bell } from '../icons/bell.svg';
 import { NotificationsList } from './notifications-list';
-import { NotificationsStatusFilter } from './types';
+import { NotificationsPage, NotificationsStatusFilter } from './types';
 
 const Badge = styled(BadgeComponent)`
   .ant-badge-dot {
@@ -41,7 +41,11 @@ const StyledRadioButton = styled(Radio.Group)`
 `;
 
 export const Notifications = () => {
-  const [status, setStatus] = useState<NotificationsStatusFilter>(NotificationsStatusFilter.All);
+  const [page, setPage] = useState<NotificationsPage>({
+    page: 1,
+    size: 5,
+    status: NotificationsStatusFilter.All,
+  });
   const [result, setResult] = useState<NotificationsData[]>([]);
 
   return (
@@ -55,7 +59,7 @@ export const Notifications = () => {
         <VerticalSpace>
           <Row justify="space-between" align="middle">
             <Col>
-              <SecondaryText style={{ fontWeight: '700', letterSpacing: '1.28px' }} color="#001479">
+              <SecondaryText style={{ fontWeight: '500', letterSpacing: '1.28px' }} color="#001479">
                 Notifications
               </SecondaryText>
             </Col>
@@ -73,7 +77,11 @@ export const Notifications = () => {
                 defaultValue="all"
                 buttonStyle="solid"
                 onChange={(ev) => {
-                  setStatus(ev.target.value);
+                  setPage((prev) => ({
+                    page: 1,
+                    size: 5,
+                    status: ev.target.value,
+                  }));
                   setResult([]);
                 }}
               >
@@ -84,17 +92,16 @@ export const Notifications = () => {
           </Row>
         </VerticalSpace>
       }
-      overlayInnerStyle={{ overflow: 'auto' }}
+      overlayInnerStyle={{ overflow: 'auto', height: '60vh' }}
       overlayStyle={{
         width: '374px',
-        height: '100px',
         borderRadius: '4px',
         border: '1px solid #FFF',
         background: 'linear-gradient(136deg, rgba(241, 242, 244, 0.72) 0%, rgba(255, 255, 255, 0.65) 100%)',
         boxShadow: '-4px -4px 6px 0px rgba(65, 65, 65, 0.08)',
         backdropFilter: 'blur(16px)',
       }}
-      content={<NotificationsList status={status} result={result} setResult={setResult} />}
+      content={<NotificationsList page={page} result={result} setResult={setResult} setPage={setPage} />}
     >
       <Badge color="#F97070" dot offset={[-5, 10]}>
         <Bell />

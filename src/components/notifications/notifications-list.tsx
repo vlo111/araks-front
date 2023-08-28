@@ -6,22 +6,18 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { formatTimeDifference } from 'helpers/utils';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { NotificationsStatusFilter } from './types';
+import { NotificationsPage, NotificationsStatusFilter } from './types';
 
 type Props = {
-  status: NotificationsStatusFilter;
+  page: NotificationsPage;
   result: NotificationsData[];
   setResult: Dispatch<SetStateAction<NotificationsData[]>>;
+  setPage: Dispatch<SetStateAction<NotificationsPage>>;
 };
 
-export const NotificationsList = ({ status, result, setResult }: Props) => {
-  const [page, setPage] = useState({
-    page: 1,
-    size: 5,
-  });
-
+export const NotificationsList = ({ page: { status, ...page }, result, setResult, setPage }: Props) => {
   const { count, isInitialLoading } = useGetNotificationsAllData(
     {
       ...page,
@@ -35,8 +31,6 @@ export const NotificationsList = ({ status, result, setResult }: Props) => {
   );
 
   const loadMoreData = () => {
-    // eslint-disable-next-line no-console
-    console.log('herer');
     if (isInitialLoading) {
       return;
     }
@@ -47,54 +41,62 @@ export const NotificationsList = ({ status, result, setResult }: Props) => {
   };
 
   return (
-    <InfiniteScroll
+    <div
+      id="scrollableDiv"
       className="scroll-container"
-      dataLength={count}
-      next={loadMoreData}
-      hasMore={result.length < count}
-      loader={isInitialLoading && <Skeleton avatar paragraph={{ rows: 1 }} active />}
-      endMessage={<Divider plain>It is all</Divider>}
-      scrollableTarget="scrollableDiv"
+      style={{
+        height: '40vh',
+        overflow: 'auto',
+      }}
     >
-      <List
-        dataSource={result}
-        itemLayout="horizontal"
-        renderItem={(item) => (
-          <VerticalSpace key={item.id} size={0}>
-            <List.Item key={item.id}>
-              <List.Item.Meta
-                avatar={<Avatar src={item.user.avatar} />}
-                title={
-                  <Row justify="space-between" align="top">
-                    <Col span={22}>
-                      <SecondaryText
-                        color={COLORS.PRIMARY.BLUE}
-                      >{`${item.user.first_name} ${item.user.last_name} `}</SecondaryText>
-                      <SecondaryText>{item.text}</SecondaryText>
-                    </Col>
-                    <Col span={2}>
-                      <CloseOutlined style={{ color: '#232F6A' }} />
-                    </Col>
-                  </Row>
-                }
-                description={
-                  <Descriptions
-                    items={[
-                      {
-                        key: item.id,
-                        label: 'Project',
-                        children: item.projects.title,
-                      },
-                    ]}
-                  />
-                }
-              />
-            </List.Item>
-            <SecondaryText color={COLORS.PRIMARY.GRAY_LIGHT}>{formatTimeDifference(item.created_at)}</SecondaryText>
-            <Divider style={{ margin: '0' }} />
-          </VerticalSpace>
-        )}
-      />
-    </InfiniteScroll>
+      <InfiniteScroll
+        dataLength={result.length}
+        next={loadMoreData}
+        hasMore={result.length < count}
+        loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+        endMessage={<Divider plain>It is all</Divider>}
+        scrollableTarget="scrollableDiv"
+      >
+        <List
+          dataSource={result}
+          itemLayout="horizontal"
+          renderItem={(item) => (
+            <VerticalSpace key={item.id} size={0}>
+              <List.Item key={item.id}>
+                <List.Item.Meta
+                  avatar={<Avatar src={item.user.avatar} />}
+                  title={
+                    <Row justify="space-between" align="top">
+                      <Col span={22}>
+                        <SecondaryText
+                          color={COLORS.PRIMARY.BLUE}
+                        >{`${item.user.first_name} ${item.user.last_name} `}</SecondaryText>
+                        <SecondaryText>{item.text}</SecondaryText>
+                      </Col>
+                      <Col span={2}>
+                        <CloseOutlined style={{ color: '#232F6A' }} />
+                      </Col>
+                    </Row>
+                  }
+                  description={
+                    <Descriptions
+                      items={[
+                        {
+                          key: item.id,
+                          label: 'Project',
+                          children: item.projects.title,
+                        },
+                      ]}
+                    />
+                  }
+                />
+              </List.Item>
+              <SecondaryText color={COLORS.PRIMARY.GRAY_LIGHT}>{formatTimeDifference(item.created_at)}</SecondaryText>
+              <Divider style={{ margin: '0' }} />
+            </VerticalSpace>
+          )}
+        />
+      </InfiniteScroll>
+    </div>
   );
 };
