@@ -3,21 +3,12 @@ import { Button, Col, Drawer, DrawerProps, Row, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
-import { useEffect, useState } from 'react';
+import { useGetHeaderHeight } from 'hooks/use-get-header-height';
+import { useState } from 'react';
 
 export const NodeCommentDrawer = ({ children, ...props }: Partial<DrawerProps>) => {
-  const [sectionHeight, setSectionHeight] = useState('0');
+  const sectionHeight = useGetHeaderHeight();
 
-  useEffect(() => {
-    const headerHeight = document.getElementById('overview-header')?.clientHeight;
-    const headerTabsHeight = document.querySelector('#overview-header-tabs .ant-tabs-nav')?.clientHeight;
-
-    // Calculate the content height and set it to state
-    const contentHeight = `calc(${headerHeight}px + ${headerTabsHeight}px )`;
-    setSectionHeight(contentHeight);
-  }, []);
-  // eslint-disable-next-line no-console
-  console.log('sectionHeight', sectionHeight);
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <>

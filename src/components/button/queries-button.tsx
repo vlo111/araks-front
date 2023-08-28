@@ -1,9 +1,11 @@
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
 import { QueriesForm } from 'components/form/all-data/queries-form';
+import { QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
+import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, ButtonWithIcon } from '.';
@@ -24,6 +26,17 @@ const StyledRadioButton = styled(Radio.Group)`
   }
 `;
 
+type FormQueryValues = {
+  operator: 'and' | 'or';
+  queries: (
+    | TreeNodeType
+    | (TreeConnectionType & {
+        type: QueryFilterTypes;
+        typeText: string;
+      })
+  )[];
+};
+
 export const QueriesButton = () => {
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
@@ -36,9 +49,21 @@ export const QueriesButton = () => {
     form.resetFields();
   };
 
-  const onFinish = (values: unknown) => {
+  const onFinish = (values: FormQueryValues) => {
     // eslint-disable-next-line no-console
     console.log('values', values);
+    const data = {
+      operator: values.operator,
+      query: values.queries.map((query) => ({
+        [query.name]: {
+          type: query.ref_property_type_id,
+          action: query.type,
+          value: query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+        },
+      })),
+    };
+    // eslint-disable-next-line no-console
+    console.log('data to submit', data);
   };
 
   useEffect(() => {
@@ -71,7 +96,7 @@ export const QueriesButton = () => {
             <Col span={8}>
               <Space>
                 <UsefulInformationTooltip infoText="Inherit parent options" />
-                <Form.Item name="switchField" noStyle initialValue={'and'}>
+                <Form.Item name="operator" noStyle initialValue={'and'}>
                   <StyledRadioButton
                     size="small"
                     options={[

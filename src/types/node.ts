@@ -154,6 +154,7 @@ export type ConnectionSourcesSearchResponse = {
 export type AllDataDocumentResponse = {
   color: string;
   node_id: string;
+  node_name: string;
   project_id: string;
   property_id: string;
   property_name: string;

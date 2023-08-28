@@ -7,7 +7,7 @@ const PaginationStyle = styled(Pagination)`
   & {
     display: flex;
     justify-content: end;
-    padding: 24px;
+    padding: 48px 24px 24px;
 
     .ant-pagination-prev,
     .ant-pagination-next {

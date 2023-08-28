@@ -20,7 +20,7 @@ const { RangePicker } = DatePicker;
 type Props = {
   remove: (x: number) => void;
   fieldName: number;
-  isVisualisation?:boolean
+  isVisualisation?: boolean;
 };
 
 type ContentType = {
@@ -61,12 +61,12 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
-        <Form.Item name={[fieldName, 'greaterText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonAfter="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.LESS_THAN && (
-        <Form.Item name={[fieldName, 'lessText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="<" style={{ width: '100%' }} />
         </Form.Item>
       )}
@@ -108,12 +108,12 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.RANGE && (
-        <Form.Item name={[fieldName, 'rangeDates']}>
+        <Form.Item name={[fieldName, 'typeText']}>
           <RangePicker format={dateFormat} style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.EQUAL_TO && (
-        <Form.Item name={[fieldName, 'equalText']} rules={[{ required: true, message: 'Field is required' }]}>
+        <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
         </Form.Item>
       )}
@@ -121,7 +121,7 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
   );
 };
 
-export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
+export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) => {
   const form = Form.useFormInstance();
   const { nodes, graph } = useGraph() || {};
   const queriesList = form.getFieldValue('queries');
@@ -177,7 +177,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
             key: '1',
             label: (
               <Space>
-                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color} />}
+                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color}/>}
                 <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
                 {queriesList[fieldName].labelName}
               </Space>

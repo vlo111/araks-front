@@ -39,7 +39,7 @@ export const TableSection = () => {
   const { nodeTypeId } = useDataSheetWrapper();
   const { rowsData: data, count: pageCount } = useGetTypeNodes(pageData, nodeTypeId, {
     enabled: !!nodeTypeId,
-    onSuccess: ({ rows: data }) => {
+    onSuccess: ({ rows: data, count }) => {
       const rows = data.map((row) => ({
         ...row.properties?.reduce(
           (curr: DataType, item: NodePropertiesValues) => {
@@ -66,11 +66,12 @@ export const TableSection = () => {
           };
         }, {} as DataType),
       }));
+
       setRowData([
         ...(rows ? rows : []),
         ...dataSource(
           rows?.length || 0,
-          pageCount < pageData.size ? (pageCount > DEFAULT_PAGE_SIZE ? pageCount : DEFAULT_PAGE_SIZE) : pageData.size
+          count < pageData.size ? (count > DEFAULT_PAGE_SIZE ? count : DEFAULT_PAGE_SIZE) : pageData.size
         ),
       ] as DataType[]);
     },

@@ -9,6 +9,7 @@ import { useGetProjectAllDocuments } from 'api/all-data/use-get-project-all-docu
 import { Button } from 'components/button';
 import { Icon } from 'components/icon';
 import { MarkedText } from 'components/typography/marked-text';
+import { useViewDatasheet } from 'context/datasheet-view-vontext';
 
 type TypeInfoProps = {
   color?: string;
@@ -59,6 +60,10 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
   } = useGetProjectAllDocuments(filterValue, {
     enabled: !!(filterValue.project_type_list_id && filterValue.type === 'document'),
   });
+  const { dispatch } = useViewDatasheet();
+
+  // eslint-disable-next-line no-console
+  console.log('rowsData', rowsData);
 
   return (
     <Spin spinning={isInitialLoading}>
@@ -73,9 +78,11 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
                 title={
                   <Row align="top">
                     <Col span={3} style={{ textAlign: 'left' }}>
-                      <Text color={COLORS.PRIMARY.GRAY} underline>
-                        {item.property_name}
-                      </Text>
+                      <Button onClick={() => dispatch(item.node_id)} type="link">
+                        <Text color={COLORS.PRIMARY.GRAY} underline>
+                          {item.node_name}
+                        </Text>
+                      </Button>
                     </Col>
                     <Col span={15}>
                       {item.data?.map((dataItem) => (
