@@ -6,25 +6,17 @@ interface MarkedTextProps {
 }
 
 const extractMatchedText = (text: string) => {
-  const matchStartTag = '<em>';
-  const matchEndTag = '</em>';
-  const startIndex = text.indexOf(matchStartTag);
-  const endIndex = text.indexOf(matchEndTag);
-
-  if (startIndex >= 0 && endIndex > startIndex + matchStartTag.length) {
-    const prefix = text.substring(0, startIndex);
-    const matched = text.substring(startIndex + matchStartTag.length, endIndex);
-    const suffix = text.substring(endIndex + matchEndTag.length);
-    return (
-      <>
-        {prefix}
-        <span style={{ backgroundColor: '#FFDE80' }}>{matched}</span>
-        {suffix}
-      </>
-    );
-  }
-
-  return text;
+  return text.split(/<em>(.*?)<\/em>/g).map((segment, index) => {
+    if (index % 2 === 0) {
+      return segment;
+    } else {
+      return (
+        <span key={index} style={{ backgroundColor: '#FFDE80' }}>
+          {segment}
+        </span>
+      );
+    }
+  });
 };
 
 export const MarkedText: React.FC<MarkedTextProps> = ({ longText }) => {
