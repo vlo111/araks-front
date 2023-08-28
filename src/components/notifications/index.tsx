@@ -1,4 +1,5 @@
 import { Badge as BadgeComponent, Col, Popover, Radio, Row } from 'antd';
+import { useMarkNotificationsRead } from 'api/notifications/use-mark-notitications-read';
 import { NotificationsData } from 'api/types';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -47,6 +48,7 @@ export const Notifications = () => {
     status: NotificationsStatusFilter.All,
   });
   const [result, setResult] = useState<NotificationsData[]>([]);
+  const { mutate: markAsRead } = useMarkNotificationsRead();
 
   return (
     <Popover
@@ -59,12 +61,12 @@ export const Notifications = () => {
         <VerticalSpace>
           <Row justify="space-between" align="middle">
             <Col>
-              <SecondaryText style={{ fontWeight: '500', letterSpacing: '1.28px' }} color="#001479">
+              <SecondaryText style={{ fontWeight: '700', letterSpacing: '1.28px' }} color="#001479">
                 Notifications
               </SecondaryText>
             </Col>
             <Col>
-              <Button type="link">
+              <Button type="link" onClick={() => markAsRead()}>
                 <SecondaryText color="#001479" underline style={{ fontWeight: '500', letterSpacing: '1.28px' }}>
                   Mark all as read
                 </SecondaryText>

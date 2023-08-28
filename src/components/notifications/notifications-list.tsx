@@ -1,5 +1,6 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { Avatar, Col, Descriptions, Divider, List, Row, Skeleton } from 'antd';
+import { useDeleteNotification } from 'api/notifications/use-delete-notification';
 import { useGetNotificationsAllData } from 'api/notifications/use-get-notifications-all-data';
 import { NotificationsData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -29,6 +30,8 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
       },
     }
   );
+
+  const { mutate: deleteNotification } = useDeleteNotification();
 
   const loadMoreData = () => {
     if (isInitialLoading) {
@@ -74,7 +77,7 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
                         <SecondaryText>{item.text}</SecondaryText>
                       </Col>
                       <Col span={2}>
-                        <CloseOutlined style={{ color: '#232F6A' }} />
+                        <CloseOutlined style={{ color: '#232F6A' }} onClick={() => deleteNotification(item.id)} />
                       </Col>
                     </Row>
                   }
