@@ -59,7 +59,7 @@ export const Notifications = () => {
       trigger="click"
       title={
         <VerticalSpace>
-          <Row justify="space-between" align="middle">
+          <Row justify="space-between" align="middle" style={{ padding: '0 16px' }}>
             <Col>
               <SecondaryText style={{ fontWeight: '700', letterSpacing: '1.28px' }} color="#001479">
                 Notifications
@@ -73,7 +73,7 @@ export const Notifications = () => {
               </Button>
             </Col>
           </Row>
-          <Row justify="start" align="middle">
+          <Row justify="start" align="middle" style={{ margin: '0 16px' }}>
             <Col>
               <StyledRadioButton
                 defaultValue="all"
@@ -94,7 +94,7 @@ export const Notifications = () => {
           </Row>
         </VerticalSpace>
       }
-      overlayInnerStyle={{ overflow: 'auto', height: '60vh' }}
+      overlayInnerStyle={{ overflow: 'auto', height: '60vh', padding: '16px 0' }}
       overlayStyle={{
         width: '374px',
         borderRadius: '4px',
