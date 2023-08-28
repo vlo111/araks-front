@@ -1,4 +1,5 @@
 import G6 from '@antv/g6';
+import { renderTooltipModal } from './tooltip';
 
 const layout = {
   type: 'random',
@@ -66,12 +67,24 @@ const defaultNode = {
 
 export const options = {
   height: window.innerHeight - 165,
-  width: window.innerWidth - 480,
+  width: window.innerWidth,
   fitCenter: true,
   fitView: true,
   animate: true,
   modes: {
-    default: ['drag-canvas', 'drag-node', 'zoom-canvas', 'create-edge'],
+    default: [
+      'drag-canvas',
+      'drag-node',
+      'zoom-canvas',
+      'create-edge',
+      {
+        type: 'tooltip',
+        formatText: (model: { [key: string]: unknown }) => {
+          return renderTooltipModal(model);
+        },
+        offset: 10,
+      },
+    ],
   },
   defaultEdge,
   defaultNode,

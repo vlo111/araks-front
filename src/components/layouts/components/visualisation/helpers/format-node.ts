@@ -16,6 +16,7 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
       img: n.default_image,
       type: n.default_image ? 'image' : 'circle',
       nodeType: n?.nodeType?.id,
+      nodeTypeName: n?.nodeType?.name,
     })),
     edges: edgeList.map((e) => ({
       id: e.id,
