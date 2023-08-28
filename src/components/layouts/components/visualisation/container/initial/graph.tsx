@@ -1,7 +1,7 @@
 import { Graph } from '@antv/g6';
 import { InitGraph } from '../../types';
 import { initGraphEvents } from './events';
-import { options } from '../../helpers/init-graph-data';
+import { options } from '../../helpers/constants';
 import { contextMenuPlugin } from '../../helpers/context-menu';
 
 export const initGraph: InitGraph = (container, params) => {
