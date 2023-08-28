@@ -33,26 +33,25 @@ export const errorMessage = (er: unknown) => {
   });
 };
 
-export const convertByType = (value: unknown, type: PropertyTypes, addFromatForDate = false) => {
+export const convertByType = (value: unknown[], type: PropertyTypes, addFromatForDate = false) => {
   switch (type) {
     case PropertyTypes.DateTime:
       if (addFromatForDate) {
-        return dayjs(value as string).format('DD/MM/YYYY HH:mm');
+        return dayjs(value[0] as string).format('DD/MM/YYYY HH:mm');
       }
-      return dayjs(value as string);
+      return dayjs(value[0] as string);
     case PropertyTypes.Date:
       if (!value || !(value as unknown[]).filter(Boolean).length) {
         return '';
       }
       if (addFromatForDate) {
-        return dayjs(value as string).format('DD/MM/YYYY');
+        return dayjs(value[0] as string).format('DD/MM/YYYY');
       }
-      return dayjs(value as string);
+      return dayjs(value[0] as string);
     case PropertyTypes.Integer:
     case PropertyTypes.Decimal:
-      return Number.isNaN(+(value as string)) ? +(value as string) : 0;
     default:
-      return value;
+      return value[0];
   }
 };
 
@@ -91,10 +90,14 @@ export function formatTimeDifference(likedTime: string) {
   } else if (timeDifference < 86400) {
     const hours = Math.floor(timeDifference / 3600);
     return `${hours} hours ago`;
-  } else if (timeDifference < 2592000) {
-    // 30 days
+  } else if (timeDifference < 604800) {
+    // 7 days (1 week)
     const days = Math.floor(timeDifference / 86400);
     return `${days} days ago`;
+  } else if (timeDifference < 2592000) {
+    // 30 days
+    const weeks = Math.floor(timeDifference / 604800);
+    return `${weeks} weeks ago`;
   } else if (timeDifference < 31536000) {
     // 365 days
     const months = Math.floor(timeDifference / 2592000);

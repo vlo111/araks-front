@@ -68,7 +68,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
         ],
         ...data.properties.reduce((acc, prop) => {
           const currentValue = selectedView?.properties?.find((property) => property.edge_type_property_id === prop.id);
-          const newValue = convertByType(currentValue?.data, prop.ref_property_type_id as PropertyTypes);
+          const newValue = convertByType(currentValue?.data ?? [], prop.ref_property_type_id as PropertyTypes);
 
           return {
             ...acc,
