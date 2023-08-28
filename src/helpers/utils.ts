@@ -41,6 +41,9 @@ export const convertByType = (value: unknown, type: PropertyTypes, addFromatForD
       }
       return dayjs(value as string);
     case PropertyTypes.Date:
+      if (!value || !(value as unknown[]).length) {
+        return '';
+      }
       if (addFromatForDate) {
         return dayjs(value as string).format('DD/MM/YYYY');
       }
@@ -51,7 +54,6 @@ export const convertByType = (value: unknown, type: PropertyTypes, addFromatForD
     default:
       return value;
   }
-  return value;
 };
 
 function getColumnLetter(columnNumber: number): string {
