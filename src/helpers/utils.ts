@@ -41,7 +41,7 @@ export const convertByType = (value: unknown, type: PropertyTypes, addFromatForD
       }
       return dayjs(value as string);
     case PropertyTypes.Date:
-      if (!value || !(value as unknown[]).length) {
+      if (!value || !(value as unknown[]).filter(Boolean).length) {
         return '';
       }
       if (addFromatForDate) {

@@ -72,7 +72,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
 
           return {
             ...acc,
-            [prop.name]: (newValue as unknown[]).length ? newValue : [null],
+            [prop.name]: Array.isArray(newValue) ? newValue : [newValue ?? null],
           };
         }, {}),
       });
