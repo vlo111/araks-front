@@ -5,10 +5,11 @@ import { useGetNotificationsAllData } from 'api/notifications/use-get-notificati
 import { NotificationsData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText } from 'components/typography';
-import { COLORS } from 'helpers/constants';
+import { COLORS, PATHS } from 'helpers/constants';
 import { formatTimeDifference } from 'helpers/utils';
 import { Dispatch, SetStateAction } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { NotifyBadge } from '.';
 import { NotificationsPage, NotificationsStatusFilter } from './types';
@@ -104,7 +105,11 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
                         {
                           key: item.id,
                           label: 'Project',
-                          children: item.projects.title,
+                          children: (
+                            <Link to={PATHS.PROJECT_OVERVIEW.replace(':id', item.project_id)}>
+                              <SecondaryText>{item.projects.title}</SecondaryText>
+                            </Link>
+                          ),
                         },
                       ]}
                     />
