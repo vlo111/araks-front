@@ -2,14 +2,16 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Avatar, Col, Descriptions, Divider, List, Row, Skeleton } from 'antd';
 import { useDeleteNotification } from 'api/notifications/use-delete-notification';
 import { useGetNotificationsAllData } from 'api/notifications/use-get-notifications-all-data';
+import { useNotificationStatusUpdate } from 'api/notifications/use-notitication-status-update';
 import { NotificationsData } from 'api/types';
+import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText } from 'components/typography';
 import { COLORS, PATHS } from 'helpers/constants';
 import { formatTimeDifference } from 'helpers/utils';
 import { Dispatch, SetStateAction } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { NotifyBadge } from '.';
 import { NotificationsPage, NotificationsStatusFilter } from './types';
@@ -28,6 +30,7 @@ const StyledVerticalSpace = styled(VerticalSpace)`
 `;
 
 export const NotificationsList = ({ page: { status, ...page }, result, setResult, setPage }: Props) => {
+  const navigate = useNavigate();
   const { count, isInitialLoading } = useGetNotificationsAllData(
     {
       ...page,
@@ -41,6 +44,7 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
   );
 
   const { mutate: deleteNotification } = useDeleteNotification();
+  const { mutate: updateNotificationStatus } = useNotificationStatusUpdate();
 
   const loadMoreData = () => {
     if (isInitialLoading) {
@@ -106,9 +110,16 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
                           key: item.id,
                           label: 'Project',
                           children: (
-                            <Link to={PATHS.PROJECT_OVERVIEW.replace(':id', item.project_id)}>
+                            <Button
+                              style={{ padding: 0, height: '100%', lineHeight: '1' }}
+                              type="link"
+                              onClick={() => {
+                                updateNotificationStatus(item.id);
+                                navigate(PATHS.PROJECT_OVERVIEW.replace(':id', item.project_id));
+                              }}
+                            >
                               <SecondaryText>{item.projects.title}</SecondaryText>
-                            </Link>
+                            </Button>
                           ),
                         },
                       ]}
