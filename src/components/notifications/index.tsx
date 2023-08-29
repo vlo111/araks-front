@@ -10,7 +10,7 @@ import { ReactComponent as Bell } from '../icons/bell.svg';
 import { NotificationsList } from './notifications-list';
 import { NotificationsPage, NotificationsStatusFilter } from './types';
 
-const Badge = styled(BadgeComponent)`
+export const NotifyBadge = styled(BadgeComponent)`
   .ant-badge-dot {
     background: #f97070;
     box-shadow: 0px 3px 6px rgba(249, 112, 112, 0.7);
@@ -105,9 +105,9 @@ export const Notifications = () => {
       }}
       content={<NotificationsList page={page} result={result} setResult={setResult} setPage={setPage} />}
     >
-      <Badge color="#F97070" dot offset={[-5, 10]}>
+      <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
         <Bell />
-      </Badge>
+      </NotifyBadge>
     </Popover>
   );
 };

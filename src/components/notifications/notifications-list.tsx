@@ -10,6 +10,7 @@ import { formatTimeDifference } from 'helpers/utils';
 import { Dispatch, SetStateAction } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
+import { NotifyBadge } from '.';
 import { NotificationsPage, NotificationsStatusFilter } from './types';
 
 type Props = {
@@ -75,7 +76,15 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
               <List.Item key={item.id}>
                 <List.Item.Meta
                   style={{ paddingLeft: '16px' }}
-                  avatar={<Avatar src={item.user.avatar} />}
+                  avatar={
+                    item.status === 'read' ? (
+                      <Avatar src={item.user.avatar} />
+                    ) : (
+                      <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
+                        <Avatar src={item.user.avatar} />
+                      </NotifyBadge>
+                    )
+                  }
                   title={
                     <Row justify="space-between" align="top">
                       <Col span={22}>
