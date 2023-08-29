@@ -55,6 +55,8 @@ export enum SetImportRule {
 export type DataResultItem = ProjectTypePropertyReturnData & {
   key: string;
   value: unknown;
+  dataField?: string;
+  importedField?: string;
 };
 
 export type DataResult = {
