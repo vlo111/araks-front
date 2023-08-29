@@ -15,7 +15,7 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetNode } from 'api/node/use-get-node';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType, UploadedFileType } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
@@ -39,6 +39,10 @@ const getValue = (item: NodePropertiesValues) => {
     case PropertyTypes.DateTime:
     case PropertyTypes.Date:
       return item.nodes_data?.map((rec) => dayjs(rec as string));
+    case PropertyTypes.IMAGE_URL:
+      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`));
+    case PropertyTypes.Document:
+      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name));
     default:
       return item.nodes_data;
   }

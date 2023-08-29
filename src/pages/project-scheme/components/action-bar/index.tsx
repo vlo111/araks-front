@@ -8,6 +8,8 @@ import { ReactComponent as AddLinkSVG } from './components/icons/connection.svg'
 import { Search } from './components/search';
 import { AddEdgeModal } from './modals/add-edge';
 import { AddEdgePropertyModal } from './modals/edge-properties';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 const ToolStyle = styled.div`
   position: fixed;
@@ -38,6 +40,7 @@ const ToolStyle = styled.div`
 
 export const ActionBar: React.FC = () => {
   const { graph, startEdgeType } = useSchema() || {};
+  const { projectInfo } = useProject();
 
   const addType = () => {
     if (graph !== undefined) {
@@ -49,8 +52,12 @@ export const ActionBar: React.FC = () => {
     <>
       <ToolStyle>
         <Search />
-        <AddTypeSVG className="add-type" onClick={addType} />
-        <AddLinkSVG className="add-link" onClick={() => startEdgeType({ isUpdate: false, id: undefined})} />
+        {projectInfo?.role === UserProjectRole.Owner && (
+          <>
+            <AddTypeSVG className="add-type" onClick={addType} />
+            <AddLinkSVG className="add-link" onClick={() => startEdgeType({ isUpdate: false, id: undefined })} />
+          </>
+        )}
       </ToolStyle>
       <AddEdgeModal />
       <AddEdgePropertyModal />

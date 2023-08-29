@@ -9,44 +9,13 @@ import {
 } from '../../helpers/utils';
 import { ElementStyle, InitEvents, InitPerspectiveEvents } from '../../types';
 import { PATH, SELECTORS } from '../../helpers/constants';
+import { UserProjectRole } from 'api/types';
 
 export const initSchemaEvents: InitEvents = (
   graph,
-  { startTypePort, setSelected, startType, startEdgePort, startEdgeType }
+  { startTypePort, setSelected, startType, startEdgePort, startEdgeType },
+  projectInfo
 ) => {
-  graph.on('node:port:click', ({ node, port, view: { container } }) => {
-    if (port === 'connector') return;
-
-    const isEdge = node.getPortProp(port || '', PATH.PROPERTY_REF_TYPE) === 'connection';
-
-    if (!isEdge) {
-      const { x, y, height, width } = container.getBoundingClientRect();
-
-      const props = {
-        node: node,
-        x: x + width,
-        y: y + height - 30,
-      };
-
-      if (port === 'add') {
-        startTypePort({
-          ...props,
-          portId: undefined,
-          isUpdate: false,
-        });
-      } else {
-        /** Edit type property */
-        startTypePort({
-          ...props,
-          portId: port as string,
-          isUpdate: true,
-        });
-      }
-    } else {
-      startEdgeType({ id: port, isUpdate: true });
-    }
-  });
-
   graph.on('node:click', ({ x, y, e: { target }, node, view: { container } }) => {
     if (target.closest('.x6-port-body')) return;
 
@@ -55,10 +24,22 @@ export const initSchemaEvents: InitEvents = (
     }
 
     if (!container.classList.contains('selected-node')) {
-      selectNode(graph, container, node);
+      selectNode(graph, container, node, projectInfo);
 
       setSelected({ node });
     }
+  });
+
+  graph.on('blank:click', ({ x, y, e: { target } }) => {
+    const selectedNode: ElementStyle = target.querySelector('.selected-node');
+
+    if (selectedNode !== null) removeSelected(graph, selectedNode);
+
+    setSelected({
+      selected: false,
+    });
+
+    if (graph.container.style.cursor === 'crosshair') startType({ x, y });
   });
 
   graph.on('edge:click', ({ edge, view: { container } }) => {
@@ -77,20 +58,43 @@ export const initSchemaEvents: InitEvents = (
     }
   });
 
-  graph.on('blank:click', ({ x, y, e: { target } }) => {
-    const selectedNode: ElementStyle = target.querySelector('.selected-node');
+  if (projectInfo?.role === UserProjectRole.Owner) {
+    graph.on('node:port:click', ({ node, port, view: { container } }) => {
+      if (port === 'connector') return;
 
-    if (selectedNode !== null) removeSelected(graph, selectedNode);
+      const isEdge = node.getPortProp(port || '', PATH.PROPERTY_REF_TYPE) === 'connection';
 
-    setSelected({
-      selected: false,
+      if (!isEdge) {
+        const { x, y, height, width } = container.getBoundingClientRect();
+
+        const props = {
+          node: node,
+          x: x + width,
+          y: y + height - 30,
+        };
+
+        if (port === 'add') {
+          startTypePort({
+            ...props,
+            portId: undefined,
+            isUpdate: false,
+          });
+        } else {
+          /** Edit type property */
+          startTypePort({
+            ...props,
+            portId: port as string,
+            isUpdate: true,
+          });
+        }
+      } else {
+        startEdgeType({ id: port, isUpdate: true });
+      }
     });
 
-    if (graph.container.style.cursor === 'crosshair') startType({ x, y });
-  });
-
-  /** update position */
-  graph.on('node:mouseup', ({ node }) => changeTypePosition(node.id, node.position() || { x: 0, y: 0 }));
+    /** update position */
+    graph.on('node:mouseup', ({ node }) => changeTypePosition(node.id, node.position() || { x: 0, y: 0 }));
+  }
 };
 
 /**

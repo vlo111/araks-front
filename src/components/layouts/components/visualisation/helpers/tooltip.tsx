@@ -1,5 +1,4 @@
 const infoPanelContainer = `
-  user-select: none;
   padding: 16px;
   height: 160px;
   width: 410px;

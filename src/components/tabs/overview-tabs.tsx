@@ -16,6 +16,7 @@ import { PerspectiveUser, UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
 
 const Tabs = styled(TabsComponent)`
+  user-select: none;
   .ant-tabs-nav-wrap {
     justify-content: center;
   }

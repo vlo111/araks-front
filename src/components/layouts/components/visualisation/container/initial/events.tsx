@@ -1,5 +1,5 @@
 import { InitGraphEvents } from '../../types';
-import {Edge, IEdge} from '@antv/g6';
+import { Edge, IEdge } from '@antv/g6';
 
 export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
   let isDoubleClick = false;
@@ -11,13 +11,12 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
     graph.removeItem(fake_edge?.getID());
   };
 
-
   graph.on('dblclick', (evt) => {
     if (evt.item?.getType() === 'edge') {
       startOpenEdge({
-        id: evt.item.getID()
-      })
-    } else if(evt.item?.getType() === 'node') {
+        id: evt.item.getID(),
+      });
+    } else if (evt.item?.getType() === 'node') {
       isDoubleClick = true;
       startOpenNode({
         id: evt.item?.getID() ?? '',

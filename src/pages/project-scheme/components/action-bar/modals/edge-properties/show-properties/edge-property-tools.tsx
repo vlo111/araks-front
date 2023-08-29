@@ -4,6 +4,8 @@ import { ReactComponent as ArrowsSVG } from './icons/arrows.svg';
 import { ReactComponent as PlusSVG } from './icons/plus.svg';
 import { ReactComponent as EditSVG } from './icons/edit.svg';
 import { OpenEditModal } from '../types/property';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 type EdgePropertyProp = {
   openEditModal: OpenEditModal;
@@ -11,6 +13,7 @@ type EdgePropertyProp = {
 
 export const EdgePropertyTools: React.FC<EdgePropertyProp> = ({ openEditModal }) => {
   const { edge_port, startEdgeType } = useSchema() || {};
+  const { projectInfo } = useProject();
 
   return (
     <div className="name">
@@ -18,17 +21,21 @@ export const EdgePropertyTools: React.FC<EdgePropertyProp> = ({ openEditModal })
         <ArrowsSVG />
       </div>
       <span className="text">{edge_port?.name}</span>
-      <div
-        className="edit-property-icon"
-        onClick={() => {
-          startEdgeType({ id: edge_port?.id, isUpdate: true });
-        }}
-      >
-        <EditSVG />
-      </div>
-      <div className="add-property-icon" onClick={() => openEditModal(true)}>
-        <PlusSVG />
-      </div>
+      {projectInfo?.role === UserProjectRole.Owner && (
+        <>
+          <div
+            className="edit-property-icon"
+            onClick={() => {
+              startEdgeType({ id: edge_port?.id, isUpdate: true });
+            }}
+          >
+            <EditSVG />
+          </div>
+          <div className="add-property-icon" onClick={() => openEditModal(true)}>
+            <PlusSVG />
+          </div>
+        </>
+      )}
     </div>
   );
 };
