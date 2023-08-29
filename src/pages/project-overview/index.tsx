@@ -91,25 +91,25 @@ export const ProjectOverview = () => {
               <SecondaryText as="div" color={COLORS.PRIMARY.WHITE}>
                 Node Types
               </SecondaryText>
-              <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
+              <SecondaryText color={COLORS.PRIMARY.WHITE}>{data?.nodeTypesCount || 0}</SecondaryText>
             </ProjectInfo>
             <ProjectInfo>
               <SecondaryText as="div" color={COLORS.PRIMARY.WHITE}>
                 Connection Types
               </SecondaryText>
-              <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
+              <SecondaryText color={COLORS.PRIMARY.WHITE}>{data?.edgeTypesCount || 0}</SecondaryText>
             </ProjectInfo>
             <ProjectInfo>
               <SecondaryText as="div" color={COLORS.PRIMARY.WHITE}>
                 Nodes
               </SecondaryText>
-              <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
+              <SecondaryText color={COLORS.PRIMARY.WHITE}>{data?.nodesCount || 0}</SecondaryText>
             </ProjectInfo>
             <ProjectInfo>
               <SecondaryText as="div" color={COLORS.PRIMARY.WHITE}>
                 Connections
               </SecondaryText>
-              <SecondaryText color={COLORS.PRIMARY.WHITE}>0</SecondaryText>
+              <SecondaryText color={COLORS.PRIMARY.WHITE}>{data?.edgesCount || 0}</SecondaryText>
             </ProjectInfo>
           </Space>
         </VerticalSpace>
