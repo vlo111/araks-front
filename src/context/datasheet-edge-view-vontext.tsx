@@ -68,11 +68,11 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
         ],
         ...data.properties.reduce((acc, prop) => {
           const currentValue = selectedView?.properties?.find((property) => property.edge_type_property_id === prop.id);
-          const newValue = convertByType(currentValue?.data, prop.ref_property_type_id as PropertyTypes);
+          const newValue = convertByType(currentValue?.data ?? [], prop.ref_property_type_id as PropertyTypes);
 
           return {
             ...acc,
-            [prop.name]: newValue ? [newValue] : [null],
+            [prop.name]: Array.isArray(newValue) ? newValue : [newValue ?? null],
           };
         }, {}),
       });
@@ -106,7 +106,6 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
       source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
       properties: data?.properties.reduce((curr, item) => {
         const property = selectedView?.properties?.find((prop) => prop.edge_type_property_id === item.id);
-
         return [
           ...curr,
           {

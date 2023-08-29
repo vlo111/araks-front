@@ -62,9 +62,6 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
   });
   const { dispatch } = useViewDatasheet();
 
-  // eslint-disable-next-line no-console
-  console.log('rowsData', rowsData);
-
   return (
     <Spin spinning={isInitialLoading}>
       <List

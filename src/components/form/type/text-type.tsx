@@ -19,10 +19,16 @@ export const TextType = ({ data }: Props) => {
       <SecondaryText color={COLORS.PRIMARY.GRAY}>{`(${data.ref_property_type_id})`}</SecondaryText>
     </Space>
   );
+  const validateMaxLength = (rule: unknown, value: string) => {
+    if (value && value.length > (data.default_property ? 30 : 80)) {
+      return Promise.reject(`Max length exceeded (max ${data.default_property ? 30 : 80} characters)`);
+    }
+    return Promise.resolve();
+  };
 
   return (
     <div style={{ textAlign: 'left' }}>
-      <Form.List name={data.name} initialValue={[null]}>
+      <Form.List name={data.name} initialValue={['']}>
         {(fields, { add, remove }) => (
           <>
             <FormItem label={label} style={{ marginBottom: '0' }}>
@@ -35,15 +41,11 @@ export const TextType = ({ data }: Props) => {
                     onRemove={() => remove(field.name)}
                   >
                     <FormItem
-                      noStyle
+                      style={{ marginBottom: 0 }}
                       name={[field.name]}
-                      key={field.key}
                       rules={[
                         { required: data.required_type, message: VALIDATE_MESSAGES.required },
-                        {
-                          max: data.default_property ? 30 : 80,
-                          message: `The maximum length for this field is ${data.default_property ? 30 : 80} characters`,
-                        },
+                        { validator: validateMaxLength },
                       ]}
                     >
                       <Input />

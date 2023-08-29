@@ -332,3 +332,43 @@ export type LikesResponse = {
   count: number;
   rows: LikesData[];
 };
+
+export type NotificationsParameters = {
+  page?: number;
+  size?: number;
+  status?: string;
+};
+
+export enum NotificationActionTypes {
+  'comment-project',
+  'comment-node',
+  'delete',
+  'perspectives-add',
+  'perspectives-update',
+  'perspectives-delete',
+}
+
+export type NotificationsData = {
+  id: string;
+  text: string;
+  user_id: string;
+  mentioned_user_id: string;
+  project_id: string;
+  node_id: null;
+  action_type: NotificationActionTypes;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  projects: {
+    id: string;
+    title: string;
+  };
+  user: UserData & {
+    avatar: string;
+  };
+};
+
+export type NotificationsResponse = {
+  rows: NotificationsData[];
+  count: number;
+};

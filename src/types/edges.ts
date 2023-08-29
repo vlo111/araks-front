@@ -17,7 +17,7 @@ export type EdgesCreateProperties = {
   id?: string;
   edge_type_property_id: string;
   edge_type_property_type: PropertyTypes;
-  data: string | number | Dayjs;
+  data: (string | number | Dayjs)[];
 };
 
 export type ETypeEdgeData = {
