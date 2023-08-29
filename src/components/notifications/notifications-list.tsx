@@ -21,7 +21,7 @@ type Props = {
 };
 
 const StyledVerticalSpace = styled(VerticalSpace)`
-  &:hover {
+  &.notification-unread {
     background: linear-gradient(136deg, rgba(153, 159, 189, 0.45) 0%, rgba(222, 226, 243, 0.2) 100%);
   }
 `;
@@ -72,7 +72,7 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
           dataSource={result}
           itemLayout="horizontal"
           renderItem={(item) => (
-            <StyledVerticalSpace key={item.id} size={0}>
+            <StyledVerticalSpace key={item.id} size={0} className={item.status !== 'read' ? 'notification-unread' : ''}>
               <List.Item key={item.id}>
                 <List.Item.Meta
                   style={{ paddingLeft: '16px' }}

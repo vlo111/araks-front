@@ -14,7 +14,7 @@ export const useMarkNotificationsRead = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries([URL_GET_NOTIFICATIONS_ALL_DATA]);
-      message.success('Password successfully changed');
+      message.success('Notifications marked as read');
     },
     onError: errorMessage,
   });
