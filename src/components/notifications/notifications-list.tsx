@@ -55,7 +55,7 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
       id="scrollableDiv"
       className="scroll-container"
       style={{
-        height: '40vh',
+        height: '50vh',
         overflow: 'auto',
       }}
     >
@@ -102,7 +102,7 @@ export const NotificationsList = ({ page: { status, ...page }, result, setResult
                   }
                 />
               </List.Item>
-              <SecondaryText style={{ paddingLeft: '16px' }} color={COLORS.PRIMARY.GRAY}>
+              <SecondaryText as="div" style={{ paddingLeft: '16px', marginBottom: '12px' }} color={COLORS.PRIMARY.GRAY}>
                 {formatTimeDifference(item.created_at)}
               </SecondaryText>
               <Divider style={{ margin: '0' }} />
