@@ -6,6 +6,7 @@ import client from '../client';
 import { GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST } from './use-get-projects-edge-type-properties';
 import { NodeEdgeTypePropertiesSubmit } from 'types/node-edge-types';
 import { errorMessage } from 'helpers/utils';
+import { URL_EDGES_NODE_DATA } from 'api/edges/constants';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -39,6 +40,12 @@ export const useManageProjectNodeTypeProperty = (options?: Options) => {
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([
         GET_PROJECT_EDGE_TYPE_PROPERTIES_LIST.replace(':edge_type_id', data.data.project_type_id || ''),
+      ]);
+      queryClient.invalidateQueries([
+        URL_EDGES_NODE_DATA.replace(':edge_type_id', data.data.project_type_id || '').replace(
+          ':project_id',
+          params.id || ''
+        ),
       ]);
       options?.onSuccess?.(data);
     },
