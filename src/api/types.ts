@@ -356,7 +356,7 @@ export type NotificationsData = {
   project_id: string;
   node_id: null;
   action_type: NotificationActionTypes;
-  status: string;
+  status: 'read' | 'unread';
   created_at: string;
   updated_at: string;
   projects: {
