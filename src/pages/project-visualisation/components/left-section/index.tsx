@@ -1,8 +1,10 @@
 import { TabsProps, Row as RowComponent, Col } from 'antd';
-import { Styling } from '../styling';
 import styled from 'styled-components';
-import { StyledDataVisualisationSiderTabs } from './styles';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { Styling } from '../styling';
+import { Filters } from '../filters';
+import { StyledDataVisualisationSiderTabs } from './styles';
+
 export const Items: TabsProps['items'] = [
   {
     key: '1',
@@ -18,23 +20,22 @@ export const Items: TabsProps['items'] = [
   },
 ];
 
-
 const Row = styled((props) => <RowComponent {...props} />)`
-    &.overview {
-      height: 100%;
-      width: 100%;
-      .ant-col.overview__section {
-        &:first-child {
-          background: #f2f2f2;
-          box-shadow: 10px 0 10px rgba(111, 111, 111, 0.1);
-        }
-      }
-
-      .overview-form-items {
-        min-height: 80vh;
+  &.overview {
+    height: 100%;
+    width: 100%;
+    .ant-col.overview__section {
+      &:first-child {
+        background: #f2f2f2;
+        box-shadow: 10px 0 10px rgba(111, 111, 111, 0.1);
       }
     }
-  `;
+
+    .overview-form-items {
+      min-height: 80vh;
+    }
+  }
+`;
 
 export const StyledCol = styled(Col)`
   position: absolute;
@@ -43,13 +44,13 @@ export const StyledCol = styled(Col)`
   height: calc(100vh - 152px);
   overflow-y: auto;
   width: 480px;
-`
+`;
 
 export const LeftSection = () => {
   const isXXL = useIsXXlScreen();
 
   return (
-    <Row >
+    <Row>
       <Row className="overview">
         <StyledCol className="overview__section project-save" id="datasheet-tree-list">
           <StyledDataVisualisationSiderTabs
@@ -58,14 +59,7 @@ export const LeftSection = () => {
             defaultActiveKey="1"
             items={Items.map((item) => ({
               ...item,
-              children:
-                item.key === '1' ? (
-                  <h1>Filters</h1>
-                ) : item.key === '2' ? (
-                  <h1>Queries</h1>
-                ) : (
-                  <Styling />
-                ),
+              children: item.key === '1' ? <Filters /> : item.key === '2' ? <h1>Queries</h1> : <Styling />,
             }))}
           />
         </StyledCol>
