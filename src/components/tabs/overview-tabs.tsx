@@ -156,7 +156,7 @@ export const OverviewTabs = () => {
         children: (
           <div className="site-layout-content">
             {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-            {item.key === params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET && <DataSheetWrapper />}
+            {item.key === (params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET) && <DataSheetWrapper />}
             {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}
