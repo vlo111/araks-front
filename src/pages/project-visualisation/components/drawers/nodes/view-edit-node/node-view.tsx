@@ -17,7 +17,7 @@ export const ViewNode: React.FC<IProps> = ({ formFata, properties }) => {
 
   return (
     <VerticalSpace>
-      {img && (
+      {img && img[0]?.response?.data?.uploadPath && (
         <Image src={img[0]?.response?.data?.uploadPath} width={161} height={127} style={{ borderRadius: '4px' }} />
       )}
       <VerticalSpace>
