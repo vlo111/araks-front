@@ -358,14 +358,24 @@ export type NotificationsData = {
   user_id: string;
   mentioned_user_id: string;
   project_id: string;
-  node_id: null;
-  action_type: NotificationActionTypes;
+  node_id: string;
+  action_type:
+    | 'comment-project'
+    | 'comment-node'
+    | 'delete'
+    | 'perspectives-add'
+    | 'perspectives-update'
+    | 'perspectives-delete';
   status: 'read' | 'unread';
   created_at: string;
   updated_at: string;
   projects: {
     id: string;
     title: string;
+  };
+  nodes: {
+    id: string;
+    name: string;
   };
   user: UserData & {
     avatar: string;

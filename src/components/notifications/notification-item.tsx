@@ -114,6 +114,8 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
             }
             description={
               <Descriptions
+                column={1}
+                size="small"
                 items={[
                   {
                     key: item.id,
@@ -131,6 +133,31 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
                       </Button>
                     ),
                   },
+                  ...(item.action_type === 'comment-node'
+                    ? [
+                        {
+                          key: 'node',
+                          label: 'Node',
+                          children: (
+                            <Button
+                              style={{ padding: 0, height: '100%', lineHeight: '1' }}
+                              type="link"
+                              onClick={() => {
+                                updateNotificationStatus(item.id);
+                                navigate(
+                                  PATHS.NODE_OVERVIEW.replace(':id', item.project_id).replace(
+                                    ':node_type_id',
+                                    item.node_id
+                                  )
+                                );
+                              }}
+                            >
+                              <SecondaryText>{item.nodes?.name || 'NO Name'}</SecondaryText>
+                            </Button>
+                          ),
+                        },
+                      ]
+                    : []),
                 ]}
               />
             }
