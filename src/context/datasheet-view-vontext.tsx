@@ -227,7 +227,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             </Row>
           )
         }
-        contentWrapperStyle={{ height: '100%' }}
+        contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
         {isEdit ? (
           <Form
