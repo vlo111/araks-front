@@ -27,8 +27,6 @@ export const ConnectionTargetForm = ({ data }: Props) => {
       ]);
     }
   };
-  // eslint-disable-next-line no-console
-  console.log('data', data);
 
   return (
     <VerticalSpace size={0}>

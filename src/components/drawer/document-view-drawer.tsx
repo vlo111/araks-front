@@ -4,16 +4,27 @@ import { Icon } from 'components/icon';
 import { Text } from 'components/typography';
 import { UploadedFileType } from 'types/node';
 import { useState } from 'react';
-import { useGetHeaderHeight } from 'hooks/use-get-header-height';
 import { DocumentView } from 'components/document-view';
+import { useOverview } from 'context/overview-context';
 
 type Props = {
   node: UploadedFileType;
 };
 
+const getFileViewDrawerStart = () => {
+  const element = document.querySelector('.datasheet-view-drawer'); // Replace with your element
+  const rect = (element as HTMLElement)?.getBoundingClientRect?.();
+  return rect?.top - 20 || 0;
+};
+
 export const DocumentViewDrawer = ({ node }: Props) => {
+  const { hideLeftSection, setHideLeftSection } = useOverview();
+
   const [openDrawer, setOpenDrawer] = useState(false);
-  const sectionHeight = useGetHeaderHeight();
+
+  const onClose = () => {
+    setHideLeftSection(false);
+  };
 
   return (
     <>
@@ -21,7 +32,9 @@ export const DocumentViewDrawer = ({ node }: Props) => {
         type="link"
         icon={<Icon icon="file1" size={20} color="red" />}
         key={(node as UploadedFileType).url}
-        onClick={() => setOpenDrawer(true)}
+        onClick={() => {
+          setOpenDrawer(true);
+        }}
         style={{
           display: 'flex',
           height: '100%',
@@ -38,19 +51,25 @@ export const DocumentViewDrawer = ({ node }: Props) => {
         </Text>
       </Button>
       <Drawer
-        open={openDrawer}
+        open={openDrawer && hideLeftSection}
         closable={false}
         destroyOnClose
         width={600}
         placement="right"
         rootClassName="add-node-drawer"
+        onClose={onClose}
+        afterOpenChange={(open) => {
+          if (!open) {
+            setHideLeftSection(false);
+          }
+        }}
         drawerStyle={{
           background: '#F2F2F2',
           boxShadow: '10px 10px 10px 0px rgba(111, 111, 111, 0.10) inset',
         }}
         contentWrapperStyle={{
           //   margin: '16px 16px 48px',
-          marginTop: sectionHeight,
+          marginTop: getFileViewDrawerStart(),
           boxShadow: 'none',
         }}
         style={{

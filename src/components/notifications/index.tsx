@@ -1,4 +1,5 @@
 import { Badge as BadgeComponent, Col, Popover, Radio, Row } from 'antd';
+import { useGetNotificationsAllData } from 'api/notifications/use-get-notifications-all-data';
 import { useMarkNotificationsRead } from 'api/notifications/use-mark-notitications-read';
 import { NotificationsData } from 'api/types';
 import { Button } from 'components/button';
@@ -47,6 +48,11 @@ export const Notifications = () => {
     size: 5,
     status: NotificationsStatusFilter.All,
   });
+  const { count, isFetched } = useGetNotificationsAllData({
+    ...page,
+    status: NotificationsStatusFilter.Unread,
+  });
+
   const [result, setResult] = useState<NotificationsData[]>([]);
   const { mutate: markAsRead } = useMarkNotificationsRead();
 
@@ -105,9 +111,13 @@ export const Notifications = () => {
       }}
       content={<NotificationsList page={page} result={result} setResult={setResult} setPage={setPage} />}
     >
-      <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
-        <Bell />
-      </NotifyBadge>
+      {isFetched && count ? (
+        <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
+          <Bell style={{ cursor: 'pointer' }} />
+        </NotifyBadge>
+      ) : (
+        <Bell style={{ cursor: 'pointer' }} />
+      )}
     </Popover>
   );
 };

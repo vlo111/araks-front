@@ -74,6 +74,8 @@ export function processDataWithType(
           {
             ...mapData.property,
             key: mapData.key,
+            dataField: mapData.dataFields,
+            importedField: mapData.importedFields,
             value: '',
           },
         ];
@@ -188,6 +190,8 @@ export function processDataWithType(
         ...(dataResult[index] || ([] as DataResultItem[])),
         {
           ...mapData.property,
+          dataField: mapData.dataFields,
+          importedField: mapData.importedFields,
           key: mapData.key,
           value: convertedValue,
         },

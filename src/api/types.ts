@@ -60,10 +60,14 @@ export type ProjectFullInfo = {
   color: string;
   created_at: string;
   description: string;
+  edgeTypesCount: string;
+  edgesCount: string;
   folder_id: string;
   icon: string;
   id: string;
   notifications: boolean;
+  nodeTypesCount: string;
+  nodesCount: string;
   privacy: string;
   status: string;
   title: string;
@@ -356,7 +360,7 @@ export type NotificationsData = {
   project_id: string;
   node_id: null;
   action_type: NotificationActionTypes;
-  status: string;
+  status: 'read' | 'unread';
   created_at: string;
   updated_at: string;
   projects: {

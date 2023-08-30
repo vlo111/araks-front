@@ -194,6 +194,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     <ViewDatasheetContext.Provider value={value}>
       {children}
       <Drawer
+        className="datasheet-view-drawer"
         style={{
           minHeight: 'calc(100vh - 130px)',
         }}
