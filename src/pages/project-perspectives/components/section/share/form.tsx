@@ -33,11 +33,11 @@ export const UserForm = () => {
       requiredMark={false}
     >
       <Row gutter={[10, 10]}>
-        <Col xs={24} xxl={18}>
+        <Col xs={16} xxl={18}>
           <ShareInputItemAddon />
         </Col>
-        <Col xs={24} xxl={6}>
-          <Button block htmlType="submit" type="primary">
+        <Col xs={8} xxl={6}>
+          <Button style={{ height: '2.5rem', padding: '6px' }} block htmlType="submit" type="primary">
             Send Invite
           </Button>
         </Col>

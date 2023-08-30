@@ -42,6 +42,11 @@ const Share = styled.div`
     }
   }
 `;
+const ListMeta = styled(List.Item.Meta)`
+  .ant-list-item-meta-content {
+    flex-basis: max-content !important;
+  }
+`;
 
 export const UserListItem: Props = ({ id, index, user }) => {
   const { mutate } = useCreatePerspectiveUser({}, id);
@@ -73,7 +78,7 @@ export const UserListItem: Props = ({ id, index, user }) => {
         </Share>,
       ]}
     >
-      <List.Item.Meta avatar={<Avatar src={user.avatar} />} description={<Text>{user.title}</Text>} />
+      <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text>{user.title}</Text>} />
     </List.Item>
   );
 };
