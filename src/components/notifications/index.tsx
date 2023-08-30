@@ -63,6 +63,11 @@ export const Notifications = () => {
       placement="bottom"
       destroyTooltipOnHide
       trigger="click"
+      onOpenChange={(open) => {
+        if (!open) {
+          setResult([]);
+        }
+      }}
       title={
         <VerticalSpace>
           <Row justify="space-between" align="middle" style={{ padding: '0 16px' }}>
