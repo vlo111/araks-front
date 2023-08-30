@@ -6,7 +6,7 @@ interface MarkedTextProps {
 }
 
 const extractMatchedText = (text: string) => {
-  return text.split(/<em>(.*?)<\/em>/g).map((segment, index) => {
+  return text?.split(/<em>(.*?)<\/em>/g).map((segment, index) => {
     if (index % 2 === 0) {
       return segment;
     } else {
