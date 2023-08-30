@@ -36,6 +36,9 @@ export const errorMessage = (er: unknown) => {
 export const convertByType = (value: unknown[], type: PropertyTypes, addFromatForDate = false) => {
   switch (type) {
     case PropertyTypes.DateTime:
+      if (!value || !(value as unknown[]).filter(Boolean).length) {
+        return '';
+      }
       if (addFromatForDate) {
         return dayjs(value[0] as string).format('DD/MM/YYYY HH:mm');
       }
