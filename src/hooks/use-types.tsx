@@ -7,11 +7,13 @@ import { formattedTypes } from 'components/layouts/components/schema/helpers/for
 import { IProjectType } from '../api/types';
 import { useGetEdges } from '../api/schema/edge/use-get-edges';
 import { useEffect, useRef } from 'react';
+import { useProject } from '../context/project-context';
 
 export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] } = () => {
   const { id } = useParams();
   const { graph, ...params } = useSchema() ?? {};
   const isInitialMount = useRef(true);
+  const { projectInfo } = useProject();
 
   const { nodes, isInitialLoading } = useGetTypes(
     { projectId: id ?? '' },
@@ -33,7 +35,7 @@ export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
 
   useEffect(() => {
     if (nodes !== undefined && graph !== undefined && edges !== undefined) {
-      initNodes(graph, formattedTypes(graph, nodes, edges), params);
+      initNodes(graph, formattedTypes(graph, nodes, edges, projectInfo), params);
 
       if (isInitialMount.current && graph.zoomToFit !== undefined) {
         isInitialMount.current = false;

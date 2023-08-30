@@ -4,7 +4,7 @@ import { InitNodes, OnEdgeLabelRendered } from '../../types';
 import { EdgeSvg } from '../../helpers/svg/edge-svg';
 import { selectNode } from '../../helpers/selection';
 import { getTypeColors } from '../../helpers/utils';
-import { PATH } from "../../helpers/constants";
+import { PATH } from '../../helpers/constants';
 
 const onEdgeLabel: OnEdgeLabelRendered = ({ edge, selectors }) => {
   if (!edge.attr(PATH.EDGE_CREATOR)) {
@@ -40,8 +40,7 @@ export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) =>
       graph.options.onEdgeLabelRendered = (args) => onEdgeLabel(args);
     }
   } else {
-    if (graph.resetCells !== undefined)
-    graph.resetCells([]);
+    if (graph.resetCells !== undefined) graph.resetCells([]);
   }
 
   /** The Type need to be selected after create a type */
@@ -57,7 +56,7 @@ export const initNodes: InitNodes = (graph, cells, { selected, setSelected }) =>
 
       const node = graph.getNodes().find((n) => n.id === selected.id) as Node<Node.Properties>;
 
-      selectNode(graph, container, node);
+      selectNode(graph, container, node, null);
 
       setSelected({ node });
     }, 100);

@@ -16,7 +16,7 @@ import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import './add-node-select.css';
 
-export const NodeCreate: React.FC = () => {
+export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
   const { id } = useParams();

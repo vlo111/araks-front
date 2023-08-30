@@ -5,7 +5,7 @@ import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 
-export const NodeDelete = () => {
+export const NodeDeleteModal = () => {
   const { graph, nodes, setNodes, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
 
   const { mutate } = useDeleteNode(deleteNode?.id, {

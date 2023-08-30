@@ -16,6 +16,7 @@ import { PerspectiveUser, UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
 
 const Tabs = styled(TabsComponent)`
+  user-select: none;
   .ant-tabs-nav-wrap {
     justify-content: center;
   }
@@ -50,29 +51,6 @@ const Tabs = styled(TabsComponent)`
   }
 `;
 
-const items = [
-  {
-    key: PATHS.PROJECT_OVERVIEW,
-    label: 'Overview',
-  },
-  {
-    key: PATHS.PROJECT_SCHEME,
-    label: 'Scheme',
-  },
-  {
-    key: PATHS.PROJECT_PERSPECTIVES,
-    label: 'Perspectives',
-  },
-  {
-    key: PATHS.DATA_SHEET,
-    label: 'Data sheet',
-  },
-  {
-    key: PATHS.PROJECT_VISUALISATION,
-    label: 'Visualisation',
-  },
-];
-
 const priorityRoles: UserProjectRole[] = [UserProjectRole.Owner, UserProjectRole.Editor, UserProjectRole.Viewer];
 
 const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
@@ -87,7 +65,7 @@ const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
 };
 
 export const OverviewTabs = () => {
-  const { updateRole } = useProject();
+  const { updateRole, projectInfo } = useProject();
   const location = useLocation();
   const params = useParams();
   const navigate = useNavigate();
@@ -102,6 +80,36 @@ export const OverviewTabs = () => {
       },
     }
   );
+
+  const items = useMemo(() => {
+    const tabs = [
+      {
+        key: PATHS.PROJECT_OVERVIEW,
+        label: 'Overview',
+      },
+      {
+        key: PATHS.PROJECT_SCHEME,
+        label: 'Scheme',
+      },
+      {
+        key: PATHS.DATA_SHEET,
+        label: 'Data sheet',
+      },
+      {
+        key: PATHS.PROJECT_VISUALISATION,
+        label: 'Visualisation',
+      },
+    ];
+
+    if (projectInfo?.role === UserProjectRole.Owner) {
+      tabs.push({
+        key: PATHS.PROJECT_PERSPECTIVES,
+        label: 'Perspectives',
+      });
+    }
+
+    return tabs;
+  }, [projectInfo?.role]);
 
   const handleTabClick = useCallback(
     (key: string) => {
@@ -119,7 +127,7 @@ export const OverviewTabs = () => {
           stripTrailingSlash(location.pathname)
         );
       }),
-    [location.pathname, params.id, params.node_type_id]
+    [items, location.pathname, params.id, params.node_type_id]
   );
   return (
     <Tabs

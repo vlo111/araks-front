@@ -1,21 +1,14 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { Text } from 'components/typography';
-import { VerticalSpace } from 'components/space/vertical-space';
-import {
-  getRowData,
-  groupedData,
-  setNodeDataUpdateValue,
-} from '../../../../data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
-import { COLORS } from 'helpers/constants';
-import { Col, Form, Image, Row, UploadFile } from 'antd';
+import { Col, Form, Row, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetNode } from 'api/node/use-get-node';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType } from 'types/node';
+import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType, UploadedFileType } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
@@ -24,6 +17,7 @@ import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 import { useCallback, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
+import { ViewNode } from './node-view';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -39,12 +33,16 @@ const getValue = (item: NodePropertiesValues) => {
     case PropertyTypes.DateTime:
     case PropertyTypes.Date:
       return item.nodes_data?.map((rec) => dayjs(rec as string));
+    case PropertyTypes.IMAGE_URL:
+      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`));
+    case PropertyTypes.Document:
+      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name));
     default:
       return item.nodes_data;
   }
 };
 
-export const NodeView = () => {
+export const ViewEditNodeDrawer = () => {
   const [form] = Form.useForm();
 
   const { graph, nodes, openNode, finishOpenNode } = useGraph() ?? {};
@@ -253,27 +251,7 @@ export const NodeView = () => {
           <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
         </Form>
       ) : (
-        <VerticalSpace>
-          {nodeData?.default_image && (
-            <Image src={nodeData?.default_image} width={161} height={127} style={{ borderRadius: '4px' }} />
-          )}
-          <VerticalSpace>
-            <Text color={COLORS.PRIMARY.BLUE}>name</Text>
-            <Text>{nodeData?.name}</Text>
-          </VerticalSpace>
-          {nodeData?.properties ? (
-            nodeData.properties.map((d) => {
-              return (
-                <VerticalSpace key={d.id}>
-                  <div color={COLORS.PRIMARY.BLUE}>{d.nodeTypeProperty.name}</div>
-                  {getRowData(d)}
-                </VerticalSpace>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </VerticalSpace>
+        <ViewNode nodeData={nodeData} />
       )}
     </Drawer>
   );

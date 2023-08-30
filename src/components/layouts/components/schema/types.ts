@@ -2,7 +2,7 @@ import { Graph, Node, Edge, Cell, Point } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 
 import Properties = Edge.Properties;
-import { IProjectType, ITypeProperty } from 'api/types';
+import { IProjectType, ITypeProperty, UserProjectRole } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
 import { Highlighter } from '@antv/x6/lib/registry';
 import {
@@ -118,11 +118,17 @@ export interface INode {
   zIndex?: number;
 }
 
-export type InitGraph = (container: HTMLDivElement, params: PickSchemaContextType) => Graph;
+export type ContextTypeProject = { role: UserProjectRole | null };
+
+export type InitGraph = (
+  container: HTMLDivElement,
+  params: PickSchemaContextType,
+  projectInfo: ContextTypeProject | null
+) => Graph;
 
 export type InitNodes = (graph: Graph, cells: Cell<Cell.Properties>[], params: PickSchemaContextType) => void;
 
-export type InitEvents = (graph: Graph, params: PickSchemaContextType) => void;
+export type InitEvents = (graph: Graph, params: PickSchemaContextType, projectInfo: ContextTypeProject | null) => void;
 
 export type InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo: (info: IPerspectiveInfo) => void) => void;
 
@@ -148,7 +154,12 @@ export type InsertAddProperty = () => IPort;
 
 export type Highlighter = Highlighter.Definition<unknown>;
 
-export type SelectNode = (graph: Graph, container: Element, node: Node<Node.Properties>) => void;
+export type SelectNode = (
+  graph: Graph,
+  container: Element,
+  node: Node<Node.Properties>,
+  projectInfo: ContextTypeProject | null
+) => void;
 
 export type SelectNodeWithZoom = (
   id: string,

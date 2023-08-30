@@ -1,7 +1,7 @@
 import { Cell, Edge, Graph, Node } from '@antv/x6';
-import { IProjectType } from 'api/types';
+import { IProjectType, UserProjectRole } from 'api/types';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } from '../types';
+import { ContextTypeProject, INode, InsertAddProperty, InsertProperty, IPort, SetPropertyColor } from '../types';
 import { antTheme } from 'helpers/ant-theme';
 import { isPerspective } from './utils';
 import { EyeD } from './svg/path-d';
@@ -58,7 +58,12 @@ const insertProperty: InsertProperty = ({ id, color, name, ref_property_type_id,
  * @param nodesList
  * @param edges
  */
-export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: ProjectEdgeResponse[]) => {
+export const formattedTypes = (
+  graph: Graph,
+  nodesList: IProjectType[],
+  edges: ProjectEdgeResponse[],
+  projectInfo: ContextTypeProject | null
+) => {
   if (graph.getNodes()) {
     const cells: Cell[] = [];
 
@@ -121,7 +126,8 @@ export const formattedTypes = (graph: Graph, nodesList: IProjectType[], edges: P
         }
       }
 
-      if (!isPerspective()) formattedProperties.push(insertAddProperty());
+      if (projectInfo?.role === UserProjectRole.Owner && !isPerspective())
+        formattedProperties.push(insertAddProperty());
 
       formattedNode = {
         id: node.id,

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
   position: fixed;
   width: 12rem;
-  height: 18rem;
   right: 10px;
   top: 176px;
   button {
