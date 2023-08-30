@@ -1,14 +1,7 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { Text } from 'components/typography';
-import { VerticalSpace } from 'components/space/vertical-space';
-import {
-  getRowData,
-  groupedData,
-  setNodeDataUpdateValue,
-} from '../../../../data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
-import { COLORS } from 'helpers/constants';
-import { Col, Form, Image, Row, UploadFile } from 'antd';
+import { Col, Form, Row, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -24,6 +17,7 @@ import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 import { useCallback, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
+import { ViewNode } from './node-view';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -48,7 +42,7 @@ const getValue = (item: NodePropertiesValues) => {
   }
 };
 
-export const NodeView = () => {
+export const ViewEditNodeDrawer = () => {
   const [form] = Form.useForm();
 
   const { graph, nodes, openNode, finishOpenNode } = useGraph() ?? {};
@@ -257,27 +251,7 @@ export const NodeView = () => {
           <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
         </Form>
       ) : (
-        <VerticalSpace>
-          {nodeData?.default_image && (
-            <Image src={nodeData?.default_image} width={161} height={127} style={{ borderRadius: '4px' }} />
-          )}
-          <VerticalSpace>
-            <Text color={COLORS.PRIMARY.BLUE}>name</Text>
-            <Text>{nodeData?.name}</Text>
-          </VerticalSpace>
-          {nodeData?.properties ? (
-            nodeData.properties.map((d) => {
-              return (
-                <VerticalSpace key={d.id}>
-                  <div color={COLORS.PRIMARY.BLUE}>{d.nodeTypeProperty.name}</div>
-                  {getRowData(d)}
-                </VerticalSpace>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </VerticalSpace>
+        <ViewNode nodeData={nodeData} />
       )}
     </Drawer>
   );

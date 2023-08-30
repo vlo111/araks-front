@@ -5,7 +5,7 @@ import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 import { useDeleteEdge } from 'api/edges/use-delete-edge';
 
-export const EdgeDelete = () => {
+export const EdgeDeleteModal = () => {
   const { graph, deleteEdge, finishDeleteEdge } = useGraph() ?? {};
 
   const { mutateAsync } = useDeleteEdge(deleteEdge?.id, {

@@ -12,7 +12,7 @@ import { EdgesCreate, EdgesCreateProperties } from 'types/edges';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import './add-edge-select.css';
 
-export const EdgeCreate: React.FC = () => {
+export const EdgeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
 
   const { id } = useParams();
