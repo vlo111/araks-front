@@ -92,7 +92,7 @@ export const OverviewTabs = () => {
         label: 'Scheme',
       },
       {
-        key: PATHS.DATA_SHEET,
+        key: params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET,
         label: 'Data sheet',
       },
       {
@@ -109,7 +109,7 @@ export const OverviewTabs = () => {
     }
 
     return tabs;
-  }, [projectInfo?.role]);
+  }, [params.node_type_id, projectInfo?.role]);
 
   const handleTabClick = useCallback(
     (key: string) => {
@@ -129,6 +129,7 @@ export const OverviewTabs = () => {
       }),
     [items, location.pathname, params.id, params.node_type_id]
   );
+
   return (
     <Tabs
       id="overview-header-tabs"
@@ -155,7 +156,7 @@ export const OverviewTabs = () => {
         children: (
           <div className="site-layout-content">
             {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-            {item.key === PATHS.DATA_SHEET && <DataSheetWrapper />}
+            {item.key === params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET && <DataSheetWrapper />}
             {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}

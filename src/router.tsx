@@ -91,6 +91,10 @@ export const router = createBrowserRouter([
             path: PATHS.DATA_SHEET,
             element: <DataSheet />,
           },
+          {
+            path: PATHS.NODE_OVERVIEW,
+            element: <DataSheet />,
+          },
         ],
       },
     ],

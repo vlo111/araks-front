@@ -13,6 +13,7 @@ import { defaultAllDataFilter } from '../right-section-all-data';
 import { Button } from 'components/button';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useProject } from 'context/project-context';
+import { useParams } from 'react-router-dom';
 
 type TypeInfoProps = {
   color?: string;
@@ -55,6 +56,7 @@ type Props = {
 };
 
 export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
+  const params = useParams();
   const { dispatch } = useViewDatasheet();
   const { projectInfo } = useProject();
 
@@ -74,6 +76,11 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
     isInitialLoading,
   } = useGetProjectAllData(filterValue, {
     enabled: !!(filterValue.project_type_list_id && filterValue.type === 'node'),
+    onSuccess: (data) => {
+      if (params.node_type_id) {
+        dispatch(params.node_type_id);
+      }
+    },
   });
 
   return (
