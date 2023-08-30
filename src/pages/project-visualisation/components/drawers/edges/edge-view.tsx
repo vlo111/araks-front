@@ -15,7 +15,7 @@ import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgesCreate } from 'types/edges';
 import './add-edge-select.css';
 
-export const EdgeView = () => {
+export const EdgeViewDrawer = () => {
   const [form] = Form.useForm();
 
   const [isEdit, setIsEdit] = useState(false);

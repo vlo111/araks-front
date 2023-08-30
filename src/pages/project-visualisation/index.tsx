@@ -1,14 +1,14 @@
 import { Graph } from './components/graph';
 import { LeftSection } from './components/left-section';
 import { useNodes } from 'hooks/use-nodes';
-import { NodeView } from './components/drawers/nodes/node-view';
-import { NodeCreate } from './components/drawers/nodes/add-node';
+import { NodeCreateDrawer } from './components/drawers/nodes/create-node';
 import { Settings } from './components/settings';
-import { NodeDelete } from './components/modals/delete-node';
-import { EdgeCreate } from './components/drawers/edges/add-edge';
-import { EdgeDelete } from './components/modals/delete-edge';
-import { EdgeView } from './components/drawers/edges/edge-view';
+import { NodeDeleteModal } from './components/modals/delete-node';
+import { EdgeCreateDrawer } from './components/drawers/edges/add-edge';
+import { EdgeDeleteModal } from './components/modals/delete-edge';
+import { EdgeViewDrawer } from './components/drawers/edges/edge-view';
 import { ToolbarVisualization } from '../../components/tool-bar';
+import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
 
 export const ProjectVisualisation = () => {
   useNodes();
@@ -19,12 +19,12 @@ export const ProjectVisualisation = () => {
       <ToolbarVisualization />
       <LeftSection />
       <Settings />
-      <NodeCreate />
-      <NodeView />
-      <NodeDelete />
-      <EdgeDelete />
-      <EdgeCreate />
-      <EdgeView />
+      <NodeCreateDrawer />
+      <ViewEditNodeDrawer />
+      <NodeDeleteModal />
+      <EdgeDeleteModal />
+      <EdgeCreateDrawer />
+      <EdgeViewDrawer />
     </div>
   );
 };

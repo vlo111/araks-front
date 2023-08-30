@@ -9,7 +9,7 @@ import { InitGraph } from '../../types';
 import Connecting = Options.Connecting;
 import { PATH } from '../../helpers/constants';
 
-export const initGraph: InitGraph = (container, _params) => {
+export const initGraph: InitGraph = (container, _params, projectInfo) => {
   const connecting: Partial<Connecting> = {
     connector: 'smooth',
     router: {
@@ -90,7 +90,7 @@ export const initGraph: InitGraph = (container, _params) => {
   const graph = new Graph(options);
 
   if (isPerspective()) initPerspectiveEvents(graph, _params.setPerspectiveInfo);
-  else initSchemaEvents(graph, _params);
+  else initSchemaEvents(graph, _params, projectInfo);
 
   graph.use(
     new Snapline({
