@@ -72,7 +72,13 @@ export const Notifications = () => {
               </SecondaryText>
             </Col>
             <Col>
-              <Button type="link" onClick={() => markAsRead()}>
+              <Button
+                type="link"
+                onClick={() => {
+                  markAsRead();
+                  setResult([]);
+                }}
+              >
                 <SecondaryText color="#001479" underline style={{ fontWeight: '500', letterSpacing: '1.28px' }}>
                   Mark all as read
                 </SecondaryText>
