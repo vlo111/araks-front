@@ -6,12 +6,14 @@ import { InputNumber } from 'components/input-number';
 import { QueriesSelect, QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import styled from 'styled-components';
-import { SizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { ColorSelect } from '../../select/color-select';
 import { CircleColor } from 'pages/project-visualisation/components/circle-color';
 import { useCallback } from 'react';
 import { IconSelector } from 'pages/project-visualisation/components/icon-selector';
 import { useGraph } from '../../layouts/components/visualisation/wrapper';
+import { CircleSizeComponent } from 'pages/project-visualisation/components/size-selector';
+import { BorderSizeComponent } from 'pages/project-visualisation/components/size-selector/border-size';
+import { BorderType } from 'pages/project-visualisation/components/size-selector/border-type';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -121,9 +123,9 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
   );
 };
 
-export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) => {
+export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
   const form = Form.useFormInstance();
-  const { nodes, graph } = useGraph() || {};
+  const { nodes, edges, graph } = useGraph() || {};
   const queriesList = form.getFieldValue('queries');
 
   const setValue = useCallback(
@@ -151,6 +153,17 @@ export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) 
         },
       });
     });
+    const filteredEdges = edges.filter((edge) => id === edge.project_edge_type_id);
+
+    filteredEdges.forEach((edge) => {
+      graph.updateItem(edge.id as string, {
+        style: {
+          stroke: '#C3C3C3',
+          lineWidth: 2,
+          lineDash: [],
+        },
+      });
+    });
   };
 
   const genExtra = () => (
@@ -160,6 +173,7 @@ export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) 
         event.stopPropagation();
         remove(fieldName);
         removeGraphStyle(queriesList[fieldName]?.id);
+        removeGraphStyle(queriesList[fieldName]?.edge.id);
       }}
     />
   );
@@ -177,7 +191,7 @@ export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) 
             key: '1',
             label: (
               <Space>
-                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color}/>}
+                {isVisualisation && <CircleColor color={queriesList[fieldName]?.color} />}
                 <>{queriesList[fieldName].isConnectionType && <Icon size={20} icon="connection" />}</>
                 {queriesList[fieldName].labelName}
               </Space>
@@ -187,26 +201,55 @@ export const PropertySection = ({ remove, fieldName,  isVisualisation }: Props) 
                 <>
                   {isVisualisation && (
                     <>
-                      <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
-                        <SizeComponent initialSize={queriesList[fieldName]?.size} fieldName={fieldName} />
-                      </Form.Item>
-                      <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing icon' }]}>
-                        <IconSelector fieldName={fieldName} />
-                      </Form.Item>
-                      <Form.Item name={[fieldName, 'color']} rules={[{ required: false, message: 'Missing color' }]}>
-                        <ColorSelect
-                          initialColor={queriesList[fieldName]?.color}
-                          fieldName={fieldName}
-                          setValue={setValue}
-                        />
-                      </Form.Item>
-                      {queriesList[fieldName].depth !== 1 && (
+                      {!queriesList[fieldName].isConnectionType && (
+                        <>
+                          <Form.Item name={[fieldName, 'size']} rules={[{ required: false, message: 'Missing size' }]}>
+                            <CircleSizeComponent initialSize={queriesList[fieldName]?.size} fieldName={fieldName} />
+                          </Form.Item>
+                          <Form.Item name={[fieldName, 'icon']} rules={[{ required: false, message: 'Missing icon' }]}>
+                            <IconSelector fieldName={fieldName} />
+                          </Form.Item>
+                          <Form.Item
+                            name={[fieldName, 'color']}
+                            rules={[{ required: false, message: 'Missing color' }]}
+                          >
+                            <ColorSelect
+                              initialColor={queriesList[fieldName]?.color}
+                              fieldName={fieldName}
+                              setValue={setValue}
+                            />
+                          </Form.Item>
+                        </>
+                      )}
+                      {queriesList[fieldName].isConnectionType && (
                         <VerticalSpace>
                           {queriesList[fieldName]?.labelHead}
                           <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
                             <QueriesSelect
                               depth={queriesList[fieldName].depth}
                               isConnection={queriesList[fieldName].isConnection}
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[fieldName, 'borderSize']}
+                            rules={[{ required: false, message: 'Missing Border Size' }]}
+                          >
+                            <BorderSizeComponent initialSize={queriesList[fieldName].size} fieldName={fieldName} />
+                          </Form.Item>
+                          <Form.Item
+                            name={[fieldName, 'borderType']}
+                            rules={[{ required: false, message: 'Missing Border Type' }]}
+                          >
+                            <BorderType fieldName={fieldName} />
+                          </Form.Item>
+                          <Form.Item
+                            name={[fieldName, 'color']}
+                            rules={[{ required: false, message: 'Missing color' }]}
+                          >
+                            <ColorSelect
+                              initialColor={queriesList[fieldName]?.color}
+                              fieldName={fieldName}
+                              setValue={setValue}
                             />
                           </Form.Item>
                           <QueriesContent fieldName={fieldName} />

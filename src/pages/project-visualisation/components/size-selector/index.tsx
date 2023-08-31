@@ -1,5 +1,5 @@
-import {useCallback, useState} from "react";
-import {Form} from "antd";
+import { useCallback, useState } from 'react';
+import { Form } from 'antd';
 import {
   StyledSizeWrapper,
   StyledSize,
@@ -9,21 +9,21 @@ import {
   StyledNumber,
 } from './styles';
 
-type SizeType = number ;
+type SizeType = number;
 
 type Props = {
   initialSize: SizeType;
   fieldName: number | string;
-}
-export const SizeComponent = ({initialSize,fieldName}:Props) => {
+};
+export const CircleSizeComponent = ({ initialSize, fieldName }: Props) => {
   const form = Form.useFormInstance();
-  const circleSizes = [20, 40, 60, 80,100];
+  const circleSizes = [20, 40, 60, 80, 100];
   const [size, setSize] = useState(initialSize || 40);
 
   const setValue = useCallback(
     (size: number) => {
       form.setFieldValue(['queries', fieldName, 'size'], size);
-      setSize(size)
+      setSize(size);
     },
     [form, fieldName]
   );
@@ -34,10 +34,7 @@ export const SizeComponent = ({initialSize,fieldName}:Props) => {
       <StyledCircleOptions>
         {circleSizes.map((item) => (
           <StyledCircleOption key={item} onClick={() => setValue(item)}>
-            <StyledCircle
-              isSelected={size === item}
-              size={item}
-            />
+            <StyledCircle isSelected={size === item} size={item} />
             <StyledNumber>{item}</StyledNumber>
           </StyledCircleOption>
         ))}
