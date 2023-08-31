@@ -181,8 +181,8 @@ export const AddSchemaEdgeForm: React.FC = () => {
               </Space>
             </Checkbox>
           </FormItem>
-          <FormItem name="multiple" valuePropName="checked" initialValue={false}>
-            <Checkbox>
+          <FormItem name="multiple" valuePropName="checked" initialValue={true}>
+            <Checkbox disabled>
               <Space>
                 Multiple
                 <Tooltip title="Useful information" placement="right">
