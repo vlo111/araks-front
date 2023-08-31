@@ -46,6 +46,13 @@ const ListMeta = styled(List.Item.Meta)`
   .ant-list-item-meta-content {
     flex-basis: max-content !important;
   }
+
+  .ant-list-item-meta-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
+  }
 `;
 
 export const UserListItem: Props = ({ id, index, user }) => {
@@ -78,7 +85,7 @@ export const UserListItem: Props = ({ id, index, user }) => {
         </Share>,
       ]}
     >
-      <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text>{user.title}</Text>} />
+      <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text title={user.title}>{user.title}</Text>} />
     </List.Item>
   );
 };
