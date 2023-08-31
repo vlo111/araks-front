@@ -65,6 +65,17 @@ const defaultNode = {
   size: 40,
 };
 
+const nodeStateStyles = {
+  selected: { ...defaultNode.style, fill: '' },
+};
+const edgeStateStyles = {
+  selected: {
+    color: '#414141',
+    stroke: '#5a5a5a',
+    shadowColor: 'none',
+  },
+};
+
 export const options = {
   height: window.innerHeight - 165,
   width: window.innerWidth,
@@ -75,6 +86,7 @@ export const options = {
     default: [
       'drag-canvas',
       'drag-node',
+      'drag-combo',
       'zoom-canvas',
       'create-edge',
       {
@@ -84,9 +96,23 @@ export const options = {
         },
         offset: 10,
       },
+      {
+        type: 'brush-select',
+        trigger: 'shift',
+        includeEdges: false,
+        brushStyle: {
+          fill: '#000',
+          stroke: '#FFF',
+          lineWidth: 2,
+          fillOpacity: 0.5,
+        },
+        resetSelected: false,
+      },
     ],
   },
   defaultEdge,
   defaultNode,
+  nodeStateStyles,
+  edgeStateStyles,
   layout,
 };

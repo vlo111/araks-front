@@ -25,7 +25,7 @@ type Props = {
 
 export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
   const navigate = useNavigate();
-  const [projectId, setProjectId] = useState<string | undefined>('');
+  const [projectId, setProjectId] = useState<string | null>(null);
   const [graph, setGraph] = useState<{ destroy: (() => void) | null; graph: Graph | null }>({
     destroy: null,
     graph: null,
@@ -70,7 +70,12 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
-  if (projectData?.projectsNodeTypes && !graph.graph && document.getElementById('juJSlsfk') && !document.querySelector('canvas') ) {
+  if (
+    projectData?.projectsNodeTypes &&
+    !graph.graph &&
+    document.getElementById('juJSlsfk') &&
+    !document.querySelector('canvas')
+  ) {
     setGraph(
       PreviewChart({
         nodes: projectData?.projectsNodeTypes,
@@ -97,7 +102,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
           <Col key={item.id} {...(dataToDraw.col as ColProps)}>
             <ProjectButton
               onOpenProject={() => {
-                setProjectId(item.id);
+                if (item.id) setProjectId(item.id);
               }}
               project={{
                 id: item.id,
