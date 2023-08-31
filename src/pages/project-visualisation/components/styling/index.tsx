@@ -6,6 +6,7 @@ import { AllDataResponse, NodePropertiesValues } from 'types/node';
 import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
 import { ProjectEdgeResponse } from 'types/project-edge';
+import G6 from '@antv/g6';
 
 type Props = {
   queries: Array<
@@ -52,6 +53,11 @@ export const Styling = () => {
               stroke: query.color,
               lineWidth: query.borderSize || borderInitSize,
               lineDash: query.borderDashed ? [query.borderSize, 4] : [],
+              endArrow: {
+                fill: query.color,
+                path: G6.Arrow.triangle(10, 15, 5),
+                d: 5,
+              },
             },
           });
         });
