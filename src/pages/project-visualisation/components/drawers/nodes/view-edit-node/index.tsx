@@ -135,7 +135,7 @@ export const ViewEditNodeDrawer = () => {
     const name = form.getFieldValue('name')[0];
     const img = form.getFieldValue('node_icon')[0]?.response?.data?.uploadPath;
 
-    graph.updateItem(openNode.id, {
+    graph.updateItem(openNode?.id ?? '', {
       label: name,
       type: img ? 'image' : 'circle',
       img,

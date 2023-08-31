@@ -13,27 +13,33 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
 
     const isNode = evt?.item?.getType() === 'node';
 
+    const isCombo = evt?.item?.getType() === 'combo';
+
     startOpenNodeCreate({
       isOpened: false,
       x: evt?.x ?? 0,
       y: evt?.y ?? 0,
     });
 
-    const nodeContext = `<div class="menu">
+    const nodeContext = `<div class='menu'>
           <span>Focus on node</span>
           <span>Expand</span>
-          <span class="delete">Delete</span>
+          <span class='delete'>Delete</span>
         </div>`;
 
-    const canvasContext = `<div class="menu">
+    const canvasContext = `<div class='menu'>
           <span>Create Node</span>
         </div>`;
 
-    const edgeContext = `<div class="menu">
-          <span class="delete">Delete</span>
+    const edgeContext = `<div class='menu'>
+          <span class='delete'>Delete</span>
         </div>`;
 
-    return isCanvas ? canvasContext : isNode ? nodeContext : edgeContext;
+    const comboContext = `<div class='menu'>
+          <span class='delete'>Delete</span>
+        </div>`;
+
+    return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
 
   const contextMenu = new G6.Menu({
@@ -53,13 +59,20 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
         startDeleteEdge({
           id: item.getID(),
         });
+      } else if (item?._cfg?.type === 'combo') {
+        const nodesId = item?._cfg.nodes.map((node: { _cfg: { id: string } }) => node._cfg.id);
+        if (target.className === 'delete') {
+          startDeleteNode({
+            ids: nodesId,
+          });
+        }
       } else {
         startOpenNodeCreate({ isOpened: true });
       }
     },
     offsetX: 16 + 10,
     offsetY: 0,
-    itemTypes: ['node', 'edge', 'canvas'],
+    itemTypes: ['node', 'edge', 'canvas', 'combo'],
   });
 
   return contextMenu;
