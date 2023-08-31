@@ -8,7 +8,6 @@ export const StyledDataVisualisationSiderTabs = styled(TabsComponent)`
     height: 100%;
     width: 100%;
     .ant-tabs-content {
-      margin-top: 24px;
       height: 100%;
       background: #f2f2f2;
       .ant-tabs-tabpane {

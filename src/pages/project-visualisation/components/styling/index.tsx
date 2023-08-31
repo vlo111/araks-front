@@ -5,17 +5,22 @@ import { QueriesForm } from 'components/form/all-data/queries-form';
 import { AllDataResponse, NodePropertiesValues } from 'types/node';
 import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
+import { ProjectEdgeResponse } from 'types/project-edge';
 
 type Props = {
-  queries: Array<NodePropertiesValues & { color: string; size: number; icon: string }>;
+  queries: Array<
+    NodePropertiesValues & { color: string; size: number; icon: string; borderSize: number; borderDashed: string }
+  >;
 };
 
 export const Styling = () => {
-  const { graph, nodes } = useGraph() ?? {};
+  const { graph, nodes, edges } = useGraph() ?? {};
   const [form] = Form.useForm();
   const [filteredNodes, setFilteredNodes] = useState<AllDataResponse[]>([]);
   const [openTable, setOpenTable] = useState(false);
+  const [filteredEdges, setFilteredEdges] = useState<ProjectEdgeResponse[]>([]);
   const initialSize = 40;
+  const borderInitSize = 6;
 
   const onFinish = (values: Props) => {
     if (values.queries) {
@@ -38,6 +43,18 @@ export const Styling = () => {
             },
           });
         });
+        const filteredEdges = edges.filter((edge) => edge.project_edge_type_id === query.id);
+        setFilteredEdges((prevState) => [...prevState, ...filteredEdges]);
+        filteredEdges.forEach((edge) => {
+          graph.updateItem(edge.id as string, {
+            size: query.size,
+            style: {
+              stroke: query.color,
+              lineWidth: query.borderSize || borderInitSize,
+              lineDash: query.borderDashed ? [query.borderSize, 4] : [],
+            },
+          });
+        });
       });
     }
   };
@@ -46,7 +63,12 @@ export const Styling = () => {
     <Form form={form} name="styling" onFinish={onFinish} style={{ height: '100%' }}>
       <StyledMainWrapper>
         <QueriesForm openTable={openTable} setOpenTable={setOpenTable} isVisualisation={true} />
-        <Buttons setOpenTable={setOpenTable} filteredNodes={filteredNodes} resetFields={form?.resetFields} />
+        <Buttons
+          filteredEdges={filteredEdges}
+          setOpenTable={setOpenTable}
+          filteredNodes={filteredNodes}
+          resetFields={form?.resetFields}
+        />
       </StyledMainWrapper>
     </Form>
   );

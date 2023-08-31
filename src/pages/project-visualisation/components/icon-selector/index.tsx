@@ -1,23 +1,24 @@
-import  { useCallback,useState } from "react";
-import { Form } from "antd";
+import { useCallback, useState } from 'react';
+import { Form } from 'antd';
 import { icons } from '../icons';
-import { StyledText, StyledIconsWrapper, StyledIcon, StyledDiv} from "./styles";
+import { StyledText, StyledIconsWrapper, StyledIcon, StyledDiv } from './styles';
 
 type Props = {
   fieldName: number | string;
 };
-export const IconSelector = ({  fieldName }: Props) => {
+
+export const IconSelector = ({ fieldName }: Props) => {
   const form = Form.useFormInstance();
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   const setValue = useCallback(
     (icon: string) => {
-      form.setFieldValue(["queries", fieldName, "icon"], icon);
-      setSelectedIcon(icon)
+      const newSelectedIcon = selectedIcon === icon ? null : icon;
+      form.setFieldValue(['queries', fieldName, 'icon'], newSelectedIcon);
+      setSelectedIcon(newSelectedIcon);
     },
-    [form, fieldName]
+    [form, fieldName, selectedIcon]
   );
-
 
   return (
     <>

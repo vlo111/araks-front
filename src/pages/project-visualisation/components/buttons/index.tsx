@@ -1,24 +1,25 @@
 import { useState } from 'react';
 import { PlusAction } from 'components/actions/plus';
 import { StyledButtonsWrapper, StyledAddButton, StyledDiv, StyledCleanButton, StyledRunButton } from './styles';
-import { useGraph } from "components/layouts/components/visualisation/wrapper";
-import { AllDataResponse } from "types/node";
+import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { AllDataResponse } from 'types/node';
+import { ProjectEdgeResponse } from 'types/project-edge';
 
-
-type Props =  {
+type Props = {
   setOpenTable: (value: boolean) => void;
   filteredNodes: AllDataResponse[];
+  filteredEdges: ProjectEdgeResponse[];
   resetFields: () => void;
-}
+};
 
-export const Buttons = ({setOpenTable,filteredNodes,resetFields}: Props) => {
-  const [creationCount, setCreationCount] = useState(0)
-  const { graph} = useGraph() || {}
+export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdges }: Props) => {
+  const [creationCount, setCreationCount] = useState(0);
+  const { graph } = useGraph() || {};
 
   const handleClick = () => {
-    setOpenTable(true)
-  setCreationCount(creationCount + 1)
-}
+    setOpenTable(true);
+    setCreationCount(creationCount + 1);
+  };
 
   const isDisabled = creationCount >= 24;
   const removeGraphStyle = () => {
@@ -33,9 +34,17 @@ export const Buttons = ({setOpenTable,filteredNodes,resetFields}: Props) => {
         },
       });
     });
+    filteredEdges.forEach((edge) => {
+      graph.updateItem(edge.id as string, {
+        style: {
+          stroke: '#C3C3C3',
+          lineWidth: 2,
+          lineDash: [],
+        },
+      });
+    });
     resetFields();
   };
-
 
   return (
     <>
@@ -44,7 +53,9 @@ export const Buttons = ({setOpenTable,filteredNodes,resetFields}: Props) => {
           <PlusAction /> Add
         </StyledAddButton>
         <StyledDiv>
-          <StyledCleanButton htmlType="submit" onClick={removeGraphStyle}>Clean All</StyledCleanButton>
+          <StyledCleanButton htmlType="submit" onClick={removeGraphStyle}>
+            Clean All
+          </StyledCleanButton>
           <StyledRunButton htmlType="submit">Run</StyledRunButton>
         </StyledDiv>
       </StyledButtonsWrapper>

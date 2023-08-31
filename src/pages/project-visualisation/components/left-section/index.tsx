@@ -1,8 +1,8 @@
 import { TabsProps, Row as RowComponent, Col } from 'antd';
 import styled from 'styled-components';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
-import { Styling } from '../styling';
 import { Filters } from '../filters';
+import { Styling } from '../styling';
 import { StyledDataVisualisationSiderTabs } from './styles';
 
 export const Items: TabsProps['items'] = [
