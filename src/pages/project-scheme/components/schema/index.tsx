@@ -6,7 +6,7 @@ import { useSchemaRef } from 'hooks/use-schema';
 const Graph = styled.div`
   position: fixed;
   left: 300px;
-  top: 152px;
+  top: 130px;
   z-index: 0;
 `;
 
