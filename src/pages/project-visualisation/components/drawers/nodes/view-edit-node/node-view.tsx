@@ -1,22 +1,31 @@
 import { Text } from 'components/typography';
 import { VerticalSpace } from 'components/space/vertical-space';
-import { getRowData } from '../../../../../data-sheet/components/table-section/node/utils';
+import { getRowData } from 'pages/data-sheet/components/table-section/node/utils';
 import { COLORS } from 'helpers/constants';
-import { Image } from 'antd';
-import { NodeDataResponse } from 'types/node';
+import { FormInstance, Image } from 'antd';
+import React from 'react';
+import { NodePropertiesValues } from 'types/node';
 
-export const ViewNode = ({ nodeData }: { nodeData: NodeDataResponse | undefined }) => {
+interface IProps {
+  formFata: FormInstance<{ name: string; icon: string }>;
+  properties: NodePropertiesValues[] | undefined;
+}
+
+export const ViewNode: React.FC<IProps> = ({ formFata, properties }) => {
+  const name = formFata.getFieldValue('name');
+  const img = formFata.getFieldValue('node_icon');
+
   return (
     <VerticalSpace>
-      {nodeData?.default_image && (
-        <Image src={nodeData?.default_image} width={161} height={127} style={{ borderRadius: '4px' }} />
+      {img && img[0]?.response?.data?.uploadPath && (
+        <Image src={img[0]?.response?.data?.uploadPath} width={161} height={127} style={{ borderRadius: '4px' }} />
       )}
       <VerticalSpace>
         <Text color={COLORS.PRIMARY.BLUE}>name</Text>
-        <Text>{nodeData?.name}</Text>
+        <Text>{name && name[0]}</Text>
       </VerticalSpace>
-      {nodeData?.properties ? (
-        nodeData.properties.map((d) => {
+      {properties ? (
+        properties.map((d) => {
           return (
             <VerticalSpace key={d.id}>
               <div color={COLORS.PRIMARY.BLUE}>{d.nodeTypeProperty.name}</div>

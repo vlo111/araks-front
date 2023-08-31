@@ -8,7 +8,8 @@ export interface IIdOpen {
 }
 
 export interface IOpenIdState extends IIdOpen {
-  id: string;
+  id?: string;
+  ids?: string[];
 }
 
 export interface IOpenEdgeState extends IIdOpen {

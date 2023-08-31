@@ -22,7 +22,7 @@ import { ProjectFullInfo } from '../../api/types';
 
 type Props = {
   isModalOpen: boolean;
-  setIsModalOpen: (value: undefined | string) => void;
+  setIsModalOpen: (value: null | string) => void;
   projectData: ProjectFullInfo;
   graph: { destroy: (() => void) | null; graph: Graph | null };
   setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
@@ -123,9 +123,11 @@ const Title = ({
     <TitleWrapper>
       <Space>
         <ProjectLogo project={project} />
-        <Col style={{display: 'grid', gridTemplateColumns: 'auto'}}>
+        <Col style={{ display: 'grid', gridTemplateColumns: 'auto' }}>
           <Text>{project.name}</Text>
-          <Text>By {project?.user?.first_name} {project?.user?.last_name}</Text>
+          <Text>
+            By {project?.user?.first_name} {project?.user?.last_name}
+          </Text>
         </Col>
       </Space>
       <Space size={30}>
@@ -158,7 +160,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   const handleCancel = () => {
-    setIsModalOpen(undefined);
+    setIsModalOpen(null);
     if (graph.destroy) {
       setGraph({ destroy: null, graph: null });
       graph.destroy();
@@ -182,8 +184,8 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
         user: {
           first_name: projectData?.user?.first_name,
           last_name: projectData?.user?.last_name,
-          id: projectData?.user?.id
-        }
+          id: projectData?.user?.id,
+        },
       }
     : ({} as ProjectList);
 

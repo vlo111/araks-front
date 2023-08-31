@@ -63,6 +63,11 @@ export const Notifications = () => {
       placement="bottom"
       destroyTooltipOnHide
       trigger="click"
+      onOpenChange={(open) => {
+        if (!open) {
+          setResult([]);
+        }
+      }}
       title={
         <VerticalSpace>
           <Row justify="space-between" align="middle" style={{ padding: '0 16px' }}>
@@ -72,7 +77,13 @@ export const Notifications = () => {
               </SecondaryText>
             </Col>
             <Col>
-              <Button type="link" onClick={() => markAsRead()}>
+              <Button
+                type="link"
+                onClick={() => {
+                  markAsRead();
+                  setResult([]);
+                }}
+              >
                 <SecondaryText color="#001479" underline style={{ fontWeight: '500', letterSpacing: '1.28px' }}>
                   Mark all as read
                 </SecondaryText>

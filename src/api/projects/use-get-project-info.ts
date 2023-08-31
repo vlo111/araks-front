@@ -5,7 +5,7 @@ import client from '../client';
 export const GET_PROJECT_INFO_DATA = '/projects/info/:id';
 
 type GetProjectParam = {
-  id?: string;
+  id?: string | null;
 };
 
 type QueryKey = GetProjectParam | string;
@@ -27,7 +27,6 @@ export const useGetProjectInfo = (params: GetProjectParam, options: Options = { 
     queryKey: [url, params],
     queryFn: () => client.get(url, { params }),
     ...options,
-    // select: (data): ReturnData => data.data,
   });
   const { data, isSuccess } = result;
   return {

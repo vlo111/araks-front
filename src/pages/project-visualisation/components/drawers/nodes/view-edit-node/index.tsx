@@ -1,7 +1,7 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
-import { Col, Form, Row, UploadFile } from 'antd';
+import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
@@ -135,7 +135,7 @@ export const ViewEditNodeDrawer = () => {
     const name = form.getFieldValue('name')[0];
     const img = form.getFieldValue('node_icon')[0]?.response?.data?.uploadPath;
 
-    graph.updateItem(openNode.id, {
+    graph.updateItem(openNode?.id ?? '', {
       label: name,
       type: img ? 'image' : 'circle',
       img,
@@ -250,8 +250,10 @@ export const ViewEditNodeDrawer = () => {
         >
           <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
         </Form>
+      ) : isInitialLoading ? (
+        <Skeleton />
       ) : (
-        <ViewNode nodeData={nodeData} />
+        <ViewNode formFata={form} properties={nodeData?.properties} />
       )}
     </Drawer>
   );

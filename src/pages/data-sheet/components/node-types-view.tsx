@@ -17,7 +17,7 @@ const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean
 
 type Props = PropsSetState &
   TableStyleBasedOnTab & {
-    onSelect: (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => void;
+    onSelect?: (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeNodeType> }) => void;
     onCheck: (checkedKeys: string[]) => void;
     nodesList: TreeNodeType[];
     color?: string;

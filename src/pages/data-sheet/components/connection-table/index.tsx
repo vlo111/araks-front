@@ -67,9 +67,12 @@ export const ConnectionTableSection = () => {
 
   useEffect(() => {
     if (columns.length) {
-      ///fix
-      let summaryHeight = document.querySelectorAll('.ant-table-thead')?.[0]?.clientHeight;
-      const columnsProperty = document.querySelectorAll('.ant-table-tbody .ant-table-row');
+      let summaryHeight = document.querySelector('#connection-table .ant-table-thead')?.clientHeight || 0;
+      if (!rowData) {
+        setTableHead(summaryHeight);
+        return;
+      }
+      const columnsProperty = document.querySelectorAll('#connection-table .ant-table-tbody .ant-table-row');
 
       const firstFourElements = Array.from(columnsProperty).slice(0, data.length ?? 0);
       firstFourElements.forEach((column: Element) => {
@@ -78,7 +81,7 @@ export const ConnectionTableSection = () => {
 
       setTableHead(summaryHeight);
     }
-  }, [columns, data.length]);
+  }, [columns, data.length, rowData]);
 
   return (
     <div style={{ position: 'relative' }}>

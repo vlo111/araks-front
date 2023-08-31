@@ -24,6 +24,8 @@ import dayjs from 'dayjs';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PATHS } from 'helpers/constants';
 
 type VIewDataType = NodeDataResponse | undefined;
 
@@ -57,6 +59,8 @@ const getValue = (item: NodePropertiesValues) => {
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
+  const params = useParams();
+  const navigate = useNavigate();
   const isXXl = useIsXXlScreen();
 
   const { nodeTypeId, isConnectionType } = useDataSheetWrapper();
@@ -119,6 +123,9 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     setSelectedView(undefined);
     setIsEdit(false);
     form.resetFields();
+    if (params.node_type_id && params.id) {
+      navigate(PATHS.DATA_SHEET.replace(':id', params.id));
+    }
   };
 
   React.useEffect(() => {
@@ -227,7 +234,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             </Row>
           )
         }
-        contentWrapperStyle={{ height: '100%' }}
+        contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
         {isEdit ? (
           <Form

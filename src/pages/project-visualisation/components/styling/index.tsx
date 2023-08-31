@@ -17,7 +17,7 @@ export const Styling = () => {
   const { graph, nodes, edges } = useGraph() ?? {};
   const [form] = Form.useForm();
   const [filteredNodes, setFilteredNodes] = useState<AllDataResponse[]>([]);
-  const [openTable, setOpenTable] = useState(true);
+  const [openTable, setOpenTable] = useState(false);
   const [filteredEdges, setFilteredEdges] = useState<ProjectEdgeResponse[]>([]);
   const initialSize = 40;
   const borderInitSize = 6;
@@ -30,7 +30,7 @@ export const Styling = () => {
         filteredNodes.forEach((node) => {
           graph.updateItem(node.id, {
             size: query.size || initialSize,
-            type: query.icon ? query.icon : 'circle',
+            type: node.default_image ? 'image' : query.icon,
             icon: {
               show: !!query.icon,
               img: query.icon,

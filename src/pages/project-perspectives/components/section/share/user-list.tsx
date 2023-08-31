@@ -5,15 +5,12 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Icon } from 'components/icon';
 import { Text } from 'components/typography';
 import { useGetPerspectiveUsers } from 'api/perspective/shared-users/use-get-perspecive-users';
-import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { UserListItem } from './user-list-item';
 
 export const UserList = () => {
   const { perspective: { id } = { id: '' } } = useSchema() || {};
 
   const { shared } = useGetPerspectiveUsers({ id });
-
-  const isXXl = useIsXXlScreen();
 
   const data = useMemo(
     () =>
@@ -35,11 +32,7 @@ export const UserList = () => {
         </Text>
       </Space>
       <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
-      <List
-        itemLayout={isXXl ? 'horizontal' : 'vertical'}
-        dataSource={data}
-        renderItem={(item, index) => <UserListItem id={id ?? ''} index={index} user={item} />}
-      />
+      <List dataSource={data} renderItem={(item, index) => <UserListItem id={id ?? ''} index={index} user={item} />} />
     </VerticalSpace>
   );
 };

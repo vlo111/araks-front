@@ -1,11 +1,10 @@
 import { useState, Dispatch, SetStateAction } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Avatar, Col, Descriptions, Divider, List, Row, Spin } from 'antd';
+import { Avatar, Col, Descriptions, Divider, List, Row, Space, Spin } from 'antd';
 import { useDeleteNotification } from 'api/notifications/use-delete-notification';
 import { useNotificationStatusUpdate } from 'api/notifications/use-notitication-status-update';
 import { NotificationsData } from 'api/types';
 import { Button } from 'components/button';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText } from 'components/typography';
 import { COLORS, PATHS } from 'helpers/constants';
 import { formatTimeDifference } from 'helpers/utils';
@@ -14,8 +13,9 @@ import styled, { css } from 'styled-components';
 import { NotifyBadge } from '.';
 import { NotificationsPage } from './types';
 
-const StyledVerticalSpace = styled(({ isHovered, ...props }) => <VerticalSpace {...props} />)`
+const StyledVerticalSpace = styled(({ isHovered, ...props }) => <Space direction="vertical" {...props} />)`
   background: linear-gradient(136deg, rgba(237, 239, 248, 0.45) 0%, rgba(237, 239, 248, 0.2) 100%);
+  width: 99%;
 
   &.notification-unread {
     background: linear-gradient(136deg, rgba(153, 159, 189, 0.45) 0%, rgba(222, 226, 243, 0.2) 100%);
@@ -114,6 +114,8 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
             }
             description={
               <Descriptions
+                column={1}
+                size="small"
                 items={[
                   {
                     key: item.id,
@@ -131,6 +133,31 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
                       </Button>
                     ),
                   },
+                  ...(item.action_type === 'comment-node'
+                    ? [
+                        {
+                          key: 'node',
+                          label: 'Node',
+                          children: (
+                            <Button
+                              style={{ padding: 0, height: '100%', lineHeight: '1' }}
+                              type="link"
+                              onClick={() => {
+                                updateNotificationStatus(item.id);
+                                navigate(
+                                  PATHS.NODE_OVERVIEW.replace(':id', item.project_id).replace(
+                                    ':node_type_id',
+                                    item.node_id
+                                  )
+                                );
+                              }}
+                            >
+                              <SecondaryText>{item.nodes?.name || 'NO Name'}</SecondaryText>
+                            </Button>
+                          ),
+                        },
+                      ]
+                    : []),
                 ]}
               />
             }

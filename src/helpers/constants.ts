@@ -11,6 +11,7 @@ export const PATHS = {
   PROJECT_PERSPECTIVES: '/projects/perspectives/:id',
   PROJECT_VISUALISATION: '/projects/visualisation/:id',
   DATA_SHEET: '/projects/data-sheet/:id',
+  NODE_OVERVIEW: '/projects/data-sheet/:id/:node_type_id',
   PUBLIC: '/public',
   SHARED: '/shared',
   FOLDER: '/folder/:id',

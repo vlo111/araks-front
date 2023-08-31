@@ -4,27 +4,43 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
+import { useDeleteAllDataChecked } from '../../../../api/all-data/use-delete-all-data-checked';
 
 export const NodeDeleteModal = () => {
   const { graph, nodes, setNodes, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
 
-  const { mutate } = useDeleteNode(deleteNode?.id, {
+  const { mutate: multipleDelete } = useDeleteAllDataChecked(deleteNode?.ids ?? [], {
+    enabled: !!deleteNode?.ids,
     onSuccess: () => {
-      graph.removeItem(deleteNode.id);
+      deleteNode?.ids?.forEach((n) => {
+        graph.removeItem(n);
+      });
+      finishDeleteNode();
+      graph.uncombo(graph.getCombos()[0]._cfg?.id as string);
+      graph.addBehaviors('drag-node', 'default');
+    },
+  });
+
+  const { mutate } = useDeleteNode(deleteNode?.id ?? '', {
+    onSuccess: () => {
+      graph.removeItem(deleteNode?.id ?? '');
       finishDeleteNode();
       finishOpenNode();
       setNodes(nodes.filter((n) => n.id !== deleteNode.id));
     },
   });
 
-  const deleteNodeHandle = async () => {
-    await mutate();
+  const deleteNodeHandle = () => {
+    if (deleteNode.id) mutate();
+    else multipleDelete();
   };
 
   return (
     <>
       <Modal
-        title={<Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this node?</Text>}
+        title={
+          <Text style={{ textAlign: 'center' }}>{`Are you sure you wish to permanently remove this node(s) ?`}</Text>
+        }
         open={deleteNode?.isOpened}
         footer={false}
         closable={false}

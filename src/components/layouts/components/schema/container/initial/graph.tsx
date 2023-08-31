@@ -80,7 +80,7 @@ export const initGraph: InitGraph = (container, _params, projectInfo) => {
     container: container,
     panning: true,
     height: window.innerHeight - 152,
-    width: isPerspective() ? window.innerWidth - 600 : window.innerWidth - 300,
+    width: isPerspective() ? window.innerWidth - 400 : window.innerWidth - 300,
     background: { color: antTheme.components.Schema.colorBg },
     grid,
     mousewheel,

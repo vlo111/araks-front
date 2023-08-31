@@ -5,26 +5,13 @@ import { Text } from 'components/typography';
 import { UploadedFileType } from 'types/node';
 import { useState } from 'react';
 import { DocumentView } from 'components/document-view';
-import { useOverview } from 'context/overview-context';
 
 type Props = {
   node: UploadedFileType;
 };
 
-const getFileViewDrawerStart = () => {
-  const element = document.querySelector('.datasheet-view-drawer'); // Replace with your element
-  const rect = (element as HTMLElement)?.getBoundingClientRect?.();
-  return rect?.top - 20 || 0;
-};
-
 export const DocumentViewDrawer = ({ node }: Props) => {
-  const { hideLeftSection, setHideLeftSection } = useOverview();
-
   const [openDrawer, setOpenDrawer] = useState(false);
-
-  const onClose = () => {
-    setHideLeftSection(false);
-  };
 
   return (
     <>
@@ -51,25 +38,19 @@ export const DocumentViewDrawer = ({ node }: Props) => {
         </Text>
       </Button>
       <Drawer
-        open={openDrawer && hideLeftSection}
+        open={openDrawer}
         closable={false}
         destroyOnClose
         width={600}
+        getContainer={false}
         placement="right"
         rootClassName="add-node-drawer"
-        onClose={onClose}
-        afterOpenChange={(open) => {
-          if (!open) {
-            setHideLeftSection(false);
-          }
-        }}
         drawerStyle={{
           background: '#F2F2F2',
           boxShadow: '10px 10px 10px 0px rgba(111, 111, 111, 0.10) inset',
         }}
         contentWrapperStyle={{
-          //   margin: '16px 16px 48px',
-          marginTop: getFileViewDrawerStart(),
+          marginTop: (document.querySelector('.datasheet-view-drawer .ant-drawer-header')?.clientHeight || 0) - 20,
           boxShadow: 'none',
         }}
         style={{
