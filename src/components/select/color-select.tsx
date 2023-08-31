@@ -52,7 +52,7 @@ export const ColorSelect = ({ initialColor, setValue }: Props) => {
       overlayStyle={{ width: 220 }}
     >
       <ButtonColor block type="primary" color={color}>
-        <span>Select color</span>
+        Select color
       </ButtonColor>
     </SelectColorPopover>
   );
