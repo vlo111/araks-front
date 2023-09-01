@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Form } from 'antd';
 import { PlusAction } from 'components/actions/plus';
 import { StyledButtonsWrapper, StyledAddButton, StyledDiv, StyledCleanButton, StyledRunButton } from './styles';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
@@ -13,15 +13,15 @@ type Props = {
 };
 
 export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdges }: Props) => {
-  const [creationCount, setCreationCount] = useState(0);
+  const form = Form.useFormInstance();
+  const queries = Form.useWatch('queries', form);
   const { graph } = useGraph() || {};
+  const isAddButtonDisabled = queries?.length >= 16;
 
   const handleClick = () => {
     setOpenTable(true);
-    setCreationCount(creationCount + 1);
   };
 
-  const isDisabled = creationCount >= 24;
   const removeGraphStyle = () => {
     filteredNodes.forEach((node) => {
       graph.updateItem(node.id, {
@@ -49,7 +49,7 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
   return (
     <>
       <StyledButtonsWrapper>
-        <StyledAddButton onClick={handleClick} disabled={isDisabled}>
+        <StyledAddButton onClick={handleClick} disabled={isAddButtonDisabled}>
           <PlusAction /> Add
         </StyledAddButton>
         <StyledDiv>
