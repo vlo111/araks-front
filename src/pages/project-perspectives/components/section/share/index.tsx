@@ -42,7 +42,7 @@ export const Share = () => {
       <Drawer
         onClose={onClose}
         open={perspective?.openShare}
-        contentWrapperStyle={{ width: isXXl ? '600px' : '400px' }}
+        contentWrapperStyle={{ width: isXXl ? '600px' : '500px' }}
       >
         <UserForm />
         <UserList />
