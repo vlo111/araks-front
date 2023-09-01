@@ -21,8 +21,11 @@ const ButtonColor = styled(
     color: ${COLORS.PRIMARY.GRAY_DARK};
   }
 
-  &&:hover {
-    background-color: ${(props) => props.color};
+  &&&:hover {
+    background-color: #4f5988;
+    > span {
+      color: #ffffff;
+    }
   }
 `;
 
@@ -36,13 +39,13 @@ const state = {
   hue: 50,
 };
 
-export const ColorSelect = ({ initialColor,setValue}: Props) => {
+export const ColorSelect = ({ initialColor, setValue }: Props) => {
   const [color, setColor] = useState(initialColor || '#DDDDDD');
 
-  const  handleOnChange = (color:string) => {
+  const handleOnChange = (color: string) => {
     setValue(color);
     setColor(color);
-  }
+  };
   return (
     <SelectColorPopover
       content={<SketchPicker color={color} onChange={(color?) => handleOnChange(color.hex)} {...state} />}
