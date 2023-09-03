@@ -146,7 +146,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
     }
   }, [selectedView, isXXl]);
 
-  const { mutate } = useManageNodes();
+  const { mutate, isLoading } = useManageNodes();
 
   const onFinish = (values: NodeBody) => {
     const mainData = {
@@ -237,7 +237,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         }
         contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
-        <Spin spinning={isInitialLoading}>
+        <Spin spinning={isInitialLoading || isLoading}>
           <Form
             name="project-node-manage"
             form={form}
