@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Table } from 'antd';
+import { Spin, Table } from 'antd';
 import { useColumns } from './use-columns';
 import { DataType } from './types';
 import { useActions } from './table-actions';
@@ -37,7 +37,11 @@ export const TableSection = () => {
   const tableRef = useRef<HTMLDivElement>(null);
 
   const { nodeTypeId } = useDataSheetWrapper();
-  const { rowsData: data, count: pageCount } = useGetTypeNodes(pageData, nodeTypeId, {
+  const {
+    rowsData: data,
+    count: pageCount,
+    isLoading,
+  } = useGetTypeNodes(pageData, nodeTypeId, {
     enabled: !!nodeTypeId,
     onSuccess: ({ rows: data, count }) => {
       const rows = data.map((row) => ({
@@ -123,17 +127,19 @@ export const TableSection = () => {
           ref={tableRef}
         >
           <VerticalButton columnWidth={columnWidth} />
-          <ViewDatasheetProvider>
-            <Table
-              id="node-table"
-              size="large"
-              bordered
-              dataSource={rowData}
-              columns={[...columns, ...actions]}
-              pagination={false}
-              scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
-            />
-          </ViewDatasheetProvider>
+          <Spin spinning={isLoading}>
+            <ViewDatasheetProvider>
+              <Table
+                id="node-table"
+                size="large"
+                bordered
+                dataSource={rowData}
+                columns={[...columns, ...actions]}
+                pagination={false}
+                scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
+              />
+            </ViewDatasheetProvider>
+          </Spin>
         </div>
         {pageCount ? (
           <NodePagination

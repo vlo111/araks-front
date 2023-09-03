@@ -5,6 +5,7 @@ import { Text } from 'components/typography';
 import { UploadedFileType } from 'types/node';
 import { useState } from 'react';
 import { DocumentView } from 'components/document-view';
+import { CloseOutlined } from '@ant-design/icons';
 
 type Props = {
   node: UploadedFileType;
@@ -44,22 +45,28 @@ export const DocumentViewDrawer = ({ node }: Props) => {
         width={600}
         getContainer={false}
         placement="right"
-        rootClassName="add-node-drawer"
         drawerStyle={{
           background: '#F2F2F2',
           boxShadow: '10px 10px 10px 0px rgba(111, 111, 111, 0.10) inset',
         }}
         contentWrapperStyle={{
-          marginTop: (document.querySelector('.datasheet-view-drawer .ant-drawer-header')?.clientHeight || 0) - 20,
+          // marginTop: (document.querySelector('.datasheet-view-drawer .ant-drawer-header')?.clientHeight || 0) - 20,
           boxShadow: 'none',
         }}
         style={{
-          margin: '16px 16px 48px',
+          // margin: '16px 16px 48px',
           background: 'transparent',
         }}
+        bodyStyle={{ padding: '18px' }}
         mask={false}
       >
-        <DocumentView node={node} />
+        <div style={{ height: '100%', position: 'relative' }}>
+          <CloseOutlined
+            onClick={() => setOpenDrawer(false)}
+            style={{ position: 'absolute', left: '-18px', top: '-18px' }}
+          />
+          <DocumentView node={node} />
+        </div>
       </Drawer>
     </>
   );

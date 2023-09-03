@@ -12,6 +12,7 @@ import { LongTitle, Text } from 'components/typography';
 import { ShowSafeText } from 'components/typography/show-safe-text';
 import dayjs from 'dayjs';
 import { centerImageStyle, COLORS } from 'helpers/constants';
+import { Fragment } from 'react';
 import {
   NodeBody,
   NodeDataResponse,
@@ -307,7 +308,9 @@ export const getRowData = (item: NodePropertiesValues) => {
         <Image.PreviewGroup>
           <Space>
             {isMultiple
-              ? item.nodes_data.map((data) => dataByType(data, PropertyTypes.IMAGE_URL))
+              ? item.nodes_data.map((data, index) => (
+                  <Fragment key={index}>{dataByType(data, PropertyTypes.IMAGE_URL)}</Fragment>
+                ))
               : dataByType(getSingleData(item.nodes_data), PropertyTypes.IMAGE_URL)}
           </Space>
         </Image.PreviewGroup>
@@ -316,7 +319,9 @@ export const getRowData = (item: NodePropertiesValues) => {
       return (
         <Space>
           {item.nodes_data?.map((node, index) => {
-            return node ? <DocumentViewDrawer node={node as UploadedFileType} key={index} /> : '';
+            return (
+              <Fragment key={index}>{node ? <DocumentViewDrawer node={node as UploadedFileType} /> : ''}</Fragment>
+            );
           })}
         </Space>
       );
