@@ -1,4 +1,4 @@
-import { CalendarOutlined, LinkOutlined } from '@ant-design/icons';
+import { CalendarOutlined, DownloadOutlined, LinkOutlined } from '@ant-design/icons';
 import { Avatar, Button, Image, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { DocumentViewDrawer } from 'components/drawer/document-view-drawer';
@@ -96,7 +96,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
           trigger="hover"
           content={
             item.project_type_property_type === PropertyTypes.Document ? (
-              <Space>
+              <VerticalSpace>
                 {item.nodes_data?.map((node) => {
                   return node ? (
                     <Button
@@ -104,6 +104,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
                       href={(node as UploadedFileType).url}
                       target="_blank"
                       key={(node as UploadedFileType).url}
+                      icon={<DownloadOutlined />}
                     >
                       {(node as UploadedFileType).name}
                     </Button>
@@ -111,15 +112,11 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
                     ''
                   );
                 })}
-              </Space>
+              </VerticalSpace>
             ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  return node ? (
-                    <Avatar src={(node as UploadedFileType).url} key={(node as UploadedFileType).url} />
-                  ) : (
-                    ''
-                  );
+                  return node ? <Avatar src={node as string} key={node as string} /> : '';
                 })}
               </Space>
             ) : (
@@ -137,11 +134,10 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
         >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
       );
     case item.project_type_property_type === PropertyTypes.IMAGE_URL:
-      // return <Avatar src={item.nodes_data?.join('') as string} size="large" />;
       return (
         <Space>
           {item.nodes_data?.map((node) => {
-            return node ? <Avatar src={(node as UploadedFileType).url} key={(node as UploadedFileType).url} /> : '';
+            return node ? <Avatar src={node as string} key={node as string} /> : '';
           })}
         </Space>
       );

@@ -158,10 +158,12 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
                 { max: 30, message: 'The maximum length for this field is 30 characters' },
                 {
                   validator: async (_: Rule, value: string | undefined) => {
-                    if (value !== undefined) {
-                      const regex = /^[a-z0-9_]+$/;
+                    if (value !== undefined && value !== '') {
+                      const regex = /^[a-z][a-z0-9_]*$/;
                       if (!regex.test(value)) {
-                        return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
+                        return Promise.reject(
+                          'Name must start with a letter and contain only lowercase letters, numbers and underscores'
+                        );
                       }
                     }
                     return Promise.resolve();

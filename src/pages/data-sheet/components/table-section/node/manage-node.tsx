@@ -1,4 +1,4 @@
-import { Col, Drawer, Form, Row, UploadFile } from 'antd';
+import { Col, Drawer, Form, Row, Spin, UploadFile } from 'antd';
 import { useManageNodes } from 'api/node/use-manage-node';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
@@ -35,7 +35,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
     setOpen(true);
   };
 
-  const { mutate } = useManageNodes();
+  const { mutate, isLoading } = useManageNodes();
 
   const [form] = Form.useForm();
 
@@ -86,7 +86,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
   };
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
       <Drawer
         title={`Add New Node / ${titleText}`}
@@ -122,6 +122,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
         </Form>
       </Drawer>
-    </>
+    </Spin>
   );
 };
