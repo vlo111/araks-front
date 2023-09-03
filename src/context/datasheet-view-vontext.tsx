@@ -1,4 +1,4 @@
-import { Col, Drawer, Form, Row, Skeleton, UploadFile } from 'antd';
+import { Col, Drawer, Form, Row, Skeleton, Spin, UploadFile } from 'antd';
 import * as React from 'react';
 import {
   NodeBody,
@@ -120,9 +120,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   });
 
   const onClose = () => {
-    setSelectedView(undefined);
-    setIsEdit(false);
-    form.resetFields();
+    setSelectedViewId(undefined);
+
     if (params.node_type_id && params.id) {
       navigate(PATHS.DATA_SHEET.replace(':id', params.id));
     }
@@ -213,9 +212,11 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           if (!open) {
             setSelectedView(undefined);
             setSelectedViewId(undefined);
+            setIsEdit(false);
+            form.resetFields();
           }
         }}
-        open={!!selectedView}
+        open={!!selectedViewId}
         getContainer={false}
         width={drawerWidth}
         footer={
@@ -236,22 +237,24 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         }
         contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
-        {isEdit ? (
-          <Form
-            name="project-node-manage"
-            form={form}
-            onFinish={onFinish}
-            autoComplete="off"
-            layout="vertical"
-            requiredMark={false}
-          >
-            <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
-          </Form>
-        ) : isInitialLoading ? (
-          <Skeleton />
-        ) : (
-          <VIewNode />
-        )}
+        <Spin spinning={isInitialLoading}>
+          {isEdit ? (
+            <Form
+              name="project-node-manage"
+              form={form}
+              onFinish={onFinish}
+              autoComplete="off"
+              layout="vertical"
+              requiredMark={false}
+            >
+              <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+            </Form>
+          ) : isInitialLoading ? (
+            <Skeleton />
+          ) : (
+            <VIewNode />
+          )}
+        </Spin>
       </Drawer>
     </ViewDatasheetContext.Provider>
   );
