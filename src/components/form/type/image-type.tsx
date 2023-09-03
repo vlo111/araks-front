@@ -1,5 +1,5 @@
 import { PaperClipOutlined } from '@ant-design/icons';
-import { message, Space, Upload } from 'antd';
+import { Form, message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
@@ -30,6 +30,7 @@ const StyledUpload = styled(Upload)`
 const fileTypes = ['.jpg', '.jpeg', '.png', '.psd', '.tiff', '.webp', '.svg'];
 const allowedTypes = fileTypes.join(',');
 const maxSize = 10; // in MB
+const maxAllowedFilesCount = 5;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const normFile = (e: any) => {
@@ -41,6 +42,7 @@ const normFile = (e: any) => {
 
 export const ImageType = ({ data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+  const imagesUploaded = Form.useWatch(data.name);
 
   const label = (
     <Space>
@@ -66,7 +68,7 @@ export const ImageType = ({ data }: Props) => {
           headers={{
             Authorization: `Bearer ${token}`,
           }}
-          maxCount={data.multiple_type ? 5 : 1}
+          maxCount={data.multiple_type ? maxAllowedFilesCount : 1}
           beforeUpload={(file) => {
             const isFileTypeAllowed = fileTypes.some((type) => file.name.toLowerCase().endsWith(type));
             const isFileSizeAllowed = file.size / 1024 / 1024 < maxSize;
@@ -90,10 +92,17 @@ export const ImageType = ({ data }: Props) => {
             }
           }}
         >
-          <StyledButton block icon={<PaperClipOutlined />}>
+          <StyledButton
+            block
+            icon={<PaperClipOutlined />}
+            disabled={imagesUploaded && imagesUploaded.length === maxAllowedFilesCount}
+          >
             Upload File
           </StyledButton>
-          {data.multiple_type === true && <AddNewFieldButton />}
+          {data.multiple_type === true &&
+            (!imagesUploaded || (imagesUploaded && imagesUploaded.length < maxAllowedFilesCount)) && (
+              <AddNewFieldButton />
+            )}
         </StyledUpload>
       </FormItem>
     </div>

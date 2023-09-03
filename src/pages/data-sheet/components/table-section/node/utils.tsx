@@ -315,8 +315,8 @@ export const getRowData = (item: NodePropertiesValues) => {
     case PropertyTypes.Document:
       return (
         <Space>
-          {item.nodes_data?.map((node) => {
-            return node ? <DocumentViewDrawer node={node as UploadedFileType} /> : '';
+          {item.nodes_data?.map((node, index) => {
+            return node ? <DocumentViewDrawer node={node as UploadedFileType} key={index} /> : '';
           })}
         </Space>
       );

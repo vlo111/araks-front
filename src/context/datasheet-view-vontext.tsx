@@ -238,22 +238,22 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
         <Spin spinning={isInitialLoading}>
-          {isEdit ? (
-            <Form
-              name="project-node-manage"
-              form={form}
-              onFinish={onFinish}
-              autoComplete="off"
-              layout="vertical"
-              requiredMark={false}
-            >
+          <Form
+            name="project-node-manage"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+            requiredMark={false}
+          >
+            {isEdit ? (
               <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
-            </Form>
-          ) : isInitialLoading ? (
-            <Skeleton />
-          ) : (
-            <VIewNode />
-          )}
+            ) : isInitialLoading ? (
+              <Skeleton />
+            ) : (
+              <VIewNode />
+            )}
+          </Form>
         </Spin>
       </Drawer>
     </ViewDatasheetContext.Provider>

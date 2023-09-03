@@ -1,5 +1,5 @@
 import { PaperClipOutlined } from '@ant-design/icons';
-import { message, Space, Upload } from 'antd';
+import { Form, message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
@@ -30,6 +30,7 @@ const StyledUpload = styled(Upload)`
 const fileTypes = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'];
 const allowedTypes = fileTypes.join(',');
 const maxSize = 10; // in MB
+const maxAllowedFilesCount = 5;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const normFile = (e: any) => {
@@ -41,6 +42,10 @@ const normFile = (e: any) => {
 
 export const DocumentType = ({ data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+
+  const docsUploaded = Form.useWatch(data.name);
+  // eslint-disable-next-line no-console
+  console.log('docsUploaded', docsUploaded);
 
   const label = (
     <Space>
@@ -67,7 +72,7 @@ export const DocumentType = ({ data }: Props) => {
             Authorization: `Bearer ${token}`,
             accept: 'document',
           }}
-          maxCount={data.multiple_type ? 5 : 1}
+          maxCount={data.multiple_type ? maxAllowedFilesCount : 1}
           beforeUpload={(file) => {
             const isFileTypeAllowed = fileTypes.some((type) => file.name.toLowerCase().endsWith(type));
             const isFileSizeAllowed = file.size / 1024 / 1024 < maxSize;
@@ -91,10 +96,15 @@ export const DocumentType = ({ data }: Props) => {
             }
           }}
         >
-          <StyledButton block icon={<PaperClipOutlined />}>
+          <StyledButton
+            block
+            icon={<PaperClipOutlined />}
+            disabled={docsUploaded && docsUploaded.length === maxAllowedFilesCount}
+          >
             Upload File
           </StyledButton>
-          {data.multiple_type === true && <AddNewFieldButton />}
+          {data.multiple_type === true &&
+            (!docsUploaded || (docsUploaded && docsUploaded.length < maxAllowedFilesCount)) && <AddNewFieldButton />}
         </StyledUpload>
       </FormItem>
     </div>
