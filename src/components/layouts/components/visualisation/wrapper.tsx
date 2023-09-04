@@ -3,8 +3,7 @@ import { Outlet, useOutletContext } from 'react-router-dom';
 import { Graph } from '@antv/g6';
 import { GraphAction, graphInitialState, graphReducer } from './reducer/graph-manager';
 import { VisualisationContextType } from './types';
-import { IProjectType } from 'api/types';
-import { IOpenEdge, IOpenId, ProjectEdgeResponse } from 'types/project-edge';
+import { IOpenEdge, IOpenId } from 'types/project-edge';
 import { IIdOpen } from './reducer/types';
 
 export const VisualisationWrapper: React.FC = () => {
@@ -15,8 +14,6 @@ export const VisualisationWrapper: React.FC = () => {
   const callbacks = useMemo(
     () => ({
       setGraph: (payload: Graph) => handleAction(GraphAction.SET_GRAPH, payload),
-      setNodes: (payload: IProjectType[]) => handleAction(GraphAction.SET_NODES, payload),
-      setEdges: (payload: ProjectEdgeResponse[]) => handleAction(GraphAction.SET_EDGES, payload),
       startOpenNode: (payload: IOpenId) => handleAction(GraphAction.OPEN_NODE_START, payload),
       finishOpenNode: () => handleAction(GraphAction.OPEN_NODE_FINISH),
       startDeleteNode: (payload: IOpenId) => handleAction(GraphAction.DELETE_NODE_START, payload),

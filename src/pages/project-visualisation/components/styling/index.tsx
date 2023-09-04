@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Form } from 'antd';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { QueriesForm } from 'components/form/all-data/queries-form';
-import { AllDataResponse, NodePropertiesValues } from 'types/node';
+import { NodePropertiesValues } from 'types/node';
 import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
-import { ProjectEdgeResponse } from 'types/project-edge';
-import G6 from '@antv/g6';
+import G6, { IEdge } from '@antv/g6';
+import { INode } from '@antv/g6';
 
 type Props = {
   queries: Array<
@@ -15,23 +15,23 @@ type Props = {
 };
 
 export const Styling = () => {
-  const { graph, nodes, edges } = useGraph() ?? {};
+  const { graph } = useGraph() ?? {};
   const [form] = Form.useForm();
-  const [filteredNodes, setFilteredNodes] = useState<AllDataResponse[]>([]);
   const [openTable, setOpenTable] = useState(false);
-  const [filteredEdges, setFilteredEdges] = useState<ProjectEdgeResponse[]>([]);
+  const [filteredEdges, setFilteredEdges] = useState<IEdge[]>([]);
+  const [filteredNodes, setFilteredNodes] = useState<INode[]>([]);
   const initialSize = 40;
   const borderInitSize = 6;
 
   const onFinish = (values: Props) => {
     if (values.queries) {
       values.queries.forEach((query) => {
-        const filteredNodes = nodes.filter((node) => node.project_type_id === query.id);
+        const filteredNodes = graph.getNodes().filter((node) => node.getModel().nodeType === query.id);
         setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
         filteredNodes.forEach((node) => {
-          graph.updateItem(node.id, {
+          graph.updateItem(node.getID(), {
             size: query.size || initialSize,
-            type: node.default_image ? 'image' : query.icon,
+            type: node.getModel().img ? 'image' : query.icon,
             icon: {
               show: !!query.icon,
               img: query.icon,
@@ -39,15 +39,15 @@ export const Styling = () => {
               height: query.size / 1.5,
             },
             style: {
-              fill: node.default_image ? 'transparent' : 'white',
+              fill: node.getModel().img ? 'transparent' : 'white',
               stroke: query.color,
             },
           });
         });
-        const filteredEdges = edges.filter((edge) => edge.project_edge_type_id === query.id);
+        const filteredEdges = graph.getEdges().filter((edge) => edge.getModel().project_edge_type_id === query.id);
         setFilteredEdges((prevState) => [...prevState, ...filteredEdges]);
         filteredEdges.forEach((edge) => {
-          graph.updateItem(edge.id as string, {
+          graph.updateItem(edge.getID() as string, {
             size: query.size,
             style: {
               stroke: query.color,
