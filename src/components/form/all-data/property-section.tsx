@@ -35,6 +35,10 @@ const StyledCollapse = styled(Collapse)`
   border-radius: 0;
 `;
 
+const StyledQuerySelectWrapper = styled.div`
+  margin-top: 24px;
+`;
+
 export const QueriesContent = ({ fieldName }: ContentType) => {
   const type = Form.useWatch(['queries', fieldName, 'type']);
   // const formItemLayout = {
@@ -218,6 +222,18 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                               fieldName={fieldName}
                               setValue={setValue}
                             />
+                            <StyledQuerySelectWrapper>
+                              <Form.Item
+                                name={[fieldName, 'type']}
+                                rules={[{ required: false, message: 'Missing type' }]}
+                              >
+                                <QueriesSelect
+                                  depth={queriesList[fieldName].depth}
+                                  isConnection={queriesList[fieldName].isConnectionType}
+                                  propertyType={queriesList[fieldName]?.ref_property_type_id}
+                                />
+                              </Form.Item>
+                            </StyledQuerySelectWrapper>
                           </Form.Item>
                         </>
                       )}
@@ -228,6 +244,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                             <QueriesSelect
                               depth={queriesList[fieldName].depth}
                               isConnection={queriesList[fieldName].isConnection}
+                              propertyType={queriesList[fieldName]?.ref_property_type_id}
                             />
                           </Form.Item>
                           <Form.Item
