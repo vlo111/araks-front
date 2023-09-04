@@ -45,14 +45,14 @@ const getValue = (item: NodePropertiesValues) => {
 export const ViewEditNodeDrawer = () => {
   const [form] = Form.useForm();
 
-  const { graph, nodes, openNode, finishOpenNode } = useGraph() ?? {};
+  const { graph, openNode, finishOpenNode } = useGraph() ?? {};
 
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const node = nodes?.find((n) => n?.id === openNode?.id);
+  const node = graph?.getNodes().find((n) => n?.getID && n?.getID() === openNode?.id);
 
-  const { data: nodeData } = useGetNode(node?.id ?? '', {
-    enabled: !!node?.id,
+  const { data: nodeData } = useGetNode(node?.getID() ?? '', {
+    enabled: !!node?.getID(),
     onSuccess: (nodeData) => {
       const initialAcc = {
         name: [nodeData.name],
@@ -93,8 +93,8 @@ export const ViewEditNodeDrawer = () => {
     },
   });
 
-  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.nodeType.id, {
-    enabled: !!node?.nodeType.id,
+  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.getModel()?.nodeType as string, {
+    enabled: !!node?.getModel()?.nodeType,
   });
 
   const { mutate } = useManageNodesGraph({
@@ -192,13 +192,13 @@ export const ViewEditNodeDrawer = () => {
           ...mainData,
           nodes: dataToSubmit,
           edges: dataToSubmitEdges?.flat() || [],
-          project_type_id: node?.nodeType || '',
+          project_type_id: node?.getModel()?.nodeType || '',
           nodeId: nodeData.id,
         } as NodeDataSubmit);
         onClose();
       }
     },
-    [mutate, node?.nodeType, nodeData, onClose, properties]
+    [mutate, node, nodeData, onClose, properties]
   );
 
   const footer = useMemo(
@@ -223,7 +223,7 @@ export const ViewEditNodeDrawer = () => {
   return (
     <Drawer
       headerStyle={{
-        borderTop: `6px solid ${node?.nodeType.color}`,
+        borderTop: `6px solid ${node?.getModel()?.style?.stroke}`,
       }}
       closable={false}
       onClose={onClose}
@@ -232,7 +232,7 @@ export const ViewEditNodeDrawer = () => {
           setIsEdit={setIsEdit}
           isEdit={isEdit}
           id={nodeData?.id as string}
-          name={node?.nodeType.name ?? ''}
+          name={(node?.getModel().nodeTypeName as string) ?? ''}
           onClose={onClose}
         />
       }

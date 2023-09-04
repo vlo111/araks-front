@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Col, Form, Row } from 'antd';
-import { NodeBody } from 'types/node';
+import { EdgeType, NodeBody } from 'types/node';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { COLORS } from 'helpers/constants';
@@ -20,7 +20,7 @@ export const EdgeViewDrawer = () => {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const { graph, nodes, openEdge, finishOpenEdge } = useGraph() ?? {};
+  const { graph, openEdge, finishOpenEdge } = useGraph() ?? {};
 
   const edge = useMemo(
     () => graph?.getEdges()?.find((e) => e?.getID && (e?.getID() === openEdge?.id ?? '')),
@@ -33,9 +33,15 @@ export const EdgeViewDrawer = () => {
     },
   });
 
-  const source = useMemo(() => nodes?.find((n) => n?.id === edge?.getModel()?.source), [nodes, edge]);
+  const source = useMemo(
+    () => graph?.getNodes()?.find((n) => n?.getID && n?.getID() === edge?.getModel()?.source),
+    [graph, edge]
+  );
 
-  const target = useMemo(() => nodes?.find((n) => n?.id === edge?.getModel()?.target), [nodes, edge]);
+  const target = useMemo(
+    () => graph?.getNodes()?.find((n) => n?.getID && n?.getID() === edge?.getModel()?.target),
+    [graph, edge]
+  );
 
   const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(
     (edge?.getModel() as { project_edge_type_id: string })?.project_edge_type_id,
@@ -55,8 +61,8 @@ export const EdgeViewDrawer = () => {
 
   const onFinish = (values: NodeBody) => {
     mutate({
-      source_id: source?.id,
-      target_id: target?.id,
+      source_id: source?.getID(),
+      target_id: target?.getID(),
       ...values,
     } as EdgesCreate);
   };
@@ -103,11 +109,17 @@ export const EdgeViewDrawer = () => {
       >
         <Row gutter={8} style={{ margin: '1rem 0' }}>
           <Col span={8}>
-            <SourceView sourceData={source?.nodeType} nodeName={source?.name} />
+            <SourceView
+              sourceData={source?.getModel().nodeType as EdgeType}
+              nodeName={source?.getModel().label as string}
+            />
           </Col>
           <Col span={1} />
           <Col span={8}>
-            <SourceView sourceData={target?.nodeType} nodeName={target?.name} />
+            <SourceView
+              sourceData={target?.getModel().nodeType as EdgeType}
+              nodeName={target?.getModel().label as string}
+            />
           </Col>
         </Row>
         {isEdit ? (

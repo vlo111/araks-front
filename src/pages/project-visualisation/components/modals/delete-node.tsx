@@ -7,7 +7,7 @@ import { Button } from 'components/button';
 import { useDeleteAllDataChecked } from '../../../../api/all-data/use-delete-all-data-checked';
 
 export const NodeDeleteModal = () => {
-  const { graph, nodes, setNodes, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
+  const { graph, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
 
   const { mutate: multipleDelete } = useDeleteAllDataChecked(deleteNode?.ids ?? [], {
     enabled: !!deleteNode?.ids,
@@ -26,7 +26,6 @@ export const NodeDeleteModal = () => {
       graph.removeItem(deleteNode?.id ?? '');
       finishDeleteNode();
       finishOpenNode();
-      setNodes(nodes.filter((n) => n.id !== deleteNode.id));
     },
   });
 
