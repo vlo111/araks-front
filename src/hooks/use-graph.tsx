@@ -2,17 +2,14 @@
 import React, { useEffect } from 'react';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { initGraph } from 'components/layouts/components/visualisation/container/initial/graph';
-import { useGetNodes } from '../api/visualisation/use-get-nodes';
-import { useGetVEdges } from '../api/visualisation/use-get-edges';
 import { formattedData } from '../components/layouts/components/visualisation/helpers/format-node';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
+import { useGetData } from '../api/visualisation/use-get-data';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
-  const { nodes } = useGetNodes();
-
-  const { edges } = useGetVEdges();
+  const { nodes, edges } = useGetData();
 
   const { graph, setGraph, ...params } = useGraph() ?? {};
 
