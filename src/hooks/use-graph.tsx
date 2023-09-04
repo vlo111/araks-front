@@ -26,7 +26,7 @@ export const useGraphRef = () => {
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
       const data = formattedData(graph, nodes, edges ?? []);
       if (data !== undefined) initData(graph, data);
-      graph.render();
+      graph.render && graph.render();
     }
   }, [nodes, edges, graph, setGraph]);
 

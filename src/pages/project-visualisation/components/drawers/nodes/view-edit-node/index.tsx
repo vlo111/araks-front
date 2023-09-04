@@ -49,7 +49,7 @@ export const ViewEditNodeDrawer = () => {
 
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const node = graph?.getNodes().find((n) => n?.getID() === openNode?.id);
+  const node = graph?.getNodes().find((n) => n?.getID && n?.getID() === openNode?.id);
 
   const { data: nodeData } = useGetNode(node?.getID() ?? '', {
     enabled: !!node?.getID(),
