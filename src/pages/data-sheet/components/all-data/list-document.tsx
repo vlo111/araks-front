@@ -82,8 +82,8 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
                       </Button>
                     </Col>
                     <Col span={15}>
-                      {item.data?.map((dataItem) => (
-                        <Fragment key={dataItem.match_filename}>
+                      {item.data?.map((dataItem, index) => (
+                        <Fragment key={index}>
                           <Row justify="end" align="top" gutter={32}>
                             <Col xs={10} xxl={9}>
                               <Button
@@ -95,12 +95,12 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
                                 icon={<Icon color="red" icon="file1" size={16} />}
                               >
                                 <SecondaryText ellipsis>
-                                  <MarkedText longText={dataItem.match_filename} />
+                                  <MarkedText longText={dataItem.filename} />
                                 </SecondaryText>
                               </Button>
                             </Col>
                             <Col xs={11} xxl={12}>
-                              <MarkedText longText={dataItem.match_content} />
+                              <MarkedText longText={dataItem.match_filename || dataItem.match_content} />
                             </Col>
                             <Col xs={3} xxl={2}>
                               <Text color={COLORS.PRIMARY.GRAY}>({dataItem.match_count})</Text>
