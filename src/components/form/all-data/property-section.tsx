@@ -14,6 +14,7 @@ import { useGraph } from '../../layouts/components/visualisation/wrapper';
 import { CircleSizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { BorderSizeComponent } from 'pages/project-visualisation/components/size-selector/border-size';
 import { BorderType } from 'pages/project-visualisation/components/size-selector/border-type';
+import { INode } from '@antv/g6';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -33,6 +34,10 @@ const StyledCollapse = styled(Collapse)`
   background: linear-gradient(137deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
   box-shadow: -1px 4px 4px 0 rgba(128, 128, 128, 0.1);
   border-radius: 0;
+`;
+
+const StyledQuerySelectWrapper = styled.div`
+  margin-top: 24px;
 `;
 
 export const QueriesContent = ({ fieldName }: ContentType) => {
@@ -125,7 +130,7 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
 
 export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
   const form = Form.useFormInstance();
-  const { nodes, edges, graph } = useGraph() || {};
+  const { graph } = useGraph() || {};
   const queriesList = form.getFieldValue('queries');
 
   const setValue = useCallback(
@@ -140,23 +145,25 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
   };
 
   const removeGraphStyle = (id: string) => {
-    const filteredNodes = nodes.filter((node) => id === node.nodeType.id);
+    const filteredNodes = graph
+      .getNodes()
+      .filter((node: INode) => id === (node.getModel()?.nodeType as { id: string })?.id);
 
     filteredNodes.forEach((node) => {
-      graph.updateItem(node.id, {
+      graph.updateItem((node.getModel()?.nodeType as { id: string })?.id, {
         size: 40,
         icon: {
           show: false,
         },
         style: {
-          stroke: node.nodeType.color,
+          stroke: (node.getModel()?.nodeType as { color: string }).color,
         },
       });
     });
-    const filteredEdges = edges.filter((edge) => id === edge.project_edge_type_id);
+    const filteredEdges = graph.getEdges().filter((edge) => id === edge.getModel().project_edge_type_id);
 
     filteredEdges.forEach((edge) => {
-      graph.updateItem(edge.id as string, {
+      graph.updateItem(edge.getID() as string, {
         style: {
           stroke: '#C3C3C3',
           lineWidth: 2,
@@ -218,6 +225,18 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                               fieldName={fieldName}
                               setValue={setValue}
                             />
+                            <StyledQuerySelectWrapper>
+                              <Form.Item
+                                name={[fieldName, 'type']}
+                                rules={[{ required: false, message: 'Missing type' }]}
+                              >
+                                <QueriesSelect
+                                  depth={queriesList[fieldName].depth}
+                                  isConnection={queriesList[fieldName].isConnectionType}
+                                  propertyType={queriesList[fieldName]?.ref_property_type_id}
+                                />
+                              </Form.Item>
+                            </StyledQuerySelectWrapper>
                           </Form.Item>
                         </>
                       )}
@@ -228,6 +247,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                             <QueriesSelect
                               depth={queriesList[fieldName].depth}
                               isConnection={queriesList[fieldName].isConnection}
+                              propertyType={queriesList[fieldName]?.ref_property_type_id}
                             />
                           </Form.Item>
                           <Form.Item

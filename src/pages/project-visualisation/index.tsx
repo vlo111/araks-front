@@ -1,6 +1,5 @@
 import { Graph } from './components/graph';
 import { LeftSection } from './components/left-section';
-import { useNodes } from 'hooks/use-nodes';
 import { NodeCreateDrawer } from './components/drawers/nodes/create-node';
 import { Settings } from './components/settings';
 import { NodeDeleteModal } from './components/modals/delete-node';
@@ -11,8 +10,6 @@ import { ToolbarVisualization } from '../../components/tool-bar';
 import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
 
 export const ProjectVisualisation = () => {
-  useNodes();
-
   return (
     <div style={{ overflow: 'hidden' }}>
       <Graph />

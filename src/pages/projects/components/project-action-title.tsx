@@ -11,11 +11,17 @@ const TitleWrapper = styled(Space)`
   height: 26px;
 `;
 
-export const ProjectActionTitle = () => {
+type Props = {
+  comments?: number;
+  likes?: number;
+  views?: number;
+};
+
+export const ProjectActionTitle = ({ comments = 0, likes = 0, views = 0 }: Props) => {
   return (
     <TitleWrapper>
       <DotsVertical />
-      <ProjectStatistics comments={999} likes={999} views={999} size={12} />
+      <ProjectStatistics comments={comments} likes={likes} views={views} size={20} />
       <Public width="16px" style={{ marginTop: '4px' }} />
     </TitleWrapper>
   );
