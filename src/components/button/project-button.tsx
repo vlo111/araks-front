@@ -7,12 +7,13 @@ import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.s
 
 import { LongTitle, MenuText, Text } from '../typography';
 import { ProjectActionPopover } from 'components/popover';
-import { ProjectActionTitle } from 'pages/projects/components/project-action-title';
 import { ProjectActionContent } from 'pages/projects/components/project-action-content';
 import { FullWidth, ProjectButtonContent } from 'types/project';
 import { ProjectLogo } from 'components/project/project-logo';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { DeleteProjectModal } from 'components/modal/delete-project-modal';
+import { ProjectActionTitle } from '../../pages/projects/components/project-action-title';
+import { useGetProjectInfo } from '../../api/projects/use-get-project-info';
 
 type ProjectButtonDraw = ButtonProps &
   ProjectButtonContent & {
@@ -52,6 +53,7 @@ const DotsWrapper = styled.div<FullWidth>`
 `;
 
 const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
+  const { data: projectData } = useGetProjectInfo({ id: project.id }, { enabled: !!project.id });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -81,7 +83,13 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
         <MenuText className="button-content__text">{project.dateTime}</MenuText>
         <ProjectActionPopover
           align={{ offset: [-20, -5] }}
-          title={<ProjectActionTitle />}
+          title={
+            <ProjectActionTitle
+              comments={projectData?.commentCount}
+              likes={projectData?.favoriteCount}
+              views={projectData?.views}
+            />
+          }
           open={isClicked}
           onOpenChange={(open: boolean) => {
             !open && setIsClicked(false);
