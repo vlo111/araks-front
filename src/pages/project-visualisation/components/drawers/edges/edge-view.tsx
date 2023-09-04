@@ -33,9 +33,15 @@ export const EdgeViewDrawer = () => {
     },
   });
 
-  const source = useMemo(() => graph?.getNodes()?.find((n) => n?.getID() === edge?.getModel()?.source), [graph, edge]);
+  const source = useMemo(
+    () => graph?.getNodes()?.find((n) => n?.getID && n?.getID() === edge?.getModel()?.source),
+    [graph, edge]
+  );
 
-  const target = useMemo(() => graph?.getNodes()?.find((n) => n?.getID() === edge?.getModel()?.target), [graph, edge]);
+  const target = useMemo(
+    () => graph?.getNodes()?.find((n) => n?.getID && n?.getID() === edge?.getModel()?.target),
+    [graph, edge]
+  );
 
   const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(
     (edge?.getModel() as { project_edge_type_id: string })?.project_edge_type_id,
