@@ -25,23 +25,22 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
     graph.removeItem(fake_edge?.getID());
   };
 
-  graph.on('dblclick', (evt) => {
-    if (evt.item?.getType() === 'edge') {
-      startOpenEdge({
-        id: evt.item.getID(),
-      });
-    } else if (evt.item?.getType() === 'node') {
-      isDoubleClick = true;
-      startOpenNode({
-        id: evt.item?.getID() ?? '',
-      });
+  graph.on('node:dblclick', (evt) => {
+    isDoubleClick = true;
 
-      removeFakeEdge();
+    startOpenNode({
+      id: evt.item?.getID(),
+    });
 
-      setTimeout(() => {
-        isDoubleClick = false;
-      }, 300);
-    }
+    removeFakeEdge();
+
+    setTimeout(() => {
+      isDoubleClick = false;
+    }, 300);
+  });
+
+  graph.on('edge:dblclick', (evt) => {
+    startOpenEdge({ id: evt.item?.getID() });
   });
 
   graph.on('aftercreateedge', ({ edge }: { edge: Edge }) => {
@@ -62,7 +61,7 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
     const isCombo = graph.getCombos();
     if (isCombo.length) {
       graph.uncombo(isCombo[0]._cfg?.id as string);
-      graph.addBehaviors('drag-node', 'default');
+      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
       clearCanvas();
     }
   });
@@ -87,7 +86,7 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
             ids
           );
           selected = false;
-          graph.removeBehaviors('drag-node', 'default');
+          graph.removeBehaviors(['drag-node', 'create-edge'], 'default');
           graph.findAllByState('node', 'selected').forEach((node) => {
             graph.clearItemStates(node.getID(), 'selected');
           });

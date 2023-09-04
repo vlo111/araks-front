@@ -11,14 +11,14 @@ import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetTypes } from 'api/schema/type/use-get-types';
-import { AllDataResponse, NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
+import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import './add-node-select.css';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
-  const { graph, openNodeCreate, nodes: nodeList, setNodes, finishOpenNodeCreate } = useGraph() ?? {};
+  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
   const { id } = useParams();
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
@@ -70,24 +70,8 @@ export const NodeCreateDrawer: React.FC = () => {
       };
 
       graph.addItem('node', node);
-
-      const createNode: AllDataResponse = {
-        id: nodeData.id,
-        default_image: nodeData.default_image,
-        name: nodeData.name as unknown as string,
-        nodeType: {
-          id: nodeData.nodeType.id,
-          name: nodeData.nodeType.name,
-          color: nodeData.nodeType.color,
-        },
-        project_id: nodeData.project_id,
-        project_type_id: nodeData.project_type_id,
-        updated_at: nodeData.updated_at,
-      };
-
-      setNodes([...nodeList, createNode]);
     },
-    [graph, openNodeCreate, nodeList, setNodes]
+    [graph, openNodeCreate]
   );
 
   const { mutate } = useManageNodesGraph({
