@@ -81,7 +81,10 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
 
       const fieldsData = nodeData.properties?.reduce((acc, item) => {
         if (!item.nodes_data?.length) {
-          return acc;
+          return {
+            ...acc,
+            [item.nodeTypeProperty.name]: undefined,
+          } as NodePropertiesValues;
         }
 
         return {
@@ -89,6 +92,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           [item.nodeTypeProperty.name]: getValue(item),
         } as NodePropertiesValues;
       }, {});
+
       const groupList = groupedData(nodeData.edges);
 
       const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {

@@ -44,8 +44,6 @@ export const DocumentType = ({ data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
 
   const docsUploaded = Form.useWatch(data.name);
-  // eslint-disable-next-line no-console
-  console.log('docsUploaded', docsUploaded);
 
   const label = (
     <Space>
