@@ -2,9 +2,12 @@ import G6 from '@antv/g6';
 import { renderTooltipModal } from './tooltip';
 
 const layout = {
-  type: 'random',
-  width: window.innerWidth - 480,
-  height: window.innerHeight - 165,
+  type: 'concentric',
+  maxLevelDiff: 0.5,
+  sortBy: 'topology',
+  edgeLength: 10,
+  preventOverlap: true,
+  nodeSize: 80,
 };
 
 const defaultEdge = {
