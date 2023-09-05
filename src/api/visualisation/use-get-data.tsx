@@ -7,18 +7,7 @@ type Node = {
   _fields: {
     labels: string[];
     properties: {
-      project_type_id: string;
-      updated_at: string;
-      color: string;
-      project_id: string;
-      d285?: string;
-      parent_node_type_id: string;
-      surname?: string;
-      image_url: string;
-      name: string;
-      created_at: string;
-      id: string;
-      username?: string;
+      [key: string]: never;
     };
   }[];
 };
