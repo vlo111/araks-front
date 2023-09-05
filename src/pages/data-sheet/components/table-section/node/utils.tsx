@@ -316,15 +316,7 @@ export const getRowData = (item: NodePropertiesValues) => {
         </Image.PreviewGroup>
       );
     case PropertyTypes.Document:
-      return (
-        <Space>
-          {item.nodes_data?.map((node, index) => {
-            return (
-              <Fragment key={index}>{node ? <DocumentViewDrawer node={node as UploadedFileType} /> : ''}</Fragment>
-            );
-          })}
-        </Space>
-      );
+      return <DocumentViewDrawer items={item.nodes_data} />;
     case PropertyTypes.URL:
       return isMultiple ? (
         <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.URL))}</Space>

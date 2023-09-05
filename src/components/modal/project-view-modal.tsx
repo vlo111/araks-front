@@ -15,7 +15,6 @@ import dotImage from '../../pages/project-visualisation/components/icons/dots.sv
 import React, { Dispatch, useCallback, useState } from 'react';
 import { ProjectActionContent } from '../../pages/projects/components/project-action-content';
 import { ProjectActionPopover } from '../popover';
-import { ProjectActionTitle } from '../../pages/projects/components/project-action-title';
 import { DeleteProjectModal } from './delete-project-modal';
 import { Graph } from '@antv/g6';
 import { ProjectFullInfo } from '../../api/types';
@@ -134,7 +133,6 @@ const Title = ({
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
         <ProjectActionPopover
           align={{ offset: [-20, -5] }}
-          title={<ProjectActionTitle />}
           open={isClicked}
           onOpenChange={(open: boolean) => {
             !open && setClicked(false);

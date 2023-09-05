@@ -162,6 +162,7 @@ export type AllDataDocumentResponse = {
   type_name: string;
   default_image: string;
   data: {
+    filename: string;
     match_content: string;
     match_count: number;
     match_filename: string;
