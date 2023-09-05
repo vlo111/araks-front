@@ -5,11 +5,12 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { SiderCollapse } from 'components/collapse/sider-collapse';
 import { NodeTypesView } from '../../../data-sheet/components/node-types-view';
 import { NodesHeader } from '../../../data-sheet/components/nodes-header';
-
+import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { IEdge, INode } from '@antv/g6';
 export const Filters = () => {
   const params = useParams();
   const [searchVisible, setSearchVisible] = useState(false);
-
+  const { graph } = useGraph();
   const { formatted: nodesList } = useGetProjectNoteTypes(
     {
       url: GET_PROJECT_NODE_TYPES_LIST,
@@ -26,21 +27,51 @@ export const Filters = () => {
     true
   );
 
-  // const onCheck = useCallback(
-  //   (checkedKeys: string[]) => {
-  //     const filteredNodes = graph
-  //       .getNodes()
-  //       ?.filter((node) => checkedKeys.includes(node.getModel().nodeType as string));
-  //     const renderAllNodes = filteredNodes?.length ? filteredNodes : graph.getNodes();
-  //     const formattedNodes = formattedData(graph, renderAllNodes, graph.getEdges());
-  //     graph.data(formattedNodes);
-  //     graph.render();
-  //   },
-  //   [graph, nodes, edges]
-  // );
-  const onCheck = useCallback(() => {
-    return;
-  }, []);
+  const onCheck = useCallback(
+    (checkedKeys: string[]) => {
+      const selectedNodeTypes = new Set(checkedKeys);
+
+      graph.getEdges()?.forEach((edge: IEdge) => {
+        graph.updateItem(edge, {
+          visible: false,
+        });
+      });
+
+      graph.getNodes()?.forEach((node: INode) => {
+        const nodeType = node.getModel().nodeType;
+        if (selectedNodeTypes.size === 0 || selectedNodeTypes.has(nodeType as string)) {
+          graph.updateItem(node, {
+            visible: true,
+            id: node.getModel()?.id ?? '',
+            label: node.getModel()?.label ?? '',
+            style: {
+              stroke: (node.getModel()?.style?.stroke as string) ?? '',
+            },
+            type: node.getModel().img as string,
+            nodeTypeName: node.getModel().nodeTypeName,
+          });
+
+          graph.getEdges().forEach((edge: IEdge) => {
+            const sourceNodeId = edge.getSource().getID();
+            const targetNodeId = edge.getTarget().getID();
+
+            if (sourceNodeId === node.getID() || targetNodeId === node.getID()) {
+              graph.updateItem(edge, {
+                visible: true,
+              });
+            }
+          });
+        } else {
+          graph.updateItem(node, {
+            visible: false,
+          });
+        }
+      });
+
+      graph.render();
+    },
+    [graph]
+  );
 
   return (
     <SiderCollapse
