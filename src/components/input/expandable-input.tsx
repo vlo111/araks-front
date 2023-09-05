@@ -1,17 +1,13 @@
-import { SearchOutlined } from '@ant-design/icons';
-
 import { Input } from '.';
 import styled, { css } from 'styled-components';
 import './expandable-input.css';
 import { COLORS } from 'helpers/constants';
-import debounce from 'lodash.debounce';
 import { changeHeight } from 'helpers/styles';
 import { useState } from 'react';
 import { Select } from 'components/select';
 
-const StyleInput = styled(Input)`
+const StyleInput = styled(Input.Search)`
   .ant-input-affix-wrapper {
-    /* padding-left: 0px; */
     padding: 4px 11px;
     background: ${COLORS.PRIMARY.WHITE};
     ${(props) =>
@@ -20,9 +16,25 @@ const StyleInput = styled(Input)`
             ${changeHeight}
           `
         : ''}
+
+    &:hover, &:focus, &-focused {
+      border-right: none;
+    }
   }
   ::placeholder {
     color: ${COLORS.PRIMARY.GRAY};
+  }
+
+  .ant-input-search-button {
+    border: 1px solid;
+    border-left: none;
+
+    ${(props) =>
+      !props.size
+        ? css`
+            ${changeHeight}
+          `
+        : ''}
   }
 `;
 
@@ -37,17 +49,6 @@ type Props = {
 
 export const ExpandableInput = ({ setSearchText }: Props) => {
   const [type, setType] = useState('node');
-  const [text, setText] = useState('');
-  const handleSearch = (value: string) => {
-    setText(value); // update the input value
-  };
-
-  const handlePrefixClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setSearchText({ text, type });
-  };
-
-  const debouncedSearch = debounce(handleSearch, 300);
 
   const selectAfter = (
     <Select
@@ -67,17 +68,11 @@ export const ExpandableInput = ({ setSearchText }: Props) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center', backgroundColor: COLORS.PRIMARY.WHITE }}>
       <StyleInput
-        suffix={<SearchOutlined onClick={handlePrefixClick} style={{ color: COLORS.PRIMARY.GRAY }} />}
         placeholder="search"
-        onChange={(e) => {
-          debouncedSearch(e.target.value);
-          if (!e.target.value) {
-            setSearchText({ text: '', type });
-          }
-        }}
-        // addonAfter={selectAfter}
         addonBefore={selectAfter}
-        onPressEnter={() => setSearchText({ text, type })}
+        onSearch={(value, e) => {
+          setSearchText({ text: value, type });
+        }}
         allowClear
       />
     </div>
