@@ -43,16 +43,19 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
       target_id: (values.targetData as EdgeTargetData[])[0].target_id,
       source_type_id: (values.sourceData as EdgeSourceData[])[0].source_type_id,
       source_id: (values.sourceData as EdgeSourceData[])[0].source_id,
-      properties: data?.properties.reduce((curr, item) => {
-        return [
-          ...curr,
-          {
-            edge_type_property_id: item.id,
-            edge_type_property_type: item.ref_property_type_id,
-            data: [(values[item.name] as (string | number)[])[0]],
-          },
-        ] as EdgesCreateProperties[];
-      }, [] as EdgesCreateProperties[]),
+      properties:
+        data?.properties.reduce((curr, item) => {
+          return [
+            ...curr,
+            {
+              edge_type_property_id: item.id,
+              edge_type_property_type: item.ref_property_type_id,
+              data: (values[item.name] as (string | number)[])[0]
+                ? [(values[item.name] as (string | number)[])[0]]
+                : [],
+            },
+          ] as EdgesCreateProperties[];
+        }, [] as EdgesCreateProperties[]) || [],
     } as EdgesCreate;
 
     mutate(dataToSubmit);
