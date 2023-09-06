@@ -382,7 +382,7 @@ export const setNodeDataValue = (item: ProjectTypePropertyReturnData, values: No
   if (item.ref_property_type_id === PropertyTypes.IMAGE_URL) {
     return (values[item.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
-  if (Array.isArray(values[item.name])) {
+  if (Array.isArray(values[item.name]) && item.ref_property_type_id !== PropertyTypes.Boolean) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {
     //   return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
     // }
@@ -409,7 +409,7 @@ export const setNodeDataUpdateValue = (item: NodePropertiesValues, values: NodeB
   if (item.project_type_property_type === PropertyTypes.IMAGE_URL) {
     return (values[item.nodeTypeProperty.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
-  if (Array.isArray(values[item.nodeTypeProperty.name])) {
+  if (Array.isArray(values[item.nodeTypeProperty.name]) && item.project_type_property_type !== PropertyTypes.Boolean) {
     // if (item.ref_property_type_id === PropertyTypes.Date) {
     //   return (values[item.name] as unknown[]).map((rec) => dayjs(rec as string).format('DD-MM-YYYY'));
     // }
