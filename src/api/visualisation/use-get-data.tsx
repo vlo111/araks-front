@@ -28,13 +28,9 @@ type Edge = {
   }[];
 };
 
-export type Nodes = {
-  records: Node[];
-};
+export type Nodes = Node[];
 
-export type Edges = {
-  records: Edge[];
-};
+export type Edges = Edge[];
 
 type ProjectEdgeResponse = {
   nodes: Nodes;
