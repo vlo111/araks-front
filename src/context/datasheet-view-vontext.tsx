@@ -59,6 +59,8 @@ const getValue = (item: NodePropertiesValues) => {
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
 function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
+  const [stopSubmit, setStopSubmit] = React.useState(false);
+
   const params = useParams();
   const navigate = useNavigate();
   const isXXl = useIsXXlScreen();
@@ -232,7 +234,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
                 </Button>
               </Col>
               <Col span={4}>
-                <Button type="primary" onClick={() => form.submit()} block>
+                <Button type="primary" onClick={() => form.submit()} block disabled={stopSubmit}>
                   Save
                 </Button>
               </Col>
@@ -251,7 +253,11 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             requiredMark={false}
           >
             {isEdit ? (
-              <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+              <AddNodeForm
+                data={data as ProjectTypePropertyReturnData[]}
+                isInitialLoading={isInitialLoading}
+                setStopSubmit={setStopSubmit}
+              />
             ) : isInitialLoading ? (
               <Skeleton />
             ) : (
