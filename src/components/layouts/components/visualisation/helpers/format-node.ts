@@ -6,7 +6,7 @@ type FormattedData = (graph: Graph, nodesList: Nodes, edgeList: Edges) => GraphD
 
 export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
   const data: GraphData = {
-    nodes: nodesList.records.map(({ _fields }) => {
+    nodes: nodesList.map(({ _fields }) => {
       const properties = _fields[0].properties;
 
       const {
@@ -36,7 +36,7 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
         properties: { ...params },
       };
     }),
-    edges: edgeList.records.map(({ _fields }) => ({
+    edges: edgeList.map(({ _fields }) => ({
       id: _fields[0].properties.id,
       project_edge_type_id: _fields[0].properties.project_edge_type_id,
       source: _fields[0].properties.source_id,

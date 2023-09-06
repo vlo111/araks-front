@@ -10,7 +10,7 @@ import { IEdge, INode } from '@antv/g6';
 export const Filters = () => {
   const params = useParams();
   const [searchVisible, setSearchVisible] = useState(false);
-  const { graph } = useGraph();
+  const { graph } = useGraph() ?? {};
   const { formatted: nodesList } = useGetProjectNoteTypes(
     {
       url: GET_PROJECT_NODE_TYPES_LIST,
@@ -47,7 +47,7 @@ export const Filters = () => {
             style: {
               stroke: (node.getModel()?.style?.stroke as string) ?? '',
             },
-            type: node.getModel().img as string,
+            type: node.getModel().img ? 'image' : 'circle',
             nodeTypeName: node.getModel().nodeTypeName,
           });
 
@@ -66,6 +66,14 @@ export const Filters = () => {
             visible: false,
           });
         }
+      });
+      graph.getEdges()?.forEach((edge: IEdge) => {
+        [edge.getSource(), edge.getTarget()].forEach((node: INode) => {
+          const targetNode = graph.getNodes().find((n: INode) => n.getID() === node.getID());
+          if (targetNode) {
+            graph.updateItem(targetNode, { visible: true });
+          }
+        });
       });
 
       graph.render();
