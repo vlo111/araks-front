@@ -9,9 +9,11 @@ import { AUTH_KEYS, COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
 import styled from 'styled-components';
 import { FormItem } from '../form-item';
+import { SetStateAction, Dispatch } from 'react';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
+  setStopSubmit?: Dispatch<SetStateAction<boolean>>;
 };
 
 const StyledButton = styled(Button)`
@@ -40,7 +42,7 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-export const DocumentType = ({ data }: Props) => {
+export const DocumentType = ({ data, setStopSubmit }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
 
   const docsUploaded = Form.useWatch(data.name);
@@ -85,12 +87,14 @@ export const DocumentType = ({ data }: Props) => {
           onChange={(info) => {
             const { status } = info.file;
 
-            if (status !== 'uploading') {
+            if (status === 'uploading') {
+              setStopSubmit?.(true);
             }
             if (status === 'done') {
-              // message.success(`${info.file.name} file uploaded successfully.`);
+              setStopSubmit?.(false);
             } else if (status === 'error') {
               message.error(`${info.file.name} file upload failed.`);
+              setStopSubmit?.(false);
             }
           }}
         >

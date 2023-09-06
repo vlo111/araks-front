@@ -13,7 +13,7 @@ export const PropertyBasicDetails = () => {
   const form = Form.useFormInstance();
   const isDefaultProprty = form.getFieldValue('default_property');
 
-  const disableUnique = dataType !== PropertyTypes.Text;
+  const disableUnique = dataType && dataType !== PropertyTypes.Text;
   useEffect(() => {
     if (disableUnique || multipleType) {
       form.setFieldValue('unique_type', false);

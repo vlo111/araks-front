@@ -18,6 +18,7 @@ type Props = {
 };
 
 export const ManageNode = ({ tableHead, tableHeight }: Props) => {
+  const [stopSubmit, setStopSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
 
@@ -104,7 +105,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
               </Button>
             </Col>
             <Col span={4}>
-              <Button type="primary" onClick={() => form.submit()} block>
+              <Button type="primary" onClick={() => form.submit()} block disabled={stopSubmit}>
                 Save
               </Button>
             </Col>
@@ -119,7 +120,11 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           layout="vertical"
           requiredMark={false}
         >
-          <AddNodeForm data={data as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+          <AddNodeForm
+            data={data as ProjectTypePropertyReturnData[]}
+            isInitialLoading={isInitialLoading}
+            setStopSubmit={setStopSubmit}
+          />
         </Form>
       </Drawer>
     </Spin>

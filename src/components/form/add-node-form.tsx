@@ -3,6 +3,7 @@ import { Col, Row, Skeleton } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 // import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { VerticalSpace } from 'components/space/vertical-space';
+import { Dispatch, SetStateAction } from 'react';
 // import { GoogleMapScript } from 'helpers/google-map-script';
 import { PropertyTypes } from './property/types';
 import { BooleanType } from './type/boolean-type';
@@ -20,9 +21,10 @@ import { UrlType } from './type/url-type';
 type Props = {
   data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
   isInitialLoading: boolean;
+  setStopSubmit?: Dispatch<SetStateAction<boolean>>;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -54,7 +56,7 @@ export const AddNodeForm = ({ data, isInitialLoading }: Props) => {
                 case PropertyTypes.RichText:
                   return <RichTextType key={item.id} data={item} />;
                 case PropertyTypes.Document:
-                  return <DocumentType key={item.id} data={item} />;
+                  return <DocumentType key={item.id} data={item} setStopSubmit={setStopSubmit} />;
                 case PropertyTypes.Connection:
                   return <ConnectionType key={item.id} data={item} />;
                 default:
