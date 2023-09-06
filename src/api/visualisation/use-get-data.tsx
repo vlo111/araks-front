@@ -46,15 +46,15 @@ type GetProjectParam = {
 
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
 
-type ReturnData = {
+export type GetNeo4jData = {
   data: ProjectEdgeResponse;
 };
 
 type QueryResponse = {
-  data: ReturnData;
+  data: GetNeo4jData;
 };
 
-type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
+type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData, QueryKey[]>;
 
 type Result = {
   nodes: Nodes | undefined;

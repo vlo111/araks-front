@@ -1,5 +1,7 @@
 import { PickVisualizationContextType } from '../types';
 import G6, { IG6GraphEvent } from '@antv/g6';
+import { formattedData } from './format-node';
+import { getExpandData, getMenuContexts } from './utils';
 
 export const contextMenuPlugin: (items: PickVisualizationContextType) => void = ({
   startOpenNodeCreate,
@@ -9,6 +11,7 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
 }) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
+
     const isCanvas = target && target.isCanvas && target.isCanvas();
 
     const isNode = evt?.item?.getType() === 'node';
@@ -21,35 +24,25 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
       y: evt?.y ?? 0,
     });
 
-    const nodeContext = `<div class='menu'>
-          <span>Focus on node</span>
-          <span>Expand</span>
-          <span class='delete'>Delete</span>
-        </div>`;
-
-    const canvasContext = `<div class='menu'>
-          <span>Create Node</span>
-        </div>`;
-
-    const edgeContext = `<div class='menu'>
-          <span class='delete'>Delete</span>
-        </div>`;
-
-    const comboContext = `<div class='menu'>
-          <span class='delete'>Delete</span>
-        </div>`;
+    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(evt?.item?.getID() ?? '', isNode);
 
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
 
   const contextMenu = new G6.Menu({
     getContent,
-    handleMenuClick: (target, item) => {
+    handleMenuClick: async (target, item) => {
       if (item?._cfg?.type === 'node') {
         if (target.className === 'delete') {
           startDeleteNode({
             id: item.getID(),
           });
+        } else if (target.parentElement?.className === 'submenu') {
+          const expandData = await getExpandData((item._cfg.model as { id: string })?.id ?? '', target.id);
+
+          const graphData = formattedData(expandData.nodes, expandData.edges);
+
+          localStorage.setItem('expand', JSON.stringify(graphData));
         } else {
           startOpenNode({
             id: item.getID(),
