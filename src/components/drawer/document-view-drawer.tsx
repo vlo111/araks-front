@@ -63,13 +63,13 @@ export const DocumentViewDrawer = ({ items }: Props) => {
           // margin: '16px 16px 48px',
           background: 'transparent',
         }}
-        bodyStyle={{ padding: '18px' }}
+        bodyStyle={{ padding: '32px 18px 18px' }}
         mask={false}
       >
         <div style={{ height: '100%', position: 'relative' }}>
           <CloseOutlined
             onClick={() => setOpenDrawer(undefined)}
-            style={{ position: 'absolute', left: '-18px', top: '-18px' }}
+            style={{ position: 'absolute', left: '-16px', top: '-26px' }}
           />
           {openDrawer && <DocumentView node={openDrawer as UploadedFileType} />}
         </div>
