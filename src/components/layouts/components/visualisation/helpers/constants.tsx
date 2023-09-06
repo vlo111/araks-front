@@ -71,6 +71,7 @@ const defaultNode = {
 const nodeStateStyles = {
   selected: { ...defaultNode.style, fill: '' },
 };
+
 const edgeStateStyles = {
   selected: {
     color: '#414141',
