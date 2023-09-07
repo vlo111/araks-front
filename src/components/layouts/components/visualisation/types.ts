@@ -57,3 +57,16 @@ export type GraphData = {
 export type InitNodes = (graph: Graph, data: GraphData) => void;
 
 export type InitGraphEvents = (graph: Graph, params: PickVisualizationContextType) => void;
+
+export type ExpandListData = {
+  data: {
+    relations: ExpandList;
+  };
+};
+
+export type ExpandList = {
+  name: string;
+  project_edge_type_id: string;
+  count: number;
+  direction: string;
+}[];

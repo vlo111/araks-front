@@ -1,10 +1,9 @@
-import { Graph } from '@antv/g6';
 import { GraphData } from '../types';
 import { Edges, Nodes } from 'api/visualisation/use-get-data';
 
-type FormattedData = (graph: Graph, nodesList: Nodes, edgeList: Edges) => GraphData;
+type FormattedData = (nodesList: Nodes, edgeList: Edges) => GraphData;
 
-export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
+export const formattedData: FormattedData = (nodesList, edgeList) => {
   const data: GraphData = {
     nodes: nodesList.map(({ _fields }) => {
       const properties = _fields[0].properties;

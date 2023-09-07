@@ -22,6 +22,11 @@ const contextMenu = css`
         color: #808080;
         cursor: pointer;
         padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 42px;
+        font-size: 18px;
 
         &:hover {
           color: #232f6a;
@@ -31,6 +36,39 @@ const contextMenu = css`
         &.delete {
           color: #c51c16;
         }
+      }
+
+      .submenu-container {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: none;
+        width: 200px;
+
+        .submenu {
+          max-height: 300px;
+          min-height: 125px;
+          display: flex;
+          flex-direction: column;
+
+          background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.4) 99.26%);
+          border: 1px solid #ffffff;
+          box-shadow: 0 10px 10px rgba(141, 143, 166, 0.2);
+          backdrop-filter: blur(7px);
+          border-radius: 4px;
+          padding: 0;
+
+          .span {
+            &:hover {
+              background: red;
+            }
+          }
+        }
+      }
+
+      .main-menu:hover + .submenu-container,
+      .submenu-container:hover {
+        display: block;
       }
     }
   }

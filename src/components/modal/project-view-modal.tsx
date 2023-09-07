@@ -174,7 +174,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
     ? {
         id: projectData.id,
         color: projectData.color,
-        name: projectData.title + '1',
+        name: projectData.title,
         folderId: projectData.folder_id,
         type: projectData.privacy,
         dateTime: dayjs(projectData.updated_at).format('YYYY-MM-DD HH:mm'),

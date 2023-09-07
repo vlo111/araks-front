@@ -1,14 +1,17 @@
 import { PickVisualizationContextType } from '../types';
-import G6, { IG6GraphEvent } from '@antv/g6';
+import G6, { Graph, IG6GraphEvent } from '@antv/g6';
+import { formattedData } from './format-node';
+import { getExpandData, getExpandList, getMenuContexts } from './utils';
+import { allSvg, inSvg, outSvg } from './svgs';
+import PluginBase from '@antv/g6-plugin/lib/base';
 
-export const contextMenuPlugin: (items: PickVisualizationContextType) => void = ({
-  startOpenNodeCreate,
-  startOpenNode,
-  startDeleteNode,
-  startDeleteEdge,
-}) => {
+export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
+  graph,
+  { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
+) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
+
     const isCanvas = target && target.isCanvas && target.isCanvas();
 
     const isNode = evt?.item?.getType() === 'node';
@@ -21,35 +24,55 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
       y: evt?.y ?? 0,
     });
 
-    const nodeContext = `<div class='menu'>
-          <span>Focus on node</span>
-          <span>Expand</span>
-          <span class='delete'>Delete</span>
-        </div>`;
+    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(evt?.item?.getID() ?? '', isNode);
 
-    const canvasContext = `<div class='menu'>
-          <span>Create Node</span>
-        </div>`;
+    (async () => {
+      const id = evt?.item?.getID() ?? '';
 
-    const edgeContext = `<div class='menu'>
-          <span class='delete'>Delete</span>
-        </div>`;
+      const expandList = await getExpandList(id);
 
-    const comboContext = `<div class='menu'>
-          <span class='delete'>Delete</span>
-        </div>`;
+      const allCount = expandList?.reduce((prev, acc) => acc.count + prev, 0);
+
+      const allData = `<span id="all"><p>${allSvg}</p> All (${allCount})</span>`;
+
+      const list = expandList?.length
+        ? `${expandList
+            .map(
+              (l) =>
+                `<span id="${l.project_edge_type_id}"><p>${l.direction === 'in' ? inSvg : outSvg}</p> ${l.name} (${
+                  l.count
+                })</span>`
+            )
+            .join()
+            .replaceAll(',', ' ')}`
+        : '';
+
+      const menuContainer = document.querySelector('.submenu');
+
+      if (menuContainer) {
+        menuContainer.innerHTML = `${allData}${list}`;
+      }
+    })();
 
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
 
   const contextMenu = new G6.Menu({
     getContent,
-    handleMenuClick: (target, item) => {
+    handleMenuClick: async (target, item) => {
       if (item?._cfg?.type === 'node') {
         if (target.className === 'delete') {
           startDeleteNode({
             id: item.getID(),
           });
+        } else if (target.parentElement?.className === 'submenu') {
+          const expandData = await getExpandData((item._cfg.model as { id: string })?.id ?? '', target.id);
+
+          const graphData = formattedData(expandData.nodes, expandData.edges);
+
+          graph.data(graphData);
+
+          graph.render();
         } else {
           startOpenNode({
             id: item.getID(),

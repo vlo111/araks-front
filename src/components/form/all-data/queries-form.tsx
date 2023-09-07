@@ -8,10 +8,11 @@ import { PropertySection } from './property-section';
 type Props = {
   openTable: boolean;
   setOpenTable: (openTable: boolean) => void;
+  clearFilter?: () => void;
   isVisualisation?: boolean;
 };
 
-export const QueriesForm = ({ openTable, setOpenTable, isVisualisation = false }: Props) => {
+export const QueriesForm = ({ openTable, setOpenTable, isVisualisation = false, clearFilter }: Props) => {
   const handleOpenChange = (newOpen: boolean) => {
     setOpenTable(newOpen);
   };
@@ -41,7 +42,10 @@ export const QueriesForm = ({ openTable, setOpenTable, isVisualisation = false }
               return (
                 <PropertySection
                   key={field.key}
-                  remove={() => remove(field.name)}
+                  remove={() => {
+                    remove(field.name);
+                    clearFilter?.();
+                  }}
                   fieldName={field.name}
                   isVisualisation={isVisualisation}
                 />

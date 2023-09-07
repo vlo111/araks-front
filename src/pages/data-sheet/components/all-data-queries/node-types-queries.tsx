@@ -35,6 +35,7 @@ function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
           ...element,
           depth: 1,
           labelName: element.label,
+          labelValue: element.name,
         };
       }
       for (const child of element.children) {
@@ -43,6 +44,8 @@ function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
             ...child,
             depth: 2,
             labelName: `${element.name}.${child.label}`,
+            labelValue: element.name,
+            name: child.label,
           };
         }
       }

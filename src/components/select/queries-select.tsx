@@ -15,6 +15,31 @@ export enum QueryFilterTypes {
   RANGE = 'Range',
 }
 
+export const getQueryFilterType = (type: QueryFilterTypes): string => {
+  switch (type) {
+    case QueryFilterTypes.GREATHER_THAN:
+      return '>';
+    case QueryFilterTypes.LESS_THAN:
+      return '<';
+    case QueryFilterTypes.EQUAL_TO:
+      return '=';
+    case QueryFilterTypes.IS_NOT:
+      return 'IS NOT VALUE';
+    case QueryFilterTypes.IS:
+      return 'IS VALUE';
+    case QueryFilterTypes.RANGE:
+      return 'RANGE';
+    case QueryFilterTypes.BETWEEN:
+      return 'BETWEEN';
+    case QueryFilterTypes.IS_NULL:
+      return 'IS_NULL';
+    case QueryFilterTypes.IS_NOT_NULL:
+      return 'IS_NOT_NULL';
+    default:
+      return '';
+  }
+};
+
 const getOptions = (depth: number, isConnection = false, propertyType?: PropertyTypes) => {
   switch (true) {
     case (!isConnection && depth === 1) || (isConnection && (depth === 1 || depth === 2)):
