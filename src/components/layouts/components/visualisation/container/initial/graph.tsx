@@ -7,11 +7,12 @@ import { contextMenuPlugin } from '../../helpers/context-menu';
 export const initGraph: InitGraph = (container, params) => {
   const graph = new Graph({
     container,
-    plugins: [contextMenuPlugin(params)],
     ...options,
   });
 
   initGraphEvents(graph, params);
+
+  graph.addPlugin(contextMenuPlugin(graph, params));
 
   return graph;
 };

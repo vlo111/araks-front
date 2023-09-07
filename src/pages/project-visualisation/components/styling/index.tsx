@@ -5,8 +5,7 @@ import { QueriesForm } from 'components/form/all-data/queries-form';
 import { NodePropertiesValues } from 'types/node';
 import { Buttons } from '../buttons';
 import { StyledMainWrapper } from './styles';
-import G6, { IEdge } from '@antv/g6';
-import { INode } from '@antv/g6';
+import G6, { IEdge, INode } from '@antv/g6';
 
 type Props = {
   queries: Array<
@@ -31,15 +30,13 @@ export const Styling = () => {
         filteredNodes.forEach((node) => {
           graph.updateItem(node.getID(), {
             size: query.size || initialSize,
-            type: node.getModel().img ? 'image' : query.icon,
             icon: {
+              img: node.getModel()?.img ? query.icon : query.icon,
               show: !!query.icon,
-              img: query.icon,
               width: query.size / 1.5,
               height: query.size / 1.5,
             },
             style: {
-              fill: node.getModel().img ? 'transparent' : 'white',
               stroke: query.color,
             },
           });
