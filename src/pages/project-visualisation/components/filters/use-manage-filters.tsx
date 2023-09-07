@@ -4,16 +4,16 @@ import { useParams } from 'react-router-dom';
 
 import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
-import { ReturnData } from 'api/visualisation/use-get-data';
+import { GetNeo4jData } from 'api/visualisation/use-get-data';
 
 export const MANAGE_FILTERS = '/neo4j/filters/:project_id';
 
-type Options = UseQueryOptions<string[], Error, ReturnData>;
+type Options = UseQueryOptions<string[], Error, GetNeo4jData>;
 
 export const useManageFilters = (options: Options) => {
   const params = useParams();
   const queryClient = useQueryClient();
-  const mutation = useMutation<ReturnData, unknown, string[]>({
+  const mutation = useMutation<GetNeo4jData, unknown, string[]>({
     mutationFn: (values: string[]) => {
       const type = RequestTypes.Post;
       const url = MANAGE_FILTERS.replace(':project_id', params.id || '');

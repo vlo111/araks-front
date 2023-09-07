@@ -18,7 +18,7 @@ export const Filters = () => {
 
   const { mutate } = useManageFilters({
     onSuccess: ({ data }) => {
-      const { nodes, edges } = formattedData(graph, data.nodes, data.edges);
+      const { nodes, edges } = formattedData(data.nodes, data.edges);
       const result = data.nodes.length ? { nodes, edges } : { nodes: initData.nodes, edges: initData.edges };
       graph.data(result);
       graph.render();
@@ -27,7 +27,7 @@ export const Filters = () => {
 
   const initData = useMemo(() => {
     if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
-      const { nodes, edges } = formattedData(graph, nodesList, edgesList);
+      const { nodes, edges } = formattedData(nodesList, edgesList);
       return { nodes, edges };
     }
     return { nodes: [], edges: [] };
