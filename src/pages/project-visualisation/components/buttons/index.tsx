@@ -29,7 +29,7 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
           show: false,
         },
         style: {
-          stroke: node.getModel().style?.stroke as string,
+          stroke: node.getModel()?.color as string,
         },
       });
     });
