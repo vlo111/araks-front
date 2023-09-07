@@ -1,6 +1,5 @@
 import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
-import { getExpandList } from '../../helpers/utils';
 
 export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
   let isDoubleClick = false;
@@ -93,28 +92,6 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
           });
         }
       }, 0);
-    }
-  });
-
-  graph.on('node:mouseenter', async (evt) => {
-    const id = evt?.item?.getID() ?? '';
-
-    const expandList = await getExpandList(id);
-
-    localStorage.setItem('node', JSON.stringify(expandList));
-  });
-
-  graph.on('node:mouseleave', async (evt) => {
-    localStorage.removeItem('node');
-  });
-
-  graph.on('mousemove', async (evt) => {
-    const getExpandData = JSON.parse(localStorage.getItem('expand') ?? 'null');
-
-    if (getExpandData) {
-      graph.data(getExpandData);
-      graph.render();
-      localStorage.removeItem('expand');
     }
   });
 };

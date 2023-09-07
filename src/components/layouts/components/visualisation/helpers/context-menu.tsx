@@ -1,14 +1,14 @@
 import { PickVisualizationContextType } from '../types';
-import G6, { IG6GraphEvent } from '@antv/g6';
+import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { formattedData } from './format-node';
-import { getExpandData, getMenuContexts } from './utils';
+import { getExpandData, getExpandList, getMenuContexts } from './utils';
+import { allSvg, inSvg, outSvg } from './svgs';
+import PluginBase from '@antv/g6-plugin/lib/base';
 
-export const contextMenuPlugin: (items: PickVisualizationContextType) => void = ({
-  startOpenNodeCreate,
-  startOpenNode,
-  startDeleteNode,
-  startDeleteEdge,
-}) => {
+export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
+  graph,
+  { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
+) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     const target = evt?.target;
 
@@ -26,6 +26,34 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
 
     const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(evt?.item?.getID() ?? '', isNode);
 
+    (async () => {
+      const id = evt?.item?.getID() ?? '';
+
+      const expandList = await getExpandList(id);
+
+      const allCount = expandList?.reduce((prev, acc) => acc.count + prev, 0);
+
+      const allData = `<span id="all"><p>${allSvg}</p> All (${allCount})</span>`;
+
+      const list = expandList?.length
+        ? `${expandList
+            .map(
+              (l) =>
+                `<span id="${l.project_edge_type_id}"><p>${l.direction === 'in' ? inSvg : outSvg}</p> ${l.name} (${
+                  l.count
+                })</span>`
+            )
+            .join()
+            .replaceAll(',', ' ')}`
+        : '';
+
+      const menuContainer = document.querySelector('.submenu');
+
+      if (menuContainer) {
+        menuContainer.innerHTML = `${allData}${list}`;
+      }
+    })();
+
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
 
@@ -42,7 +70,9 @@ export const contextMenuPlugin: (items: PickVisualizationContextType) => void = 
 
           const graphData = formattedData(expandData.nodes, expandData.edges);
 
-          localStorage.setItem('expand', JSON.stringify(graphData));
+          graph.data(graphData);
+
+          graph.render();
         } else {
           startOpenNode({
             id: item.getID(),
