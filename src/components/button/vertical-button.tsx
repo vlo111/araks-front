@@ -8,6 +8,7 @@ import { VerticalButtonWrapper } from './vertical-button-wrapper';
 import { AddTypePropertyForm } from 'components/form/add-type-property-form';
 import { useProject } from 'context/project-context';
 import { UserProjectRole } from 'api/types';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type Props = {
   columnWidth?: number;
@@ -16,6 +17,7 @@ type Props = {
 
 export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_TYPE_START }: Props) => {
   const { projectInfo } = useProject();
+  const isPublicPage = useIsPublicPage();
 
   const [dataSheetTableSize, setDataSheetTableSize] = useState<number>(1);
   const [open, setOpen] = useState(false);
@@ -33,7 +35,7 @@ export const VerticalButton = ({ columnWidth, type = TypePropertyActionKind.ADD_
     setDataSheetTableSize(document.querySelectorAll('#datasheet-data')?.[0]?.clientWidth ?? 0);
   }, []);
 
-  if (projectInfo?.role !== UserProjectRole.Owner) {
+  if (projectInfo?.role !== UserProjectRole.Owner || isPublicPage) {
     return <></>;
   }
   return (

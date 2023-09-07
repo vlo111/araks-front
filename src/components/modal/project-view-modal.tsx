@@ -25,6 +25,7 @@ type Props = {
   projectData: ProjectFullInfo;
   graph: { destroy: (() => void) | null; graph: Graph | null };
   setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
+  isPublic?: boolean;
 };
 
 type TitleProps = ProjectButtonContent &
@@ -151,7 +152,7 @@ const Title = ({
   </>
 );
 
-export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, graph, setGraph }: Props) => {
+export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, graph, setGraph, isPublic }: Props) => {
   const navigate = useNavigate();
 
   const [isClicked, setClicked] = useState<boolean>(false);
@@ -186,7 +187,9 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
         },
       }
     : ({} as ProjectList);
-
+  // eslint-disable-next-line no-console
+  console.log('alooo', `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id));
+  `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id);
   return (
     <>
       <ProjectWrapModal
@@ -215,7 +218,11 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
                 <Button
                   block
                   type="primary"
-                  onClick={() => navigate(PATHS.PROJECT_OVERVIEW.replace(':id', project.id))}
+                  onClick={() =>
+                    navigate(
+                      `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id)
+                    )
+                  }
                 >
                   <MenuText strong style={{ color: '#ffffff' }}>
                     OPEN PROJECT

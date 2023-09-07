@@ -1,4 +1,5 @@
 import { Skeleton } from 'antd';
+import { UserProjectRole } from 'api/types';
 import { AddType } from 'components/button';
 import { ColorFill } from 'components/color-fill';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
@@ -6,13 +7,18 @@ import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { ViewDatasheetEdgeProvider } from 'context/datasheet-edge-view-vontext';
 import { ImportProvider } from 'context/import-context';
+import { useProject } from 'context/project-context';
 import { SortProvider } from 'context/sort-context';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { ConnectionTableSection } from './connection-table';
 import { HeaderActions } from './header-actions';
 import { RightSectionAllData } from './right-section-all-data';
 import { TableSection } from './table-section';
 
 export const RightSection = () => {
+  const { projectInfo } = useProject();
+  const isPublicPage = useIsPublicPage();
+
   const {
     startAddType,
     addTypeisOpened,
@@ -39,17 +45,19 @@ export const RightSection = () => {
   return (
     <ImportProvider>
       <ColorFill color={color} />
-      <AddType
-        titleText={titleText}
-        onClick={startAddType}
-        open={addTypeisOpened}
-        onOpenChange={(open) => {
-          // addTypeisOpened && !open && finishAddType();
-          return open;
-        }}
-      >
-        <HeaderActions />
-      </AddType>
+      {projectInfo?.role === UserProjectRole.Owner && !isPublicPage && (
+        <AddType
+          titleText={titleText}
+          onClick={startAddType}
+          open={addTypeisOpened}
+          onOpenChange={(open) => {
+            // addTypeisOpened && !open && finishAddType();
+            return open;
+          }}
+        >
+          <HeaderActions />
+        </AddType>
+      )}
       {!nodeTypeId && <EmptyList />}
       {nodeTypeId && (
         <>

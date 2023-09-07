@@ -5,7 +5,7 @@ import { MyProjects } from "pages/projects/components/my-projects"
 export const Public = () => {
     return <ProjectList>
         <div>
-            <MyProjects title='Available to me' projectsUrl={GET_PROJECTS_PUBLIC_LIST} showCreate={false} />
+            <MyProjects title='Available to me' projectsUrl={GET_PROJECTS_PUBLIC_LIST} showCreate={false} isPublic />
         </div>
     </ProjectList>
 }

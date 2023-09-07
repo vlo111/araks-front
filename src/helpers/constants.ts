@@ -16,6 +16,7 @@ export const PATHS = {
   SHARED: '/shared',
   FOLDER: '/folder/:id',
   ERROR_403: 'no-access',
+  PUBLIC_PREFIX: '/public',
 };
 
 export const COLORS = {

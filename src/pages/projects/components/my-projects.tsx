@@ -21,9 +21,10 @@ type Props = {
   projectsUrl?: string;
   title?: string;
   showCreate?: boolean;
+  isPublic?: boolean;
 };
 
-export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => {
+export const MyProjects = ({ projectsUrl, title, showCreate = true, isPublic = false }: Props) => {
   const navigate = useNavigate();
   const [projectId, setProjectId] = useState<string | null>(null);
   const [graph, setGraph] = useState<{ destroy: (() => void) | null; graph: Graph | null }>({
@@ -125,6 +126,7 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true }: Props) => 
           projectData={projectData}
           graph={graph}
           setGraph={setGraph}
+          isPublic={isPublic}
         />
       )}
     </Spin>

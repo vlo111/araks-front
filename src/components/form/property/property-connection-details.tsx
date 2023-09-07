@@ -1,4 +1,5 @@
 import { Form, Space } from 'antd';
+import { ProjectNodeTypePropertyReturnData } from 'api/types';
 import { Checkbox } from 'components/checkbox';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { TreeSelect } from 'components/select';
@@ -53,6 +54,12 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
+              onSelect={(value, node) => {
+                form.setFieldValue(
+                  'source_attribute_id',
+                  node.properties.find((item: ProjectNodeTypePropertyReturnData) => item.name === 'name').id
+                );
+              }}
             />
           </FormItem>
           <FormItem name="target_id" label="Target" rules={[{ required: true, message: 'Target is required' }]}>
@@ -65,6 +72,12 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
               allowClear
               treeDefaultExpandAll
               fieldNames={{ value: 'key' }}
+              onSelect={(value, node) => {
+                form.setFieldValue(
+                  'target_attribute_id',
+                  node.properties.find((item: ProjectNodeTypePropertyReturnData) => item.name === 'name').id
+                );
+              }}
             />
           </FormItem>
           <FormItem name="inverse" valuePropName="checked" initialValue={false}>

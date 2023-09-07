@@ -2,6 +2,7 @@ import { Button } from 'components/button';
 import { MenuText } from 'components/typography';
 import { useViewDatasheetEdge } from 'context/datasheet-edge-view-vontext';
 import { COLORS } from 'helpers/constants';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import styled from 'styled-components';
 import { ETypeEdgeData } from 'types/edges';
 
@@ -21,10 +22,11 @@ const CedllName = styled(MenuText)`
 
 export const EdgeViewButton = ({ text, rowData }: Props) => {
   const { dispatch } = useViewDatasheetEdge();
+  const isPublicPage = useIsPublicPage();
 
   return (
     <>
-      <Button type="link" className="table-row-height" onClick={() => dispatch(rowData)}>
+      <Button type="link" className="table-row-height" onClick={() => dispatch(rowData)} disabled={isPublicPage}>
         <CedllName underline color={COLORS.PRIMARY.BLUE}>
           {text}
         </CedllName>

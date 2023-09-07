@@ -68,6 +68,10 @@ export const router = createBrowserRouter([
             element: <ProjectOverview />,
           },
           {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.PROJECT_OVERVIEW}`,
+            element: <ProjectOverview />,
+          },
+          {
             path: PATHS.PROJECT_UPDATE,
             element: <ProjectUpdate />,
           },
@@ -89,6 +93,10 @@ export const router = createBrowserRouter([
           },
           {
             path: PATHS.DATA_SHEET,
+            element: <DataSheet />,
+          },
+          {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.DATA_SHEET}`,
             element: <DataSheet />,
           },
           {

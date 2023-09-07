@@ -14,6 +14,7 @@ import { useGetProject } from 'api/projects/use-get-project';
 import { VisualisationWrapper } from '../layouts/components/visualisation/wrapper';
 import { PerspectiveUser, UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 const Tabs = styled(TabsComponent)`
   user-select: none;
@@ -67,6 +68,8 @@ const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
 export const OverviewTabs = () => {
   const { updateRole, projectInfo } = useProject();
   const location = useLocation();
+  const isPublicPage = useIsPublicPage();
+
   const params = useParams();
   const navigate = useNavigate();
   const { state, dispatch, setHideLeftSection } = useOverview();
@@ -84,7 +87,7 @@ export const OverviewTabs = () => {
   const items = useMemo(() => {
     const tabs = [
       {
-        key: PATHS.PROJECT_OVERVIEW,
+        key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`,
         label: 'Overview',
       },
       {
@@ -92,7 +95,9 @@ export const OverviewTabs = () => {
         label: 'Scheme',
       },
       {
-        key: params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET,
+        key: params.node_type_id
+          ? PATHS.NODE_OVERVIEW
+          : `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.DATA_SHEET}`,
         label: 'Data sheet',
       },
       {
@@ -109,7 +114,7 @@ export const OverviewTabs = () => {
     }
 
     return tabs;
-  }, [params.node_type_id, projectInfo?.role]);
+  }, [isPublicPage, params.node_type_id, projectInfo?.role]);
 
   const handleTabClick = useCallback(
     (key: string) => {
@@ -155,8 +160,11 @@ export const OverviewTabs = () => {
         disabled: !params.id,
         children: (
           <div className="site-layout-content">
-            {item.key === PATHS.PROJECT_OVERVIEW && <OverviewWrapper />}
-            {item.key === (params.node_type_id ? PATHS.NODE_OVERVIEW : PATHS.DATA_SHEET) && <DataSheetWrapper />}
+            {item.key === `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}` && <OverviewWrapper />}
+            {item.key ===
+              (params.node_type_id
+                ? PATHS.NODE_OVERVIEW
+                : `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.DATA_SHEET}`) && <DataSheetWrapper />}
             {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}

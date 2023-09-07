@@ -15,6 +15,7 @@ import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { convertByType } from 'helpers/utils';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -30,6 +31,7 @@ export const ConnectionTableSection = () => {
   const [tableHead, setTableHead] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
+  const isPublicPage = useIsPublicPage();
 
   const { nodeTypeId } = useDataSheetWrapper();
 
@@ -85,14 +87,14 @@ export const ConnectionTableSection = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <ManageConnection tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
+      {!isPublicPage && <ManageConnection tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />}
       <VerticalSpace size="large">
         <div
           id="container"
           style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
           ref={tableRef}
         >
-          <VerticalConnectionButton columnWidth={columnWidth} />
+          {!isPublicPage && <VerticalConnectionButton columnWidth={columnWidth} />}
           <ConnectionTable
             id="connection-table"
             size="large"

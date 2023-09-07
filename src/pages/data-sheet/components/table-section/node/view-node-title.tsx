@@ -9,6 +9,7 @@ import { MenuText, Text } from 'components/typography';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
 import { useProject } from 'context/project-context';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { Comments } from 'pages/project-overview/components/comment-like/comments';
 
 type ViewNodeProps = {
@@ -21,6 +22,7 @@ type ViewNodeProps = {
 export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
   const { projectInfo } = useProject();
   const { state } = useOverview();
+  const isPublicPage = useIsPublicPage();
 
   const { state: selectedView } = useViewDatasheet();
 
@@ -32,7 +34,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
         <Text>{selectedView?.name}</Text>
       </div>
       <Space>
-        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
           <Button
             type="link"
             disabled={isEdit}
@@ -45,7 +47,9 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
           <Comments nodeId={id} />
         </NodeCommentDrawer>
         <Button type="link" disabled icon={<DownloadOutlined style={{ color: '#414141', fontSize: '24px' }} />} />
-        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && <DeleteNodeModal id={id} onClose={onClose} />}
+        {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
+          <DeleteNodeModal id={id} onClose={onClose} />
+        )}
       </Space>
     </Space>
   );
