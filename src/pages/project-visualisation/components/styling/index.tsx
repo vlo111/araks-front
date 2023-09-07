@@ -30,8 +30,8 @@ export const Styling = () => {
         filteredNodes.forEach((node) => {
           graph.updateItem(node.getID(), {
             size: query.size || initialSize,
-            type: query.icon,
             icon: {
+              img: node.getModel()?.img ? query.icon : query.icon,
               show: !!query.icon,
               width: query.size / 1.5,
               height: query.size / 1.5,
