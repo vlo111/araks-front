@@ -63,6 +63,7 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
         depth: 1,
         isConnectionType: true,
         labelName: element.label,
+        labelValue: element.name,
       };
     }
     if (element.children) {
@@ -73,6 +74,8 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             depth: 2,
             isConnectionType: true,
             labelName: `${element.name}.${child.label}`,
+            labelValue: element.name,
+            name: child.label,
             labelHead: (
               <Space>
                 <StyledBadge color={element.source.color} text={<Text>{element.source.name}</Text>} />
@@ -97,6 +100,7 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
                     <StyledBadge color={element.target.color} text={<Text>{element.target.name}</Text>} />
                   </Space>
                 ),
+                labelValue: element.name,
               };
             }
           }

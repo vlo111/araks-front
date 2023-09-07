@@ -146,10 +146,10 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
 
   const removeGraphStyle = (id: string) => {
     const filteredNodes = graph
-      .getNodes()
+      ?.getNodes()
       .filter((node: INode) => id === (node.getModel()?.nodeType as { id: string })?.id);
 
-    filteredNodes.forEach((node) => {
+    filteredNodes?.forEach((node) => {
       graph.updateItem((node.getModel()?.nodeType as { id: string })?.id, {
         size: 40,
         icon: {
@@ -160,9 +160,9 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
         },
       });
     });
-    const filteredEdges = graph.getEdges().filter((edge) => id === edge.getModel().project_edge_type_id);
+    const filteredEdges = graph?.getEdges()?.filter((edge) => id === edge.getModel().project_edge_type_id);
 
-    filteredEdges.forEach((edge) => {
+    filteredEdges?.forEach((edge) => {
       graph.updateItem(edge.getID() as string, {
         style: {
           stroke: '#C3C3C3',
@@ -180,7 +180,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
         event.stopPropagation();
         remove(fieldName);
         removeGraphStyle(queriesList[fieldName]?.id);
-        removeGraphStyle(queriesList[fieldName]?.edge.id);
+        removeGraphStyle(queriesList[fieldName]?.edge?.id);
       }}
     />
   );

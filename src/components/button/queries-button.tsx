@@ -1,12 +1,14 @@
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
+import { VisualizationSubmitType } from 'api/neo4j/types';
+import { useQueriesVisualization } from 'api/neo4j/use-queries-visualization';
 import { QueriesForm } from 'components/form/all-data/queries-form';
-import { QueryFilterTypes } from 'components/select/queries-select';
+import { getQueryFilterType, QueryFilterTypes } from 'components/select/queries-select';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
 import { useOverview } from 'context/overview-context';
 import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, ButtonWithIcon } from '.';
 
@@ -27,7 +29,7 @@ const StyledRadioButton = styled(Radio.Group)`
 `;
 
 type FormQueryValues = {
-  operator: 'and' | 'or';
+  operator: 'AND' | 'OR';
   queries: (
     | TreeNodeType
     | (TreeConnectionType & {
@@ -38,30 +40,50 @@ type FormQueryValues = {
 };
 
 export const QueriesButton = () => {
+  const [filter, setFilter] = useState<VisualizationSubmitType>({} as VisualizationSubmitType);
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
 
+  useQueriesVisualization(filter, { enabled: !!filter.queryArr?.length });
+
   const onClose = () => {
     setHideLeftSection(false);
     form.resetFields();
   };
 
+  const clearFilter = useCallback(() => {
+    setFilter({} as VisualizationSubmitType);
+  }, []);
+
   const onFinish = (values: FormQueryValues) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
+    const queryArr = values.queries.map((query) => ({
+      type: query.isConnectionType ? 'relation' : 'node',
+      label: query.labelValue,
+      ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
+        ? { action: getQueryFilterType(query.type) }
+        : {}),
+      ...(query.isConnectionType && query.depth !== 1 ? { project_edge_type_id: query.id } : {}),
+      query:
+        (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
+          ? {
+              [query.name]: {
+                type: query.ref_property_type_id,
+                action: getQueryFilterType(query.type),
+                value:
+                  query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+              },
+            }
+          : {},
+    }));
+
     const data = {
       operator: values.operator,
-      query: values.queries.map((query) => ({
-        [query.name]: {
-          type: query.ref_property_type_id,
-          action: query.type,
-          value: query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
-        },
-      })),
-    };
+      queryArr: queryArr,
+    } as VisualizationSubmitType;
+    setFilter(data);
     // eslint-disable-next-line no-console
     console.log('data to submit', data);
   };
@@ -96,12 +118,12 @@ export const QueriesButton = () => {
             <Col span={8}>
               <Space>
                 <UsefulInformationTooltip infoText="Inherit parent options" />
-                <Form.Item name="operator" noStyle initialValue={'and'}>
+                <Form.Item name="operator" noStyle initialValue={'AND'}>
                   <StyledRadioButton
                     size="small"
                     options={[
-                      { label: 'And', value: 'and' },
-                      { label: 'Or', value: 'or' },
+                      { label: 'And', value: 'AND' },
+                      { label: 'Or', value: 'OR' },
                     ]}
                     optionType="button"
                     buttonStyle="solid"
@@ -133,7 +155,14 @@ export const QueriesButton = () => {
           <VerticalSpace>
             <Row gutter={16} justify="center">
               <Col span={20}>
-                <ButtonWithIcon onClick={() => setOpenTable(true)} block icon={<PlusOutlined />}>
+                <ButtonWithIcon
+                  onClick={() => {
+                    setOpenTable(true);
+                    clearFilter();
+                  }}
+                  block
+                  icon={<PlusOutlined />}
+                >
                   Add
                 </ButtonWithIcon>
               </Col>
@@ -154,7 +183,7 @@ export const QueriesButton = () => {
         }
       >
         <div id="queries-form-body">
-          <QueriesForm openTable={openTable} setOpenTable={setOpenTable} />
+          <QueriesForm openTable={openTable} setOpenTable={setOpenTable} clearFilter={clearFilter} />
         </div>
       </Drawer>
     </Form>
