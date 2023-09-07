@@ -1,4 +1,4 @@
-import { Col, Drawer, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row, Spin } from 'antd';
 import * as React from 'react';
 import { NodeBody } from 'types/node';
 import { Button } from 'components/button';
@@ -41,7 +41,7 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
     enabled: !!(nodeTypeId && isConnectionType === true && !!selectedView),
   });
 
-  const { mutate } = useManageEdge(selectedView?.id || '', {
+  const { mutate, isLoading } = useManageEdge(selectedView?.id || '', {
     onSuccess: () => {
       onClose();
     },
@@ -112,11 +112,16 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
             id: property?.id,
             edge_type_property_id: item.id,
             edge_type_property_type: item.ref_property_type_id,
-            data: [
-              item.ref_property_type_id === PropertyTypes.Integer || item.ref_property_type_id === PropertyTypes.Decimal
-                ? +(values[item.name] as (string | number)[])[0]
-                : (values[item.name] as (string | number)[])[0],
-            ],
+            data: (values[item.name] as (string | number)[])[0]
+              ? [
+                  item.ref_property_type_id === PropertyTypes.Integer ||
+                  (item.ref_property_type_id === PropertyTypes.Decimal &&
+                    typeof values[item.name] !== 'undefined' &&
+                    values[item.name] !== null)
+                    ? +(values[item.name] as (string | number)[])[0]
+                    : (values[item.name] as (string | number)[])[0],
+                ]
+              : [],
           },
         ] as EdgesCreateProperties[];
       }, [] as EdgesCreateProperties[]),
@@ -127,48 +132,50 @@ function ViewDatasheetEdgeProvider({ children }: ViewDatasheetEdgeProviderProps)
 
   return (
     <ViewDatasheetEdgeContext.Provider value={value}>
-      {children}
-      <Drawer
-        title={<ViewEdgeTitle onClose={onClose} />}
-        mask={false}
-        placement="right"
-        onClose={onClose}
-        bodyStyle={{ backgroundColor: '#F2F2F2', padding: '40px 0' }}
-        afterOpenChange={(open) => {
-          if (!open) {
-            onClose();
+      <Spin spinning={isLoading}>
+        {children}
+        <Drawer
+          title={<ViewEdgeTitle onClose={onClose} />}
+          mask={false}
+          placement="right"
+          onClose={onClose}
+          bodyStyle={{ backgroundColor: '#F2F2F2', padding: '40px 0' }}
+          afterOpenChange={(open) => {
+            if (!open) {
+              onClose();
+            }
+          }}
+          open={!!selectedView}
+          getContainer={false}
+          width={drawerWidth}
+          footer={
+            <Row gutter={16} justify="center">
+              <Col span={4}>
+                <Button style={{ marginRight: 8 }} onClick={onClose} block>
+                  Cancel
+                </Button>
+              </Col>
+              <Col span={4}>
+                <Button type="primary" onClick={() => form.submit()} block>
+                  Save
+                </Button>
+              </Col>
+            </Row>
           }
-        }}
-        open={!!selectedView}
-        getContainer={false}
-        width={drawerWidth}
-        footer={
-          <Row gutter={16} justify="center">
-            <Col span={4}>
-              <Button style={{ marginRight: 8 }} onClick={onClose} block>
-                Cancel
-              </Button>
-            </Col>
-            <Col span={4}>
-              <Button type="primary" onClick={() => form.submit()} block>
-                Save
-              </Button>
-            </Col>
-          </Row>
-        }
-        contentWrapperStyle={{ height: '100%' }}
-      >
-        <Form
-          name="project-connection-node-manage"
-          form={form}
-          onFinish={onFinish}
-          autoComplete="off"
-          layout="vertical"
-          requiredMark={false}
+          contentWrapperStyle={{ height: '100%' }}
         >
-          <AddConnectionNodeForm data={data as EdgeTypePropertiesResponse} isInitialLoading={isInitialLoading} />
-        </Form>
-      </Drawer>
+          <Form
+            name="project-connection-node-manage"
+            form={form}
+            onFinish={onFinish}
+            autoComplete="off"
+            layout="vertical"
+            requiredMark={false}
+          >
+            <AddConnectionNodeForm data={data as EdgeTypePropertiesResponse} isInitialLoading={isInitialLoading} />
+          </Form>
+        </Drawer>
+      </Spin>
     </ViewDatasheetEdgeContext.Provider>
   );
 }

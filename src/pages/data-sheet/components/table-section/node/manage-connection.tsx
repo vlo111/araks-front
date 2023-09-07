@@ -1,10 +1,11 @@
-import { Col, Drawer, Form, Row } from 'antd';
+import { Col, Drawer, Form, Row, Spin } from 'antd';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { Button } from 'components/button';
 import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddConnectionNodeForm } from 'components/form/add-connection-node-form';
+import { PropertyTypes } from 'components/form/property/types';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
 import { EdgesCreate, EdgesCreateProperties, EdgeSourceData, EdgeTargetData } from 'types/edges';
@@ -32,7 +33,7 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
     setOpen(true);
   };
 
-  const { mutate } = useManageEdge();
+  const { mutate, isLoading } = useManageEdge();
 
   const [form] = Form.useForm();
 
@@ -51,7 +52,14 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
               edge_type_property_id: item.id,
               edge_type_property_type: item.ref_property_type_id,
               data: (values[item.name] as (string | number)[])[0]
-                ? [(values[item.name] as (string | number)[])[0]]
+                ? [
+                    item.ref_property_type_id === PropertyTypes.Integer ||
+                    (item.ref_property_type_id === PropertyTypes.Decimal &&
+                      typeof values[item.name] !== 'undefined' &&
+                      values[item.name] !== null)
+                      ? +(values[item.name] as (string | number)[])[0]
+                      : (values[item.name] as (string | number)[])[0],
+                  ]
                 : [],
             },
           ] as EdgesCreateProperties[];
@@ -63,7 +71,7 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
   };
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
       <Drawer
         title={`Add New Node / ${titleText}`}
@@ -104,6 +112,6 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
           <AddConnectionNodeForm data={data as EdgeTypePropertiesResponse} isInitialLoading={isInitialLoading} />
         </Form>
       </Drawer>
-    </>
+    </Spin>
   );
 };
