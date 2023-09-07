@@ -145,18 +145,15 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
   };
 
   const removeGraphStyle = (id: string) => {
-    const filteredNodes = graph
-      .getNodes()
-      .filter((node: INode) => id === (node.getModel()?.nodeType as { id: string })?.id);
-
+    const filteredNodes = graph.getNodes().filter((node: INode) => id === node.getModel()?.nodeType);
     filteredNodes.forEach((node) => {
-      graph.updateItem((node.getModel()?.nodeType as { id: string })?.id, {
+      graph.updateItem(node.getID(), {
         size: 40,
         icon: {
           show: false,
         },
         style: {
-          stroke: (node.getModel()?.nodeType as { color: string }).color,
+          stroke: node.getModel()?.color as string,
         },
       });
     });
@@ -226,16 +223,22 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                               setValue={setValue}
                             />
                             <StyledQuerySelectWrapper>
-                              <Form.Item
-                                name={[fieldName, 'type']}
-                                rules={[{ required: false, message: 'Missing type' }]}
-                              >
-                                <QueriesSelect
-                                  depth={queriesList[fieldName].depth}
-                                  isConnection={queriesList[fieldName].isConnectionType}
-                                  propertyType={queriesList[fieldName]?.ref_property_type_id}
-                                />
-                              </Form.Item>
+                              {queriesList[fieldName].depth !== 1 && (
+                                <VerticalSpace>
+                                  {queriesList[fieldName]?.labelHead}
+                                  <Form.Item
+                                    name={[fieldName, 'type']}
+                                    rules={[{ required: true, message: 'Missing type' }]}
+                                  >
+                                    <QueriesSelect
+                                      depth={queriesList[fieldName].depth}
+                                      isConnection={queriesList[fieldName].isConnectionType}
+                                      propertyType={queriesList[fieldName]?.ref_property_type_id}
+                                    />
+                                  </Form.Item>
+                                  <QueriesContent fieldName={fieldName} />
+                                </VerticalSpace>
+                              )}
                             </StyledQuerySelectWrapper>
                           </Form.Item>
                         </>

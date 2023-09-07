@@ -1,87 +1,45 @@
-import { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
-import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { useMemo, useState } from 'react';
+import { Skeleton } from 'antd';
 import { SiderCollapse } from 'components/collapse/sider-collapse';
 import { NodeTypesView } from '../../../data-sheet/components/node-types-view';
 import { NodesHeader } from '../../../data-sheet/components/nodes-header';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { IEdge, INode } from '@antv/g6';
+import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { useTypes } from 'hooks/use-types';
+import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { useGetData } from 'api/visualisation/use-get-data';
+import { useManageFilters } from './use-manage-filters';
+
 export const Filters = () => {
-  const params = useParams();
   const [searchVisible, setSearchVisible] = useState(false);
   const { graph } = useGraph() ?? {};
-  const { formatted: nodesList } = useGetProjectNoteTypes(
-    {
-      url: GET_PROJECT_NODE_TYPES_LIST,
-      projectId: params.id || '',
-    },
-    {
-      enabled: !!params.id,
-      onSuccess: (data) => {
-        /** This condition sets selected fisr node type when first time enter to this page */
-        /** WONT work wor all type as the data already exists */
-        createNodesTree(data.data, true);
-      },
-    },
-    true
-  );
+  const { nodes, isInitialLoading } = useTypes();
+  const { nodes: nodesList, edges: edgesList } = useGetData();
 
-  const onCheck = useCallback(
-    (checkedKeys: string[]) => {
-      const selectedNodeTypes = new Set(checkedKeys);
-
-      graph.getEdges()?.forEach((edge: IEdge) => {
-        graph.updateItem(edge, {
-          visible: false,
-        });
-      });
-
-      graph.getNodes()?.forEach((node: INode) => {
-        const nodeType = node.getModel().nodeType;
-        if (selectedNodeTypes.size === 0 || selectedNodeTypes.has(nodeType as string)) {
-          graph.updateItem(node, {
-            visible: true,
-            id: node.getModel()?.id ?? '',
-            label: node.getModel()?.label ?? '',
-            style: {
-              stroke: (node.getModel()?.style?.stroke as string) ?? '',
-            },
-            type: node.getModel().img ? 'image' : 'circle',
-            nodeTypeName: node.getModel().nodeTypeName,
-          });
-
-          graph.getEdges().forEach((edge: IEdge) => {
-            const sourceNodeId = edge.getSource().getID();
-            const targetNodeId = edge.getTarget().getID();
-
-            if (sourceNodeId === node.getID() || targetNodeId === node.getID()) {
-              graph.updateItem(edge, {
-                visible: true,
-              });
-            }
-          });
-        } else {
-          graph.updateItem(node, {
-            visible: false,
-          });
-        }
-      });
-      graph.getEdges()?.forEach((edge: IEdge) => {
-        [edge.getSource(), edge.getTarget()].forEach((node: INode) => {
-          const targetNode = graph.getNodes().find((n: INode) => n.getID() === node.getID());
-          if (targetNode) {
-            graph.updateItem(targetNode, { visible: true });
-          }
-        });
-      });
-
+  const { mutate } = useManageFilters({
+    onSuccess: ({ data }) => {
+      const { nodes, edges } = formattedData(graph, data.nodes, data.edges);
+      const result = data.nodes.length ? { nodes, edges } : { nodes: initData.nodes, edges: initData.edges };
+      graph.data(result);
       graph.render();
     },
-    [graph]
-  );
+  });
 
-  return (
+  const initData = useMemo(() => {
+    if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
+      const { nodes, edges } = formattedData(graph, nodesList, edgesList);
+      return { nodes, edges };
+    }
+    return { nodes: [], edges: [] };
+  }, [graph, nodesList, edgesList]);
+
+  const onCheck = async (checkedKeys: string[]) => {
+    mutate(checkedKeys);
+  };
+
+  return isInitialLoading ? (
+    <Skeleton />
+  ) : (
     <SiderCollapse
       defaultActiveKey="1"
       panels={[
@@ -91,7 +49,7 @@ export const Filters = () => {
           children: (
             <NodeTypesView
               onCheck={onCheck}
-              nodesList={nodesList}
+              nodesList={createNodesTree(nodes, true)}
               searchVisible={searchVisible}
               setSearchVisible={setSearchVisible}
               isCheckable={true}

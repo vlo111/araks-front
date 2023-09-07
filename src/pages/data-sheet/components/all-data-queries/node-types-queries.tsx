@@ -21,11 +21,11 @@ const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean
 
 type Props = PropsSetState &
   TableStyleBasedOnTab & {
-  setOpenTable: (openTable: boolean) => void;
-  isVisualisation?:boolean;
-  // add: () => void;
-  // fieldsLength: number;
-};
+    setOpenTable: (openTable: boolean) => void;
+    isVisualisation?: boolean;
+    // add: () => void;
+    // fieldsLength: number;
+  };
 
 function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
   for (const element of arr) {
@@ -51,15 +51,20 @@ function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
   return null;
 }
 
-export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false, setOpenTable, isVisualisation, }:
-// setOpenTable,
+export const NodeTypesQueries = ({
+  searchVisible,
+  setSearchVisible,
+  isCheckable = false,
+  noColors = false,
+  setOpenTable,
+  isVisualisation,
+}: // setOpenTable,
 // add,
 // fieldsLength,
-                                   Props) => {
+Props) => {
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const visualisationFilter = ['node_icon', 'type', 'name'];
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
@@ -69,19 +74,7 @@ export const NodeTypesQueries = ({ searchVisible, setSearchVisible, isCheckable 
     {
       enabled: !!params.id,
       onSuccess(data) {
-        if(isVisualisation) {
-          const visualisationFilteredData = data.data.map((item) => {
-            return {
-              ...item,
-              properties: item.properties?.filter(
-                (property) => visualisationFilter.includes(property.name)
-              ),
-            };
-          });
-          setFilteredData(createQueriesNodesTree(visualisationFilteredData));
-        } else  {
-          setFilteredData(createQueriesNodesTree(data.data));
-        }
+        setFilteredData(createQueriesNodesTree(data.data));
       },
     },
     noColors

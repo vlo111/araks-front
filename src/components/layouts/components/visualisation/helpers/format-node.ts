@@ -25,6 +25,7 @@ export const formattedData: FormattedData = (graph, nodesList, edgeList) => {
 
       return {
         id,
+        color,
         label: name,
         style: {
           stroke: color ?? '',

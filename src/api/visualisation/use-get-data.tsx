@@ -4,6 +4,7 @@ import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 
 type Node = {
+  id: string;
   _fields: {
     labels: string[];
     properties: {
@@ -46,7 +47,7 @@ type GetProjectParam = {
 
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
 
-type ReturnData = {
+export type ReturnData = {
   data: ProjectEdgeResponse;
 };
 
