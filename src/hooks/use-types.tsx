@@ -19,7 +19,7 @@ export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
     { projectId: id ?? '' },
     {
       onSuccess: ({ data: { projectsNodeTypes } }) => {
-        params.setNodes(projectsNodeTypes);
+        params.setNodes && params.setNodes(projectsNodeTypes);
       },
     }
   );
@@ -28,7 +28,7 @@ export const useTypes: () => { isInitialLoading: boolean; nodes: IProjectType[] 
     { projectId: id ?? '' },
     {
       onSuccess: ({ data }) => {
-        params.setEdges(data);
+        params.setEdges && params.setEdges(data);
       },
     }
   );
