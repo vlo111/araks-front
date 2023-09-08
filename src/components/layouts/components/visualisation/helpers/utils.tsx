@@ -79,7 +79,7 @@ export const addTooltip = (graph: Graph) => {
   if (!(defaultModes && defaultModes.find((a: { type: string }) => a.type === 'tooltip'))) {
     const el = document.getElementsByClassName('g6-tooltip');
 
-    (el[0] as HTMLElement).remove();
+    if (el.length) (el[0] as HTMLElement).remove();
 
     graph.addBehaviors(
       [
@@ -99,16 +99,23 @@ export const addTooltip = (graph: Graph) => {
 export const removeTooltip = (graph: Graph) => {
   graph.removeBehaviors('tooltip', 'default');
 
-  const el = document.getElementsByClassName('g6-tooltip');
+  const tooltips = document.getElementsByClassName('g6-tooltip');
 
-  if (el.length > 1) {
-    el[0].remove();
-    (el[0] as HTMLElement).style.display = 'none';
-  } else {
-    (el[0] as HTMLElement).style.display = 'none';
+  if (tooltips.length > 0) {
+    const tooltip = tooltips[0] as HTMLElement;
+
+    if (tooltips.length > 1) {
+      tooltip.remove();
+    } else {
+      tooltip.style.display = 'none';
+    }
   }
 };
-
+/**
+ *
+ * @param id
+ * @param edges
+ */
 export const updateExpandList = (id: string, edges: IEdge[]) => {
   (async () => {
     const expandList = await getExpandList(id);
@@ -120,13 +127,19 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
     const list = expandList?.length
       ? `${result
           .map(
-            (l) =>
-              `<span id="${l.project_edge_type_id}"><p class="${l.direction}">${
-                l.direction === 'in' ? inSvg : outSvg
-              }</p> ${l.name} (${l.total})</span>`
+            (l) => `
+            <div class="row">
+            <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
+              <p>
+                ${l.direction === 'in' ? inSvg : outSvg}
+              </p>
+              <div class="right-section">
+                <p class="name">${l.name}</p>
+                <p>(${l.total})</p>
+              </div>
+            </div>`
           )
-          .join()
-          .replaceAll(',', ' ')}`
+          .join(' ')}`
       : '';
 
     const menuContainer = document.querySelector('.submenu');

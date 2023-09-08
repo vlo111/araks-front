@@ -18,7 +18,8 @@ const contextMenu = css`
       letter-spacing: 0.07em;
       color: #808080;
 
-      span {
+      span,
+      .row {
         color: #808080;
         cursor: pointer;
         padding: 0.5rem 1rem;
@@ -57,9 +58,25 @@ const contextMenu = css`
           border-radius: 4px;
           padding: 0;
 
-          .span {
-            &:hover {
-              background: red;
+          .row {
+            .hidden {
+              display: none;
+            }
+
+            p {
+              margin: 0;
+            }
+
+            .right-section {
+              display: flex;
+              gap: 0.3rem;
+
+              .name {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+              }
             }
           }
         }

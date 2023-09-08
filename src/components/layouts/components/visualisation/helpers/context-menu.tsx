@@ -36,16 +36,26 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
     getContent,
     handleMenuClick: async (target, item) => {
       if (item?._cfg?.type === 'node') {
-        if (target.className === 'delete') {
+        const isDelete = target.className === 'delete';
+
+        const submenuClass = target.parentElement?.className;
+
+        const isSubMenu = submenuClass === 'submenu' || submenuClass === 'right-section';
+
+        if (isDelete) {
           startDeleteNode({
             id: item.getID(),
           });
-        } else if (target.parentElement?.className === 'submenu') {
-          const direction = target.firstElementChild?.className ?? '';
+        } else if (isSubMenu) {
+          const direction = target.closest('.row')?.firstElementChild?.className ?? '';
 
-          const id = (item._cfg.model as { id: string })?.id ?? '';
+          /**TODO firstElementChild-ic hanel project_edge_type_id u direction obejtnery */
 
-          const expandData = await getExpandData(id, target.id, direction);
+          const project_edge_type_id = target.id;
+
+          const nodeId = (item._cfg.model as { id: string })?.id ?? '';
+
+          const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
 
           const graphData = formattedData(expandData.nodes, expandData.edges);
 
