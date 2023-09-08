@@ -1,5 +1,6 @@
 import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
+import { addTooltip } from '../../helpers/utils';
 
 export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
   let isDoubleClick = false;
@@ -93,5 +94,11 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
         }
       }, 0);
     }
+  });
+
+  graph.on('canvas:click', (e) => {
+    addTooltip(graph);
+
+    return true;
   });
 };
