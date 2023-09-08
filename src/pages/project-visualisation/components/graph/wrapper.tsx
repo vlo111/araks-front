@@ -51,12 +51,13 @@ const contextMenu = css`
           min-height: 85px;
           display: flex;
           flex-direction: column;
-          background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.4) 99.26%);
+          background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.6) 99.26%);
           border: 1px solid #ffffff;
           box-shadow: 0 10px 10px rgba(141, 143, 166, 0.2);
           backdrop-filter: blur(7px);
           border-radius: 4px;
           padding: 0;
+          overflow: auto;
 
           .row {
             .hidden {

@@ -2,8 +2,9 @@ import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
 import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
-import { Graph, IEdge } from '@antv/g6';
+import { Graph, IEdge, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
+import { formattedData } from './format-node';
 
 export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -16,11 +17,11 @@ export const getExpandData = async (id: string, project_edge_type_id: string, di
     },
   };
 
-  if (project_edge_type_id === 'all') {
-    params.params.direction = 'all';
-  } else {
+  if (project_edge_type_id) {
     params.params.project_edge_type_id = project_edge_type_id;
     params.params.direction = direction;
+  } else {
+    params.params.direction = 'all';
   }
 
   const data: GetNeo4jData = await client.get(url, params);
@@ -182,4 +183,30 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   const { result, grandTotal } = groupAndCount(notVisualizedData);
 
   return { result, grandTotal };
+};
+
+export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
+  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
+
+  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+
+  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
+
+  const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
+
+  const graphData = formattedData(expandData.nodes, expandData.edges);
+
+  const radius = 200;
+
+  graphData.nodes.forEach((n, index) => {
+    graph.addItem('node', {
+      ...n,
+      x: (item?._cfg?.model?.x ?? 0) + radius * Math.sin((Math.PI * 2 * index) / graphData.nodes.length),
+      y: (item?._cfg?.model?.y ?? 0) - radius * Math.cos((Math.PI * 2 * index) / graphData.nodes.length),
+    });
+  });
+
+  graphData.edges.forEach((e) => {
+    graph.addItem('edge', e);
+  });
 };
