@@ -4,12 +4,20 @@ import { formattedData } from './format-node';
 import { getExpandData, getExpandList, getMenuContexts } from './utils';
 import { allSvg, inSvg, outSvg } from './svgs';
 import PluginBase from '@antv/g6-plugin/lib/base';
+import { renderTooltipModal } from './tooltip';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
   graph,
   { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
+    graph.removeBehaviors('tooltip', 'default');
+
+    const el = document.querySelector('.g6-tooltip') as HTMLElement;
+
+    if (el) {
+      el.style.display = 'none';
+    }
     const target = evt?.target;
 
     const isCanvas = target && target.isCanvas && target.isCanvas();
@@ -92,6 +100,19 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
       } else {
         startOpenNodeCreate({ isOpened: true });
       }
+
+      graph.addBehaviors(
+        [
+          {
+            type: 'tooltip',
+            formatText: (model: { [key: string]: unknown }) => {
+              return renderTooltipModal(model);
+            },
+            offset: 10,
+          },
+        ],
+        'default'
+      );
     },
     offsetX: 16 + 10,
     offsetY: 0,
