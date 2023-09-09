@@ -46,7 +46,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
     const centerX = graph.getCanvasByPoint(nodeX, nodeY).x;
     const centerY = graph.getCanvasByPoint(nodeX, nodeY).y;
 
-    const zoomLevel = 2; // You can adjust this value as needed
+    const zoomLevel = 2;
 
     graph.zoomTo(
       zoomLevel,
