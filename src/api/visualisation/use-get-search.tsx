@@ -76,8 +76,7 @@ export const useGetSearchData = (options: Options = { enabled: true }, search: s
   });
 
   const { data, isInitialLoading } = result;
-  // eslint-disable-next-line no-console
-  console.log(options, data);
+
   const { nodes, edges } = data?.data ?? {};
 
   return { isInitialLoading, nodes, edges };
