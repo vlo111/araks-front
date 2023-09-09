@@ -8,11 +8,13 @@ import { EdgeDeleteModal } from './components/modals/delete-edge';
 import { EdgeViewDrawer } from './components/drawers/edges/edge-view';
 import { ToolbarVisualization } from '../../components/tool-bar';
 import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
+import { SearchData } from './components/search';
 
 export const ProjectVisualisation = () => {
   return (
     <div style={{ overflow: 'hidden' }}>
       <Graph />
+      <SearchData />
       <ToolbarVisualization />
       <LeftSection />
       <Settings />

@@ -3,6 +3,11 @@ import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { useCallback, useMemo } from 'react';
 import { Button, Dropdown } from 'antd';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { ReactComponent as RadialSvg } from './icons/radial.svg';
+import { ReactComponent as ConcentricSvg } from './icons/concentric.svg';
+import { ReactComponent as CircularSvg } from './icons/circular.svg';
+import { ReactComponent as GridSvg } from './icons/grid.svg';
+import { createCombos } from '../../../../components/layouts/components/visualisation/helpers/utils';
 
 export const Settings = () => {
   const { graph } = useGraph() ?? {};
@@ -62,6 +67,7 @@ export const Settings = () => {
       {
         key: '0',
         label: <div onClick={() => setLayout('radial')}>Radial</div>,
+        icon: <RadialSvg />,
       },
       {
         type: 'divider',
@@ -69,6 +75,7 @@ export const Settings = () => {
       {
         key: '1',
         label: <div onClick={() => setLayout('concentric')}>Concentric</div>,
+        icon: <ConcentricSvg />,
       },
       {
         type: 'divider',
@@ -76,6 +83,7 @@ export const Settings = () => {
       {
         key: '2',
         label: <div onClick={() => setLayout('grid')}>Grid</div>,
+        icon: <GridSvg />,
       },
       {
         type: 'divider',
@@ -83,6 +91,7 @@ export const Settings = () => {
       {
         key: '3',
         label: <div onClick={() => setLayout('circular')}>Circular</div>,
+        icon: <CircularSvg />,
       },
     ],
     [setLayout]
@@ -90,6 +99,9 @@ export const Settings = () => {
 
   return (
     <Wrapper>
+      <Button style={{ fontSize: 14 }} onClick={() => createCombos(graph)}>
+        Combo view demo
+      </Button>
       <Dropdown overlayClassName="layout-drop-down" menu={{ items }} trigger={['click']}>
         <Button>Set Layout</Button>
       </Dropdown>
