@@ -1,24 +1,11 @@
 import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
-import { addTooltip } from '../../helpers/utils';
+import { addTooltip, clearCanvas } from '../../helpers/utils';
 
 export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
   let isDoubleClick = false;
   let processingAfterCreateEdge = false;
   let selected = false;
-
-  const clearCanvas = () => {
-    graph.setAutoPaint(false);
-    graph.refreshPositions();
-    graph.getNodes().forEach(function (node) {
-      graph.clearItemStates(node);
-    });
-    graph.getEdges().forEach(function (edge) {
-      graph.clearItemStates(edge);
-    });
-    graph.paint();
-    graph.setAutoPaint(true);
-  };
 
   const removeFakeEdge = () => {
     const edges = graph.getEdges();
@@ -59,11 +46,13 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
   graph.on('canvas:mousedown', (e: IG6GraphEvent) => {
     const isShift = (e.originalEvent as KeyboardEvent)?.shiftKey || false;
     if (isShift) selected = true;
-    const isCombo = graph.getCombos();
-    if (isCombo.length) {
-      graph.uncombo(isCombo[0]._cfg?.id as string);
+
+    const comboSelect = graph.getCombos().find((c) => c.getID() === 'combo-select');
+
+    if (comboSelect) {
+      graph.uncombo(comboSelect.getID() as string);
       graph.addBehaviors(['drag-node', 'create-edge'], 'default');
-      clearCanvas();
+      clearCanvas(graph);
     }
   });
 
