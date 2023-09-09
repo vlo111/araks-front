@@ -3,7 +3,6 @@ import { AutoComplete as AntAutoComplete, Badge } from 'antd';
 import styled from 'styled-components';
 import { Input } from 'components/input';
 import { FilterFunc } from 'rc-select/lib/Select';
-// import { useGetSearchData } from '../../../../api/visualisation/use-get-search';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
@@ -36,8 +35,6 @@ const renderTypes = (id: string, title: string, color: string) => ({
 
 export const AutoComplete: Props = ({ search, setSearch }) => {
   const { graph } = useGraph();
-
-  // const { nodes: options } = useGetSearchData({ enabled: search ? search.length > 3 : false }, search ?? '');
 
   const onSelect = (value: string, item: { id: string }) => {
     const node = graph.getNodes().find((a) => a.getID() === item.id);
@@ -74,14 +71,6 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
 
   const filterOption: FilterOption = (inputValue, option) =>
     option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
-
-  // const opt = options?.map((n) =>
-  //   renderTypes(
-  //     n._fields[0].properties.id as string,
-  //     n._fields[0].properties.name as string,
-  //     n._fields[0].properties.color as string
-  //   )
-  // );
 
   return (
     <AntAutoComplete
