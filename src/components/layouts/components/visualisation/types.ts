@@ -1,4 +1,4 @@
-import { Graph } from '@antv/g6';
+import { Graph, IEdge } from '@antv/g6';
 import { IOpenNodeCreate, IOpenIdState, IOpenEdgeState } from './reducer/types';
 
 export type VisualisationReducerSetState = {
@@ -65,8 +65,29 @@ export type ExpandListData = {
 };
 
 export type ExpandList = {
+  id: string;
   name: string;
   project_edge_type_id: string;
   count: number;
   direction: string;
 }[];
+
+export type GroupedData = {
+  project_edge_type_id: string;
+  name: string;
+  direction: string;
+  total: number;
+};
+
+export type GroupAndCountResult = {
+  result: GroupedData[];
+  grandTotal: number;
+};
+
+export type CalcExpandList = (
+  data: ExpandList,
+  visualizedConnections: IEdge[]
+) => {
+  result: GroupedData[];
+  grandTotal: number;
+};

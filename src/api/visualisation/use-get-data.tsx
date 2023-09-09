@@ -70,7 +70,7 @@ export const useGetData = (options: Options = { enabled: true }): Result => {
 
   const result = useQuery({
     queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes, { params }),
+    queryFn: () => client.get(urlNodes),
     ...options,
     onError: errorMessage,
   });

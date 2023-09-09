@@ -1,8 +1,7 @@
 import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { formattedData } from './format-node';
-import { getExpandData, getExpandList, getMenuContexts } from './utils';
-import { allSvg, inSvg, outSvg } from './svgs';
+import { addTooltip, getExpandData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
@@ -10,6 +9,8 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
   { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
+    removeTooltip(graph);
+
     const target = evt?.target;
 
     const isCanvas = target && target.isCanvas && target.isCanvas();
@@ -26,33 +27,7 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
 
     const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(evt?.item?.getID() ?? '', isNode);
 
-    (async () => {
-      const id = evt?.item?.getID() ?? '';
-
-      const expandList = await getExpandList(id);
-
-      const allCount = expandList?.reduce((prev, acc) => acc.count + prev, 0);
-
-      const allData = `<span id="all"><p>${allSvg}</p> All (${allCount})</span>`;
-
-      const list = expandList?.length
-        ? `${expandList
-            .map(
-              (l) =>
-                `<span id="${l.project_edge_type_id}"><p>${l.direction === 'in' ? inSvg : outSvg}</p> ${l.name} (${
-                  l.count
-                })</span>`
-            )
-            .join()
-            .replaceAll(',', ' ')}`
-        : '';
-
-      const menuContainer = document.querySelector('.submenu');
-
-      if (menuContainer) {
-        menuContainer.innerHTML = `${allData}${list}`;
-      }
-    })();
+    updateExpandList(evt?.item?.getID() ?? '', graph.getEdges());
 
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
@@ -66,13 +41,27 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
             id: item.getID(),
           });
         } else if (target.parentElement?.className === 'submenu') {
-          const expandData = await getExpandData((item._cfg.model as { id: string })?.id ?? '', target.id);
+          const direction = target.firstElementChild?.className ?? '';
+
+          const id = (item._cfg.model as { id: string })?.id ?? '';
+
+          const expandData = await getExpandData(id, target.id, direction);
 
           const graphData = formattedData(expandData.nodes, expandData.edges);
 
-          graph.data(graphData);
+          const radius = 200;
 
-          graph.render();
+          graphData.nodes.forEach((n, index) => {
+            graph.addItem('node', {
+              ...n,
+              x: (item?._cfg?.model?.x ?? 0) + radius * Math.sin((Math.PI * 2 * index) / graphData.nodes.length),
+              y: (item?._cfg?.model?.y ?? 0) - radius * Math.cos((Math.PI * 2 * index) / graphData.nodes.length),
+            });
+          });
+
+          graphData.edges.forEach((e) => {
+            graph.addItem('edge', e);
+          });
         } else {
           startOpenNode({
             id: item.getID(),
@@ -92,6 +81,8 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
       } else {
         startOpenNodeCreate({ isOpened: true });
       }
+
+      addTooltip(graph);
     },
     offsetX: 16 + 10,
     offsetY: 0,

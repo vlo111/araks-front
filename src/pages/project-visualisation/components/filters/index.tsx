@@ -9,6 +9,7 @@ import { useTypes } from 'hooks/use-types';
 import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
 import { useGetData } from 'api/visualisation/use-get-data';
 import { useManageFilters } from './use-manage-filters';
+import { initData as initGraphData } from 'components/layouts/components/visualisation/container/initial/nodes';
 
 export const Filters = () => {
   const [searchVisible, setSearchVisible] = useState(false);
@@ -20,7 +21,7 @@ export const Filters = () => {
     onSuccess: ({ data }) => {
       const { nodes, edges } = formattedData(data.nodes, data.edges);
       const result = data.nodes.length ? { nodes, edges } : { nodes: initData.nodes, edges: initData.edges };
-      graph.data(result);
+      initGraphData(graph, result);
       graph.render();
     },
   });

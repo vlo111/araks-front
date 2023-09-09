@@ -31,11 +31,12 @@ export const Styling = () => {
           graph.updateItem(node.getID(), {
             size: query.size || initialSize,
             icon: {
-              img: node.getModel()?.img ? query.icon : query.icon,
-              show: !!query.icon,
+              show: node.getModel()?.img ? query.icon : query.icon,
               width: query.size / 1.5,
               height: query.size / 1.5,
+              img: node.getModel()?.img ? query.icon : query.icon,
             },
+            type: query.icon,
             style: {
               stroke: query.color,
             },
