@@ -10,6 +10,7 @@ import { Text } from 'components/typography';
 import { ImportActionType, useImport } from 'context/import-context';
 import { AUTH_KEYS, COLORS } from 'helpers/constants';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
+import { ExcelType } from 'pages/import/types';
 import { useState } from 'react';
 
 const { Dragger } = Upload;
@@ -125,6 +126,24 @@ export const ImportDrawer = () => {
               }
               if (status === 'done') {
                 const fileExtension = info.file.name.split('.').pop()?.toLowerCase();
+                let dataToSave;
+
+                if (fileExtension === 'csv') {
+                  if (!info.file.response.data.length) {
+                    message.error(`${info.file.name} import failed. There is no data to save`);
+                    return;
+                  }
+                  dataToSave = { data: info.file.response.data };
+                } else {
+                  dataToSave = {
+                    data: info.file.response.data.filter((item: ExcelType) => item.data.length),
+                  };
+
+                  if (!dataToSave.data.length) {
+                    message.error(`${info.file.name} import failed. There is no data to save`);
+                    return;
+                  }
+                }
 
                 dispatch({
                   type: ImportActionType.IMPORT_SUCCESS_CONFIRM,
@@ -132,6 +151,7 @@ export const ImportDrawer = () => {
                     fileName: info.file.name,
                     isCSV: fileExtension === 'csv',
                     ...info.file.response,
+                    ...dataToSave,
                   },
                 });
                 // message.success(`${info.file.name} file uploaded successfully.`);
