@@ -187,9 +187,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
         },
       }
     : ({} as ProjectList);
-  // eslint-disable-next-line no-console
-  console.log('alooo', `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id));
-  `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id);
+
   return (
     <>
       <ProjectWrapModal
