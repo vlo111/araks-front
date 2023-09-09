@@ -41,7 +41,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
   };
 
   const filterOption: FilterOption = (inputValue, option) =>
-    option!.value === '#types_key#' ? true : option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+    option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
 
   return (
     <AntAutoComplete
@@ -56,13 +56,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       style={{ width: 400 }}
       onSelect={onSelect}
       filterOption={filterOption}
-      options={[
-        {
-          label: <span style={{ fontWeight: 800, fontSize: 18, color: '#000000b5' }}>Types</span>,
-          value: '#types_key#',
-        },
-        ...nodes.map((n) => renderTypes(n.name, n.color)),
-      ]}
+      options={[...nodes.map((n) => renderTypes(n.name, n.color))]}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
     </AntAutoComplete>
