@@ -28,7 +28,7 @@ export const TextType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      <Form.List name={data.name} initialValue={['']}>
+      <Form.List name={data.name} initialValue={[null]}>
         {(fields, { add, remove }) => (
           <>
             <FormItem label={label} style={{ marginBottom: '0' }}>
