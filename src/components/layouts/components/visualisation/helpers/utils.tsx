@@ -258,35 +258,7 @@ export const createCombos = (graph: Graph) => {
     });
 
     // Step 3: Calculate Combo Layout Positions
-    let totalWidth = 0;
-
-    // Apply layout to nodes within each combo
-    graph.getCombos().forEach((comboId) => {
-      const comboItem = graph.findById(comboId.getID());
-      const comboBBox = comboItem.getBBox();
-      totalWidth += comboBBox.width + 20; // Add some spacing between combos
-
-      // Get the nodes within the combo
-      const nodesInCombo = comboId.getNodes();
-
-      // Calculate the radius based on the combo's size
-      const radius = Math.max(comboBBox.width, comboBBox.height) / 2; // Use the larger dimension as radius
-
-      // Apply a layout to the nodes within the combo
-      const centerX = comboItem.getModel().x ?? 0;
-      const centerY = comboItem.getModel().y ?? 0;
-      const angleStep = (Math.PI * 2) / nodesInCombo.length;
-      let currentAngle = 0;
-
-      nodesInCombo.forEach((node, index) => {
-        const x = centerX + radius * Math.cos(currentAngle);
-        const y = centerY + radius * Math.sin(currentAngle);
-
-        graph.updateItem(node.getID(), { x, y });
-
-        currentAngle += angleStep;
-      });
-    });
+    const totalWidth = graph.getCombos().reduce((a, c) => a + c?.getBBox().width, 0);
 
     // Calculate the starting X position for the first combo
     let startX = -totalWidth / 2;
@@ -297,6 +269,44 @@ export const createCombos = (graph: Graph) => {
       graph.updateItem(comboId, { x: startX + comboItem.getBBox().width / 2, y: 0 });
       startX += comboItem.getBBox().width + 20; // Update the starting X position for the next combo
     });
+
+    // Apply layout to nodes within each combo in a grid layout with nodes close to each other
+    graph.getCombos().forEach((comboId) => {
+      const comboItem = graph.findById(comboId.getID());
+      const comboBBox = comboItem.getBBox();
+
+      // Get the nodes within the combo
+      const nodesInCombo = comboId.getNodes();
+
+      // Calculate the number of rows and columns based on the number of nodes
+      const numRows = Math.ceil(Math.sqrt(nodesInCombo.length));
+      const numCols = Math.ceil(nodesInCombo.length / numRows);
+
+      // Adjust the width and height of each cell in the grid to bring nodes close
+      const cellWidth = comboBBox.width / (numCols * 2.2); // Adjust this factor for spacing
+      const cellHeight = comboBBox.height / (numRows * 2.2); // Adjust this factor for spacing
+
+      // Initialize variables for tracking the current row and column
+      let currentRow = 0;
+      let currentCol = 0;
+
+      nodesInCombo.forEach((node) => {
+        // Calculate the position of the node within the grid with nodes close together
+        const x = comboBBox.minX + currentCol * cellWidth + cellWidth / 2;
+        const y = comboBBox.minY + currentRow * cellHeight + cellHeight / 2;
+
+        graph.updateItem(node.getID(), { x, y });
+
+        // Move to the next column or row
+        currentCol++;
+        if (currentCol >= numCols) {
+          currentCol = 0;
+          currentRow++;
+        }
+      });
+    });
+
+    clearCanvas(graph);
 
     graph.fitView();
 
