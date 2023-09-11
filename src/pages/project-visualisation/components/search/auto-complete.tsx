@@ -2,9 +2,8 @@ import React from 'react';
 import { AutoComplete as AntAutoComplete, Badge } from 'antd';
 import styled from 'styled-components';
 import { Input } from 'components/input';
-import { useSchema } from 'components/layouts/components/schema/wrapper';
-import { selectNodeWithZoom } from 'components/layouts/components/schema/helpers/selection';
 import { FilterFunc } from 'rc-select/lib/Select';
+import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
 
@@ -13,13 +12,14 @@ type Props = React.FC<{ search: string | undefined; setSearch: (value: string) =
 const StyledBadge = styled(Badge)`
   && {
     .ant-badge-status-dot {
-      height: 16px;
-      width: 16px;
+      height: 8px;
+      width: 8px;
     }
   }
 `;
 
-const renderTypes = (title: string, color: string) => ({
+const renderTypes = (id: string, title: string, color: string) => ({
+  id: id,
   value: title,
   label: (
     <div
@@ -34,10 +34,39 @@ const renderTypes = (title: string, color: string) => ({
 });
 
 export const AutoComplete: Props = ({ search, setSearch }) => {
-  const { graph, selected, setSelected, nodes } = useSchema() || {};
+  const { graph } = useGraph();
 
-  const onSelect = (name: string) => {
-    selectNodeWithZoom(nodes.find((n) => n.name === name)?.id ?? '', graph, selected, setSelected);
+  const onSelect = (value: string, item: { id: string }) => {
+    const node = graph.getNodes().find((a) => a.getID() === item.id);
+
+    const nodeX = node?.getModel().x ?? 0;
+    const nodeY = node?.getModel().y ?? 0;
+
+    // Calculate the ne view center based on the clicked node
+    const centerX = graph.getCanvasByPoint(nodeX, nodeY).x;
+    const centerY = graph.getCanvasByPoint(nodeX, nodeY).y;
+
+    const zoomLevel = 2;
+
+    graph.zoomTo(
+      zoomLevel,
+      {
+        x: centerX,
+        y: centerY,
+      },
+      true
+    );
+
+    setTimeout(() => {
+      graph.clear();
+
+      graph.addItem('node', { ...node?.getModel() });
+
+      graph.fitCenter(true, {
+        duration: 400,
+        easing: 'easePolyIn',
+      });
+    }, 500);
   };
 
   const filterOption: FilterOption = (inputValue, option) =>
@@ -48,7 +77,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       popupClassName="certain-category-search-dropdown"
       dropdownMatchSelectWidth={400}
       dropdownStyle={{
-        left: 330,
+        left: 490,
         top: 228,
         backdropFilter: 'blur(7px)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)',
@@ -56,7 +85,11 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       style={{ width: 400 }}
       onSelect={onSelect}
       filterOption={filterOption}
-      options={[...nodes.map((n) => renderTypes(n.name, n.color))]}
+      options={[
+        ...graph
+          .getNodes()
+          .map((n) => renderTypes(n.getID(), n.getModel().label as string, n.getModel().style?.stroke as string)),
+      ]}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
     </AntAutoComplete>

@@ -2,8 +2,9 @@ import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
 import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
-import { Graph, IEdge } from '@antv/g6';
+import { Graph, IEdge, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
+import { formattedData } from './format-node';
 
 export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -16,11 +17,11 @@ export const getExpandData = async (id: string, project_edge_type_id: string, di
     },
   };
 
-  if (project_edge_type_id === 'all') {
-    params.params.direction = 'all';
-  } else {
+  if (project_edge_type_id) {
     params.params.project_edge_type_id = project_edge_type_id;
     params.params.direction = direction;
+  } else {
+    params.params.direction = 'all';
   }
 
   const data: GetNeo4jData = await client.get(url, params);
@@ -79,7 +80,7 @@ export const addTooltip = (graph: Graph) => {
   if (!(defaultModes && defaultModes.find((a: { type: string }) => a.type === 'tooltip'))) {
     const el = document.getElementsByClassName('g6-tooltip');
 
-    (el[0] as HTMLElement).remove();
+    if (el.length) (el[0] as HTMLElement).remove();
 
     graph.addBehaviors(
       [
@@ -99,16 +100,23 @@ export const addTooltip = (graph: Graph) => {
 export const removeTooltip = (graph: Graph) => {
   graph.removeBehaviors('tooltip', 'default');
 
-  const el = document.getElementsByClassName('g6-tooltip');
+  const tooltips = document.getElementsByClassName('g6-tooltip');
 
-  if (el.length > 1) {
-    el[0].remove();
-    (el[0] as HTMLElement).style.display = 'none';
-  } else {
-    (el[0] as HTMLElement).style.display = 'none';
+  if (tooltips.length > 0) {
+    const tooltip = tooltips[0] as HTMLElement;
+
+    if (tooltips.length > 1) {
+      tooltip.remove();
+    } else {
+      tooltip.style.display = 'none';
+    }
   }
 };
-
+/**
+ *
+ * @param id
+ * @param edges
+ */
 export const updateExpandList = (id: string, edges: IEdge[]) => {
   (async () => {
     const expandList = await getExpandList(id);
@@ -120,13 +128,19 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
     const list = expandList?.length
       ? `${result
           .map(
-            (l) =>
-              `<span id="${l.project_edge_type_id}"><p class="${l.direction}">${
-                l.direction === 'in' ? inSvg : outSvg
-              }</p> ${l.name} (${l.total})</span>`
+            (l) => `
+            <div class="row">
+            <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
+              <p>
+                ${l.direction === 'in' ? inSvg : outSvg}
+              </p>
+              <div class="right-section">
+                <p class="name">${l.name}</p>
+                <p>(${l.total})</p>
+              </div>
+            </div>`
           )
-          .join()
-          .replaceAll(',', ' ')}`
+          .join(' ')}`
       : '';
 
     const menuContainer = document.querySelector('.submenu');
@@ -169,4 +183,154 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   const { result, grandTotal } = groupAndCount(notVisualizedData);
 
   return { result, grandTotal };
+};
+
+export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
+  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
+
+  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+
+  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
+
+  const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
+
+  const graphData = formattedData(expandData.nodes, expandData.edges);
+
+  const radius = 200;
+
+  graphData.nodes.forEach((n, index) => {
+    graph.addItem('node', {
+      ...n,
+      x: (item?._cfg?.model?.x ?? 0) + radius * Math.sin((Math.PI * 2 * index) / graphData.nodes.length),
+      y: (item?._cfg?.model?.y ?? 0) - radius * Math.cos((Math.PI * 2 * index) / graphData.nodes.length),
+    });
+  });
+
+  graphData.edges.forEach((e) => {
+    graph.addItem('edge', e);
+  });
+};
+
+export const createCombos = (graph: Graph) => {
+  if (graph.getCombos().length) {
+    removeCombos(graph);
+  } else {
+    // Step 1: Group Nodes by Color
+    const nodesByType = new Map<string, INode[]>();
+
+    graph.getNodes().forEach((node) => {
+      const type = node.getModel().nodeType as string;
+      if (!nodesByType.has(type)) {
+        nodesByType.set(type, []);
+      }
+      nodesByType.get(type)?.push(node);
+    });
+
+    // Step 2: Create Combos for Each Group
+    nodesByType.forEach((nodes, type) => {
+      const comboId = `combo-${type}`;
+      if (!graph.findById(comboId)) {
+        graph.createCombo(
+          {
+            id: comboId,
+            label: nodes[0].getModel().nodeTypeName as string,
+            labelCfg: {
+              style: {
+                fontSize: 60,
+                fontWeight: 500,
+              },
+            },
+            type: 'circle',
+            style: {
+              stroke: nodes[0].getModel().color as string,
+              fill: nodes[0].getModel().color as string,
+              fillOpacity: 0.2,
+            },
+          },
+          nodes.map((a) => a.getID())
+        );
+      }
+
+      // Step 2.1: Move Nodes to Their Respective Combos
+      nodes.forEach((node) => {
+        graph.updateItem(node.getID(), { comboId: comboId });
+      });
+    });
+
+    // Step 3: Calculate Combo Layout Positions
+    let totalWidth = 0;
+
+    // Apply layout to nodes within each combo
+    graph.getCombos().forEach((comboId) => {
+      const comboItem = graph.findById(comboId.getID());
+      const comboBBox = comboItem.getBBox();
+      totalWidth += comboBBox.width + 20; // Add some spacing between combos
+
+      // Get the nodes within the combo
+      const nodesInCombo = comboId.getNodes();
+
+      // Calculate the radius based on the combo's size
+      const radius = Math.max(comboBBox.width, comboBBox.height) / 2; // Use the larger dimension as radius
+
+      // Apply a layout to the nodes within the combo
+      const centerX = comboItem.getModel().x ?? 0;
+      const centerY = comboItem.getModel().y ?? 0;
+      const angleStep = (Math.PI * 2) / nodesInCombo.length;
+      let currentAngle = 0;
+
+      nodesInCombo.forEach((node, index) => {
+        const x = centerX + radius * Math.cos(currentAngle);
+        const y = centerY + radius * Math.sin(currentAngle);
+
+        graph.updateItem(node.getID(), { x, y });
+
+        currentAngle += angleStep;
+      });
+    });
+
+    // Calculate the starting X position for the first combo
+    let startX = -totalWidth / 2;
+
+    // Position combos in a horizontal line
+    graph.getCombos().forEach((comboId) => {
+      const comboItem = graph.findById(comboId.getID());
+      graph.updateItem(comboId, { x: startX + comboItem.getBBox().width / 2, y: 0 });
+      startX += comboItem.getBBox().width + 20; // Update the starting X position for the next combo
+    });
+
+    graph.fitView();
+
+    graph.fitCenter(true, {
+      duration: 400,
+      easing: 'easePolyIn',
+    });
+  }
+};
+
+export const removeCombos = (graph: Graph) => {
+  const comboSelect = graph.getCombos().filter((c) => c.getID() !== 'combo-select');
+
+  if (comboSelect.length) {
+    comboSelect.forEach((combo) => {
+      graph.uncombo(combo.getID() as string);
+      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
+    });
+  }
+
+  clearCanvas(graph);
+
+  graph.render();
+};
+
+export const clearCanvas = (graph: Graph) => {
+  graph.setAutoPaint(false);
+  graph.refreshPositions();
+  graph.getNodes().forEach(function (node) {
+    graph.clearItemStates(node);
+  });
+  graph.getEdges().forEach(function (edge) {
+    graph.clearItemStates(edge);
+  });
+  graph.paint();
+  graph.setAutoPaint(true);
 };

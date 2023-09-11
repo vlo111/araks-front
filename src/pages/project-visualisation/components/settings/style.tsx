@@ -5,8 +5,14 @@ export const Wrapper = styled.div`
   width: 12rem;
   right: 10px;
   top: 176px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
   button {
     color: #232f6a;
+    width: 11rem;
     font-weight: 600;
     letter-spacing: 1.4px;
     border: 1px solid rgba(255, 255, 255, 0.5);
