@@ -3,6 +3,7 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { AllDataListNode } from './list-node';
 import { AllDataListDocument } from './list-document';
+import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
 
 type Props = {
   filterValue: typeof defaultAllDataFilter;
@@ -21,6 +22,7 @@ export const AllDataList = ({ filterValue, setFilterValue, checkedItems, setChec
       setFilterValue((prev) => ({
         ...prev,
         project_type_list_id: allDataTypesList,
+        page: DEFAULT_PAGE_NUMBER,
       }));
     }
   }, [allDataTypesList, setFilterValue]);
