@@ -15,6 +15,9 @@ import { CircleSizeComponent } from 'pages/project-visualisation/components/size
 import { BorderSizeComponent } from 'pages/project-visualisation/components/size-selector/border-size';
 import { BorderType } from 'pages/project-visualisation/components/size-selector/border-type';
 import { INode } from '@antv/g6';
+import { PropertyTypes } from 'components/form/property/types';
+import { Datepicker } from 'components/datepicker';
+import dayjs from 'dayjs';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -28,6 +31,7 @@ type Props = {
 
 type ContentType = {
   fieldName: number | string;
+  propertyType: PropertyTypes;
 };
 
 const StyledCollapse = styled(Collapse)`
@@ -40,7 +44,7 @@ const StyledQuerySelectWrapper = styled.div`
   margin-top: 24px;
 `;
 
-export const QueriesContent = ({ fieldName }: ContentType) => {
+export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
   const type = Form.useWatch(['queries', fieldName, 'type']);
   // const formItemLayout = {
   //   labelCol: {
@@ -64,7 +68,17 @@ export const QueriesContent = ({ fieldName }: ContentType) => {
     <>
       {(type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && (
         <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
-          <Input />
+          {propertyType === PropertyTypes.Date ? (
+            <Datepicker style={{ width: '100%' }} format={dateFormat} />
+          ) : propertyType === PropertyTypes.DateTime ? (
+            <Datepicker
+              format={dateFormat}
+              style={{ width: '100%' }}
+              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+            />
+          ) : (
+            <Input />
+          )}
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
@@ -236,7 +250,10 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                                       propertyType={queriesList[fieldName]?.ref_property_type_id}
                                     />
                                   </Form.Item>
-                                  <QueriesContent fieldName={fieldName} />
+                                  <QueriesContent
+                                    fieldName={fieldName}
+                                    propertyType={queriesList[fieldName].ref_property_type_id}
+                                  />
                                 </VerticalSpace>
                               )}
                             </StyledQuerySelectWrapper>
@@ -275,7 +292,10 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                               setValue={setValue}
                             />
                           </Form.Item>
-                          <QueriesContent fieldName={fieldName} />
+                          <QueriesContent
+                            fieldName={fieldName}
+                            propertyType={queriesList[fieldName].ref_property_type_id}
+                          />
                         </VerticalSpace>
                       )}
                     </>
@@ -291,7 +311,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                         propertyType={queriesList[fieldName]?.ref_property_type_id}
                       />
                     </Form.Item>
-                    <QueriesContent fieldName={fieldName} />
+                    <QueriesContent fieldName={fieldName} propertyType={queriesList[fieldName].ref_property_type_id} />
                   </VerticalSpace>
                 )}
               </>
