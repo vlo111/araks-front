@@ -3,42 +3,50 @@ import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 
-type Node = {
+export type NodeProperty = {
   id: string;
-  _fields: {
-    labels: string[];
-    properties: {
-      [key: string]: never;
-    };
-  }[];
+  label: string;
+  color: string;
+  [name: string]: string;
 };
 
-type Edge = {
-  _fields: {
-    type: string;
-    properties: {
-      inverse: string;
-      updated_at: string;
-      multiple: string;
-      created_at: string;
-      target_id: string;
+export type EdgeType = {
+  id: string;
+  relation: string;
+  source_id: string;
+  target_id: string;
+  source_name: null;
+  target_name: null;
+  source_color: null;
+  target_color: null;
+};
+
+export type EdgeProperties = {
+  relation: string;
+  id: string;
+  source_id: string;
+  target_id: string;
+  source_name: string;
+  source_color: string;
+  target_name: string;
+  target_color: string;
+  [name: string]: string;
+};
+
+type ProjectResponse = {
+  edgeTypes: EdgeType[];
+  edgeProperties: EdgeProperties[];
+  nodeTypes: [
+    {
       id: string;
-      source_id: string;
-      project_edge_type_id: string;
-    };
-  }[];
+      label: string;
+      color: string;
+    }
+  ];
+  nodeProperties: NodeProperty[];
 };
 
-export type Nodes = Node[];
-
-export type Edges = Edge[];
-
-type ProjectEdgeResponse = {
-  nodes: Nodes;
-  edges: Edges;
-};
-
-export const GET_SEARCH_DATA = '/neo4j/all-data/:project_id';
+export const GET_SEARCH_DATA = '/neo4j/autocomplete/:project_id';
 
 type GetProjectParam = {
   id?: string;
@@ -48,7 +56,7 @@ type GetProjectParam = {
 type QueryKey = Omit<GetProjectParam, 'url'> | string;
 
 export type GetNeo4jData = {
-  data: ProjectEdgeResponse;
+  data: ProjectResponse;
 };
 
 type QueryResponse = {
@@ -58,26 +66,22 @@ type QueryResponse = {
 type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData, QueryKey[]>;
 
 type Result = {
-  nodes: Nodes | undefined;
-  edges: Edges | undefined;
   isInitialLoading: boolean;
-};
+} & GetNeo4jData;
 
-export const useGetSearchData = (options: Options = { enabled: true }, search: string): Result => {
+export const useGetSearchData = (options: Options = { enabled: false }, search: string): Result => {
   const params = useParams();
 
   const urlNodes = GET_SEARCH_DATA.replace(':project_id', params?.id || '');
 
   const result = useQuery({
     queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes),
+    queryFn: () => client.get(urlNodes, { params: { search } }),
     ...options,
     onError: errorMessage,
   });
 
   const { data, isInitialLoading } = result;
 
-  const { nodes, edges } = data?.data ?? {};
-
-  return { isInitialLoading, nodes, edges };
+  return { isInitialLoading, data: data?.data ?? ({} as ProjectResponse) };
 };

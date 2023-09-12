@@ -1,40 +1,22 @@
-import React from 'react';
-import { AutoComplete as AntAutoComplete, Badge } from 'antd';
-import styled from 'styled-components';
+import React, { useMemo } from 'react';
+import { AutoComplete as AntAutoComplete } from 'antd';
 import { Input } from 'components/input';
 import { FilterFunc } from 'rc-select/lib/Select';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { useGetSearchData } from 'api/visualisation/use-get-search';
+import { renderNodeProperties } from './options/node-property';
+import { renderTypes } from './options/node-type';
+import { renderEdgeTypes } from './options/edge-type';
+import { renderEdgeProperties } from './options/edge-property';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
 
 type Props = React.FC<{ search: string | undefined; setSearch: (value: string) => void }>;
 
-const StyledBadge = styled(Badge)`
-  && {
-    .ant-badge-status-dot {
-      height: 8px;
-      width: 8px;
-    }
-  }
-`;
-
-const renderTypes = (id: string, title: string, color: string) => ({
-  id: id,
-  value: title,
-  label: (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <StyledBadge color={color} text={title} />
-    </div>
-  ),
-});
-
 export const AutoComplete: Props = ({ search, setSearch }) => {
   const { graph } = useGraph();
+
+  const { data } = useGetSearchData({ enabled: search ? search?.length > 3 : false }, search ?? '');
 
   const onSelect = (value: string, item: { id: string }) => {
     const node = graph.getNodes().find((a) => a.getID() === item.id);
@@ -68,28 +50,45 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       });
     }, 500);
   };
+  const nodeTypes = useMemo(
+    () => data.nodeTypes?.map(({ id, label, color }) => renderTypes(id, label, color, search ?? '')),
+    [data.nodeTypes, search]
+  );
+
+  const edgeTypes = useMemo(
+    () => data.edgeTypes?.map((edge) => renderEdgeTypes(edge, search ?? '')),
+    [data.edgeTypes, search]
+  );
+
+  const nodeProperties = useMemo(
+    () => data.nodeProperties?.map((node) => renderNodeProperties(search ?? '', node)),
+    [data.nodeProperties, search]
+  );
+
+  const edgeProperties = useMemo(
+    () => data.edgeProperties?.map((edge) => renderEdgeProperties(edge, search ?? '')),
+    [data.edgeProperties, search]
+  );
+
+  const options = nodeTypes?.concat(edgeTypes).concat(nodeProperties).concat(edgeProperties);
 
   const filterOption: FilterOption = (inputValue, option) =>
     option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
 
   return (
     <AntAutoComplete
-      popupClassName="certain-category-search-dropdown"
+      popupClassName="search-visualisation"
       dropdownMatchSelectWidth={400}
+      style={{ width: 400 }}
       dropdownStyle={{
         left: 490,
         top: 228,
         backdropFilter: 'blur(7px)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)',
       }}
-      style={{ width: 400 }}
       onSelect={onSelect}
       filterOption={filterOption}
-      options={[
-        ...graph
-          .getNodes()
-          .map((n) => renderTypes(n.getID(), n.getModel().label as string, n.getModel().style?.stroke as string)),
-      ]}
+      options={options}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
     </AntAutoComplete>
