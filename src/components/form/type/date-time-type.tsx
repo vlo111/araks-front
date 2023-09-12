@@ -25,7 +25,7 @@ export const DateTimeType = ({ data }: Props) => {
 
   return (
     <div style={{ textAlign: 'left' }}>
-      <Form.List name={data.name} initialValue={['']}>
+      <Form.List name={data.name} initialValue={[null]}>
         {(fields, { add, remove }) => (
           <>
             <FormItem label={label} required={data.required_type} style={{ marginBottom: '0' }}>

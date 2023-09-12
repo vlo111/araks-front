@@ -35,6 +35,8 @@ export const getQueryFilterType = (type: QueryFilterTypes): string => {
       return 'IS_NULL';
     case QueryFilterTypes.IS_NOT_NULL:
       return 'IS_NOT_NULL';
+    case QueryFilterTypes.CONTAINS:
+      return 'CONTAINS';
     default:
       return '';
   }
