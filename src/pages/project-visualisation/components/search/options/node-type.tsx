@@ -4,6 +4,7 @@ import { getHighlightedText } from './utils';
 export const renderTypes = (id: string, title: string, color: string, search: string) => ({
   key: id,
   id: id,
+  mode: 'nodeType',
   value: title,
   label: (
     <TypeItem>

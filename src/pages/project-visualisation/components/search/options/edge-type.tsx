@@ -8,6 +8,7 @@ export const renderEdgeTypes = (edge: EdgeType, search: string) => ({
   key: `${edge.id}${edge.source_id}${edge.target_id}`,
   id: edge.id,
   value: edge.relation,
+  mode: 'relationType',
   label: (
     <EdgeTypeItem>
       <div className="edge-name">

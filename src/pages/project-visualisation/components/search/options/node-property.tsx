@@ -9,6 +9,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     return {
       id,
       key: id,
+      mode: 'node',
       value: properties.name,
       label: (
         <NodePropertyItem>
@@ -24,6 +25,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
   const render = {
     id,
     key: id,
+    mode: 'node',
     value: property[1],
     label: (
       <NodeItem>

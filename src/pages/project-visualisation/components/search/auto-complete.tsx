@@ -8,6 +8,9 @@ import { renderNodeProperties } from './options/node-property';
 import { renderTypes } from './options/node-type';
 import { renderEdgeTypes } from './options/edge-type';
 import { renderEdgeProperties } from './options/edge-property';
+import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-search';
+import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
 
@@ -18,37 +21,19 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
 
   const { data } = useGetSearchData({ enabled: search ? search?.length > 3 : false }, search ?? '');
 
-  const onSelect = (value: string, item: { id: string }) => {
-    const node = graph.getNodes().find((a) => a.getID() === item.id);
+  const { mutate } = useGetSelectedSearchData({
+    onSuccess: (data) => {
+      const {
+        data: { nodes, edges },
+      } = data ?? {};
+      const formattedData = formattedSearchData(nodes, edges);
 
-    const nodeX = node?.getModel().x ?? 0;
-    const nodeY = node?.getModel().y ?? 0;
-
-    // Calculate the ne view center based on the clicked node
-    const centerX = graph.getCanvasByPoint(nodeX, nodeY).x;
-    const centerY = graph.getCanvasByPoint(nodeX, nodeY).y;
-
-    const zoomLevel = 2;
-
-    graph.zoomTo(
-      zoomLevel,
-      {
-        x: centerX,
-        y: centerY,
-      },
-      true
-    );
-
-    setTimeout(() => {
-      graph.clear();
-
-      graph.addItem('node', { ...node?.getModel() });
-
-      graph.fitCenter(true, {
-        duration: 400,
-        easing: 'easePolyIn',
-      });
-    }, 500);
+      initData(graph, formattedData);
+      graph.render && graph.render();
+    },
+  });
+  const onSelect = (value: string, item: { id: string; mode: string }) => {
+    mutate({ id: item.id, action: item.mode });
   };
   const nodeTypes = useMemo(
     () => data.nodeTypes?.map(({ id, label, color }) => renderTypes(id, label, color, search ?? '')),
@@ -70,7 +55,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
     [data.edgeProperties, search]
   );
 
-  const options = nodeTypes?.concat(edgeTypes).concat(nodeProperties).concat(edgeProperties);
+  const options = edgeProperties?.concat(edgeTypes).concat(nodeProperties).concat(nodeTypes);
 
   const filterOption: FilterOption = (inputValue, option) =>
     option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;

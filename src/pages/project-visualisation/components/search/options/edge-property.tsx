@@ -12,6 +12,7 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
     return {
       id,
       key: `${id}${source_id}${target_id}`,
+      mode: 'relation',
       value: properties.name,
       label: (
         <EdgeTypeItem>
@@ -41,6 +42,7 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
   return {
     key: `${id}${source_id}${target_id}`,
     id: id,
+    mode: 'relation',
     value: relation,
     label: (
       <EdgeTypeItem>
