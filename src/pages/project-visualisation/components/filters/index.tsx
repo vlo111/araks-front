@@ -20,7 +20,7 @@ export const Filters = () => {
   const { mutate } = useManageFilters({
     onSuccess: ({ data }) => {
       const { nodes, edges } = formattedData(data.nodes, data.edges);
-      const result = data.nodes.length ? { nodes, edges } : { nodes: initData.nodes, edges: initData.edges };
+      const result = { nodes, edges };
       initGraphData(graph, result);
       graph.render();
     },
@@ -35,7 +35,12 @@ export const Filters = () => {
   }, [graph, nodesList, edgesList]);
 
   const onCheck = async (checkedKeys: string[]) => {
-    mutate(checkedKeys);
+    if (checkedKeys.length) {
+      mutate(checkedKeys);
+    } else {
+      initGraphData(graph, initData);
+      graph.render();
+    }
   };
 
   return isInitialLoading ? (
