@@ -59,7 +59,6 @@ Props) => {
 
   const onSelect = (selectedKeys: string[], e: { selected: boolean; node: EventDataNode<TreeConnectionType> }) => {
     setOpenTable(false);
-
     form.setFieldValue('queries', [
       ...(form.getFieldValue('queries') || []),
       findConnectionChildrenProperties(filteredData, selectedKeys[0]),
