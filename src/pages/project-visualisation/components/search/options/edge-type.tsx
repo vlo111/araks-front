@@ -17,13 +17,13 @@ export const renderEdgeTypes = (edge: EdgeType, search: string) => ({
       </div>
       <div className="related-nodes">
         <div>
-          <StyledBadge color={edge.source_color ?? 'red'} text={edge.source_name ?? 'Fake Name'} />
+          <StyledBadge color={edge.source_color ?? ''} text={edge.source_name} />
         </div>
         <div>
           <RelatedNodeSVG />
         </div>
         <div>
-          <StyledBadge color={edge.source_color ?? 'red'} text={edge.source_name ?? 'Fake Name'} />
+          <StyledBadge color={edge.target_name ?? ''} text={edge.target_name} />
         </div>
       </div>
     </EdgeTypeItem>

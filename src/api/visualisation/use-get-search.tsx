@@ -75,7 +75,7 @@ export const useGetSearchData = (options: Options = { enabled: false }, search: 
   const urlNodes = GET_SEARCH_DATA.replace(':project_id', params?.id || '');
 
   const result = useQuery({
-    queryKey: [urlNodes],
+    queryKey: [urlNodes, search],
     queryFn: () => client.get(urlNodes, { params: { search } }),
     ...options,
     onError: errorMessage,
