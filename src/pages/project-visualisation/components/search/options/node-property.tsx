@@ -10,7 +10,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
       id,
       key: id,
       mode: 'node',
-      value: properties.name,
+      value: id,
       label: (
         <NodePropertyItem>
           <StyledBadge color={color} text={label} />
@@ -26,7 +26,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     id,
     key: id,
     mode: 'node',
-    value: property[1],
+    value: id,
     label: (
       <NodeItem>
         <StyledBadge color={color} text={label} />
