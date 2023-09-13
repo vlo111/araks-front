@@ -20,7 +20,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     };
   }
 
-  const property = Object.entries(properties)[1];
+  const property = Object.entries(properties)[0];
 
   const render = {
     id,
@@ -30,10 +30,10 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     label: (
       <NodeItem>
         <StyledBadge color={color} text={label} />
-        <div className="node-name">{property[0]}</div>
+        <div className="node-name">{property[1]}</div>
         <div className="node-property">
-          <span>{property[0]}:</span>
-          {getHighlightedText(property[1], search)}
+          <span>{Object.entries(properties)[1][0]}:</span>
+          {getHighlightedText(Object.entries(properties)[1][1], search)}
         </div>
       </NodeItem>
     ),
