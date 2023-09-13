@@ -35,18 +35,31 @@ export const Styling = () => {
   const onFinish = (values: Props) => {
     if (values.queries) {
       values.queries.forEach((query) => {
+        graph.getNodes().forEach((node) => {
+          graph.updateItem(node.getID(), {
+            size: 40,
+            icon: {
+              show: false,
+            },
+            style: {
+              stroke: node.getModel()?.color as string,
+            },
+          });
+        });
         if (query.parent_id) {
           const typeIsNot = query.type === 'Is not';
+          const typeIs = query.type === 'Is';
           const typeText = query.typeText ? query.typeText.toLowerCase() : '';
           const filteredNodes = graph
             .getNodes()
-            .filter(
-              (node) =>
-                node.getModel().nodeType === query.parent_id &&
-                (typeIsNot
-                  ? !(node.getModel().label as string).toLowerCase().includes(typeText)
-                  : (node.getModel().label as string).toLowerCase().includes(typeText))
+            .filter((node) =>
+              node.getModel().nodeType === query.parent_id && typeIsNot
+                ? (node.getModel().label as string).toLowerCase() !== typeText
+                : typeIs
+                ? (node.getModel().label as string).toLowerCase() === typeText
+                : (node.getModel().label as string).toLowerCase().includes(typeText)
             );
+          setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
           setFilteredNodesChildes((prevState) => [...prevState, ...filteredNodes]);
           filteredNodes.forEach((node) => {
             graph.updateItem(node.getID(), {
