@@ -13,7 +13,7 @@ export const useSchemaRef = () => {
   const ref: GraphRef = React.useRef(null);
 
   useEffect(() => {
-    if (graph === undefined && setGraph !== undefined) {
+    if (graph === undefined && setGraph !== undefined && projectInfo?.role !== undefined) {
       setGraph(initGraph(ref.current as HTMLDivElement, params, projectInfo));
     }
   }, [graph, setGraph, params, projectInfo]);

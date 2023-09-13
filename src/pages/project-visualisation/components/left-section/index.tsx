@@ -4,6 +4,7 @@ import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { Filters } from '../filters';
 import { Styling } from '../styling';
 import { StyledDataVisualisationSiderTabs } from './styles';
+import { Queries } from '../../queries';
 
 export const Items: TabsProps['items'] = [
   {
@@ -59,7 +60,7 @@ export const LeftSection = () => {
             defaultActiveKey="1"
             items={Items.map((item) => ({
               ...item,
-              children: item.key === '1' ? <Filters /> : item.key === '2' ? <h1>Queries</h1> : <Styling />,
+              children: item.key === '1' ? <Filters /> : item.key === '2' ? <Queries /> : <Styling />,
             }))}
           />
         </StyledCol>

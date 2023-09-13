@@ -24,9 +24,9 @@ export const getQueryFilterType = (type: QueryFilterTypes): string => {
     case QueryFilterTypes.EQUAL_TO:
       return '=';
     case QueryFilterTypes.IS_NOT:
-      return 'IS NOT VALUE';
+      return 'IS_NOT_VALUE';
     case QueryFilterTypes.IS:
-      return 'IS VALUE';
+      return 'IS_VALUE';
     case QueryFilterTypes.RANGE:
       return 'RANGE';
     case QueryFilterTypes.BETWEEN:
