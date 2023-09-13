@@ -9,7 +9,16 @@ import G6, { IEdge, INode } from '@antv/g6';
 
 type Props = {
   queries: Array<
-    NodePropertiesValues & { color: string; size: number; icon: string; borderSize: number; borderDashed: string }
+    NodePropertiesValues & {
+      color: string;
+      size: number;
+      icon: string;
+      borderSize: number;
+      borderDashed: string;
+      parent_id: string;
+      type: string;
+      typeText: string;
+    }
   >;
 };
 
@@ -19,29 +28,65 @@ export const Styling = () => {
   const [openTable, setOpenTable] = useState(false);
   const [filteredEdges, setFilteredEdges] = useState<IEdge[]>([]);
   const [filteredNodes, setFilteredNodes] = useState<INode[]>([]);
+  const [filteredNodesChildes, setFilteredNodesChildes] = useState<INode[]>([]);
   const initialSize = 40;
   const borderInitSize = 6;
 
   const onFinish = (values: Props) => {
     if (values.queries) {
       values.queries.forEach((query) => {
-        const filteredNodes = graph.getNodes().filter((node) => node.getModel().nodeType === query.id);
-        setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
-        filteredNodes.forEach((node) => {
-          graph.updateItem(node.getID(), {
-            size: query.size || initialSize,
-            icon: {
-              show: node.getModel()?.img ? query.icon : query.icon,
-              width: query.size / 1.5,
-              height: query.size / 1.5,
-              img: node.getModel()?.img ? query.icon : query.icon,
-            },
-            type: query.icon,
-            style: {
-              stroke: query.color,
-            },
+        if (query.parent_id) {
+          const typeIsNot = query.type === 'Is not';
+          const typeText = query.typeText ? query.typeText.toLowerCase() : '';
+          const filteredNodes = graph
+            .getNodes()
+            .filter(
+              (node) =>
+                node.getModel().nodeType === query.parent_id &&
+                (typeIsNot
+                  ? !(node.getModel().label as string).toLowerCase().includes(typeText)
+                  : (node.getModel().label as string).toLowerCase().includes(typeText))
+            );
+          setFilteredNodesChildes((prevState) => [...prevState, ...filteredNodes]);
+          filteredNodes.forEach((node) => {
+            graph.updateItem(node.getID(), {
+              size: query.size || initialSize,
+              icon: {
+                show: node.getModel()?.img ? query.icon : query.icon,
+                width: query.size / 1.5,
+                height: query.size / 1.5,
+                img: node.getModel()?.img ? query.icon : query.icon,
+              },
+              type: query.icon,
+              style: {
+                stroke: query.color,
+              },
+            });
           });
-        });
+        } else {
+          const filteredNodes = graph.getNodes().filter((node) => node.getModel().nodeType === query.id);
+          setFilteredNodes(filteredNodes);
+
+          const removeNodes = filteredNodes.filter(
+            (node) => !filteredNodesChildes.find((child) => child.getID() === node.getID())
+          );
+          removeNodes.forEach((node) => {
+            graph.updateItem(node.getID(), {
+              size: query.size || initialSize,
+              icon: {
+                show: node.getModel()?.img ? query.icon : query.icon,
+                width: query.size / 1.5,
+                height: query.size / 1.5,
+                img: node.getModel()?.img ? query.icon : query.icon,
+              },
+              type: query.icon,
+              style: {
+                stroke: query.color,
+              },
+            });
+          });
+        }
+
         const filteredEdges = graph.getEdges().filter((edge) => edge.getModel().project_edge_type_id === query.id);
         setFilteredEdges((prevState) => [...prevState, ...filteredEdges]);
         filteredEdges.forEach((edge) => {
