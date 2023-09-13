@@ -5,7 +5,7 @@ import { getHighlightedText } from './utils';
 export const renderNodeProperties = (search: string, params: NodeProperty) => {
   const { id, color, label, ...properties } = params;
 
-  if (properties.name) {
+  if (Object.entries(properties).length <= 1) {
     return {
       id,
       key: id,
@@ -20,7 +20,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     };
   }
 
-  const property = Object.entries(properties)[0];
+  const property = Object.entries(properties)[1];
 
   const render = {
     id,
@@ -30,7 +30,7 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
     label: (
       <NodeItem>
         <StyledBadge color={color} text={label} />
-        <div className="node-name">Fake Node Name</div>
+        <div className="node-name">{property[0]}</div>
         <div className="node-property">
           <span>{property[0]}:</span>
           {getHighlightedText(property[1], search)}
