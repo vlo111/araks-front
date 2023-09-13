@@ -4,13 +4,27 @@ import { AllDataDocumentListResponse, AllDataDocumentResponse } from 'types/node
 import client from '../client';
 import { VISUALIZATION_URL } from './constants';
 import { VisualizationSubmitType } from './types';
+import { Edges, Nodes } from '../visualisation/use-get-data';
 
-type ReturnData = {
-  data: AllDataDocumentListResponse[];
+type ProjectEdgeResponse = {
+  nodes: Nodes;
+  edges: Edges;
 };
 
-type Options = UseQueryOptions<ReturnData[], Error, AllDataDocumentListResponse>;
+export type GetNeo4jData = {
+  data: ProjectEdgeResponse;
+  rows: AllDataDocumentResponse[];
+  count: number;
+};
+
+type QueryResponse = {
+  data: GetNeo4jData;
+};
+
+type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData>;
+
 type Result = UseQueryResult<AllDataDocumentListResponse> & {
+  data: ProjectEdgeResponse;
   rowsData: AllDataDocumentResponse[];
   count: number;
 };
@@ -24,7 +38,6 @@ export const useQueriesVisualization = (body: VisualizationSubmitType, options?:
     ...options,
   });
   const { data, isSuccess } = result;
-
   return {
     ...result,
     data: (isSuccess ? data : {}) as AllDataDocumentListResponse,
