@@ -12,7 +12,7 @@ import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-sea
 import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
 import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 
-type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
+type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JSX.Element }> | undefined;
 
 type Props = React.FC<{ search: string | undefined; setSearch: (value: string) => void }>;
 
@@ -32,7 +32,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       graph.render && graph.render();
     },
   });
-  const onSelect = (value: string, item: { id: string; mode: string }) => {
+  const onSelect = (value: string, item: { id: string; mode: string; value: string }) => {
     mutate({ id: item.id, action: item.mode });
   };
   const nodeTypes = useMemo(
@@ -57,8 +57,9 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
 
   const options = edgeProperties?.concat(edgeTypes).concat(nodeProperties).concat(nodeTypes);
 
-  const filterOption: FilterOption = (inputValue, option) =>
-    option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
+  const filterOption: FilterOption = (inputValue, option) => {
+    return option!.key?.toUpperCase().indexOf(option?.key.toUpperCase() ?? '') !== -1;
+  };
 
   return (
     <AntAutoComplete
@@ -74,6 +75,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       onSelect={onSelect}
       filterOption={filterOption}
       options={options}
+      value={search}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
     </AntAutoComplete>

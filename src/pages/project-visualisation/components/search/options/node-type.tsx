@@ -5,7 +5,7 @@ export const renderTypes = (id: string, title: string, color: string, search: st
   key: id,
   id: id,
   mode: 'nodeType',
-  value: title,
+  value: id,
   label: (
     <TypeItem>
       {getHighlightedText(title, search)}
