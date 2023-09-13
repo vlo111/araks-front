@@ -2,7 +2,11 @@ import { Form, Skeleton } from 'antd';
 import debounce from 'lodash.debounce';
 import { EventDataNode } from 'antd/es/tree';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../../types';
-import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
+import {
+  GET_PROJECT_NODE_TYPES_LIST,
+  GET_PUBLIC_PROJECT_NODE_TYPES_LIST,
+  useGetProjectNoteTypes,
+} from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
@@ -11,6 +15,7 @@ import { ReactComponent as CaretDown } from 'components/icons/caret-down.svg';
 import { ReactComponent as CaretRight } from 'components/icons/caret-right.svg';
 import { QueriesNodeTree } from 'components/tree/queries-node-tree';
 import { createQueriesNodesTree } from 'components/layouts/components/data-sheet/utils';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 const switcherIcon = ({ isLeaf, expanded }: { isLeaf: boolean; expanded: boolean }) => {
   if (isLeaf) {
@@ -65,13 +70,14 @@ export const NodeTypesQueries = ({
 // add,
 // fieldsLength,
 Props) => {
+  const isPublicPage = useIsPublicPage();
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
-      url: GET_PROJECT_NODE_TYPES_LIST,
+      url: isPublicPage ? GET_PUBLIC_PROJECT_NODE_TYPES_LIST : GET_PROJECT_NODE_TYPES_LIST,
       projectId: params.id || '',
     },
     {

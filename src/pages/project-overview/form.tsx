@@ -100,6 +100,9 @@ export const ProjectForm = ({ manageUrl = URL_CREAT_PROJECT, type = RequestTypes
     }
   );
 
+  // eslint-disable-next-line no-console
+  console.log('data, isInitialLoading', data, isInitialLoading);
+
   const fullName =
     data && data.user
       ? `${data?.user.first_name} ${data?.user.last_name}`

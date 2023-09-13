@@ -6,6 +6,7 @@ import client from '../client';
 import { useMemo } from 'react';
 
 export const URL_GET_NODE_EDGE_TYPES_LIST = '/projects-edge-type/list/:project_id';
+export const GET_PUBLIC_GET_NODE_EDGE_TYPES_LIST = '/public/:project_id/edge-types';
 
 type GetProjectParam = {
   id?: string;

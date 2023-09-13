@@ -1,14 +1,20 @@
-import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
+import {
+  GET_PROJECT_NODE_TYPES_LIST,
+  GET_PUBLIC_PROJECT_NODE_TYPES_LIST,
+  useGetProjectNoteTypes,
+} from 'api/project-node-types/use-get-project-note-types';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useParams } from 'react-router-dom';
 
 export const useGetNodesList = () => {
+  const isPublicPage = useIsPublicPage();
   const params = useParams();
   const { selectNodeType, nodeTypeId, allTypeSelected } = useDataSheetWrapper();
   useGetProjectNoteTypes(
     {
-      url: GET_PROJECT_NODE_TYPES_LIST,
+      url: isPublicPage ? GET_PUBLIC_PROJECT_NODE_TYPES_LIST : GET_PROJECT_NODE_TYPES_LIST,
       projectId: params.id || '',
     },
     {

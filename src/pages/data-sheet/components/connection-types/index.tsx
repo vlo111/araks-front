@@ -10,14 +10,20 @@ import { createConnectionTree } from 'components/layouts/components/data-sheet/u
 import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
 import { NodeTree } from 'components/tree/node-tree';
-import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
+import {
+  GET_PUBLIC_GET_NODE_EDGE_TYPES_LIST,
+  URL_GET_NODE_EDGE_TYPES_LIST,
+  useGetNodeEdgeTypes,
+} from 'api/node-edge-type/use-get-node-edge-types';
 import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
 import { filterConnectionTreeData } from 'pages/data-sheet/utils';
 import { NodeEdgeTypesReturnData } from 'api/types';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type Props = PropsSetState & TableStyleBasedOnTab;
 
 export const ConnectionTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
+  const isPublicPage = useIsPublicPage();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
   const { dispatch, color, selectNodeTypeFinished, nodeTypeId } = useDataSheetWrapper();
@@ -29,7 +35,7 @@ export const ConnectionTypes = ({ searchVisible, setSearchVisible, isCheckable =
     isFetched,
   } = useGetNodeEdgeTypes(
     {
-      url: URL_GET_NODE_EDGE_TYPES_LIST,
+      url: isPublicPage ? GET_PUBLIC_GET_NODE_EDGE_TYPES_LIST : URL_GET_NODE_EDGE_TYPES_LIST,
       projectId: params.id || '',
     },
     {
