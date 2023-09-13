@@ -1,95 +1,79 @@
-import React from 'react';
-import { AutoComplete as AntAutoComplete, Badge } from 'antd';
-import styled from 'styled-components';
+import React, { useMemo } from 'react';
+import { AutoComplete as AntAutoComplete } from 'antd';
 import { Input } from 'components/input';
 import { FilterFunc } from 'rc-select/lib/Select';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { useGetSearchData } from 'api/visualisation/use-get-search';
+import { renderNodeProperties } from './options/node-property';
+import { renderTypes } from './options/node-type';
+import { renderEdgeTypes } from './options/edge-type';
+import { renderEdgeProperties } from './options/edge-property';
+import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-search';
+import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 
 type FilterOption = boolean | FilterFunc<{ value: string; label: JSX.Element }> | undefined;
 
 type Props = React.FC<{ search: string | undefined; setSearch: (value: string) => void }>;
 
-const StyledBadge = styled(Badge)`
-  && {
-    .ant-badge-status-dot {
-      height: 8px;
-      width: 8px;
-    }
-  }
-`;
-
-const renderTypes = (id: string, title: string, color: string) => ({
-  id: id,
-  value: title,
-  label: (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <StyledBadge color={color} text={title} />
-    </div>
-  ),
-});
-
 export const AutoComplete: Props = ({ search, setSearch }) => {
   const { graph } = useGraph();
 
-  const onSelect = (value: string, item: { id: string }) => {
-    const node = graph.getNodes().find((a) => a.getID() === item.id);
+  const { data } = useGetSearchData({ enabled: search ? search?.length > 3 : false }, search ?? '');
 
-    const nodeX = node?.getModel().x ?? 0;
-    const nodeY = node?.getModel().y ?? 0;
+  const { mutate } = useGetSelectedSearchData({
+    onSuccess: (data) => {
+      const {
+        data: { nodes, edges },
+      } = data ?? {};
+      const formattedData = formattedSearchData(nodes, edges);
 
-    // Calculate the ne view center based on the clicked node
-    const centerX = graph.getCanvasByPoint(nodeX, nodeY).x;
-    const centerY = graph.getCanvasByPoint(nodeX, nodeY).y;
-
-    const zoomLevel = 2;
-
-    graph.zoomTo(
-      zoomLevel,
-      {
-        x: centerX,
-        y: centerY,
-      },
-      true
-    );
-
-    setTimeout(() => {
-      graph.clear();
-
-      graph.addItem('node', { ...node?.getModel() });
-
-      graph.fitCenter(true, {
-        duration: 400,
-        easing: 'easePolyIn',
-      });
-    }, 500);
+      initData(graph, formattedData);
+      graph.render && graph.render();
+    },
+  });
+  const onSelect = (value: string, item: { id: string; mode: string }) => {
+    mutate({ id: item.id, action: item.mode });
   };
+  const nodeTypes = useMemo(
+    () => data.nodeTypes?.map(({ id, label, color }) => renderTypes(id, label, color, search ?? '')),
+    [data.nodeTypes, search]
+  );
+
+  const edgeTypes = useMemo(
+    () => data.edgeTypes?.map((edge) => renderEdgeTypes(edge, search ?? '')),
+    [data.edgeTypes, search]
+  );
+
+  const nodeProperties = useMemo(
+    () => data.nodeProperties?.map((node) => renderNodeProperties(search ?? '', node)),
+    [data.nodeProperties, search]
+  );
+
+  const edgeProperties = useMemo(
+    () => data.edgeProperties?.map((edge) => renderEdgeProperties(edge, search ?? '')),
+    [data.edgeProperties, search]
+  );
+
+  const options = edgeProperties?.concat(edgeTypes).concat(nodeProperties).concat(nodeTypes);
 
   const filterOption: FilterOption = (inputValue, option) =>
     option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1;
 
   return (
     <AntAutoComplete
-      popupClassName="certain-category-search-dropdown"
+      popupClassName="search-visualisation"
       dropdownMatchSelectWidth={400}
+      style={{ width: 400 }}
       dropdownStyle={{
         left: 490,
         top: 228,
         backdropFilter: 'blur(7px)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)',
       }}
-      style={{ width: 400 }}
       onSelect={onSelect}
       filterOption={filterOption}
-      options={[
-        ...graph
-          .getNodes()
-          .map((n) => renderTypes(n.getID(), n.getModel().label as string, n.getModel().style?.stroke as string)),
-      ]}
+      options={options}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
     </AntAutoComplete>
