@@ -191,11 +191,11 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
         event.stopPropagation();
         remove(fieldName);
         removeGraphStyle(queriesList[fieldName]?.id);
+        removeGraphStyle(queriesList[fieldName]?.parent_id);
         removeGraphStyle(queriesList[fieldName]?.edge?.id);
       }}
     />
   );
-
   return (
     <VerticalSpace size={0}>
       {queriesList[fieldName]?.color && (

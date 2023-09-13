@@ -46,6 +46,7 @@ function findChildrenProperties(arr: TreeNodeType[], selectedValue: string) {
             labelName: `${element.name}.${child.label}`,
             labelValue: element.name,
             name: child.label,
+            parent_id: element.id,
           };
         }
       }
@@ -68,6 +69,7 @@ Props) => {
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
+  const visualisationFilter = ['node_icon', 'type', 'name'];
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
@@ -77,7 +79,17 @@ Props) => {
     {
       enabled: !!params.id,
       onSuccess(data) {
-        setFilteredData(createQueriesNodesTree(data.data));
+        if (isVisualisation) {
+          const visualisationFilteredData = data.data.map((item) => {
+            return {
+              ...item,
+              properties: item.properties?.filter((property) => visualisationFilter.includes(property.name)),
+            };
+          });
+          setFilteredData(createQueriesNodesTree(visualisationFilteredData));
+        } else {
+          setFilteredData(createQueriesNodesTree(data.data));
+        }
       },
     },
     noColors
