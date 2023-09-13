@@ -28,26 +28,37 @@ export const Styling = () => {
   const [openTable, setOpenTable] = useState(false);
   const [filteredEdges, setFilteredEdges] = useState<IEdge[]>([]);
   const [filteredNodes, setFilteredNodes] = useState<INode[]>([]);
-  const [filteredNodesChildes, setFilteredNodesChildes] = useState<INode[]>([]);
   const initialSize = 40;
   const borderInitSize = 6;
 
   const onFinish = (values: Props) => {
     if (values.queries) {
+      graph.getNodes().forEach((node) => {
+        graph.updateItem(node.getID(), {
+          size: 40,
+          icon: {
+            show: false,
+          },
+          style: {
+            stroke: node.getModel()?.color as string,
+          },
+        });
+      });
       values.queries.forEach((query) => {
         if (query.parent_id) {
           const typeIsNot = query.type === 'Is not';
+          const typeIs = query.type === 'Is';
           const typeText = query.typeText ? query.typeText.toLowerCase() : '';
           const filteredNodes = graph
             .getNodes()
-            .filter(
-              (node) =>
-                node.getModel().nodeType === query.parent_id &&
-                (typeIsNot
-                  ? !(node.getModel().label as string).toLowerCase().includes(typeText)
-                  : (node.getModel().label as string).toLowerCase().includes(typeText))
+            .filter((node) =>
+              node.getModel().nodeType === query.parent_id && typeIsNot
+                ? (node.getModel().label as string).toLowerCase() !== typeText
+                : typeIs
+                ? (node.getModel().label as string).toLowerCase() === typeText
+                : (node.getModel().label as string).toLowerCase().includes(typeText)
             );
-          setFilteredNodesChildes((prevState) => [...prevState, ...filteredNodes]);
+          setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
           filteredNodes.forEach((node) => {
             graph.updateItem(node.getID(), {
               size: query.size || initialSize,
@@ -64,13 +75,9 @@ export const Styling = () => {
             });
           });
         } else {
-          const filteredNodes = graph.getNodes().filter((node) => node.getModel().nodeType === query.id);
-          setFilteredNodes(filteredNodes);
-
-          const removeNodes = filteredNodes.filter(
-            (node) => !filteredNodesChildes.find((child) => child.getID() === node.getID())
-          );
-          removeNodes.forEach((node) => {
+          const nodes = graph.getNodes().filter((node) => node.getModel().nodeType === query.id);
+          const removedNodes = nodes.filter((node) => !filteredNodes.find((child) => child.getID() === node.getID()));
+          removedNodes.forEach((node) => {
             graph.updateItem(node.getID(), {
               size: query.size || initialSize,
               icon: {
