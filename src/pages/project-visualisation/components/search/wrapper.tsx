@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchSVG } from 'components/icons/search.svg';
-import { AutoComplete } from './auto-complete';
 
-const Wrapper = styled.div`
+const Container = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(7px);
   border-radius: 4px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.5) 70%);
   transition: width 0.2s ease, height 0.2s ease, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1),
     -webkit-transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 0.1);
 
   &.stretch {
-    width: 400px;
+    width: 474px;
 
     .ant-select {
       position: absolute;
@@ -51,22 +50,17 @@ const Wrapper = styled.div`
   }
 `;
 
-export const Search: React.FC = () => {
-  const [stretchSearch, setStretchSearch] = useState(false);
-
-  const [search, setSearch] = useState<string>();
-
-  const handleSearch: VoidFunction = () => {
-    setStretchSearch(!stretchSearch);
-    setTimeout(() => setSearch(''), 0);
-  };
-
+export const SearchVisualization: React.FC<{
+  className?: string;
+  handleSearch?: VoidFunction;
+  children: React.ReactNode;
+}> = ({ className, handleSearch, children }) => {
   return (
-    <Wrapper className={`${stretchSearch ? 'stretch' : ''}`}>
+    <Container className={className}>
       <div className="search-button" onClick={handleSearch}>
         <SearchSVG />
       </div>
-      {stretchSearch && <AutoComplete search={search} setSearch={setSearch} />}
-    </Wrapper>
+      {children}
+    </Container>
   );
 };

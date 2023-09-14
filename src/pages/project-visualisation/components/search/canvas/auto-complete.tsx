@@ -19,7 +19,7 @@ type Props = React.FC<{ search: string | undefined; setSearch: (value: string) =
 export const AutoComplete: Props = ({ search, setSearch }) => {
   const { graph } = useGraph();
 
-  const { data } = useGetSearchData({ enabled: search ? search?.length > 2 : false }, search ?? '');
+  const { data } = useGetSearchData({ enabled: search ? search.trim()?.length > 2 : false }, search?.trim() ?? '');
 
   const { mutate } = useGetSelectedSearchData({
     onSuccess: (data) => {

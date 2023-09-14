@@ -5,7 +5,7 @@ import PluginBase from '@antv/g6-plugin/lib/base';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
   graph,
-  { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
+  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge }
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -20,7 +20,9 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
 
     startOpenNodeCreate({ isOpened: false, x: evt?.x ?? 0, y: evt?.y ?? 0 });
     const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode);
-    updateExpandList(id, graph.getEdges());
+    if (isNode) {
+      updateExpandList(id, graph.getEdges());
+    }
 
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
@@ -30,13 +32,25 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
     handleMenuClick: async (target, item) => {
       const type = item?._cfg?.type || '';
       if (type === 'node') {
-        const isDelete = target.className === 'delete';
         const submenuClass = target.parentElement?.className;
+
         const isSubMenu = submenuClass === 'submenu' || submenuClass === 'right-section';
 
-        if (isDelete) startDeleteNode({ id: item.getID() });
-        else if (isSubMenu) await expand(graph, item, target);
-        else startOpenNode({ id: item.getID() });
+        if (isSubMenu) {
+          await expand(graph, item, target);
+        } else {
+          switch (target.className) {
+            case 'shortest-path': {
+              startShortestPath({ id: item.getID() });
+              break;
+            }
+            case 'delete': {
+              startDeleteNode({ id: item.getID() });
+              break;
+            }
+            default: // startOpenNode({ id: item.getID() });
+          }
+        }
       } else if (type === 'edge') {
         startDeleteEdge({ id: item.getID() });
       } else if (type === 'combo') {

@@ -14,6 +14,8 @@ export type VisualisationReducerSetState = {
   startOpenEdge: (item?: IOpenIdState) => void;
   finishOpenEdge: VoidFunction;
   startOpenEdgeCreate: (edge?: IOpenEdgeState) => void;
+  startShortestPath: (id?: IOpenIdState) => void;
+  finishShortestPath: VoidFunction;
   finishOpenEdgeCreate: VoidFunction;
 };
 
@@ -24,6 +26,7 @@ export type VisualisationReducerState = {
   deleteNode: IOpenIdState;
   deleteEdge: IOpenIdState;
   openNodeCreate: IOpenNodeCreate;
+  openShortestPath: IOpenIdState;
   openEdgeCreate: IOpenEdgeState;
 };
 
@@ -32,6 +35,7 @@ export interface VisualisationContextType extends VisualisationReducerSetState, 
 export type PickVisualizationContextType = Pick<
   VisualisationContextType,
   | 'startOpenNode'
+  | 'startShortestPath'
   | 'startOpenNodeCreate'
   | 'startDeleteNode'
   | 'startOpenEdge'

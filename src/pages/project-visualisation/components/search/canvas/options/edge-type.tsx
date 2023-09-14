@@ -1,8 +1,8 @@
 import { EdgeTypeItem, StyledBadge } from './styles';
 import { getHighlightedText } from './utils';
 import { EdgeType } from 'api/visualisation/use-get-search';
-import { ReactComponent as RelatedNodeSVG } from '../../icons/search-edge-nodes.svg';
-import { ReactComponent as EdgeSVG } from '../../icons/search-edge.svg';
+import { ReactComponent as RelatedNodeSVG } from '../../../icons/search-edge-nodes.svg';
+import { ReactComponent as EdgeSVG } from '../../../icons/search-edge.svg';
 
 export const renderEdgeTypes = (edge: EdgeType, search: string) => ({
   key: `${edge.id}${edge.source_id}${edge.target_id}`,
