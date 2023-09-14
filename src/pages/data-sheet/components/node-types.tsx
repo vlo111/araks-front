@@ -2,17 +2,24 @@ import { Skeleton } from 'antd';
 import { EventDataNode } from 'antd/es/tree';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropsSetState, TableStyleBasedOnTab, TreeNodeType } from '../types';
-import { GET_PROJECT_NODE_TYPES_LIST, useGetProjectNoteTypes } from 'api/project-node-types/use-get-project-note-types';
+import {
+  GET_PROJECT_NODE_TYPES_LIST,
+  GET_PUBLIC_PROJECT_NODE_TYPES_LIST,
+  useGetProjectNoteTypes,
+} from 'api/project-node-types/use-get-project-note-types';
 import { useParams } from 'react-router-dom';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { DataSheetActionKind } from 'components/layouts/components/data-sheet/hooks/data-sheet-manage';
 import { NodeTypesView } from './node-types-view';
 import { useCallback } from 'react';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type Props = PropsSetState & TableStyleBasedOnTab;
 
 export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false, noColors = false }: Props) => {
   const params = useParams();
+  const isPublicPage = useIsPublicPage();
+
   const { selectNodeType, color, nodeTypeId, selectNodeTypeFinished, allTypeSelected, dispatch } =
     useDataSheetWrapper();
 
@@ -22,7 +29,7 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
     data,
   } = useGetProjectNoteTypes(
     {
-      url: GET_PROJECT_NODE_TYPES_LIST,
+      url: isPublicPage ? GET_PUBLIC_PROJECT_NODE_TYPES_LIST : GET_PROJECT_NODE_TYPES_LIST,
       projectId: params.id || '',
     },
     {

@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 
 export const GET_PROJECT_NODE_TYPES_PARENT = '/projects-node-types/get-parent/:id/:project_id';
 export const GET_PROJECT_NODE_TYPES_LIST = '/projects-node-types/:project_id';
+export const GET_PUBLIC_PROJECT_NODE_TYPES_LIST = '/public/:project_id/projects-node-types';
 
 type GetProjectParam = {
   id?: string;

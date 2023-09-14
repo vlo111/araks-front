@@ -56,7 +56,7 @@ const priorityRoles: UserProjectRole[] = [UserProjectRole.Owner, UserProjectRole
 
 const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
   for (const priorityRole of priorityRoles) {
-    const userRoleObj = perspectiveUsers.find((roleObj) => roleObj.role === priorityRole);
+    const userRoleObj = perspectiveUsers?.find((roleObj) => roleObj.role === priorityRole);
     if (userRoleObj) {
       return userRoleObj.role;
     }

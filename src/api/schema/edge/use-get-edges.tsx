@@ -1,9 +1,11 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from 'api/client';
 import { ProjectEdgeResponse } from 'types/project-edge';
-import { errorMessage } from "helpers/utils";
+import { errorMessage } from 'helpers/utils';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 export const GET_EDGES = '/projects-edge-type/list/:project_id';
+export const GET_PUBLIC_EDGES = '/public/:project_id/edge-types';
 
 type GetProjectParam = {
   id?: string;
@@ -25,7 +27,9 @@ type Options = UseQueryOptions<QueryResponse, Error, ReturnData, QueryKey[]>;
 type Result = { edges: ProjectEdgeResponse[] | undefined; isInitialLoading: boolean };
 
 export const useGetEdges = ({ ...params }: GetProjectParam, options: Options = { enabled: true }): Result => {
-  const urlNodes = GET_EDGES.replace(':project_id', params?.projectId || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlNodes = (isPublicPage ? GET_PUBLIC_EDGES : GET_EDGES).replace(':project_id', params?.projectId || '');
   const result = useQuery({
     queryKey: [urlNodes, params],
     queryFn: () => client.get(urlNodes, { params }),

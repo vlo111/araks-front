@@ -11,10 +11,15 @@ import {
 } from 'components/layouts/components/data-sheet/utils';
 import { useCallback, useState } from 'react';
 import { SearchAction } from 'components/actions';
-import { URL_GET_NODE_EDGE_TYPES_LIST, useGetNodeEdgeTypes } from 'api/node-edge-type/use-get-node-edge-types';
+import {
+  GET_PUBLIC_GET_NODE_EDGE_TYPES_LIST,
+  URL_GET_NODE_EDGE_TYPES_LIST,
+  useGetNodeEdgeTypes,
+} from 'api/node-edge-type/use-get-node-edge-types';
 import { filterConnectionTreeData } from 'pages/data-sheet/utils';
 import { NodeEdgeTypesReturnData } from 'api/types';
 import { QueriesNodeTree } from 'components/tree/queries-node-tree';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type Props = PropsSetState &
   TableStyleBasedOnTab & {
@@ -33,6 +38,7 @@ export const ConnectionTypesQueries = ({
 // add,
 // fieldsLength,
 Props) => {
+  const isPublicPage = useIsPublicPage();
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeConnectionType[]>([]);
@@ -44,7 +50,7 @@ Props) => {
     isFetched,
   } = useGetNodeEdgeTypes(
     {
-      url: URL_GET_NODE_EDGE_TYPES_LIST,
+      url: isPublicPage ? GET_PUBLIC_GET_NODE_EDGE_TYPES_LIST : URL_GET_NODE_EDGE_TYPES_LIST,
       projectId: params.id || '',
     },
     {
