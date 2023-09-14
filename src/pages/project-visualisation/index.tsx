@@ -8,7 +8,8 @@ import { EdgeDeleteModal } from './components/modals/delete-edge';
 import { EdgeViewDrawer } from './components/drawers/edges/edge-view';
 import { ToolbarVisualization } from '../../components/tool-bar';
 import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
-import { SearchData } from './components/search';
+import { SearchData } from './components/search/canvas';
+import { ShortestPathModal } from './components/modals/shortest-path';
 
 export const ProjectVisualisation = () => {
   return (
@@ -21,6 +22,7 @@ export const ProjectVisualisation = () => {
       <NodeCreateDrawer />
       <ViewEditNodeDrawer />
       <NodeDeleteModal />
+      <ShortestPathModal />
       <EdgeDeleteModal />
       <EdgeCreateDrawer />
       <EdgeViewDrawer />
