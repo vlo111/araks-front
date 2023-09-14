@@ -50,12 +50,13 @@ export const getExpandList = async (id: string) => {
  */
 export const getMenuContexts = (id: string, isNode: boolean) => {
   const nodeContext = `<div class='menu'>
-      <span>Focus on node</span>
+      <span class='focus'>Focus on node</span>
       <span class="main-menu expand">Expand</span>
       <div class='menu submenu-container'>
         <div class='submenu'>
         </div>
       </div>
+      <span class="shortest-path">Shortest path</span>
       <span class='delete'>Delete</span>
     </div>`;
 

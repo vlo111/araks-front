@@ -54,21 +54,14 @@ const formatNodeProperty = ({ typeName, properties }: { typeName: string; proper
 
 export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
   const nodes: Node[] = [];
+
   nodesList.forEach(({ _fields }) => {
-    const data = formatNodeProperty({
-      typeName: _fields[0].labels[0],
-      properties: _fields[0].properties,
+    _fields?.forEach((node) => {
+      if (node) {
+        const [typeName, properties] = [node.labels[0], node.properties];
+        nodes.push(formatNodeProperty({ typeName, properties }));
+      }
     });
-    nodes.push(data);
-
-    if (_fields.length > 1) {
-      const target = formatNodeProperty({
-        typeName: _fields[1].labels[0],
-        properties: _fields[1].properties,
-      });
-
-      nodes.push(target);
-    }
   });
 
   const data: GraphData = {

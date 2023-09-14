@@ -12,7 +12,7 @@ import { UsefulInformationTooltip } from 'components/tool-tip/useful-information
 import { useOverview } from 'context/overview-context';
 import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
 import styled from 'styled-components';
-import { formattedData } from '../layouts/components/visualisation/helpers/format-node';
+import { formattedData, formattedSearchData } from '../layouts/components/visualisation/helpers/format-node';
 import { initData as initGraphData } from '../layouts/components/visualisation/container/initial/nodes';
 import { useGraph } from '../layouts/components/visualisation/wrapper';
 import { useGetData } from 'api/visualisation/use-get-data';
@@ -174,7 +174,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
 
   useEffect(() => {
     if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
-      const { nodes, edges } = formattedData(data?.nodes, data?.edges);
+      const { nodes, edges } = formattedSearchData(data?.nodes, data?.edges);
       const result = { nodes, edges };
       initGraphData(graph, result);
       graph.render();
