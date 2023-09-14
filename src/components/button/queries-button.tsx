@@ -132,27 +132,69 @@ export const QueriesButton = ({ isQueries }: Props) => {
   }, []);
 
   const onFinish = (values: FormQueryValues) => {
-    const queryArr = values.queries.map((query) => ({
-      type: query.isConnectionType ? 'relation' : 'node',
-      label: query.labelValue,
-      ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
-        ? { action: getQueryFilterType(query.type) }
-        : {}),
-      ...(query.isConnectionType && query.depth !== 1
-        ? { project_edge_type_id: query.id }
-        : { project_edge_type_id: query.id }),
-      query:
-        (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
-          ? {
-              [query.name]: {
-                type: query.ref_property_type_id,
-                action: getQueryFilterType(query.type),
-                value:
-                  query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
-              },
-            }
-          : {},
-    }));
+    const dataToMap = values.queries;
+    // eslint-disable-next-line no-console
+    console.log('values', values);
+    let queryArr;
+    if (values.operator === 'AND') {
+      queryArr = dataToMap
+        .filter(Boolean)
+        .map((query) => ({
+          type: query.isConnectionType ? 'relation' : 'node',
+          label: query.labelValue,
+          ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
+            ? { action: getQueryFilterType(query.type) }
+            : {}),
+          ...(query.isConnectionType && query.depth !== 1 ? { project_edge_type_id: query.id } : {}),
+          query:
+            (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
+              ? dataToMap.reduce((acc, item, index) => {
+                  // eslint-disable-next-line no-console
+                  console.log(
+                    'caclaclal',
+                    item.depth === query.depth && item.labelValue === query.labelValue,
+                    item.name
+                  );
+                  if (item.depth === query.depth && item.labelValue === query.labelValue) {
+                    delete dataToMap[index];
+                    return {
+                      ...acc,
+                      [item.name]: {
+                        type: item.ref_property_type_id,
+                        action: getQueryFilterType(item.type),
+                        value:
+                          item.type === QueryFilterTypes.BETWEEN ? [item.betweenStart, item.betweenEnd] : item.typeText,
+                      },
+                    };
+                  }
+                  return acc;
+                }, {})
+              : {},
+        }))
+        .filter((item) => (!item.action && Object.keys(item.query).length) || item.action);
+    } else {
+      queryArr = values.queries.map((query) => ({
+        type: query.isConnectionType ? 'relation' : 'node',
+        label: query.labelValue,
+        ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
+          ? { action: getQueryFilterType(query.type) }
+          : {}),
+        ...(query.isConnectionType && query.depth !== 1
+          ? { project_edge_type_id: query.id }
+          : { project_edge_type_id: query.id }),
+        query:
+          (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
+            ? {
+                [query.name]: {
+                  type: query.ref_property_type_id,
+                  action: getQueryFilterType(query.type),
+                  value:
+                    query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+                },
+              }
+            : {},
+      }));
+    }
 
     const data = {
       operator: values.operator,
