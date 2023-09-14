@@ -12,11 +12,14 @@ export enum ITEM {
   DELETE_EDGE = 'deleteEdge',
   OPEN_CREATE_NODE = 'openNodeCreate',
   OPEN_CREATE_EDGE = 'openEdgeCreate',
+  OPEN_SHORTEST_PATH = 'openShortestPath',
 }
 
 export enum GraphAction {
   SET_GRAPH = 'SET_GRAPH',
   OPEN_NODE_START = 'OPEN_NODE_START',
+  OPEN_SHORTEST_PATH_START = 'OPEN_SHORTEST_PATH_START',
+  SHORTEST_PATH_FINISH = 'SHORTEST_PATH_FINISH',
   OPEN_NODE_FINISH = 'OPEN_NODE_FINISH',
   OPEN_CREATE_NODE_START = 'OPEN_CREATE_NODE_START',
   OPEN_CREATE_NODE_FINISH = 'OPEN_CREATE_NODE_FINISH',
@@ -90,6 +93,10 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       return end(ITEM.DELETE_EDGE);
     case GraphAction.OPEN_CREATE_EDGE_START:
       return start(ITEM.OPEN_CREATE_EDGE);
+    case GraphAction.OPEN_SHORTEST_PATH_START:
+      return start(ITEM.OPEN_SHORTEST_PATH);
+    case GraphAction.SHORTEST_PATH_FINISH:
+      return end(ITEM.OPEN_SHORTEST_PATH);
     case GraphAction.OPEN_CREATE_EDGE_FINISH:
       return end(ITEM.OPEN_CREATE_EDGE);
     default:

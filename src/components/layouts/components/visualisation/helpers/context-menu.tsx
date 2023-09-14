@@ -5,7 +5,7 @@ import PluginBase from '@antv/g6-plugin/lib/base';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
   graph,
-  { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
+  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge }
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -41,6 +41,7 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
         } else {
           switch (target.className) {
             case 'shortest-path': {
+              startShortestPath({ id: item.getID() });
               break;
             }
             case 'delete': {
