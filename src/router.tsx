@@ -84,11 +84,19 @@ export const router = createBrowserRouter([
             element: <ProjectScheme />,
           },
           {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.PROJECT_SCHEME}`,
+            element: <ProjectScheme />,
+          },
+          {
             path: PATHS.PROJECT_PERSPECTIVES,
             element: <ProjectPerspectives />,
           },
           {
             path: PATHS.PROJECT_VISUALISATION,
+            element: <ProjectVisualisation />,
+          },
+          {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.PROJECT_VISUALISATION}`,
             element: <ProjectVisualisation />,
           },
           {

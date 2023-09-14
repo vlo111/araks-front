@@ -91,7 +91,7 @@ export const OverviewTabs = () => {
         label: 'Overview',
       },
       {
-        key: PATHS.PROJECT_SCHEME,
+        key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_SCHEME}`,
         label: 'Scheme',
       },
       {
@@ -101,7 +101,7 @@ export const OverviewTabs = () => {
         label: 'Data sheet',
       },
       {
-        key: PATHS.PROJECT_VISUALISATION,
+        key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_VISUALISATION}`,
         label: 'Visualisation',
       },
     ];
@@ -165,9 +165,11 @@ export const OverviewTabs = () => {
               (params.node_type_id
                 ? PATHS.NODE_OVERVIEW
                 : `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.DATA_SHEET}`) && <DataSheetWrapper />}
-            {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
+            {item.key === `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_SCHEME}` && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
-            {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}
+            {item.key === `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_VISUALISATION}` && (
+              <VisualisationWrapper />
+            )}
           </div>
         ),
       }))}
