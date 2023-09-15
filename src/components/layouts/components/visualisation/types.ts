@@ -51,7 +51,13 @@ export type Node = {
   style: { stroke: string };
 };
 
-export type Edge = { id: string | undefined; source: string; target: string; label: string };
+export type Edge = {
+  id: string | undefined;
+  source: string;
+  target: string;
+  label: string;
+  project_edge_type_id?: string;
+};
 
 export type GraphData = {
   nodes: Node[];

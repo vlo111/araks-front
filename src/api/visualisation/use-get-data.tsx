@@ -3,7 +3,7 @@ import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 
-type Node = {
+export type Node = {
   id: string;
   _fields: {
     labels: string[];

@@ -1,4 +1,4 @@
-import { GraphData, Node } from '../types';
+import { GraphData, Node, Edge } from '../types';
 import { Edges, Nodes } from 'api/visualisation/use-get-data';
 
 type FormattedData = (nodesList: Nodes, edgeList: Edges) => GraphData;
@@ -64,15 +64,25 @@ export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
     });
   });
 
+  const edges: Edge[] = [];
+
+  edgeList.forEach(({ _fields }) => {
+    _fields?.forEach((edge) => {
+      if (edge) {
+        edges.push({
+          id: edge.properties.id ?? '',
+          project_edge_type_id: edge.properties.project_edge_type_id,
+          source: edge.properties.source_id,
+          target: edge.properties.target_id,
+          label: edge.type ?? '',
+        });
+      }
+    });
+  });
+
   const data: GraphData = {
     nodes,
-    edges: edgeList.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      project_edge_type_id: _fields[0].properties.project_edge_type_id,
-      source: _fields[0].properties.source_id,
-      target: _fields[0].properties.target_id,
-      label: _fields[0].type ?? '',
-    })),
+    edges,
   };
   return data;
 };
