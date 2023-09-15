@@ -1,12 +1,10 @@
 import { Col, Row } from 'antd';
 import { DownloadAction } from 'components/actions';
-import { Button } from 'components/button';
 import { Sort } from 'components/dropdown';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useSort } from 'context/sort-context';
-import { useOverview } from 'context/overview-context';
 import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
 import { useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
@@ -20,7 +18,7 @@ type Props = {
 };
 
 export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
-  const { setHideLeftSection, hideLeftSection } = useOverview();
+  // const { setHideLeftSection, hideLeftSection } = useOverview();
 
   const { state: sortState } = useSort();
 
@@ -65,13 +63,13 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
       <Col>
         <DownloadAction />
       </Col>
-      {!hideLeftSection && (
-        <Col>
-          <Button type="primary" block onClick={() => setHideLeftSection((prev) => !prev)}>
-            Queries
-          </Button>
-        </Col>
-      )}
+      {/*{!hideLeftSection && (*/}
+      {/*  <Col>*/}
+      {/*    <Button type="primary" block onClick={() => setHideLeftSection((prev) => !prev)}>*/}
+      {/*      Queries*/}
+      {/*    </Button>*/}
+      {/*  </Col>*/}
+      {/*)}*/}
     </Row>
   );
 };

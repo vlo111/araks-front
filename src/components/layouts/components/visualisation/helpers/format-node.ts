@@ -11,13 +11,18 @@ export const formattedData: FormattedData = (nodesList, edgeList) => {
         properties: _fields[0].properties,
       })
     ),
-    edges: edgeList.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      project_edge_type_id: _fields[0].properties.project_edge_type_id,
-      source: _fields[0].properties.source_id,
-      target: _fields[0].properties.target_id,
-      label: _fields[0].type ?? '',
-    })),
+    edges: edgeList.map(({ _fields }) => {
+      if (_fields[0] !== null) {
+        return {
+          id: _fields[0].properties.id,
+          project_edge_type_id: _fields[0].properties.project_edge_type_id,
+          source: _fields[0].properties.source_id,
+          target: _fields[0].properties.target_id,
+          label: _fields[0].type ?? '',
+        };
+      }
+      return { id: '', project_edge_type_id: '', source: '', target: '', label: '' };
+    }),
   };
   return data;
 };

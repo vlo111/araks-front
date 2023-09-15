@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { SiderCollapse } from 'components/collapse/sider-collapse';
-import { NodeTypesView } from '../../../data-sheet/components/node-types-view';
-import { NodesHeader } from '../../../data-sheet/components/nodes-header';
+import { NodeTypesView } from '../../data-sheet/components/node-types-view';
+import { NodesHeader } from '../../data-sheet/components/nodes-header';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { useTypes } from 'hooks/use-types';

@@ -1,5 +1,5 @@
 import { Graph } from './components/graph';
-import { LeftSection } from './components/left-section';
+import { LeftSection } from './left-section';
 import { NodeCreateDrawer } from './components/drawers/nodes/create-node';
 import { Settings } from './components/settings';
 import { NodeDeleteModal } from './components/modals/delete-node';
