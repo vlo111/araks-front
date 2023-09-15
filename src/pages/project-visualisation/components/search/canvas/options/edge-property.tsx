@@ -8,12 +8,11 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
   const { id, relation, source_id, source_name, source_color, target_name, target_id, target_color, ...properties } =
     edge;
 
-  if (properties.name) {
+  if (Object.entries(properties)[0]?.length === undefined || Object.entries(properties)[0]?.length <= 1) {
     return {
       id,
-      key: `${id}${source_id}${target_id}`,
+      value: id,
       mode: 'relation',
-      value: properties.name,
       label: (
         <EdgeTypeItem>
           <div className="edge-name">
@@ -22,16 +21,16 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
           </div>
           <div className="related-nodes">
             <div>
-              <StyledBadge color={source_color ?? 'red'} text={source_name ?? 'Fake Name'} />
+              <StyledBadge color={source_color} text={source_name} />
             </div>
             <div>
               <RelatedNodeSVG />
             </div>
             <div>
-              <StyledBadge color={source_color ?? 'red'} text={source_name ?? 'Fake Name'} />
+              <StyledBadge color={source_color} text={source_name} />
             </div>
           </div>
-          <span className="edge-name">{getHighlightedText(properties.name, search)}</span>
+          <span className="edge-name">{getHighlightedText(relation, search)}</span>
         </EdgeTypeItem>
       ),
     };
@@ -40,10 +39,9 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
   const property = Object.entries(properties)[0];
 
   return {
-    key: `${id}${source_id}${target_id}`,
     id: id,
     mode: 'relation',
-    value: relation,
+    value: id,
     label: (
       <EdgeTypeItem>
         <div className="edge-name">
@@ -52,13 +50,13 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
         </div>
         <div className="related-nodes">
           <div>
-            <StyledBadge color={source_color ?? 'red'} text={source_name ?? 'Fake Name'} />
+            <StyledBadge color={source_color} text={source_name} />
           </div>
           <div>
             <RelatedNodeSVG />
           </div>
           <div>
-            <StyledBadge color={source_color ?? 'red'} text={source_name ?? 'Fake Name'} />
+            <StyledBadge color={source_color} text={source_name} />
           </div>
         </div>
         <div className="edge-property">

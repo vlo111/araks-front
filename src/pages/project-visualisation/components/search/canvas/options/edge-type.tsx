@@ -5,9 +5,8 @@ import { ReactComponent as RelatedNodeSVG } from '../../../icons/search-edge-nod
 import { ReactComponent as EdgeSVG } from '../../../icons/search-edge.svg';
 
 export const renderEdgeTypes = (edge: EdgeType, search: string) => ({
-  key: `${edge.id}${edge.source_id}${edge.target_id}`,
   id: edge.id,
-  value: edge.relation,
+  value: edge.id,
   mode: 'relationType',
   label: (
     <EdgeTypeItem>
