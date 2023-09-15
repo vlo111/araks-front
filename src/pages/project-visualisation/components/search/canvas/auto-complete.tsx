@@ -74,7 +74,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       }}
       onSelect={onSelect}
       filterOption={filterOption}
-      options={options}
+      options={options?.map((o, i) => ({ key: `${o.id}${i}`, ...o }))}
       value={search}
     >
       <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
