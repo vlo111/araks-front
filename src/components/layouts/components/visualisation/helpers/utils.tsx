@@ -133,7 +133,7 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
             <div class="row">
             <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
               <p>
-                ${l.direction === 'in' ? inSvg : outSvg}
+                ${l.direction === 'in' ? outSvg : inSvg}
               </p>
               <div class="right-section">
                 <p class="name">${l.name}</p>
