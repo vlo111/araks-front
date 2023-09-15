@@ -10,6 +10,7 @@ import { ToolbarVisualization } from '../../components/tool-bar';
 import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
 import { SearchData } from './components/search/canvas';
 import { ShortestPathModal } from './components/modals/shortest-path';
+import { GraphInfo } from './components/info';
 
 export const ProjectVisualisation = () => {
   return (
@@ -26,6 +27,7 @@ export const ProjectVisualisation = () => {
       <EdgeDeleteModal />
       <EdgeCreateDrawer />
       <EdgeViewDrawer />
+      <GraphInfo />
     </div>
   );
 };
