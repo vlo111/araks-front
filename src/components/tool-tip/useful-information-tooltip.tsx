@@ -14,10 +14,12 @@ export const UsefulInformationTooltip = ({ infoText, ...props }: Props) => {
       {...props}
       arrow={false}
       title={
-        <VerticalSpace size={10}>
-          <Text color={COLORS.PRIMARY.WHITE} className="useful-info-text">
-            {infoText}
-          </Text>
+        <VerticalSpace size={0}>
+          {infoText.split(/\. |\.|\n/).map((text, i) => (
+            <Text key={i} color={COLORS.PRIMARY.WHITE} className="useful-info-text">
+              {text}
+            </Text>
+          ))}
         </VerticalSpace>
       }
       placement="right"

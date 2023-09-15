@@ -255,11 +255,13 @@ export const QueriesButton = ({ isQueries }: Props) => {
   };
 
   const renderVisualizationHeader = () => {
+    const infoText = 'And - All conditions must be satisfied. Or - At least one condition should be satisfied';
+
     return (
       <Row justify="end">
         <Col span={8}>
           <Space>
-            <UsefulInformationTooltip infoText="And - All conditions must be satisfied. Or - At least one condition should be satisfied" />
+            <UsefulInformationTooltip infoText={infoText} />
             <Form.Item name="operator" noStyle initialValue={'AND'}>
               <StyledRadioButton
                 size="small"
