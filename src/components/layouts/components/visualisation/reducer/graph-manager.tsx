@@ -6,6 +6,7 @@ const initState = {
 
 export enum ITEM {
   GRAPH = 'graph',
+  GRAPH_INFO = 'graphInfo',
   OPEN_NODE = 'openNode',
   OPEN_EDGE = 'openEdge',
   DELETE_NODE = 'deleteNode',
@@ -17,6 +18,7 @@ export enum ITEM {
 
 export enum GraphAction {
   SET_GRAPH = 'SET_GRAPH',
+  SET_GRAPH_INFO = 'SET_GRAPH_INFO',
   OPEN_NODE_START = 'OPEN_NODE_START',
   OPEN_SHORTEST_PATH_START = 'OPEN_SHORTEST_PATH_START',
   SHORTEST_PATH_FINISH = 'SHORTEST_PATH_FINISH',
@@ -79,6 +81,8 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       };
     case GraphAction.OPEN_CREATE_NODE_FINISH:
       return end(ITEM.OPEN_CREATE_NODE);
+    case GraphAction.SET_GRAPH_INFO:
+      return insert(ITEM.GRAPH_INFO);
     case GraphAction.DELETE_NODE_START:
       return start(ITEM.DELETE_NODE);
     case GraphAction.DELETE_NODE_FINISH:

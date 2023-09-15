@@ -24,7 +24,7 @@ const SelectComponent = styled(Select)`
       letter-spacing: 0.07em;
       color: #232f6a;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       line-height: 1;
     }

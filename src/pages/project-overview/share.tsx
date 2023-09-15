@@ -1,25 +1,58 @@
-import { Col, Divider, Form, Row, Space } from 'antd';
+import { Col, Form, Row } from 'antd';
 import { UserProjectRole } from 'api/types';
 import { Button } from 'components/button';
-import { FormItem } from 'components/form/form-item';
-import { Icon } from 'components/icon';
-import { Input } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text, Title } from 'components/typography';
 import { useProject } from 'context/project-context';
 import { COLORS, PATHS } from 'helpers/constants';
-import { useLocation } from 'react-router-dom';
-import { SharedWith } from './components/share/shared-with';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useGetPerspectives } from '../../api/perspective/use-get-perspectives';
+import { ShareInputItemAddon } from '../../components/form/share-input-item';
+import { SelectItem } from '../../components/form/share-input-item/select-item';
+import { CaretDownFilled } from '@ant-design/icons';
+import { useMemo } from 'react';
+import { useCreatePerspectiveUser } from '../../api/perspective/shared-users/use-create-perspective-user';
+import { UserList } from '../project-perspectives/components/section/share/user-list';
+import { Icon } from '../../components/icon';
+import styled from 'styled-components';
+
+const ShareRow = styled(Row)`
+  margin-top: auto;
+  cursor: pointer;
+  width: 12rem;
+  position: absolute;
+  bottom: 1rem;
+  gap: 1rem;
+  right: 20px;
+`;
 
 export const Share = () => {
+  const params = useParams();
+
   const { projectInfo } = useProject();
+
+  const navigate = useNavigate();
+
   const location = useLocation();
+
+  const { data } = useGetPerspectives({ id: params.id }, { enabled: !!params.id });
 
   const [form] = Form.useForm();
 
-  const onFinish = () => {
-    // mutate(values);
+  const id = Form.useWatch('perspective', form);
+
+  const { mutate } = useCreatePerspectiveUser({}, id);
+
+  const onFinish = ({ role, perspective, email }: { perspective: string; role: string; email: string }) => {
+    mutate({
+      perspective_id: perspective || (data && data[0].id),
+      role: role || 'edit',
+      email,
+    });
+    form.setFieldValue('email', '');
   };
+
+  const options = useMemo(() => data?.map((d) => ({ label: d.title, value: d.id })), [data]);
 
   return (
     <div style={{ padding: '32px' }}>
@@ -30,31 +63,26 @@ export const Share = () => {
         <Form name="share" form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <VerticalSpace size={48}>
             {(location.pathname === PATHS.PROJECT_CREATE || projectInfo?.role === UserProjectRole.Owner) && (
-              <VerticalSpace size={19}>
+              <VerticalSpace>
                 <Row>
                   <Col span={24}>
-                    <FormItem
-                      label="Perspectives"
-                      name="perspectives"
-                      rules={[{ required: true, message: 'Perspectives is required' }]}
-                      style={{ marginBottom: '0' }}
-                    >
-                      <Input placeholder="Main" />
-                    </FormItem>
+                    {options && options[0]?.value && (
+                      <SelectItem
+                        name="perspective"
+                        popupClassName="perspective-dropdown"
+                        suffixIcon={<CaretDownFilled />}
+                        defaultValue={options[0]?.value}
+                        options={options}
+                      />
+                    )}
                   </Col>
                 </Row>
-                <Row gutter={[37, 19]}>
+                <Row gutter={[37, 0]}>
                   <Col xs={24} xxl={16}>
-                    <FormItem
-                      name="email"
-                      rules={[{ required: true, message: 'Perspectives is required' }]}
-                      style={{ marginBottom: '0' }}
-                    >
-                      <Input placeholder="Email" />
-                    </FormItem>
+                    <ShareInputItemAddon />
                   </Col>
                   <Col xs={24} xxl={8}>
-                    <Button block type="primary">
+                    <Button htmlType="submit" block type="primary">
                       Send Invite
                     </Button>
                   </Col>
@@ -62,17 +90,19 @@ export const Share = () => {
               </VerticalSpace>
             )}
             <VerticalSpace size={8}>
-              {(projectInfo?.role === UserProjectRole.Owner || location.pathname === PATHS.PROJECT_CREATE) && (
-                <>
-                  <Space size={9} style={{ lineHeight: 1 }}>
-                    <Icon color="#C5C5C5" icon="public" size={20} />
-                    <Text>Anyone with the link</Text>
-                  </Space>
-                  <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
-                </>
-              )}
-              {projectInfo?.role === UserProjectRole.Editor && <Text>Project members</Text>}
-              <SharedWith />
+              <UserList perspectiveId={id || (data && data[0]?.id)} />
+              <ShareRow
+                onClick={() => {
+                  navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
+                }}
+              >
+                <Col span={2}>
+                  <Icon color="#353432" icon={'users'} size={25} />
+                </Col>
+                <Col span={20}>
+                  <Text style={{ textDecoration: 'underline', color: '#232F6A' }}>See all members</Text>
+                </Col>
+              </ShareRow>
             </VerticalSpace>
           </VerticalSpace>
         </Form>

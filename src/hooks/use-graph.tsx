@@ -9,15 +9,16 @@ import { useGetData } from '../api/visualisation/use-get-data';
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
-  const { nodes, edges } = useGetData();
+  const { nodes, edges, count } = useGetData();
 
-  const { graph, setGraph, ...params } = useGraph() ?? {};
+  const { graph, setGraph, setGraphInfo, ...params } = useGraph() ?? {};
 
   const ref: GraphRef = React.useRef(null);
 
   useEffect(() => {
-    if (graph === undefined && setGraph !== undefined) {
+    if (graph === undefined && setGraph !== undefined && count) {
       setGraph(initGraph(ref.current as HTMLDivElement, params));
+      setGraphInfo({ nodeCount: count });
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
@@ -25,7 +26,7 @@ export const useGraphRef = () => {
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
     }
-  }, [nodes, edges, graph, setGraph]);
+  }, [nodes, edges, graph, setGraph, count]);
 
   return ref;
 };
