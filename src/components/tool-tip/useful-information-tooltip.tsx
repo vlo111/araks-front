@@ -1,5 +1,5 @@
 import { InfoCircleFilled } from '@ant-design/icons';
-import { Space, Tooltip, TooltipProps } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
@@ -14,18 +14,12 @@ export const UsefulInformationTooltip = ({ infoText, ...props }: Props) => {
       {...props}
       arrow={false}
       title={
-        <VerticalSpace size={10}>
-          <Text color={COLORS.PRIMARY.WHITE} className="useful-info-text">
-            {infoText}
-          </Text>
-          <Space style={{ justifyContent: 'flex-end', width: '100%' }} size="small">
-            <Text color="#C3C3C3" className="useful-info-text useful-info-help-text">
-              For more information
+        <VerticalSpace size={0}>
+          {infoText.split(/\. |\.|\n/).map((text, i) => (
+            <Text key={i} color={COLORS.PRIMARY.WHITE} className="useful-info-text">
+              {text}
             </Text>
-            <Text color={COLORS.PRIMARY.WHITE} className="useful-info-text useful-info-help-text" underline>
-              Help
-            </Text>
-          </Space>
+          ))}
         </VerticalSpace>
       }
       placement="right"

@@ -3,9 +3,10 @@ import { Form } from 'antd';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { QueriesForm } from 'components/form/all-data/queries-form';
 import { NodePropertiesValues } from 'types/node';
-import { Buttons } from '../buttons';
+import { Buttons } from '../components/buttons';
 import { StyledMainWrapper } from './styles';
 import G6, { IEdge, INode } from '@antv/g6';
+import { QueryType } from './enums';
 
 type Props = {
   queries: Array<
@@ -36,9 +37,6 @@ export const Styling = () => {
       graph.getNodes().forEach((node) => {
         graph.updateItem(node.getID(), {
           size: 40,
-          icon: {
-            show: false,
-          },
           style: {
             stroke: node.getModel()?.color as string,
           },
@@ -46,8 +44,8 @@ export const Styling = () => {
       });
       values.queries.forEach((query) => {
         if (query.parent_id) {
-          const typeIsNot = query.type === 'Is not';
-          const typeIs = query.type === 'Is';
+          const typeIsNot = query.type === QueryType.IsNot;
+          const typeIs = query.type === QueryType.Is;
           const typeText = query.typeText ? query.typeText.toLowerCase() : '';
           const filteredNodes = graph
             .getNodes()
@@ -64,9 +62,9 @@ export const Styling = () => {
               size: query.size || initialSize,
               icon: {
                 show: node.getModel()?.img ? query.icon : query.icon,
-                width: query.size / 1.5,
-                height: query.size / 1.5,
-                img: node.getModel()?.img ? query.icon : query.icon,
+                width: (query.size || initialSize) / 1.5,
+                height: (query.size || initialSize) / 1.5,
+                img: node.getModel().img ? query.icon : query.icon,
               },
               type: query.icon,
               style: {
@@ -82,8 +80,8 @@ export const Styling = () => {
               size: query.size || initialSize,
               icon: {
                 show: node.getModel()?.img ? query.icon : query.icon,
-                width: query.size / 1.5,
-                height: query.size / 1.5,
+                width: (query.size || initialSize) / 1.5,
+                height: (query.size || initialSize) / 1.5,
                 img: node.getModel()?.img ? query.icon : query.icon,
               },
               type: query.icon,

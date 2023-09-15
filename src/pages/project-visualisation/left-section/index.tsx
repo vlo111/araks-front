@@ -4,7 +4,7 @@ import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { Filters } from '../filters';
 import { Styling } from '../styling';
 import { StyledDataVisualisationSiderTabs } from './styles';
-import { Queries } from '../../queries';
+import { Queries } from '../queries';
 
 export const Items: TabsProps['items'] = [
   {
