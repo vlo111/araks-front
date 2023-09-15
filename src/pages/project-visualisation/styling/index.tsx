@@ -37,9 +37,6 @@ export const Styling = () => {
       graph.getNodes().forEach((node) => {
         graph.updateItem(node.getID(), {
           size: 40,
-          icon: {
-            show: false,
-          },
           style: {
             stroke: node.getModel()?.color as string,
           },
@@ -67,8 +64,9 @@ export const Styling = () => {
                 show: node.getModel()?.img ? query.icon : query.icon,
                 width: (query.size || initialSize) / 1.5,
                 height: (query.size || initialSize) / 1.5,
-                zIndex: 999,
+                img: node.getModel().img ? query.icon : query.icon,
               },
+              type: query.icon,
               style: {
                 stroke: query.color,
               },
@@ -82,8 +80,8 @@ export const Styling = () => {
               size: query.size || initialSize,
               icon: {
                 show: node.getModel()?.img ? query.icon : query.icon,
-                width: query.size / 1.5,
-                height: query.size / 1.5,
+                width: (query.size || initialSize) / 1.5,
+                height: (query.size || initialSize) / 1.5,
                 img: node.getModel()?.img ? query.icon : query.icon,
               },
               type: query.icon,
