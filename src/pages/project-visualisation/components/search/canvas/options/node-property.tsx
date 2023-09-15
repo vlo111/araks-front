@@ -8,7 +8,6 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
   if (Object.entries(properties).length <= 1) {
     return {
       id,
-      key: id,
       mode: 'node',
       value: id,
       label: (
@@ -24,7 +23,6 @@ export const renderNodeProperties = (search: string, params: NodeProperty) => {
 
   const render = {
     id,
-    key: id,
     mode: 'node',
     value: id,
     label: (
