@@ -6,16 +6,14 @@ export const ShortestPathModal = () => {
   const { openShortestPath } = useGraph() ?? {};
 
   return (
-    <>
-      <Modal
-        centered
-        open={openShortestPath?.isOpened}
-        footer={false}
-        closable={false}
-        className="shortest-project-modal"
-      >
-        <ShortestPathWrapper />
-      </Modal>
-    </>
+    <Modal
+      centered
+      open={openShortestPath?.isOpened}
+      footer={false}
+      closable={false}
+      className="shortest-project-modal"
+    >
+      <ShortestPathWrapper />
+    </Modal>
   );
 };
