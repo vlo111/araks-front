@@ -6,20 +6,25 @@ import { useGetSearchData } from 'api/visualisation/use-get-search';
 import { NodePropertyItem, StyledBadge } from '../canvas/options/styles';
 import { getHighlightedText } from '../canvas/options/utils';
 
-type FilterOption = boolean | FilterFunc<{ id: string; key: string; value: string; label: JSX.Element }> | undefined;
+type FilterOption =
+  | boolean
+  | FilterFunc<{ key: string; id: string; name: string; typeName: string; color: string }>
+  | undefined;
 
 type Props = React.FC<{
-  setEnd: Dispatch<SetStateAction<string | undefined>>;
+  setTarget: Dispatch<SetStateAction<{ id: string; typeName: string; name: string; color: string } | undefined>>;
   search: string | undefined;
   setSearch: (search: string) => void;
 }>;
 
-export const AutoCompleteShortest: Props = ({ setEnd, search, setSearch }) => {
+export const AutoCompleteShortest: Props = ({ setTarget, search, setSearch }) => {
   const { data } = useGetSearchData({ enabled: search ? search.trim()?.length > 2 : false }, search?.trim() ?? '');
 
-  const onSelect = (value: string) => {
+  const onSelect = (value: string, item: { id: string; typeName: string; name: string; color: string }) => {
     setSearch(search ?? '');
-    setEnd(value);
+    if (item) {
+      setTarget(item);
+    }
   };
 
   const options = useMemo(() => {
@@ -34,6 +39,9 @@ export const AutoCompleteShortest: Props = ({ setEnd, search, setSearch }) => {
       return {
         id,
         key: id,
+        color,
+        name: properties.name,
+        typeName: label,
         value: id,
         label: (
           <NodePropertyItem>

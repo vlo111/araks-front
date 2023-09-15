@@ -14,21 +14,24 @@ export const ShortestPathWrapper = () => {
 
   const [noResult, setNoResult] = useState<boolean>();
 
-  const [end, setEnd] = useState<string>();
+  const [target, setTarget] = useState<{ id: string; typeName: string; name: string; color: string }>();
 
   const { openShortestPath, finishShortestPath } = useGraph() ?? {};
 
   const { mutate } = useGetShortestPath({
-    enabled: !!end,
     onSuccess: ({ data }) => {
-      const formatted = formattedSearchData(data.nodes, data.edges);
+      if (data) {
+        const formatted = formattedSearchData(data.nodes, data.edges);
 
-      if (formatted.nodes.length) {
-        graph.data(formatted);
+        if (formatted.nodes.length) {
+          graph.data(formatted);
 
-        graph.render();
+          graph.render();
 
-        finishShortestPath();
+          close();
+        } else {
+          setNoResult(true);
+        }
       } else {
         setNoResult(true);
       }
@@ -42,23 +45,17 @@ export const ShortestPathWrapper = () => {
       ?.getModel() as { label: string; color: string; nodeTypeName: string };
   }, [graph, openShortestPath?.id]);
 
-  const targetNode = useMemo(() => {
-    return graph
-      ?.getNodes()
-      ?.find((n) => n.getID() === end)
-      ?.getModel() as { label: string; color: string; nodeTypeName: string };
-  }, [graph, end]);
-
   const close = () => {
     finishShortestPath();
-    setEnd(undefined);
+    setTarget(undefined);
     setSearch(undefined);
+    setNoResult(false);
   };
 
   const handleShowPath = () => {
     mutate({
       start: openShortestPath?.id ?? '',
-      end: end ?? '',
+      end: target?.id ?? '',
     });
   };
 
@@ -88,15 +85,15 @@ export const ShortestPathWrapper = () => {
           </Col>
           <Col className="source-section" span={24}>
             <span className="name">Target</span>
-            <ShortestPathSearch setEnd={setEnd} search={search} setSearch={setHandleSearch} />
-            {targetNode ? (
+            <ShortestPathSearch setTarget={setTarget} search={search} setSearch={setHandleSearch} />
+            {target ? (
               <div className="container">
                 <div className="type">
-                  <div className="dot" style={{ background: targetNode?.color }} />
-                  <div className="type-name">{targetNode?.nodeTypeName}</div>
+                  <div className="dot" style={{ background: target?.color }} />
+                  <div className="type-name">{target?.typeName}</div>
                 </div>
                 <div className="node">
-                  <div className="name">{targetNode?.label}</div>
+                  <div className="name">{target?.name}</div>
                 </div>
               </div>
             ) : (
