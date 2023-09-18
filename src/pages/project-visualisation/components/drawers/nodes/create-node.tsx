@@ -80,6 +80,12 @@ export const NodeCreateDrawer: React.FC = () => {
       createEdge(data, variables);
       form.resetFields();
       finishOpenNodeCreate();
+      const nodeInitialCountElement = document.querySelector('#node-initial-count');
+
+      if (nodeInitialCountElement) {
+        const currentCount = +nodeInitialCountElement.innerHTML;
+        nodeInitialCountElement.innerHTML = (currentCount + 1).toString();
+      }
     },
   });
 

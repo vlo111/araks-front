@@ -62,6 +62,7 @@ export const getMenuContexts = (id: string, isNode: boolean) => {
 
   const canvasContext = `<div class='menu'>
       <span>Create Node</span>
+      <span class="export">Export/PNG</span>
     </div>`;
 
   const edgeContext = `<div class='menu'>
@@ -344,4 +345,10 @@ export const clearCanvas = (graph: Graph) => {
   });
   graph.paint();
   graph.setAutoPaint(true);
+};
+
+export const updateGraphInfo = (graph: Graph, setGraphInfo: (info: { nodeCount: number }) => void) => {
+  setGraphInfo({
+    nodeCount: graph.getNodes().length,
+  });
 };

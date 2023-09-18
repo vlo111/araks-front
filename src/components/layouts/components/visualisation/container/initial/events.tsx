@@ -1,8 +1,11 @@
 import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, clearCanvas } from '../../helpers/utils';
+import { addTooltip, clearCanvas, updateGraphInfo } from '../../helpers/utils';
 
-export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
+export const initGraphEvents: InitGraphEvents = (
+  graph,
+  { startOpenNode, startOpenEdge, startOpenEdgeCreate, setGraphInfo }
+) => {
   let isDoubleClick = false;
   let processingAfterCreateEdge = false;
   let selected = false;
@@ -90,4 +93,8 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
 
     return true;
   });
+
+  graph.on('afteradditem', () => updateGraphInfo(graph, setGraphInfo));
+
+  graph.on('afterremoveitem', () => updateGraphInfo(graph, setGraphInfo));
 };
