@@ -36,6 +36,7 @@ export interface VisualisationContextType extends VisualisationReducerSetState, 
 
 export type PickVisualizationContextType = Pick<
   VisualisationContextType,
+  | 'setGraphInfo'
   | 'startOpenNode'
   | 'startShortestPath'
   | 'startOpenNodeCreate'

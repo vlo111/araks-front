@@ -11,14 +11,14 @@ type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 export const useGraphRef = () => {
   const { nodes, edges, count } = useGetData();
 
-  const { graph, setGraph, setGraphInfo, ...params } = useGraph() ?? {};
+  const { graph, setGraph, ...params } = useGraph() ?? {};
 
   const ref: GraphRef = React.useRef(null);
 
   useEffect(() => {
     if (graph === undefined && setGraph !== undefined && count) {
       setGraph(initGraph(ref.current as HTMLDivElement, params));
-      setGraphInfo({ nodeCount: count });
+      params.setGraphInfo({ nodeCount: count });
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {

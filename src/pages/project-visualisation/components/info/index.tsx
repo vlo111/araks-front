@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { useEffect, useState } from 'react';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -36,8 +38,6 @@ const Wrapper = styled.div`
     }
   }
 `;
-import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { useEffect, useState } from 'react';
 
 export const GraphInfo = () => {
   const { graph, graphInfo } = useGraph() ?? {};
@@ -53,9 +53,11 @@ export const GraphInfo = () => {
       <div className="info">
         <span className="node-count info-text">Visualized nodes</span>
         <div className="node-info">
-          <div className="node-count">{info}</div>
-          <div className="node-count">of</div>
           <div className="node-count">{graphInfo?.nodeCount}</div>
+          <div className="node-count">of</div>
+          <div id="node-initial-count" className="node-count">
+            {info}
+          </div>
         </div>
       </div>
     </Wrapper>
