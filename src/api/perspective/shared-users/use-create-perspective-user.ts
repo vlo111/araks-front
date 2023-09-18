@@ -6,6 +6,7 @@ import { errorMessage } from 'helpers/utils';
 import { GET_PERSPECTIVES_USERS } from './use-get-perspecive-users';
 import { GET_PERSPECTIVES_DATA } from '../use-get-perspectives';
 import { GET_PERSPECTIVE } from '../use-get-perspective';
+import { USE_GET_ALL_MEMBERS } from './use-get-all-members';
 
 const URL_PERSPECTIVE_USER_CREATE = '/perspectives/add-user/:project_id';
 const URL_PERSPECTIVE_USER_UPDATE = '/perspectives/change-role/:id';
@@ -45,6 +46,10 @@ export const useCreatePerspectiveUser = (options: Options, id?: string) => {
       queryClient.invalidateQueries([GET_PERSPECTIVES_USERS.replace(':perspectiveId', id || '')]);
       queryClient.invalidateQueries([GET_PERSPECTIVES_DATA.replace(':project_id', params?.id || '')]);
       queryClient.invalidateQueries([GET_PERSPECTIVE.replace(':id', id || '')]);
+      queryClient.invalidateQueries([
+        USE_GET_ALL_MEMBERS.replace(':project_id', params.id || ''),
+        { page: 1, size: 10, search: '' },
+      ]);
       options?.onSuccess?.(data);
     },
     onError: errorMessage,

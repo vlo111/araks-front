@@ -1,4 +1,3 @@
-import React from 'react';
 import { router } from './router';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,9 +20,7 @@ export function App() {
     <ConfigProvider theme={antTheme}>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <React.StrictMode>
-            <RouterProvider router={router} />
-          </React.StrictMode>
+          <RouterProvider router={router} />
         </QueryClientProvider>
       </AuthProvider>
     </ConfigProvider>

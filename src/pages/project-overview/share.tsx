@@ -8,13 +8,13 @@ import { COLORS, PATHS } from 'helpers/constants';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useGetPerspectives } from '../../api/perspective/use-get-perspectives';
 import { ShareInputItemAddon } from '../../components/form/share-input-item';
-import { SelectItem } from '../../components/form/share-input-item/select-item';
-import { CaretDownFilled } from '@ant-design/icons';
-import { useMemo } from 'react';
+import { useState } from 'react';
 import { useCreatePerspectiveUser } from '../../api/perspective/shared-users/use-create-perspective-user';
 import { UserList } from '../project-perspectives/components/section/share/user-list';
 import { Icon } from '../../components/icon';
 import styled from 'styled-components';
+import { SeeAllMembersDrawer } from '../../components/drawer/share-members';
+import { PerspectiveSelect } from '../../components/select/perspective-select';
 
 const ShareRow = styled(Row)`
   margin-top: auto;
@@ -28,6 +28,8 @@ const ShareRow = styled(Row)`
 
 export const Share = () => {
   const params = useParams();
+
+  const [showAllMembers, setShowAllMembers] = useState(false);
 
   const { projectInfo } = useProject();
 
@@ -52,8 +54,6 @@ export const Share = () => {
     form.setFieldValue('email', '');
   };
 
-  const options = useMemo(() => data?.map((d) => ({ label: d.title, value: d.id })), [data]);
-
   return (
     <div style={{ padding: '32px' }}>
       <VerticalSpace>
@@ -66,15 +66,7 @@ export const Share = () => {
               <VerticalSpace>
                 <Row>
                   <Col span={24}>
-                    {options && options[0]?.value && (
-                      <SelectItem
-                        name="perspective"
-                        popupClassName="perspective-dropdown"
-                        suffixIcon={<CaretDownFilled />}
-                        defaultValue={options[0]?.value}
-                        options={options}
-                      />
-                    )}
+                    <PerspectiveSelect />
                   </Col>
                 </Row>
                 <Row gutter={[37, 0]}>
@@ -100,13 +92,23 @@ export const Share = () => {
                   <Icon color="#353432" icon={'users'} size={25} />
                 </Col>
                 <Col span={20}>
-                  <Text style={{ textDecoration: 'underline', color: '#232F6A' }}>See all members</Text>
+                  <Text
+                    style={{ textDecoration: 'underline', color: '#232F6A' }}
+                    onClick={() => setShowAllMembers(true)}
+                  >
+                    See all members
+                  </Text>
                 </Col>
               </ShareRow>
             </VerticalSpace>
           </VerticalSpace>
         </Form>
       </VerticalSpace>
+      <SeeAllMembersDrawer
+        id={id ?? (data && data[0]?.id)}
+        open={showAllMembers}
+        onClose={() => setShowAllMembers(false)}
+      />
     </div>
   );
 };
