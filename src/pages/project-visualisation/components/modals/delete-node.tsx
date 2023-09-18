@@ -6,6 +6,18 @@ import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 import { useDeleteAllDataChecked } from '../../../../api/all-data/use-delete-all-data-checked';
 
+/**
+ * Update Node count in global node info panel
+ */
+const updateGlobalNodeInfo = (count: number) => {
+  const nodeInitialCountElement = document.querySelector('#node-initial-count');
+
+  if (nodeInitialCountElement) {
+    const currentCount = +nodeInitialCountElement.innerHTML;
+    nodeInitialCountElement.innerHTML = (currentCount - count).toString();
+  }
+};
+
 export const NodeDeleteModal = () => {
   const { graph, deleteNode, finishDeleteNode, finishOpenNode } = useGraph() ?? {};
 
@@ -15,6 +27,9 @@ export const NodeDeleteModal = () => {
       deleteNode?.ids?.forEach((n) => {
         graph.removeItem(n);
       });
+
+      updateGlobalNodeInfo(deleteNode?.ids?.length ?? 0);
+
       finishDeleteNode();
       graph.uncombo(graph.getCombos()[0]._cfg?.id as string);
       graph.addBehaviors('drag-node', 'default');
@@ -24,6 +39,9 @@ export const NodeDeleteModal = () => {
   const { mutate } = useDeleteNode(deleteNode?.id ?? '', {
     onSuccess: () => {
       graph.removeItem(deleteNode?.id ?? '');
+
+      updateGlobalNodeInfo(1);
+
       finishDeleteNode();
       finishOpenNode();
     },

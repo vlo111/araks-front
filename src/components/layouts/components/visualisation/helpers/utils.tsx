@@ -346,3 +346,9 @@ export const clearCanvas = (graph: Graph) => {
   graph.paint();
   graph.setAutoPaint(true);
 };
+
+export const updateGraphInfo = (graph: Graph, setGraphInfo: (info: { nodeCount: number }) => void) => {
+  setGraphInfo({
+    nodeCount: graph.getNodes().length,
+  });
+};
