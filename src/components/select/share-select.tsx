@@ -4,6 +4,11 @@ import styled from 'styled-components';
 import './share-select.css';
 
 const SelectComponent = styled(Select)`
+  .ant-select-selector {
+    height: 40px !important;
+    padding-top: 5px !important;
+  }
+
   &.ant-select-disabled {
     .ant-select-selector {
       background: #ededf3 !important;
@@ -18,7 +23,7 @@ const SelectComponent = styled(Select)`
     }
   }
 
-  && {
+  .ant-select-selector && {
     .ant-select-selection-item {
       font-weight: 600;
       letter-spacing: 0.07em;
@@ -42,5 +47,5 @@ const SelectComponent = styled(Select)`
 `;
 
 export const SelectItems = ({ ...props }): JSX.Element => (
-  <SelectComponent suffixIcon={<CaretDownOutlined />} {...props} />
+  <SelectComponent style={{ height: '40px' }} suffixIcon={<CaretDownOutlined />} {...props} />
 );

@@ -30,7 +30,6 @@ export const NodeDeleteModal = () => {
 
       updateGlobalNodeInfo(deleteNode?.ids?.length ?? 0);
 
-      finishDeleteNode();
       graph.uncombo(graph.getCombos()[0]._cfg?.id as string);
       graph.addBehaviors('drag-node', 'default');
     },
@@ -42,12 +41,12 @@ export const NodeDeleteModal = () => {
 
       updateGlobalNodeInfo(1);
 
-      finishDeleteNode();
       finishOpenNode();
     },
   });
 
   const deleteNodeHandle = () => {
+    finishDeleteNode();
     if (deleteNode.id) mutate();
     else multipleDelete();
   };
