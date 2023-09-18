@@ -39,6 +39,7 @@ type QueryKey = RequestData | string;
 
 type ReturnData = {
   data: ReturnPerspectiveTypeData;
+  isLoading: boolean;
 };
 
 type QueryResponse = {
@@ -55,11 +56,11 @@ export const useGetAllMembers = (params: RequestData, options: Options = { enabl
   const url = USE_GET_ALL_MEMBERS.replace(':project_id', id || '');
   const result = useQuery({
     queryKey: [url, params],
-    queryFn: () => client.post(url, { params }),
+    queryFn: () => client.post(url, { ...params }),
     ...options,
   });
 
-  const { data, isSuccess } = result;
+  const { data, isSuccess, isLoading } = result;
 
-  return { data: isSuccess ? data?.data : ({} as ReturnPerspectiveTypeData) };
+  return { isLoading, data: isSuccess ? data?.data : ({} as ReturnPerspectiveTypeData) };
 };

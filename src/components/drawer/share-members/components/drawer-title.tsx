@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { Button } from 'antd';
 import { ReactComponent as CaretLeftSvg } from 'components/icons/carret-left.svg';
-import { Search } from '../../../search';
 import styled from 'styled-components';
+import { SearchUsers } from './search-users';
 
 interface DrawerTitleProps {
   onClose: () => void;
+  search: string | undefined;
+  setSearch: (value: string) => void;
 }
 
 const Wrapper = styled.div`
@@ -13,7 +15,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const DrawerTitle: FC<DrawerTitleProps> = ({ onClose }) => {
+export const DrawerTitle: FC<DrawerTitleProps> = ({ onClose, setSearch, search }) => {
   return (
     <Wrapper>
       <div>
@@ -28,7 +30,7 @@ export const DrawerTitle: FC<DrawerTitleProps> = ({ onClose }) => {
         </Button>
       </div>
       <div>
-        <Search />
+        <SearchUsers setSearch={setSearch} search={search} />
       </div>
     </Wrapper>
   );

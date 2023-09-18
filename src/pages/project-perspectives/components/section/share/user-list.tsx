@@ -33,6 +33,10 @@ export const UserList = ({ perspectiveId }: { perspectiveId?: string }) => {
       </Space>
       <Divider style={{ margin: '0', backgroundColor: '#C5C5C5' }} />
       <List
+        style={{
+          height: '350px',
+          overflow: 'auto',
+        }}
         dataSource={data}
         renderItem={(item, index) => <UserListItem id={perspectiveId || (id ?? '')} index={index} user={item} />}
       />

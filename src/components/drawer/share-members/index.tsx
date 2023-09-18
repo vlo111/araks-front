@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Drawer } from 'antd';
 import { bodyStyle, contentStyle, drawerStyle, drawerPosition } from './styles';
 import { DrawerTitle } from './components/drawer-title';
@@ -10,6 +10,7 @@ export const SeeAllMembersDrawer: FC<{ id: string; open: boolean; onClose: VoidF
   open,
   onClose,
 }) => {
+  const [search, setSearch] = useState<string>();
   return (
     <Drawer
       open={open}
@@ -20,11 +21,11 @@ export const SeeAllMembersDrawer: FC<{ id: string; open: boolean; onClose: VoidF
       getContainer={false}
       bodyStyle={bodyStyle}
       drawerStyle={drawerStyle}
-      title={<DrawerTitle onClose={onClose} />}
+      title={<DrawerTitle onClose={onClose} search={search} setSearch={setSearch} />}
       contentWrapperStyle={{ ...contentStyle, ...drawerPosition() }}
     >
       <InviteUsers id={id} />
-      <UsersTable />
+      <UsersTable search={search ?? ''} />
     </Drawer>
   );
 };
