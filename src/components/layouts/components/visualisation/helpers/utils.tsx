@@ -62,6 +62,7 @@ export const getMenuContexts = (id: string, isNode: boolean) => {
 
   const canvasContext = `<div class='menu'>
       <span>Create Node</span>
+      <span class="export">Export/PNG</span>
     </div>`;
 
   const edgeContext = `<div class='menu'>

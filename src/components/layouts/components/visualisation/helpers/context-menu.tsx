@@ -57,7 +57,13 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
         const nodesId = item?._cfg?.nodes?.map((node: { _cfg: { id: string } }) => node._cfg.id) || [];
         if (target.className === 'delete') startDeleteNode({ ids: nodesId });
       } else {
-        startOpenNodeCreate({ isOpened: true });
+        if (target?.className === 'export') {
+          graph.downloadFullImage('default_graph', 'image/png', {
+            backgroundColor: '#F2F2F2',
+          });
+        } else {
+          startOpenNodeCreate({ isOpened: true });
+        }
       }
 
       addTooltip(graph);
