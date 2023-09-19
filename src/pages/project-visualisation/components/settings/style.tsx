@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: fixed;
-  width: 12rem;
+  width: 13rem;
   right: 10px;
   top: 176px;
 
@@ -11,8 +11,11 @@ export const Wrapper = styled.div`
   gap: 0.5rem;
 
   button {
+    display: flex;
+    align-items: center;
     color: #232f6a;
-    width: 11rem;
+    width: 12rem;
+    height: 3rem;
     font-weight: 600;
     letter-spacing: 1.4px;
     border: 1px solid rgba(255, 255, 255, 0.5);

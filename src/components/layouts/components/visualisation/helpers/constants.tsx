@@ -10,8 +10,6 @@ const layout = {
   nodeSize: 30,
   workerEnabled: true,
   gpuEnabled: true,
-  // onTick: () => {},
-  // onLayoutEnd: () => {},
 };
 
 const defaultEdge = {
