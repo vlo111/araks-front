@@ -64,7 +64,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const [filter, setFilter] = useState<VisualizationSubmitType>({} as VisualizationSubmitType);
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
-  const { graph } = useGraph() ?? {};
+  const { graph, setGraphInfo } = useGraph() ?? {};
   const { nodes: nodesList, edges: edgesList } = useGetData();
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
@@ -90,8 +90,6 @@ export const QueriesButton = ({ isQueries }: Props) => {
 
   const onFinish = (values: FormQueryValues) => {
     const dataToMap = values.queries;
-    // eslint-disable-next-line no-console
-    console.log('values', values);
     let queryArr;
     if (values.operator === 'AND') {
       queryArr = dataToMap
@@ -122,8 +120,10 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
-                        value:
-                          item.type === QueryFilterTypes.BETWEEN ? [item.betweenStart, item.betweenEnd] : item.typeText,
+                        value: (item.type === QueryFilterTypes.BETWEEN
+                          ? [item.betweenStart, item.betweenEnd]
+                          : item.typeText
+                        ).toString(),
                       },
                     };
                   }
@@ -149,8 +149,10 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
-                  value:
-                    query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+                  value: (query.type === QueryFilterTypes.BETWEEN
+                    ? [query.betweenStart, query.betweenEnd]
+                    : query.typeText
+                  ).toString(),
                 },
               }
             : {},
@@ -162,8 +164,6 @@ export const QueriesButton = ({ isQueries }: Props) => {
       queryArr: queryArr,
     } as VisualizationSubmitType;
     setFilter(data);
-    // eslint-disable-next-line no-console
-    console.log('data to submit', data);
   };
 
   useEffect(() => {
@@ -180,7 +180,12 @@ export const QueriesButton = ({ isQueries }: Props) => {
       const { nodes, edges } = formattedSearchData(data?.nodes, data?.edges);
       const result = { nodes, edges };
       initGraphData(graph, result);
+
       graph.render();
+
+      setGraphInfo({
+        nodeCount: graph.getNodes().length,
+      });
     } else {
       if (graph !== undefined) {
         const result = { nodes: initData?.nodes, edges: initData?.edges };
@@ -188,7 +193,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         graph.render();
       }
     }
-  }, [graph, data, initData, count]);
+  }, [graph, data, initData, count, setGraphInfo]);
   const renderHeader = () => {
     return (
       <Row justify="space-around">

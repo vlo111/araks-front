@@ -3,7 +3,7 @@ import { IOpenNodeCreate, IOpenIdState, IOpenEdgeState } from './reducer/types';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
-  setGraphInfo: (info: { nodeCount: number }) => void;
+  setGraphInfo: (info: { nodeCount?: number; nodeCountAPI?: number }) => void;
   startOpenNode: (node?: IOpenIdState) => void;
   finishOpenNode: VoidFunction;
   startOpenNodeCreate: (item?: IOpenNodeCreate) => void;
@@ -22,7 +22,7 @@ export type VisualisationReducerSetState = {
 
 export type VisualisationReducerState = {
   graph: Graph;
-  graphInfo: { nodeCount: number };
+  graphInfo: { nodeCount: number; nodeCountAPI?: number };
   openNode: IOpenIdState;
   openEdge: IOpenIdState;
   deleteNode: IOpenIdState;
@@ -36,6 +36,7 @@ export interface VisualisationContextType extends VisualisationReducerSetState, 
 
 export type PickVisualizationContextType = Pick<
   VisualisationContextType,
+  | 'setGraphInfo'
   | 'startOpenNode'
   | 'startShortestPath'
   | 'startOpenNodeCreate'

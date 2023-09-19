@@ -31,17 +31,17 @@ export const InfoSection = () => {
       <InfoWrapper>
         <p>Type: </p>
         <div>
-          <span> {nodes?.length}</span>
-          <span>/</span>
           <span>{perspective_info?.typesLength}</span>
+          <span>/</span>
+          <span>{nodes?.length}</span>
         </div>
       </InfoWrapper>
       <InfoWrapper>
         <p>Property: </p>
         <div>
-          <span>{nodes?.map((n) => n.properties).flat().length}</span>
-          <span>/</span>
           <span>{perspective_info?.propertiesLength}</span>
+          <span>/</span>
+          <span>{nodes?.map((n) => n.properties).flat().length - nodes?.length}</span>
         </div>
       </InfoWrapper>
     </HeaderInfo>

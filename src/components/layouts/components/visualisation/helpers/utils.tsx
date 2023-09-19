@@ -62,6 +62,7 @@ export const getMenuContexts = (id: string, isNode: boolean) => {
 
   const canvasContext = `<div class='menu'>
       <span>Create Node</span>
+      <span class="export">Export/PNG</span>
     </div>`;
 
   const edgeContext = `<div class='menu'>
@@ -186,7 +187,12 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   return { result, grandTotal };
 };
 
-export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
+export const expand = async (
+  graph: Graph,
+  item: Item,
+  target: HTMLElement,
+  setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
+) => {
   const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
 
   const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
@@ -209,6 +215,10 @@ export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
 
   graphData.edges.forEach((e) => {
     graph.addItem('edge', e);
+  });
+
+  setGraphInfo({
+    nodeCount: graph.getNodes().length,
   });
 };
 

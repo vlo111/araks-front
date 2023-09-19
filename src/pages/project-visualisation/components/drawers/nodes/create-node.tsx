@@ -18,7 +18,7 @@ import './add-node-select.css';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
-  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
+  const { graph, openNodeCreate, finishOpenNodeCreate, graphInfo, setGraphInfo } = useGraph() ?? {};
   const { id } = useParams();
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
@@ -80,6 +80,10 @@ export const NodeCreateDrawer: React.FC = () => {
       createEdge(data, variables);
       form.resetFields();
       finishOpenNodeCreate();
+      setGraphInfo({
+        nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
+        nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
+      });
     },
   });
 

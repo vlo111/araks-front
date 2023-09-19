@@ -9,6 +9,7 @@ import { useCreatePerspectiveUser } from 'api/perspective/shared-users/use-creat
 type Props = React.FC<{
   id: string;
   index: number;
+  visibleMetaData?: boolean;
   user: { id: string; title: string; value: string; avatar: string };
 }>;
 
@@ -55,7 +56,7 @@ const ListMeta = styled(List.Item.Meta)`
   }
 `;
 
-export const UserListItem: Props = ({ id, index, user }) => {
+export const UserListItem: Props = ({ id, index, user, visibleMetaData = true }) => {
   const { mutate } = useCreatePerspectiveUser({}, id);
 
   const value = useMemo(
@@ -85,7 +86,9 @@ export const UserListItem: Props = ({ id, index, user }) => {
         </Share>,
       ]}
     >
-      <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text title={user.title}>{user.title}</Text>} />
+      {visibleMetaData && (
+        <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text title={user.title}>{user.title}</Text>} />
+      )}
     </List.Item>
   );
 };
