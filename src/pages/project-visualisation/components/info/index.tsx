@@ -41,7 +41,7 @@ const Wrapper = styled.div`
 export const GraphInfo = () => {
   const { graphInfo } = useGraph() ?? {};
 
-  return graphInfo?.nodeCount ? (
+  return graphInfo?.nodeCountAPI ? (
     <Wrapper>
       <div className="info">
         <span className="node-count info-text">Visualized nodes</span>
