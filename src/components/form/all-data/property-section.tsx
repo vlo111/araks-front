@@ -1,5 +1,5 @@
 import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
-import { Collapse, DatePicker, Form, Space } from 'antd';
+import { Collapse, DatePicker, Form, Radio, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
 import { InputNumber } from 'components/input-number';
@@ -64,21 +64,43 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
   //   },
   // };
 
+  const getColumnInput = (type: QueryFilterTypes, propertyType: PropertyTypes) => {
+    switch (true) {
+      case (type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) &&
+        propertyType === PropertyTypes.Date:
+        return (
+          <Datepicker
+            format={dateFormat}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
+        );
+      case (type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) &&
+        propertyType === PropertyTypes.DateTime:
+        return (
+          <Datepicker
+            format={dateFormat}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
+        );
+      case (type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && propertyType === PropertyTypes.Boolean:
+        return (
+          <Radio.Group>
+            <Radio value={true}>Yes</Radio>
+            <Radio value={false}>No</Radio>
+          </Radio.Group>
+        );
+      default:
+        return <Input />;
+    }
+  };
+
   return (
     <>
       {(type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && (
         <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
-          {propertyType === PropertyTypes.Date ? (
-            <Datepicker style={{ width: '100%' }} format={dateFormat} />
-          ) : propertyType === PropertyTypes.DateTime ? (
-            <Datepicker
-              format={dateFormat}
-              style={{ width: '100%' }}
-              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
-            />
-          ) : (
-            <Input />
-          )}
+          {getColumnInput(type, propertyType)}
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
