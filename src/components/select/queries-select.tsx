@@ -42,7 +42,7 @@ export const getQueryFilterType = (type: QueryFilterTypes): string => {
   }
 };
 
-const getOptions = (depth: number, isConnection = false, propertyType?: PropertyTypes) => {
+const getOptions = (depth: number, isConnection = false, isVisualisation = false, propertyType?: PropertyTypes) => {
   switch (true) {
     case (!isConnection && depth === 1) || (isConnection && (depth === 1 || depth === 2)):
       return [
@@ -65,6 +65,12 @@ const getOptions = (depth: number, isConnection = false, propertyType?: Property
         { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
         { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
         { name: QueryFilterTypes.RANGE, value: QueryFilterTypes.RANGE },
+      ];
+    case propertyType === PropertyTypes.Text && isVisualisation:
+      return [
+        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
+        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
+        { name: QueryFilterTypes.CONTAINS, value: QueryFilterTypes.CONTAINS },
       ];
     case propertyType === PropertyTypes.Text:
       return [
@@ -108,9 +114,10 @@ type Props = Partial<RefSelectProps> & {
   depth: number;
   isConnection: boolean;
   propertyType?: PropertyTypes;
+  isVisualisation?: boolean;
 };
 
-export const QueriesSelect = ({ depth, isConnection, propertyType, ...props }: Props) => {
-  const data = getOptions(depth, !!isConnection, propertyType);
+export const QueriesSelect = ({ depth, isConnection, propertyType, isVisualisation = false, ...props }: Props) => {
+  const data = getOptions(depth, !!isConnection, isVisualisation, propertyType);
   return <Select style={{ width: '100%' }} placeholder="Please select" options={data} {...props} />;
 };

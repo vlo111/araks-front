@@ -123,7 +123,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         value: (item.type === QueryFilterTypes.BETWEEN
                           ? [item.betweenStart, item.betweenEnd]
                           : item.typeText
-                        ).toString(),
+                        )?.toString(),
                       },
                     };
                   }
@@ -139,9 +139,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
           ? { action: getQueryFilterType(query.type) }
           : {}),
-        ...(query.isConnectionType && query.depth !== 1
-          ? { project_edge_type_id: query.id }
-          : { project_edge_type_id: query.id }),
+        ...(query.isConnectionType && query.depth !== 1 ? { project_edge_type_id: query.id } : {}),
         query:
           (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
             ? {
@@ -152,7 +150,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   value: (query.type === QueryFilterTypes.BETWEEN
                     ? [query.betweenStart, query.betweenEnd]
                     : query.typeText
-                  ).toString(),
+                  )?.toString(),
                 },
               }
             : {},

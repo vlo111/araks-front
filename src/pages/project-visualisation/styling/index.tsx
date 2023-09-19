@@ -19,6 +19,8 @@ type Props = {
       parent_id: string;
       type: string;
       typeText: string;
+      depth: number;
+      label: string;
     }
   >;
 };
@@ -43,19 +45,22 @@ export const Styling = () => {
         });
       });
       values.queries.forEach((query) => {
-        if (query.parent_id) {
+        if (query.parent_id && query.depth === 2) {
           const typeIsNot = query.type === QueryType.IsNot;
           const typeIs = query.type === QueryType.Is;
           const typeText = query.typeText ? query.typeText.toLowerCase() : '';
-          const filteredNodes = graph
-            .getNodes()
-            .filter((node) =>
-              node.getModel().nodeType === query.parent_id && typeIsNot
+
+          const filteredNodes = graph.getNodes().filter((node) => {
+            return (
+              node.getModel().nodeType === query.parent_id &&
+              (typeIsNot
                 ? (node.getModel().label as string).toLowerCase() !== typeText
                 : typeIs
                 ? (node.getModel().label as string).toLowerCase() === typeText
-                : (node.getModel().label as string).toLowerCase().includes(typeText)
+                : (node.getModel().label as string).toLowerCase().includes(typeText))
             );
+          });
+
           setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
           filteredNodes.forEach((node) => {
             graph.updateItem(node.getID(), {
@@ -92,7 +97,13 @@ export const Styling = () => {
           });
         }
 
-        const filteredEdges = graph.getEdges().filter((edge) => edge.getModel().project_edge_type_id === query.id);
+        const filteredEdges = graph
+          .getEdges()
+          .filter(
+            (edge) =>
+              (edge.getModel().label as string).toLowerCase() === query.label ||
+              edge.getModel().project_edge_type_id === query.id
+          );
         setFilteredEdges((prevState) => [...prevState, ...filteredEdges]);
         filteredEdges.forEach((edge) => {
           graph.updateItem(edge.getID() as string, {
