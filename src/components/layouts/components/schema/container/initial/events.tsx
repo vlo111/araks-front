@@ -114,7 +114,9 @@ export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPe
 
       setPerspectiveInfo({
         typesLength: nodes.filter((a) => a.attrs?.body.allow).length,
-        propertiesLength: nodes.flatMap((a) => (a.attrs?.body.allow ? a.ports.items : [])).length,
+        propertiesLength: nodes
+          .flatMap((a) => (a.attrs?.body.allow ? a.ports.items : []))
+          .filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length,
       });
     }
   });
