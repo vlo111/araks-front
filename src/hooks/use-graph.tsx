@@ -24,9 +24,8 @@ export const useGraphRef = () => {
       const data = formattedData(nodes, edges);
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
-
-      params.setGraphInfo({ nodeCount: data.nodes.length, nodeCountAPI: count });
     }
+    params.setGraphInfo && params.setGraphInfo({ nodeCount: nodes?.length, nodeCountAPI: count });
   }, [nodes, edges, graph, setGraph, count]);
 
   return ref;

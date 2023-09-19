@@ -25,7 +25,7 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
       const typesLength = mainId === activeKey ? nodes.length : data.nodeType.length;
       const propertiesLength =
         mainId === activeKey
-          ? nodes.flatMap((n) => n.ports.items).length
+          ? nodes.flatMap((n) => n.ports.items).filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length
           : nodes.flatMap((n) =>
               data.nodeType.some(({ project_node_type_id: id }) => id === n.id) ? n.ports.items : []
             ).length;

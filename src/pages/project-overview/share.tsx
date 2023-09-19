@@ -54,6 +54,8 @@ export const Share = () => {
     form.setFieldValue('email', '');
   };
 
+  const userPerspectiveId = id || (data && data[0]?.id);
+
   return (
     <div style={{ padding: '32px' }}>
       <VerticalSpace>
@@ -82,7 +84,7 @@ export const Share = () => {
               </VerticalSpace>
             )}
             <VerticalSpace size={8}>
-              <UserList perspectiveId={id || (data && data[0]?.id)} />
+              {userPerspectiveId ? <UserList perspectiveId={userPerspectiveId} /> : <></>}
               <ShareRow
                 onClick={() => {
                   navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
