@@ -14,6 +14,8 @@ export const VisualisationWrapper: React.FC = () => {
   const callbacks = useMemo(
     () => ({
       setGraph: (payload: Graph) => handleAction(GraphAction.SET_GRAPH, payload),
+      setGraphInfo: (payload: { nodeCount: number; nodeCountAPI?: number }) =>
+        handleAction(GraphAction.SET_GRAPH_INFO, payload),
       startOpenNode: (payload: IOpenId) => handleAction(GraphAction.OPEN_NODE_START, payload),
       startShortestPath: (payload: IOpenId) => handleAction(GraphAction.OPEN_SHORTEST_PATH_START, payload),
       finishOpenNode: () => handleAction(GraphAction.OPEN_NODE_FINISH),

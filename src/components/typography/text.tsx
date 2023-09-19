@@ -27,7 +27,7 @@ export const Text = styled(
   forwardRef<HTMLSpanElement, TextStyleProps>(({ color, ...props }, ref) => <TextComponent {...props} ref={ref} />)
 )`
   && {
-    ${textStyles}
+    ${textStyles};
     color: ${(props) => props.color || COLORS.PRIMARY.GRAY_DARK};
   }
 `;

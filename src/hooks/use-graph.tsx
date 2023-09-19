@@ -9,14 +9,14 @@ import { useGetData } from '../api/visualisation/use-get-data';
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
-  const { nodes, edges } = useGetData();
+  const { nodes, edges, count } = useGetData();
 
   const { graph, setGraph, ...params } = useGraph() ?? {};
 
   const ref: GraphRef = React.useRef(null);
 
   useEffect(() => {
-    if (graph === undefined && setGraph !== undefined) {
+    if (graph === undefined && setGraph !== undefined && count) {
       setGraph(initGraph(ref.current as HTMLDivElement, params));
     }
 
@@ -24,8 +24,10 @@ export const useGraphRef = () => {
       const data = formattedData(nodes, edges);
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
+
+      params.setGraphInfo({ nodeCount: data.nodes.length, nodeCountAPI: count });
     }
-  }, [nodes, edges, graph, setGraph]);
+  }, [nodes, edges, graph, setGraph, count]);
 
   return ref;
 };

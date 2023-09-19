@@ -166,7 +166,7 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
 
 export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) => {
   const form = Form.useFormInstance();
-  const { graph } = useGraph() || {};
+  const { graph, setGraphInfo } = useGraph() || {};
   const queriesList = form.getFieldValue('queries');
 
   const setValue = useCallback(
@@ -215,6 +215,10 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
         removeGraphStyle(queriesList[fieldName]?.id);
         removeGraphStyle(queriesList[fieldName]?.parent_id);
         removeGraphStyle(queriesList[fieldName]?.edge?.id);
+
+        setGraphInfo({
+          nodeCount: graph.getNodes().length,
+        });
       }}
     />
   );
@@ -284,14 +288,6 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                       )}
                       {queriesList[fieldName].isConnectionType && (
                         <VerticalSpace>
-                          {queriesList[fieldName]?.labelHead}
-                          <Form.Item name={[fieldName, 'type']} rules={[{ required: false, message: 'Missing type' }]}>
-                            <QueriesSelect
-                              depth={queriesList[fieldName].depth}
-                              isConnection={queriesList[fieldName].isConnection}
-                              propertyType={queriesList[fieldName]?.ref_property_type_id}
-                            />
-                          </Form.Item>
                           <Form.Item
                             name={[fieldName, 'borderSize']}
                             rules={[{ required: false, message: 'Missing Border Size' }]}
@@ -314,10 +310,6 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                               setValue={setValue}
                             />
                           </Form.Item>
-                          <QueriesContent
-                            fieldName={fieldName}
-                            propertyType={queriesList[fieldName].ref_property_type_id}
-                          />
                         </VerticalSpace>
                       )}
                     </>

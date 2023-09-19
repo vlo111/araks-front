@@ -2,7 +2,10 @@ import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
 import { addTooltip, clearCanvas } from '../../helpers/utils';
 
-export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
+export const initGraphEvents: InitGraphEvents = (
+  graph,
+  { startOpenNode, startOpenEdge, startOpenEdgeCreate, setGraphInfo }
+) => {
   let isDoubleClick = false;
   let processingAfterCreateEdge = false;
   let selected = false;

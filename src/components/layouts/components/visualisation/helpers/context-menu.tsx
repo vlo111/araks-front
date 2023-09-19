@@ -5,7 +5,7 @@ import PluginBase from '@antv/g6-plugin/lib/base';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
   graph,
-  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge }
+  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge, setGraphInfo }
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -37,7 +37,7 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
         const isSubMenu = submenuClass === 'submenu' || submenuClass === 'right-section';
 
         if (isSubMenu) {
-          await expand(graph, item, target);
+          await expand(graph, item, target, setGraphInfo);
         } else {
           switch (target.className) {
             case 'shortest-path': {
@@ -55,9 +55,15 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
         startDeleteEdge({ id: item.getID() });
       } else if (type === 'combo') {
         const nodesId = item?._cfg?.nodes?.map((node: { _cfg: { id: string } }) => node._cfg.id) || [];
-        if (target.className === 'delete') startDeleteNode({ ids: nodesId });
+        if (target.className === 'delete') startDeleteNode({ id: undefined, ids: nodesId });
       } else {
-        startOpenNodeCreate({ isOpened: true });
+        if (target?.className === 'export') {
+          graph.downloadFullImage('default_graph', 'image/png', {
+            backgroundColor: '#F2F2F2',
+          });
+        } else {
+          startOpenNodeCreate({ isOpened: true });
+        }
       }
 
       addTooltip(graph);

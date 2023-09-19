@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { SiderCollapse } from 'components/collapse/sider-collapse';
-import { NodeTypesView } from '../../../data-sheet/components/node-types-view';
-import { NodesHeader } from '../../../data-sheet/components/nodes-header';
+import { NodeTypesView } from '../../data-sheet/components/node-types-view';
+import { NodesHeader } from '../../data-sheet/components/nodes-header';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { useTypes } from 'hooks/use-types';
@@ -13,7 +13,7 @@ import { initData as initGraphData } from 'components/layouts/components/visuali
 
 export const Filters = () => {
   const [searchVisible, setSearchVisible] = useState(false);
-  const { graph } = useGraph() ?? {};
+  const { graph, setGraphInfo, graphInfo } = useGraph() ?? {};
   const { nodes, isInitialLoading } = useTypes();
   const { nodes: nodesList, edges: edgesList } = useGetData();
 
@@ -23,6 +23,10 @@ export const Filters = () => {
       const result = { nodes, edges };
       initGraphData(graph, result);
       graph.render();
+
+      setGraphInfo({
+        nodeCount: nodes.length,
+      });
     },
   });
 
@@ -40,6 +44,10 @@ export const Filters = () => {
     } else {
       initGraphData(graph, initData);
       graph.render();
+
+      setGraphInfo({
+        nodeCount: (graphInfo?.nodeCountAPI ?? 0) > 300 ? 300 : graphInfo?.nodeCountAPI,
+      });
     }
   };
 

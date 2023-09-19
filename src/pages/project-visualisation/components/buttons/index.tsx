@@ -55,7 +55,9 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
           <StyledCleanButton htmlType="submit" onClick={removeGraphStyle}>
             Clean All
           </StyledCleanButton>
-          <StyledRunButton htmlType="submit">Run</StyledRunButton>
+          <StyledRunButton htmlType="submit" onClick={form.submit}>
+            Run
+          </StyledRunButton>
         </StyledDiv>
       </StyledButtonsWrapper>
     </>
