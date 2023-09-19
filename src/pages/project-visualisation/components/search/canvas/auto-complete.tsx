@@ -17,7 +17,7 @@ type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JS
 type Props = React.FC<{ search: string | undefined; setSearch: (value: string) => void }>;
 
 export const AutoComplete: Props = ({ search, setSearch }) => {
-  const { graph } = useGraph();
+  const { graph, setGraphInfo } = useGraph();
 
   const { data } = useGetSearchData({ enabled: search ? search.trim()?.length > 2 : false }, search?.trim() ?? '');
 
@@ -30,8 +30,13 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
 
       initData(graph, formattedData);
       graph.render && graph.render();
+
+      setGraphInfo({
+        nodeCount: 1,
+      });
     },
   });
+
   const onSelect = (value: string, item: { id: string; mode: string; value: string }) => {
     mutate({ id: item.id, action: item.mode });
   };

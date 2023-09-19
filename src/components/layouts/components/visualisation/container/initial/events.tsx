@@ -1,6 +1,6 @@
 import { InitGraphEvents } from '../../types';
 import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, clearCanvas, updateGraphInfo } from '../../helpers/utils';
+import { addTooltip, clearCanvas } from '../../helpers/utils';
 
 export const initGraphEvents: InitGraphEvents = (
   graph,
@@ -93,8 +93,4 @@ export const initGraphEvents: InitGraphEvents = (
 
     return true;
   });
-
-  graph.on('afteradditem', () => updateGraphInfo(graph, setGraphInfo));
-
-  graph.on('afterremoveitem', () => updateGraphInfo(graph, setGraphInfo));
 };

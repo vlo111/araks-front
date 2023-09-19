@@ -13,6 +13,14 @@ interface DrawerTitleProps {
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+
+  .stretch {
+    border-radius: 4px;
+    border: 1px solid #fff;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+    box-shadow: 0px 10px 10px 0px rgba(141, 143, 166, 0.2);
+    backdrop-filter: blur(7px);
+  }
 `;
 
 export const DrawerTitle: FC<DrawerTitleProps> = ({ onClose, setSearch, search }) => {

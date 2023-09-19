@@ -5,7 +5,40 @@ import { useDeleteMember } from 'api/perspective/shared-users/use-delete-user';
 import { Table, Button, Popconfirm, message, TablePaginationConfig } from 'antd';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
+import { UserListItem } from 'pages/project-perspectives/components/section/share/user-list-item';
 import './user-list.css';
+import styled from 'styled-components';
+
+const UserTable = styled(Table)`
+  background: #f2f2f2;
+
+  &&& {
+    .ant-table-body {
+      overflow: auto;
+    }
+    tr {
+      th {
+        box-shadow: 0 5px 6px 0 rgba(111, 111, 111, 0.1);
+      }
+
+      td {
+        border-bottom: 1px solid #dbdbdb;
+      }
+
+      th,
+      td {
+        color: #414141;
+        font-weight: 500;
+        letter-spacing: 1.4px;
+        background: #f2f2f2;
+      }
+
+      &:hover > td {
+        background: #f2f2f2;
+      }
+    }
+  }
+`;
 
 export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
   const [pagination, setPagination] = useState({ page: 1, size: 10, search });
@@ -23,24 +56,41 @@ export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
   };
 
   const dataSource =
-    data?.rows?.map((d) => ({
+    data?.rows?.map((d, index) => ({
       key: d.id,
       member_name: `${d.perspective_users.first_name} ${d.perspective_users.last_name}`,
       last_update: dayjs(d.updated_at).format('YYYY-MM-DD HH:mm'),
       perspective: d.perspectives[0].title,
-      role: d.role,
-      action: (
-        <Popconfirm
-          overlayClassName="pop-confirm-member"
-          placement="topLeft"
-          title="Are you sure you want to delete this member?"
-          onConfirm={() => handleDelete(d.perspective_id, d.perspective_user_id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button type="text" icon={<Delete />} />
-        </Popconfirm>
+      role: (
+        <div className="user-list">
+          <UserListItem
+            index={index}
+            id={d.perspective_id}
+            user={{
+              id: d.perspective_users.id,
+              title: `${d.perspective_users?.first_name} ${d.perspective_users?.last_name}`,
+              value: d.role,
+              avatar: d.perspective_users.avatar,
+            }}
+            visibleMetaData={false}
+          />
+        </div>
       ),
+      action:
+        d.role !== 'owner' ? (
+          <Popconfirm
+            overlayClassName="pop-confirm-member"
+            placement="topLeft"
+            title="Are you sure you want to delete this member?"
+            onConfirm={() => handleDelete(d.perspective_id, d.perspective_user_id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="text" icon={<Delete />} />
+          </Popconfirm>
+        ) : (
+          <></>
+        ),
     })) || [];
 
   const columns = [
@@ -66,6 +116,7 @@ export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
     {
       title: 'Action',
       dataIndex: 'action',
+      width: 100,
     },
   ];
 
@@ -85,7 +136,7 @@ export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
   }, [search]);
 
   return (
-    <Table
+    <UserTable
       loading={isLoading}
       columns={columns}
       dataSource={dataSource}

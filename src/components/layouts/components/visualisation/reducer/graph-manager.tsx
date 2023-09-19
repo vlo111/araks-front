@@ -81,8 +81,6 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       };
     case GraphAction.OPEN_CREATE_NODE_FINISH:
       return end(ITEM.OPEN_CREATE_NODE);
-    case GraphAction.SET_GRAPH_INFO:
-      return insert(ITEM.GRAPH_INFO);
     case GraphAction.DELETE_NODE_START:
       return start(ITEM.DELETE_NODE);
     case GraphAction.DELETE_NODE_FINISH:
@@ -103,6 +101,18 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
       return end(ITEM.OPEN_SHORTEST_PATH);
     case GraphAction.OPEN_CREATE_EDGE_FINISH:
       return end(ITEM.OPEN_CREATE_EDGE);
+    case GraphAction.SET_GRAPH_INFO:
+      if (state[ITEM.GRAPH_INFO]) {
+        return {
+          ...state,
+          [ITEM.GRAPH_INFO]: {
+            ...state[ITEM.GRAPH_INFO],
+            ...payload,
+          },
+        };
+      } else {
+        return insert(ITEM.GRAPH_INFO) as GraphState;
+      }
     default:
       return state;
   }

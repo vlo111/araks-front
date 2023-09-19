@@ -21,3 +21,8 @@
 .pop-confirm-member .ant-popover-inner {
     padding: 2rem;
 }
+
+.user-list ul {
+    list-style-type: none;
+    padding: 0;
+}
