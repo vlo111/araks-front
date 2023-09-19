@@ -17,6 +17,8 @@ import { Profile } from './pages/profile';
 import { ProjectPerspectives } from './pages/project-perspectives';
 import { ProjectVisualisation } from './pages/project-visualisation';
 import { Shared } from 'pages/shared';
+import { ForgotPassword } from './pages/sign-in/components/forget-password';
+import { ResetPassword } from './pages/sign-in/components/reset-password';
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ export const router = createBrowserRouter([
       {
         path: PATHS.SIGN_IN,
         element: <SignIn />,
+      },
+      {
+        path: PATHS.FORGOT_PASSWORD,
+        element: <ForgotPassword />,
+      },
+      {
+        path: PATHS.RESET_PASSWORD,
+        element: <ResetPassword />,
       },
     ],
   },

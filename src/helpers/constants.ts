@@ -2,6 +2,8 @@ export const PATHS = {
   ROOT: '/',
   UI: '/ui',
   SIGN_IN: '/sign-in',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password/',
   PROJECTS: '/projects',
   PROFILE: '/profile',
   PROJECT_OVERVIEW: '/projects/:id',
