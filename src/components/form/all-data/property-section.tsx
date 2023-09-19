@@ -273,6 +273,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                                     <QueriesSelect
                                       depth={queriesList[fieldName].depth}
                                       isConnection={queriesList[fieldName].isConnectionType}
+                                      isVisualisation={isVisualisation}
                                       propertyType={queriesList[fieldName]?.ref_property_type_id}
                                     />
                                   </Form.Item>
