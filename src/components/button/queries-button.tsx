@@ -120,8 +120,10 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
-                        value:
-                          item.type === QueryFilterTypes.BETWEEN ? [item.betweenStart, item.betweenEnd] : item.typeText,
+                        value: (item.type === QueryFilterTypes.BETWEEN
+                          ? [item.betweenStart, item.betweenEnd]
+                          : item.typeText
+                        ).toString(),
                       },
                     };
                   }
@@ -147,8 +149,10 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
-                  value:
-                    query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+                  value: (query.type === QueryFilterTypes.BETWEEN
+                    ? [query.betweenStart, query.betweenEnd]
+                    : query.typeText
+                  ).toString(),
                 },
               }
             : {},
@@ -177,7 +181,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
       const result = { nodes, edges };
       initGraphData(graph, result);
 
-      // graph.render();
+      graph.render();
 
       setGraphInfo({
         nodeCount: graph.getNodes().length,
@@ -186,7 +190,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
       if (graph !== undefined) {
         const result = { nodes: initData?.nodes, edges: initData?.edges };
         initGraphData(graph, result);
-        // graph.render();
+        graph.render();
       }
     }
   }, [graph, data, initData, count, setGraphInfo]);
