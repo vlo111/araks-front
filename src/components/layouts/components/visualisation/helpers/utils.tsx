@@ -187,7 +187,12 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   return { result, grandTotal };
 };
 
-export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
+export const expand = async (
+  graph: Graph,
+  item: Item,
+  target: HTMLElement,
+  setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
+) => {
   const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
 
   const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
@@ -210,6 +215,10 @@ export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
 
   graphData.edges.forEach((e) => {
     graph.addItem('edge', e);
+  });
+
+  setGraphInfo({
+    nodeCount: graph.getNodes().length,
   });
 };
 
@@ -345,10 +354,4 @@ export const clearCanvas = (graph: Graph) => {
   });
   graph.paint();
   graph.setAutoPaint(true);
-};
-
-export const updateGraphInfo = (graph: Graph, setGraphInfo: (info: { nodeCount: number }) => void) => {
-  setGraphInfo({
-    nodeCount: graph.getNodes().length,
-  });
 };

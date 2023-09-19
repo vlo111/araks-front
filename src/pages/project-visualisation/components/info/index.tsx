@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { useEffect, useState } from 'react';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -40,26 +39,22 @@ const Wrapper = styled.div`
 `;
 
 export const GraphInfo = () => {
-  const { graph, graphInfo } = useGraph() ?? {};
+  const { graphInfo } = useGraph() ?? {};
 
-  const [info, setInfo] = useState<number>();
-
-  useEffect(() => {
-    setInfo(graph?.getNodes().length ?? 0);
-  }, [graph]);
-
-  return (
+  return graphInfo?.nodeCount ? (
     <Wrapper>
       <div className="info">
         <span className="node-count info-text">Visualized nodes</span>
         <div className="node-info">
-          <div className="node-count">{graphInfo?.nodeCount}</div>
+          <div className="node-count">{graphInfo?.nodeCount ?? 0}</div>
           <div className="node-count">of</div>
           <div id="node-initial-count" className="node-count">
-            {info}
+            {graphInfo?.nodeCountAPI ?? 0}
           </div>
         </div>
       </div>
     </Wrapper>
+  ) : (
+    <></>
   );
 };

@@ -18,13 +18,14 @@ export const useGraphRef = () => {
   useEffect(() => {
     if (graph === undefined && setGraph !== undefined && count) {
       setGraph(initGraph(ref.current as HTMLDivElement, params));
-      params.setGraphInfo({ nodeCount: count });
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
       const data = formattedData(nodes, edges);
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
+
+      params.setGraphInfo({ nodeCount: data.nodes.length, nodeCountAPI: count });
     }
   }, [nodes, edges, graph, setGraph, count]);
 
