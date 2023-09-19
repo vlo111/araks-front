@@ -163,7 +163,9 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         value:
-                          item.type === QueryFilterTypes.BETWEEN ? [item.betweenStart, item.betweenEnd] : item.typeText,
+                          item.type === QueryFilterTypes.BETWEEN
+                            ? [item.betweenStart, item.betweenEnd]
+                            : item.typeText.toString(),
                       },
                     };
                   }
@@ -189,7 +191,9 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   value:
-                    query.type === QueryFilterTypes.BETWEEN ? [query.betweenStart, query.betweenEnd] : query.typeText,
+                    query.type === QueryFilterTypes.BETWEEN
+                      ? [query.betweenStart, query.betweenEnd]
+                      : query.typeText.toString(),
                 },
               }
             : {},
