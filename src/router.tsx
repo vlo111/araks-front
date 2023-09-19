@@ -17,8 +17,8 @@ import { Profile } from './pages/profile';
 import { ProjectPerspectives } from './pages/project-perspectives';
 import { ProjectVisualisation } from './pages/project-visualisation';
 import { Shared } from 'pages/shared';
-import { ForgotPassword } from './pages/sign-in/components/forget-password';
-import { ResetPassword } from './pages/sign-in/components/reset-password';
+import { ForgotPassword } from './pages/forgot-password';
+import { ResetPassword } from './pages/reset-password';
 
 export const router = createBrowserRouter([
   {
