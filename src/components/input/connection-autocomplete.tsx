@@ -42,7 +42,6 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
   const handleSelectAction = (value: string) => {
     handleSelect(value, options);
     setSearchValue('');
-    setOptions([]);
     initalRequest && setStartInitialRequest(false);
   };
 
