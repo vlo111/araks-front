@@ -14,7 +14,7 @@ import { useGraph } from '../../layouts/components/visualisation/wrapper';
 import { CircleSizeComponent } from 'pages/project-visualisation/components/size-selector';
 import { BorderSizeComponent } from 'pages/project-visualisation/components/size-selector/border-size';
 import { BorderType } from 'pages/project-visualisation/components/size-selector/border-type';
-import { INode } from '@antv/g6';
+import G6, { INode } from '@antv/g6';
 import { PropertyTypes } from 'components/form/property/types';
 import { Datepicker } from 'components/datepicker';
 import dayjs from 'dayjs';
@@ -187,13 +187,18 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
         size: 40,
         icon: {
           show: false,
+          img: node.getModel()?.img ? node.getModel()?.img : '',
         },
+        type: node.getModel()?.img ? 'image' : 'circle',
         style: {
           stroke: node.getModel()?.color as string,
+          fill: node.getModel()?.img ? 'transparent' : 'white',
         },
       });
     });
-    const filteredEdges = graph?.getEdges()?.filter((edge) => id === edge.getModel().project_edge_type_id);
+    const filteredEdges = graph
+      ?.getEdges()
+      ?.filter((edge) => id === edge.getModel().project_edge_type_id || edge.getModel().label);
 
     filteredEdges?.forEach((edge) => {
       graph.updateItem(edge.getID() as string, {
@@ -201,6 +206,11 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
           stroke: '#C3C3C3',
           lineWidth: 2,
           lineDash: [],
+          endArrow: {
+            fill: '#C3C3C3',
+            path: G6.Arrow.triangle(10, 15, 5),
+            d: 5,
+          },
         },
       });
     });
