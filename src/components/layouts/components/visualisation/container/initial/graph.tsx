@@ -6,20 +6,18 @@ import { contextMenuPlugin } from '../../helpers/context-menu';
 import { UserProjectRole } from 'api/types';
 
 export const initGraph: InitGraph = (container, params, projectInfo) => {
-  const optionWithPermission = {
-    ...options,
-  };
-
   const isEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
-
-  if (!isEdit) {
-    optionWithPermission.modes.default.shift();
-  }
 
   const graph = new Graph({
     container,
-    ...optionWithPermission,
+    ...options,
   });
+
+  if (graph !== undefined && !isEdit) {
+    graph?.removeBehaviors('create-edge', 'default');
+  } else {
+    graph?.addBehaviors('create-edge', 'default');
+  }
 
   initGraphEvents(graph, params);
 
