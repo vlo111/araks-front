@@ -5,12 +5,16 @@ import { useParams } from 'react-router-dom';
 
 export type Node = {
   id: string;
-  _fields: {
-    labels: string[];
-    properties: {
-      [key: string]: never;
-    };
-  }[];
+  _fields: [
+    {
+      labels: string[];
+      properties: {
+        [key: string]: never;
+      };
+      identity?: { low: number };
+    },
+    { low: number }
+  ];
 };
 
 type Edge = {
