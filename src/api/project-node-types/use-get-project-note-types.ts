@@ -41,7 +41,6 @@ export const useGetProjectNoteTypes = (
     // select: (data): ReturnData => data.data,
   });
   const { data, isSuccess } = result;
-
   const formatted = useMemo(
     () => (isSuccess ? createNodesTree(data.data, noColors) : []),
     [data?.data, isSuccess, noColors]

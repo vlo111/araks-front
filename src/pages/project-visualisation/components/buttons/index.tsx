@@ -2,7 +2,7 @@ import { Form } from 'antd';
 import { PlusAction } from 'components/actions/plus';
 import { StyledButtonsWrapper, StyledAddButton, StyledDiv, StyledCleanButton, StyledRunButton } from './styles';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { IEdge, INode } from '@antv/g6';
+import G6, { IEdge, INode } from '@antv/g6';
 
 type Props = {
   setOpenTable: (value: boolean) => void;
@@ -27,9 +27,12 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
         size: 40,
         icon: {
           show: false,
+          img: node.getModel()?.img ? node.getModel()?.img : '',
         },
+        type: node.getModel()?.img ? 'image' : 'circle',
         style: {
           stroke: node.getModel()?.color as string,
+          fill: node.getModel()?.img ? 'transparent' : 'white',
         },
       });
     });
@@ -39,6 +42,11 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
           stroke: '#C3C3C3',
           lineWidth: 2,
           lineDash: [],
+          endArrow: {
+            fill: '#C3C3C3',
+            path: G6.Arrow.triangle(10, 15, 5),
+            d: 5,
+          },
         },
       });
     });

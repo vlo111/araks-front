@@ -75,7 +75,7 @@ Props) => {
   const form = Form.useFormInstance();
   const params = useParams();
   const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
-  const visualisationFilter = ['default_image', 'type', 'name'];
+  const visualisationFilter = ['node_icon', 'type', 'name'];
 
   const { formatted: nodesList, isInitialLoading } = useGetProjectNoteTypes(
     {
