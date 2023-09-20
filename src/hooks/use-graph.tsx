@@ -5,10 +5,12 @@ import { initGraph } from 'components/layouts/components/visualisation/container
 import { formattedData } from '../components/layouts/components/visualisation/helpers/format-node';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
 import { useGetData } from '../api/visualisation/use-get-data';
+import { useProject } from '../context/project-context';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
+  const { projectInfo } = useProject();
   const { nodes, edges, count } = useGetData();
 
   const { graph, setGraph, ...params } = useGraph() ?? {};
@@ -17,7 +19,7 @@ export const useGraphRef = () => {
 
   useEffect(() => {
     if (graph === undefined && setGraph !== undefined) {
-      setGraph(initGraph(ref.current as HTMLDivElement, params));
+      setGraph(initGraph(ref.current as HTMLDivElement, params, projectInfo));
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
@@ -26,7 +28,7 @@ export const useGraphRef = () => {
       graph.render && graph.render();
     }
     params.setGraphInfo && params.setGraphInfo({ nodeCount: nodes?.length, nodeCountAPI: count });
-  }, [nodes, edges, graph, setGraph, count]);
+  }, [nodes, edges, graph, setGraph, projectInfo, count]);
 
   return ref;
 };

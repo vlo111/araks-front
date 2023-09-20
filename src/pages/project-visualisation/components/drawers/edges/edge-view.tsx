@@ -14,9 +14,13 @@ import { SourceView } from './view/source';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgesCreate } from 'types/edges';
 import './add-edge-select.css';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 export const EdgeViewDrawer = () => {
   const [form] = Form.useForm();
+
+  const { projectInfo } = useProject();
 
   const [isEdit, setIsEdit] = useState(false);
 
@@ -67,6 +71,8 @@ export const EdgeViewDrawer = () => {
     } as EdgesCreate);
   };
 
+  const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
+
   return (
     <Form
       name="add-edge-view-drawer"
@@ -87,6 +93,7 @@ export const EdgeViewDrawer = () => {
             id={edge?.getID() as string}
             name={data?.name ?? ''}
             onClose={onClose}
+            canEdit={canEdit}
           />
         }
         footer={
