@@ -90,11 +90,11 @@ export const options = {
   animate: true,
   modes: {
     default: [
+      'create-edge',
       'drag-canvas',
       'drag-node',
       'drag-combo',
       'zoom-canvas',
-      'create-edge',
       {
         type: 'tooltip',
         formatText: (model: { [key: string]: unknown }) => {
