@@ -100,9 +100,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
           ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
             ? { action: getQueryFilterType(query.type) }
             : {}),
-          ...(query.isConnectionType && query.depth !== 1
-            ? { project_edge_type_id: query.id }
-            : { project_edge_type_id: query.id }),
+          ...(query.isConnectionType && query.depth === 1 ? {} : { project_edge_type_id: query.id }),
           query:
             (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
               ? dataToMap.reduce((acc, item, index) => {
