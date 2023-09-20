@@ -38,6 +38,7 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
 
         if (isSubMenu) {
           await expand(graph, item, target, setGraphInfo);
+          graph.fitView(0, { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true }, true);
         } else {
           switch (target.className) {
             case 'shortest-path': {
