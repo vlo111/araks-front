@@ -13,11 +13,7 @@ export const initGraph: InitGraph = (container, params, projectInfo) => {
     ...options,
   });
 
-  if (graph !== undefined && !isEdit) {
-    graph?.removeBehaviors('create-edge', 'default');
-  } else {
-    graph?.addBehaviors('create-edge', 'default');
-  }
+  if (!isEdit) graph?.removeBehaviors('create-edge', 'default');
 
   initGraphEvents(graph, params);
 
