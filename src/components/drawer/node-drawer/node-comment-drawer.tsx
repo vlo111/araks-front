@@ -52,6 +52,7 @@ export const NodeCommentDrawer = ({ children, ...props }: Partial<DrawerProps>) 
         }}
         style={{
           background: 'transparent',
+          backdropFilter: 'blur(14px)',
         }}
         mask={false}
         {...props}
