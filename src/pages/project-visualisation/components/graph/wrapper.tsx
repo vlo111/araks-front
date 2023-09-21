@@ -45,10 +45,11 @@ const contextMenu = css`
         left: 100%;
         display: none;
         width: 200px;
+        min-height: 40px;
 
         .submenu {
           max-height: 300px;
-          min-height: 85px;
+          min-height: 40px;
           display: flex;
           flex-direction: column;
           background: linear-gradient(122.32deg, rgba(237, 239, 248, 0.9) 3.09%, rgba(237, 239, 248, 0.6) 99.26%);

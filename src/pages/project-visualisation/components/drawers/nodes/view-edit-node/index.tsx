@@ -5,7 +5,7 @@ import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
-import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
+import { NodeDataConnectionToSave, ProjectTypePropertyReturnData, UserProjectRole } from 'api/types';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetNode } from 'api/node/use-get-node';
 import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType, UploadedFileType } from 'types/node';
@@ -18,6 +18,7 @@ import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
 import { useCallback, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
+import { useProject } from 'context/project-context';
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
@@ -46,6 +47,7 @@ export const ViewEditNodeDrawer = () => {
   const [form] = Form.useForm();
 
   const { graph, openNode, finishOpenNode } = useGraph() ?? {};
+  const { projectInfo } = useProject();
 
   const [isEdit, setIsEdit] = React.useState(false);
 
@@ -220,6 +222,8 @@ export const ViewEditNodeDrawer = () => {
     [isEdit, onClose, form]
   );
 
+  const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
+
   return (
     <Drawer
       headerStyle={{
@@ -234,6 +238,7 @@ export const ViewEditNodeDrawer = () => {
           id={nodeData?.id as string}
           name={(node?.getModel().nodeTypeName as string) ?? ''}
           onClose={onClose}
+          canEdit={canEdit}
         />
       }
       footer={footer}

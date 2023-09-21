@@ -1,5 +1,6 @@
 import { Graph, IEdge } from '@antv/g6';
 import { IOpenNodeCreate, IOpenIdState, IOpenEdgeState } from './reducer/types';
+import { ContextTypeProject } from '../schema/types';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
@@ -46,7 +47,11 @@ export type PickVisualizationContextType = Pick<
   | 'startOpenEdgeCreate'
 >;
 
-export type InitGraph = (container: HTMLDivElement, params: PickVisualizationContextType) => Graph;
+export type InitGraph = (
+  container: HTMLDivElement,
+  params: PickVisualizationContextType,
+  projectInfo: ContextTypeProject | null
+) => Graph;
 
 export type Node = {
   id: string;

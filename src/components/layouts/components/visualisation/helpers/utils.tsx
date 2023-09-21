@@ -48,7 +48,7 @@ export const getExpandList = async (id: string) => {
  * @param id
  * @param isNode
  */
-export const getMenuContexts = (id: string, isNode: boolean) => {
+export const getMenuContexts = (id: string, isNode: boolean, isEdit: boolean) => {
   const nodeContext = `<div class='menu'>
       <span class='focus'>Focus on node</span>
       <span class="main-menu expand">Expand</span>
@@ -57,20 +57,20 @@ export const getMenuContexts = (id: string, isNode: boolean) => {
         </div>
       </div>
       <span class="shortest-path">Shortest path</span>
-      <span class='delete'>Delete</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   const canvasContext = `<div class='menu'>
-      <span>Create Node</span>
+      ${isEdit ? '<span>Create Node</span>' : ''}
       <span class="export">Export/PNG</span>
     </div>`;
 
   const edgeContext = `<div class='menu'>
-      <span class='delete'>Delete</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   const comboContext = `<div class='menu'>
-      <span class='delete'>Delete</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   return { canvasContext, nodeContext, comboContext, edgeContext };

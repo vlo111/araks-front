@@ -9,11 +9,12 @@ type ViewNodeProps = {
   id: string;
   name: string;
   isEdit: boolean;
+  canEdit?: boolean;
   setIsEdit: (x: boolean) => void;
   onClose: () => void;
 };
 
-export const NodeViewTitle = ({ id, name, isEdit, setIsEdit }: ViewNodeProps) => {
+export const NodeViewTitle = ({ id, name, isEdit, setIsEdit, canEdit }: ViewNodeProps) => {
   const { startDeleteNode } = useGraph();
 
   return (
@@ -21,14 +22,18 @@ export const NodeViewTitle = ({ id, name, isEdit, setIsEdit }: ViewNodeProps) =>
       <div>
         <MenuText strong>{name}</MenuText>
       </div>
-      <div>
-        <Button type="link" disabled={isEdit} icon={<EditOutlined />} onClick={() => setIsEdit(true)} />
-        <Button
-          type="link"
-          icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
-          onClick={() => startDeleteNode({ id })}
-        />
-      </div>
+      {canEdit ? (
+        <div>
+          <Button type="link" disabled={isEdit} icon={<EditOutlined />} onClick={() => setIsEdit(true)} />
+          <Button
+            type="link"
+            icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
+            onClick={() => startDeleteNode({ id })}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 };

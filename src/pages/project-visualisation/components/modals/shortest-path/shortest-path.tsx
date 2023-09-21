@@ -8,7 +8,7 @@ import { useGetShortestPath } from 'api/visualisation/use-get-shortest-path';
 import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
 
 export const ShortestPathWrapper = () => {
-  const { graph } = useGraph() ?? {};
+  const { graph, setGraphInfo } = useGraph() ?? {};
 
   const [search, setSearch] = useState<string>();
 
@@ -27,6 +27,10 @@ export const ShortestPathWrapper = () => {
           graph.data(formatted);
 
           graph.render();
+
+          setGraphInfo({
+            nodeCount: formatted.nodes.length ?? 0,
+          });
 
           close();
         } else {

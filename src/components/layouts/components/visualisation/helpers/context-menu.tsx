@@ -3,9 +3,10 @@ import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { addTooltip, expand, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
 
-export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
+export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType, isEdit: boolean) => PluginBase = (
   graph,
-  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge, setGraphInfo }
+  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge, setGraphInfo },
+  isEdit
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -19,7 +20,8 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
     const isCombo = itemType === 'combo';
 
     startOpenNodeCreate({ isOpened: false, x: evt?.x ?? 0, y: evt?.y ?? 0 });
-    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode);
+
+    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode, isEdit);
     if (isNode) {
       updateExpandList(id, graph.getEdges());
     }
@@ -38,6 +40,7 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
 
         if (isSubMenu) {
           await expand(graph, item, target, setGraphInfo);
+          graph.fitView(0, { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true }, true);
         } else {
           switch (target.className) {
             case 'shortest-path': {

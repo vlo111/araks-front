@@ -19,6 +19,8 @@ type Props = {
       parent_id: string;
       type: string;
       typeText: string;
+      depth: number;
+      label: string;
     }
   >;
 };
@@ -39,23 +41,31 @@ export const Styling = () => {
           size: 40,
           style: {
             stroke: node.getModel()?.color as string,
+            fill: node.getModel()?.img ? 'transparent' : 'white',
           },
         });
       });
       values.queries.forEach((query) => {
-        if (query.parent_id) {
+        if (query.parent_id && query.depth === 2) {
           const typeIsNot = query.type === QueryType.IsNot;
+          const typeIsNotNull = query.type === QueryType.IsNotNull;
           const typeIs = query.type === QueryType.Is;
+          const typeIsNull = query.type === QueryType.IsNull;
           const typeText = query.typeText ? query.typeText.toLowerCase() : '';
-          const filteredNodes = graph
-            .getNodes()
-            .filter((node) =>
-              node.getModel().nodeType === query.parent_id && typeIsNot
+          const filteredNodes = graph.getNodes().filter((node) => {
+            return (
+              node.getModel().nodeType === query.parent_id &&
+              (typeIsNot
                 ? (node.getModel().label as string).toLowerCase() !== typeText
                 : typeIs
                 ? (node.getModel().label as string).toLowerCase() === typeText
-                : (node.getModel().label as string).toLowerCase().includes(typeText)
+                : typeIsNull
+                ? node.getModel().img === ''
+                : typeIsNotNull
+                ? node.getModel().img
+                : (node.getModel().label as string).toLowerCase().includes(typeText))
             );
+          });
           setFilteredNodes((prevState) => [...prevState, ...filteredNodes]);
           filteredNodes.forEach((node) => {
             graph.updateItem(node.getID(), {
@@ -64,11 +74,12 @@ export const Styling = () => {
                 show: node.getModel()?.img ? query.icon : query.icon,
                 width: (query.size || initialSize) / 1.5,
                 height: (query.size || initialSize) / 1.5,
-                img: node.getModel().img ? query.icon : query.icon,
+                img: query.icon,
               },
               type: query.icon,
               style: {
                 stroke: query.color,
+                fill: query.icon ? 'white' : node.getModel()?.img ? 'transparent' : 'white',
               },
             });
           });
@@ -82,17 +93,24 @@ export const Styling = () => {
                 show: node.getModel()?.img ? query.icon : query.icon,
                 width: (query.size || initialSize) / 1.5,
                 height: (query.size || initialSize) / 1.5,
-                img: node.getModel()?.img ? query.icon : query.icon,
+                img: query.icon,
               },
               type: query.icon,
               style: {
                 stroke: query.color,
+                fill: query.icon ? 'white' : node.getModel()?.img ? 'transparent' : 'white',
               },
             });
           });
         }
 
-        const filteredEdges = graph.getEdges().filter((edge) => edge.getModel().project_edge_type_id === query.id);
+        const filteredEdges = graph
+          .getEdges()
+          .filter(
+            (edge) =>
+              (edge.getModel().label as string).toLowerCase() === query.label ||
+              edge.getModel().project_edge_type_id === query.id
+          );
         setFilteredEdges((prevState) => [...prevState, ...filteredEdges]);
         filteredEdges.forEach((edge) => {
           graph.updateItem(edge.getID() as string, {

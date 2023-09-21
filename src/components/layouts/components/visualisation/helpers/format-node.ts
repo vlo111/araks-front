@@ -5,12 +5,13 @@ type FormattedData = (nodesList: Nodes, edgeList: Edges) => GraphData;
 
 export const formattedData: FormattedData = (nodesList, edgeList) => {
   const data: GraphData = {
-    nodes: nodesList.map(({ _fields }) =>
-      formatNodeProperty({
+    nodes: nodesList.map(({ _fields }) => ({
+      ...formatNodeProperty({
         typeName: _fields[0].labels[0],
         properties: _fields[0].properties,
-      })
-    ),
+      }),
+      edgeCount: _fields[1]?.low,
+    })),
     edges: edgeList.map(({ _fields }) => ({
       id: _fields[0].properties.id,
       project_edge_type_id: _fields[0].properties.project_edge_type_id,
@@ -19,6 +20,7 @@ export const formattedData: FormattedData = (nodesList, edgeList) => {
       label: _fields[0].type ?? '',
     })),
   };
+
   return data;
 };
 
@@ -58,7 +60,8 @@ export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
   nodesList.forEach(({ _fields }) => {
     _fields?.forEach((node) => {
       if (node) {
-        const [typeName, properties] = [node.labels[0], node.properties];
+        const fieldNode = node as { labels: string[]; properties: { [key: string]: never } };
+        const [typeName, properties] = [fieldNode.labels[0], fieldNode.properties];
         nodes.push(formatNodeProperty({ typeName, properties }));
       }
     });
@@ -84,5 +87,6 @@ export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
     nodes,
     edges,
   };
+
   return data;
 };

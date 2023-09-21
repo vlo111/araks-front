@@ -10,8 +10,6 @@ const layout = {
   nodeSize: 30,
   workerEnabled: true,
   gpuEnabled: true,
-  // onTick: () => {},
-  // onLayoutEnd: () => {},
 };
 
 const defaultEdge = {
@@ -92,11 +90,11 @@ export const options = {
   animate: true,
   modes: {
     default: [
+      'create-edge',
       'drag-canvas',
       'drag-node',
       'drag-combo',
       'zoom-canvas',
-      'create-edge',
       {
         type: 'tooltip',
         formatText: (model: { [key: string]: unknown }) => {
