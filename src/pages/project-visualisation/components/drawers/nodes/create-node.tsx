@@ -79,7 +79,6 @@ export const NodeCreateDrawer: React.FC = () => {
       createNode(data);
       createEdge(data, variables);
       form.resetFields();
-      finishOpenNodeCreate();
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
@@ -89,6 +88,7 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const onFinish = useCallback(
     (values: NodeBody) => {
+      finishOpenNodeCreate();
       const mainData = { name: '', default_image: '' };
       const dataToSubmit = properties
         ?.map((item) => {
@@ -132,7 +132,7 @@ export const NodeCreateDrawer: React.FC = () => {
         project_type_id: parent_id || '',
       } as NodeDataSubmit);
     },
-    [properties, mutate, parent_id]
+    [finishOpenNodeCreate, properties, mutate, parent_id]
   );
 
   const treeSelect = useMemo(
