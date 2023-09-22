@@ -19,14 +19,14 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
   const [activeKey, setActiveKey] = useState<string>(mainId || '');
 
   const attachClickEvent = () => {
-    if (clickEventAttached) return; // Don't attach the event multiple times
+    if (clickEventAttached) return;
     clickEventAttached = true;
 
     initPerspectiveEvents(graph, setPerspectiveInfo);
   };
 
   const detachClickEvent = () => {
-    if (!clickEventAttached) return; // Event not attached, no need to detach
+    if (!clickEventAttached) return;
     clickEventAttached = false;
 
     graph.off('node:click');
