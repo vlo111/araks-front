@@ -56,9 +56,9 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
 
       if (mainId !== activeKey) {
         setPerspectiveData({ perspectiveId: data.id, project_id: params.id || '' });
-        attachClickEvent(); // Attach the click event when needed
+        attachClickEvent();
       } else {
-        detachClickEvent(); // Detach the click event when not needed
+        detachClickEvent();
       }
     },
   });
