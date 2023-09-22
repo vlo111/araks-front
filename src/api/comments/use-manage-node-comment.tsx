@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import client from '../client';
 import { errorMessage } from 'helpers/utils';
-import { URL_COMMENTS_NODES_LIST, URL_COMMENT_NODES_CREATE } from './constants';
+import { URL_COMMENTS_NODES_LIST, URL_COMMENT_NODES_COUNT, URL_COMMENT_NODES_CREATE } from './constants';
 
 export const useManageNodeComment = (nodeId?: string) => {
   const queryClient = useQueryClient();
@@ -13,6 +13,7 @@ export const useManageNodeComment = (nodeId?: string) => {
     },
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([URL_COMMENTS_NODES_LIST.replace(':node_id', nodeId || '')]);
+      queryClient.invalidateQueries([URL_COMMENT_NODES_COUNT.replace(':id', nodeId || '')]);
     },
     onError: errorMessage,
   });

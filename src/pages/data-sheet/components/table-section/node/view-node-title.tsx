@@ -43,7 +43,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
           />
         )}
         <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
-        <NodeCommentDrawer>
+        <NodeCommentDrawer nodeId={id}>
           <Comments nodeId={id} />
         </NodeCommentDrawer>
         <Button type="link" disabled icon={<DownloadOutlined style={{ color: '#414141', fontSize: '24px' }} />} />
