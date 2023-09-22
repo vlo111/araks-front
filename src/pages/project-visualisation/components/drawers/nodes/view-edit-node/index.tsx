@@ -243,6 +243,12 @@ export const ViewEditNodeDrawer = () => {
       }
       footer={footer}
       open={openNode?.isOpened}
+      afterOpenChange={(open) => {
+        if (!open) {
+          setIsEdit(false);
+          form.resetFields();
+        }
+      }}
     >
       {isEdit ? (
         <Form
