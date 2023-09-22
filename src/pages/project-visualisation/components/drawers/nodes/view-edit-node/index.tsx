@@ -8,14 +8,20 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData, UserProjectRole } from 'api/types';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetNode } from 'api/node/use-get-node';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType, UploadedFileType } from 'types/node';
+import {
+  NodeBody,
+  NodeDataResponse,
+  NodeDataSubmit,
+  NodePropertiesValues,
+  ResponseLocationType,
+  UploadedFileType,
+} from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
@@ -23,23 +29,22 @@ import { useProject } from 'context/project-context';
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
     case PropertyTypes.Location:
-      return (item.nodes_data as ResponseLocationType[])?.map(
-        (addr: ResponseLocationType) =>
-          ({
-            address: addr.address,
-            lat: addr.location.latitude,
-            lng: addr.location.longitude,
-          } as Location)
+      return (
+        (item.nodes_data as ResponseLocationType[])?.map((addr) => ({
+          address: addr.address,
+          lat: addr.location.latitude,
+          lng: addr.location.longitude,
+        })) || []
       );
     case PropertyTypes.DateTime:
     case PropertyTypes.Date:
-      return item.nodes_data?.map((rec) => dayjs(rec as string));
+      return (item.nodes_data || []).map((rec) => dayjs(rec as string));
     case PropertyTypes.IMAGE_URL:
-      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`));
+      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`)) || [];
     case PropertyTypes.Document:
-      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name));
+      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name)) || [];
     default:
-      return item.nodes_data;
+      return item.nodes_data || [];
   }
 };
 
@@ -53,15 +58,14 @@ export const ViewEditNodeDrawer = () => {
 
   const node = graph?.getNodes().find((n) => n?.getID && n?.getID() === openNode?.id);
 
-  const { data: nodeData } = useGetNode(node?.getID() ?? '', {
-    enabled: !!node?.getID(),
-    onSuccess: (nodeData) => {
+  const setFormValue = useCallback(
+    (data: NodeDataResponse | undefined) => {
       const initialAcc = {
-        name: [nodeData.name],
-        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
+        name: [data?.name],
+        node_icon: [setUploadFileStructure(data?.default_image ?? '', 'Default image')],
       };
 
-      const fieldsData = nodeData.properties?.reduce((acc, item) => {
+      const fieldsData = data?.properties?.reduce((acc, item) => {
         if (!item.nodes_data?.length) {
           return acc;
         }
@@ -71,7 +75,7 @@ export const ViewEditNodeDrawer = () => {
           [item.nodeTypeProperty.name]: getValue(item),
         } as NodePropertiesValues;
       }, initialAcc);
-      const groupList = groupedData(nodeData.edges);
+      const groupList = groupedData(data?.edges ?? []);
 
       const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
         return {
@@ -88,11 +92,17 @@ export const ViewEditNodeDrawer = () => {
 
       form.setFieldsValue({
         ...fieldsData,
-        name: [nodeData.name],
-        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
+        name: [data?.name],
+        node_icon: [setUploadFileStructure(data?.default_image ?? '', 'Default image')],
         ...connectionFieldsData,
       });
     },
+    [form]
+  );
+
+  const { data: nodeData } = useGetNode(node?.getID() ?? '', {
+    enabled: !!node?.getID(),
+    onSuccess: (data) => setFormValue(data),
   });
 
   const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.getModel()?.nodeType as string, {
@@ -224,6 +234,11 @@ export const ViewEditNodeDrawer = () => {
 
   const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
 
+  useEffect(() => {
+    setFormValue(nodeData);
+    return () => form.resetFields();
+  }, [form, nodeData, setFormValue]);
+
   return (
     <Drawer
       headerStyle={{
@@ -243,12 +258,6 @@ export const ViewEditNodeDrawer = () => {
       }
       footer={footer}
       open={openNode?.isOpened}
-      afterOpenChange={(open) => {
-        if (!open) {
-          setIsEdit(false);
-          form.resetFields();
-        }
-      }}
     >
       {isEdit ? (
         <Form
