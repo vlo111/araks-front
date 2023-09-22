@@ -1,14 +1,12 @@
-export const downloadFile = async (nodeTypeId: string, isPdf = false) => {
+export async function DownloadFile(nodeTypeId: string, isPDF = false, token: string) {
   try {
     const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZXhhbXBsZUBlbWFpbC5jb20iLCJ1c2VySWQiOiI0ZjBkYmM2MC1jNmRiLTQzZWItOWE4MS0zMDZlMDVmMzJiMzMiLCJhY2Nlc3NUeXBlcyI6WyJhZG1pbiJdLCJ1c2VyX2lwIjoiOjpmZmZmOjE5Mi4xNjguMC4xNDEiLCJpYXQiOjE2OTUzNzUyNTUsImV4cCI6MTY5NTQ4MzI1NX0.JzxkmsHejTg4ZxJpfC7LYGjMTLfKrahpaTDi9zuStjE'; // Replace with your actual token
     const queryParams = `?nodeTypeId=${nodeTypeId}`;
     const url = `${baseUrl}nodes/export-nodes/${nodeTypeId}`;
     const excelFileURL = `${url}?${queryParams}`;
 
     const headers = {
-      'Content-Type': isPdf ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Type': isPDF ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       Authorization: token,
     };
 
@@ -22,6 +20,7 @@ export const downloadFile = async (nodeTypeId: string, isPdf = false) => {
     const fileUrl = window.URL.createObjectURL(blob);
     window.open(fileUrl);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error downloading file:', error);
   }
 };

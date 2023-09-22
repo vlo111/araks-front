@@ -12,7 +12,9 @@ import { useProject } from 'context/project-context';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { Comments } from 'pages/project-overview/components/comment-like/comments';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { downloadFile } from 'components/actions/utils';
+import { DownloadFile } from 'components/actions/utils';
+import { useLocalStorageGet } from 'hooks/use-local-storage-get';
+import { AUTH_KEYS } from 'helpers/constants';
 
 type ViewNodeProps = {
   id: string;
@@ -22,6 +24,7 @@ type ViewNodeProps = {
 };
 
 export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+  const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const { nodeTypeId } = useDataSheetWrapper();
   const { projectInfo } = useProject();
   const { state } = useOverview();
@@ -29,7 +32,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
 
   const handleDownload = async () => {
     if (nodeTypeId) {
-      await downloadFile(nodeTypeId, true);
+      await DownloadFile(nodeTypeId, true, token);
     }
   };
 
