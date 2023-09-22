@@ -18,7 +18,7 @@ export const useGraphRef = () => {
   const ref: GraphRef = React.useRef(null);
 
   useEffect(() => {
-    if (graph === undefined && setGraph !== undefined) {
+    if (graph === undefined && setGraph !== undefined && Object.hasOwn(projectInfo ?? {}, 'role')) {
       setGraph(initGraph(ref.current as HTMLDivElement, params, projectInfo));
     }
 

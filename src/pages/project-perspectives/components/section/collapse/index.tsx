@@ -8,6 +8,8 @@ import { setPerspectiveData, switchTypePermission } from 'components/layouts/com
 import { IResponsePerspectiveData } from 'api/types';
 import { initPerspectiveEvents } from 'components/layouts/components/schema/container/initial/events';
 
+let clickEventAttached = false;
+
 export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => {
   const params = useParams();
   const { graph, setPerspectiveInfo } = useSchema() || {};
@@ -15,6 +17,20 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
   const mainId = useMemo(() => panels.find((a) => a.status === 'main')?.id, [panels]);
   const isInitialMount = useRef(true);
   const [activeKey, setActiveKey] = useState<string>(mainId || '');
+
+  const attachClickEvent = () => {
+    if (clickEventAttached) return;
+    clickEventAttached = true;
+
+    initPerspectiveEvents(graph, setPerspectiveInfo);
+  };
+
+  const detachClickEvent = () => {
+    if (!clickEventAttached) return;
+    clickEventAttached = false;
+
+    graph.off('node:click');
+  };
 
   useGetPerspective(activeKey, {
     enabled: !!activeKey,
@@ -40,9 +56,9 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
 
       if (mainId !== activeKey) {
         setPerspectiveData({ perspectiveId: data.id, project_id: params.id || '' });
-        initPerspectiveEvents(graph, setPerspectiveInfo);
+        attachClickEvent();
       } else {
-        graph.off('node:click');
+        detachClickEvent();
       }
     },
   });
