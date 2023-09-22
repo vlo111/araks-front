@@ -30,7 +30,9 @@ export const useCreateType = (options: Options, nodeTypeId?: string) => {
   const mutation = useMutation<ReturnData, unknown, ProjectNodeTypeSubmit>({
     mutationFn: ({ parent_id, ...values }: ProjectNodeTypeSubmit) => {
       const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
-      const body = nodeTypeId ? { ...values, ...{ parent_id } } : { ...values, project_id: params.id, parent_id };
+      const body = nodeTypeId
+        ? { ...values, ...{ parent_id: parent_id ?? null } }
+        : { ...values, project_id: params.id, parent_id };
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
