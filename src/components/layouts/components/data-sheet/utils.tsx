@@ -90,6 +90,7 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             if (subChild.value === selectedValue) {
               return {
                 ...subChild,
+                id: element.id,
                 isConnectionType: true,
                 depth: 3,
                 labelName: `${element.name}.${child.label}.${subChild.name}`,

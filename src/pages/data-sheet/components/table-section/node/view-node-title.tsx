@@ -1,4 +1,4 @@
-import { DownloadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { UserProjectRole } from 'api/types';
 import { Button } from 'components/button';
@@ -11,6 +11,8 @@ import { useOverview } from 'context/overview-context';
 import { useProject } from 'context/project-context';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { Comments } from 'pages/project-overview/components/comment-like/comments';
+import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
+import { downloadFile } from 'components/actions/utils';
 
 type ViewNodeProps = {
   id: string;
@@ -20,9 +22,16 @@ type ViewNodeProps = {
 };
 
 export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+  const { nodeTypeId } = useDataSheetWrapper();
   const { projectInfo } = useProject();
   const { state } = useOverview();
   const isPublicPage = useIsPublicPage();
+
+  const handleDownload = async () => {
+    if (nodeTypeId) {
+      await downloadFile(nodeTypeId, true);
+    }
+  };
 
   const { state: selectedView } = useViewDatasheet();
 
@@ -46,7 +55,11 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
         <NodeCommentDrawer>
           <Comments nodeId={id} />
         </NodeCommentDrawer>
-        <Button type="link" disabled icon={<DownloadOutlined style={{ color: '#414141', fontSize: '24px' }} />} />
+        <Button
+          type="link"
+          onClick={handleDownload}
+          icon={<UploadOutlined style={{ color: '#414141', fontSize: '24px' }} />}
+        />
         {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
           <DeleteNodeModal id={id} onClose={onClose} />
         )}
