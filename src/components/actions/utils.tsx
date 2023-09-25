@@ -1,7 +1,9 @@
+import { errorMessage } from 'helpers/utils';
+
 export async function DownloadFile(nodeTypeId: string, isPDF = false, token: string) {
   try {
     const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
-    const queryParams = `?nodeTypeId=${nodeTypeId}`;
+    const queryParams = `nodeTypeId=${nodeTypeId}`;
     const url = `${baseUrl}nodes/export-nodes/${nodeTypeId}`;
     const excelFileURL = `${url}?${queryParams}`;
 
@@ -20,6 +22,6 @@ export async function DownloadFile(nodeTypeId: string, isPDF = false, token: str
     const fileUrl = window.URL.createObjectURL(blob);
     window.open(fileUrl);
   } catch (error) {
-    throw new Error(`Error downloading file: ${(error as Error).message}`);
+    errorMessage(error);
   }
 }
