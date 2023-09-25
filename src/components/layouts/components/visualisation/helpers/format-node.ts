@@ -3,6 +3,10 @@ import { Edges, Nodes } from 'api/visualisation/use-get-data';
 
 type FormattedData = (nodesList: Nodes, edgeList: Edges) => GraphData;
 
+type FieldProperty = { labels: string[]; properties: { [key: string]: never } };
+
+type FieldEdgeCount = { low: number; high: number };
+
 export const formattedData: FormattedData = (nodesList, edgeList) => {
   const data: GraphData = {
     nodes: nodesList.map(({ _fields }) => ({
@@ -55,14 +59,22 @@ const formatNodeProperty = ({ typeName, properties }: { typeName: string; proper
 };
 
 export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
-  const nodes: Node[] = [];
+  const nodes: (Node & { edgeCount?: number })[] = [];
 
   nodesList.forEach(({ _fields }) => {
-    _fields?.forEach((node) => {
+    _fields?.forEach((node, index) => {
       if (node) {
-        const fieldNode = node as { labels: string[]; properties: { [key: string]: never } };
-        const [typeName, properties] = [fieldNode.labels[0], fieldNode.properties];
-        nodes.push(formatNodeProperty({ typeName, properties }));
+        const fieldNode = node as FieldProperty | FieldEdgeCount;
+
+        if (node.hasOwnProperty('low')) {
+          const field = nodes[index - 1];
+
+          field.edgeCount = (node as FieldEdgeCount)?.low;
+        } else {
+          const field = fieldNode as FieldProperty;
+          const [typeName, properties] = [field.labels[0], field.properties];
+          nodes.push(formatNodeProperty({ typeName, properties }));
+        }
       }
     });
   });

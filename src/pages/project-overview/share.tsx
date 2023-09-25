@@ -43,7 +43,7 @@ export const Share = () => {
 
   const id = Form.useWatch('perspective', form);
 
-  const { mutate } = useCreatePerspectiveUser({}, id);
+  const { mutate } = useCreatePerspectiveUser({}, id || (data && data[0]?.id));
 
   const onFinish = ({ role, perspective, email }: { perspective: string; role: string; email: string }) => {
     mutate({
