@@ -20,7 +20,6 @@ export async function DownloadFile(nodeTypeId: string, isPDF = false, token: str
     const fileUrl = window.URL.createObjectURL(blob);
     window.open(fileUrl);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error downloading file:', error);
+    throw new Error(`Error downloading file: ${(error as Error).message}`);
   }
-};
+}
