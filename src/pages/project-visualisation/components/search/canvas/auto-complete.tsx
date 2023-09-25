@@ -24,7 +24,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
   const { mutate } = useGetSelectedSearchData({
     onSuccess: (data) => {
       const {
-        data: { nodes, edges },
+        data: { nodes, edges, count },
       } = data ?? {};
       const formattedData = formattedSearchData(nodes, edges);
 
@@ -32,7 +32,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       graph.render && graph.render();
 
       setGraphInfo({
-        nodeCount: 1,
+        nodeCount: count,
       });
     },
   });
