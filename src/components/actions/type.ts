@@ -6,6 +6,7 @@ export type ActionProps = {
   button?: ButtonProps;
   isPdf?: boolean;
   token?: string;
+  nodeId?: string;
 };
 
 export type SearchActionProps = {

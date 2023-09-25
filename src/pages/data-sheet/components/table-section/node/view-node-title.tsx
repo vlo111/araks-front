@@ -29,14 +29,13 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
   const { projectInfo } = useProject();
   const { state } = useOverview();
   const isPublicPage = useIsPublicPage();
+  const { state: selectedView } = useViewDatasheet();
 
   const handleDownload = async () => {
     if (nodeTypeId) {
-      await DownloadFile(nodeTypeId, true, token);
+      await DownloadFile(nodeTypeId, true, token, id);
     }
   };
-
-  const { state: selectedView } = useViewDatasheet();
 
   return (
     <Space style={{ width: '100%', justifyContent: 'space-between' }}>
