@@ -102,7 +102,7 @@ export const OverviewTabs = () => {
       },
       {
         key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_VISUALISATION}`,
-        label: 'Visualisation',
+        label: 'Visualization',
       },
     ];
 
