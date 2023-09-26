@@ -73,15 +73,15 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
               <List.Item.Meta
                 avatar={<Avatar src={item.default_image} />}
                 title={
-                  <Row align="top">
-                    <Col span={3} style={{ textAlign: 'left' }}>
+                  <Row align="top" gutter={10}>
+                    <Col xs={7} xxl={5} style={{ textAlign: 'left' }}>
                       <Button onClick={() => dispatch(item.node_id)} type="link">
                         <Text color={COLORS.PRIMARY.GRAY} underline>
                           {item.node_name}
                         </Text>
                       </Button>
                     </Col>
-                    <Col span={15}>
+                    <Col xs={12} xxl={14}>
                       {item.data?.map((dataItem, index) => (
                         <Fragment key={index}>
                           <Row justify="end" align="top" gutter={32}>
@@ -110,7 +110,7 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
                         </Fragment>
                       ))}
                     </Col>
-                    <Col span={6}>
+                    <Col xs={4}>
                       <TypeInfo color={item.color} className="all-data-type-name">
                         <Text color={COLORS.PRIMARY.GRAY_DARK}>{item.type_name}</Text>
                       </TypeInfo>
