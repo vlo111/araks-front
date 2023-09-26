@@ -23,3 +23,7 @@ cursor: default;
 .search-visualisation .ant-select-item{
     padding: 0.4rem 2.2rem;
 }
+
+.certain-category-search-dropdown .ant-select-item{
+    padding: 0.4rem 1rem;
+}
