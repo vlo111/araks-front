@@ -32,7 +32,7 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       graph.render && graph.render();
 
       setGraphInfo({
-        nodeCount: formattedData.nodes.length,
+        nodeCount: graph.getNodes().length,
       });
     },
   });
