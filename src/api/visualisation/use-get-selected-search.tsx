@@ -7,7 +7,6 @@ import { Edges, Nodes } from './use-get-data';
 type ProjectResponse = {
   nodes: Nodes;
   edges: Edges;
-  count: number;
 };
 
 export const GET_SEARCH_DATA = '/neo4j/type-or-node/:project_id';
