@@ -131,6 +131,7 @@ export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
   useEffect(() => {
     setPagination({
       ...pagination,
+      page: 1,
       search,
     });
   }, [search]);
