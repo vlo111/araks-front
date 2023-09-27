@@ -334,13 +334,33 @@ export const removeCombos = (graph: Graph) => {
   if (comboSelect.length) {
     comboSelect.forEach((combo) => {
       graph.uncombo(combo.getID() as string);
-      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
     });
   }
 
   clearCanvas(graph);
 
-  graph.render();
+  graph.updateLayout(
+    {
+      type: 'gForce',
+      center: [window.innerWidth / 2, window.innerHeight / 2],
+      linkDistance: 100,
+      nodeStrength: 600,
+      edgeStrength: 200,
+      nodeSize: 5,
+      workerEnabled: true,
+      gpuEnabled: true,
+      fitView: true, // Fit the view to the entire graph
+      fitViewPadding: [30, 30], // Padding around the graph when fitting the view
+    },
+    'center',
+    { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    true
+  );
+  setTimeout(() => {
+    graph.fitCenter(true);
+
+    graph.fitView([30, 30], { ratioRule: 'min', direction: 'both', onlyOutOfViewPort: true }, true);
+  }, 500);
 };
 
 export const clearCanvas = (graph: Graph) => {
@@ -351,6 +371,9 @@ export const clearCanvas = (graph: Graph) => {
   });
   graph.getEdges().forEach(function (edge) {
     graph.clearItemStates(edge);
+  });
+  graph.getCombos().forEach(function (combo) {
+    graph.clearItemStates(combo);
   });
   graph.paint();
   graph.setAutoPaint(true);
