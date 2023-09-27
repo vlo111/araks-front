@@ -15,8 +15,8 @@ import { CreateNewFolder } from './create-new-folder';
 export const initData: GetProjectsParameters = {
   page: 1,
   size: 5,
-  sortField: 'title',
-  sortOrder: 'ASC',
+  sortField: 'updated_at',
+  sortOrder: 'DESC',
 };
 
 export enum FolderAction {
