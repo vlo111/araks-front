@@ -114,7 +114,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                     delete dataToMap[index];
                     return {
                       ...acc,
-                      [item.name]: {
+                      [item.name === 'node_icon' ? 'default_image' : item.name]: {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
