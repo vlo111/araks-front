@@ -4,8 +4,8 @@ export async function DownloadFile(nodeTypeId: string, isPDF = false, token: str
     const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
     const nodeTypeIdQuery = `nodeTypeId=${nodeTypeId}`;
     const nodeIdQuery = `nodeId=${nodeId}`;
-    const excelEndpoint = `${baseUrl}nodes/export-nodes/${nodeTypeId}`;
-    const pdfEndpoint = `${baseUrl}nodes/export-node/${nodeId}`;
+    const excelEndpoint = `${baseUrl}projects-node-types/export-excel/${nodeTypeId}`;
+    const pdfEndpoint = `${baseUrl}nodes/export-pdf/${nodeId}`;
     const excelFileURL = `${excelEndpoint}?${nodeTypeIdQuery}`;
     const pdfFileURL = `${pdfEndpoint}?${nodeIdQuery}`;
     const url = nodeId ? pdfFileURL : excelFileURL;
