@@ -84,7 +84,6 @@ export const StyledAvatar = styled(Avatar)<{ color: string }>`
       display: flex;
       margin: 0 auto;
       height: 100%;
-      font-size: 14px;
     }
   }
 `;
