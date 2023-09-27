@@ -64,13 +64,23 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     [item]: { ...state[item], isOpened: false },
   });
 
+  const endWithClear = (item: ITEM) => ({
+    ...state,
+    [item]: {
+      ...state[item],
+      isOpened: false,
+      id: '',
+    },
+  });
+
   switch (type) {
     case GraphAction.SET_GRAPH:
       return insert(ITEM.GRAPH) as GraphState;
     case GraphAction.OPEN_NODE_START:
       return start(ITEM.OPEN_NODE);
-    case GraphAction.OPEN_NODE_FINISH:
-      return end(ITEM.OPEN_NODE);
+    case GraphAction.OPEN_NODE_FINISH: {
+      return endWithClear(ITEM.OPEN_NODE);
+    }
     case GraphAction.OPEN_CREATE_NODE_START:
       return {
         ...state,
