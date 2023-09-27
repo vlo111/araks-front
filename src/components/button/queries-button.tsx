@@ -104,12 +104,6 @@ export const QueriesButton = ({ isQueries }: Props) => {
           query:
             (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
               ? dataToMap.reduce((acc, item, index) => {
-                  // eslint-disable-next-line no-console
-                  console.log(
-                    'caclaclal',
-                    item.depth === query.depth && item.labelValue === query.labelValue,
-                    item.name
-                  );
                   if (item.depth === query.depth && item.labelValue === query.labelValue) {
                     delete dataToMap[index];
                     return {
