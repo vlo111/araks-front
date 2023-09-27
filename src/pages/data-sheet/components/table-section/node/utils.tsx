@@ -1,5 +1,5 @@
 import { CalendarOutlined, DownloadOutlined, LinkOutlined } from '@ant-design/icons';
-import { Avatar, Button, Image, Space, UploadFile } from 'antd';
+import { Avatar, Button, Col, Image, Row, Space, UploadFile } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { DocumentViewDrawer } from 'components/drawer/document-view-drawer';
 import { PropertyTypes } from 'components/form/property/types';
@@ -319,44 +319,88 @@ export const getRowData = (item: NodePropertiesValues) => {
       return <DocumentViewDrawer items={item.nodes_data} />;
     case PropertyTypes.URL:
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.URL))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.URL)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.URL)
       );
     case PropertyTypes.Location:
-      return <Space>{item?.nodes_data?.map((data) => dataByType(data, PropertyTypes.Location))}</Space>;
+      return (
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.Location)}
+            </Col>
+          ))}
+        </Row>
+      );
 
     case PropertyTypes.RichText:
       return dataByType(getSingleData(item.nodes_data), PropertyTypes.RichText);
     case PropertyTypes.Date:
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Date))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.Date)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Date)
       );
     case PropertyTypes.DateTime:
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.DateTime))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.DateTime)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.DateTime)
       );
     case PropertyTypes.Boolean: {
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Boolean))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.Boolean)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Boolean)
       );
     }
     case PropertyTypes.Text:
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.Text)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
       );
     case PropertyTypes.Integer:
     case PropertyTypes.Decimal:
       return isMultiple ? (
-        <Space>{item.nodes_data.map((data) => dataByType(data, PropertyTypes.Text))}</Space>
+        <Row gutter={[10, 10]}>
+          {item.nodes_data.map((data, index) => (
+            <Col xs={12} lg={6} key={index}>
+              {dataByType(data, PropertyTypes.Text)}
+            </Col>
+          ))}
+        </Row>
       ) : (
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
       );
