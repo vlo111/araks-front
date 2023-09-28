@@ -20,7 +20,7 @@ export const EdgeViewTitle = ({ id, name, isEdit, setIsEdit, onClose, canEdit }:
   return (
     <Space style={{ width: '100%', justifyContent: 'space-between' }}>
       <div>
-        <MenuText strong>{name}</MenuText>
+        <MenuText strong>{name.toUpperCase()}</MenuText>
       </div>
       {canEdit ? (
         <div>
