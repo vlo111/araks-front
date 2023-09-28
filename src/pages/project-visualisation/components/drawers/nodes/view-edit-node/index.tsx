@@ -223,7 +223,7 @@ export const ViewEditNodeDrawer = () => {
       isEdit && (
         <Row gutter={16} justify="center">
           <Col span={4}>
-            <Button style={{ marginRight: 8 }} onClick={onClose} block>
+            <Button style={{ marginRight: 8 }} onClick={() => setIsEdit(false)} block>
               Cancel
             </Button>
           </Col>
@@ -234,7 +234,7 @@ export const ViewEditNodeDrawer = () => {
           </Col>
         </Row>
       ),
-    [isEdit, onClose, form]
+    [isEdit, form]
   );
 
   const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;

@@ -58,3 +58,35 @@ export type EdgesCreate = {
   source_type_id: string;
   properties: EdgesCreateProperties[];
 };
+
+export type EdgesProperties = {
+  id: string;
+  project_edge_type_id: string;
+  source: {
+    id: string;
+    name: string;
+    nodeType: {
+      id: string;
+      name: string;
+      color: string;
+    };
+  };
+  target: {
+    id: string;
+    name: string;
+    nodeType: {
+      id: string;
+      name: string;
+      color: string;
+    };
+  };
+  properties: EdgeProperty[];
+};
+
+export type EdgeProperty = {
+  id: string;
+  edge_id: string;
+  edge_type_property_id: string;
+  edge_type_property_type: string;
+  data: string[];
+};
