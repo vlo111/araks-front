@@ -38,15 +38,10 @@ export const HeaderProfile = () => {
       },
       {
         key: '1',
-        label: (
-          <div
-            onClick={() => {
-              logout();
-            }}
-          >
-            Log Out
-          </div>
-        ),
+        onClick: ({ key, keyPath, domEvent }) => {
+          logout();
+        },
+        label: <div>Log Out</div>,
         icon: <SignOutSvg />,
       },
     ],

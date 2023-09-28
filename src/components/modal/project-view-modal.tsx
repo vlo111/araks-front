@@ -18,6 +18,7 @@ import { ProjectActionPopover } from '../popover';
 import { DeleteProjectModal } from './delete-project-modal';
 import { Graph } from '@antv/g6';
 import { ProjectFullInfo } from '../../api/types';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type Props = {
   isModalOpen: boolean;
@@ -32,6 +33,7 @@ type TitleProps = ProjectButtonContent &
   ProjectStatisticsType & {
     handleCancel: () => void;
     isClicked: boolean;
+    isPublicPage: boolean;
     setClicked: Dispatch<React.SetStateAction<boolean>>;
     openModal: () => void;
   };
@@ -117,6 +119,7 @@ const Title = ({
   isClicked,
   setClicked,
   openModal,
+  isPublicPage,
 }: TitleProps) => (
   <>
     <LeftCircle className="back-link" onClick={handleCancel} />
@@ -132,21 +135,27 @@ const Title = ({
       </Space>
       <Space size={30}>
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
-        <ProjectActionPopover
-          align={{ offset: [-20, -5] }}
-          open={isClicked}
-          onOpenChange={(open: boolean) => {
-            !open && setClicked(false);
-            return open;
-          }}
-          content={
-            <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
-          }
-        >
-          <StyledDotWrapper onClick={() => setClicked(true)}>
-            <DotsVertical />
-          </StyledDotWrapper>
-        </ProjectActionPopover>
+        {!isPublicPage && (
+          <ProjectActionPopover
+            align={{ offset: [-20, -5] }}
+            open={isClicked}
+            onOpenChange={(open: boolean) => {
+              !open && setClicked(false);
+              return open;
+            }}
+            content={
+              <ProjectActionContent
+                projectId={project.id}
+                folderId={project.folderId}
+                setIsDeleteModalOpen={openModal}
+              />
+            }
+          >
+            <StyledDotWrapper onClick={() => setClicked(true)}>
+              <DotsVertical />
+            </StyledDotWrapper>
+          </ProjectActionPopover>
+        )}
       </Space>
     </TitleWrapper>
   </>
@@ -154,6 +163,7 @@ const Title = ({
 
 export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, graph, setGraph, isPublic }: Props) => {
   const navigate = useNavigate();
+  const isPublicPage = useIsPublicPage();
 
   const [isClicked, setClicked] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -204,6 +214,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
               isClicked={isClicked}
               setClicked={setClicked}
               openModal={openModal}
+              isPublicPage={isPublicPage}
             />
           ) : (
             ''
