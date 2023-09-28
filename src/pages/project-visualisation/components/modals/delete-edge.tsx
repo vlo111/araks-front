@@ -6,12 +6,13 @@ import { Button } from 'components/button';
 import { useDeleteEdge } from 'api/edges/use-delete-edge';
 
 export const EdgeDeleteModal = () => {
-  const { graph, deleteEdge, finishDeleteEdge } = useGraph() ?? {};
+  const { graph, deleteEdge, finishDeleteEdge, finishOpenEdge } = useGraph() ?? {};
 
   const { mutateAsync } = useDeleteEdge(deleteEdge?.id ?? '', {
     onSuccess: () => {
       graph.removeItem(deleteEdge?.id ?? '');
       finishDeleteEdge();
+      finishOpenEdge();
     },
   });
 
