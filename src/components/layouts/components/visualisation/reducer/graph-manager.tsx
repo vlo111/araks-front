@@ -98,7 +98,7 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     case GraphAction.OPEN_EDGE_START:
       return start(ITEM.OPEN_EDGE);
     case GraphAction.OPEN_EDGE_FINISH:
-      return end(ITEM.OPEN_EDGE);
+      return endWithClear(ITEM.OPEN_EDGE);
     case GraphAction.DELETE_EDGE_START:
       return start(ITEM.DELETE_EDGE);
     case GraphAction.DELETE_EDGE_FINISH:
