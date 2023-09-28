@@ -7,6 +7,7 @@ export type ActionProps = {
   isPdf?: boolean;
   token?: string;
   nodeId?: string;
+  fileName?: string;
 };
 
 export type SearchActionProps = {
