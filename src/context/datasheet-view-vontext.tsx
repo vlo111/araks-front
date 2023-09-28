@@ -26,6 +26,7 @@ import { getConnectionFormName } from 'components/form/type/connection-type';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from 'helpers/constants';
+import styled from 'styled-components';
 
 type VIewDataType = NodeDataResponse | undefined;
 
@@ -55,6 +56,14 @@ const getValue = (item: NodePropertiesValues) => {
       return item.nodes_data;
   }
 };
+
+const DocumentDrawerWrapper = styled.div`
+  & {
+    .ant-drawer {
+      position: static;
+    }
+  }
+`;
 
 const ViewDatasheetContext = React.createContext<{ state: VIewDataType; dispatch: Dispatch } | undefined>(undefined);
 
@@ -225,6 +234,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         open={!!selectedViewId}
         getContainer={false}
         width={drawerWidth}
+        bodyStyle={{ position: 'relative' }}
         footer={
           isEdit && (
             <Row gutter={16} justify="center">
@@ -243,28 +253,32 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         }
         contentWrapperStyle={{ height: '100%', transform: 'translateX(0px)' }}
       >
-        <Spin spinning={isInitialLoading || isLoading}>
-          <Form
-            name="project-node-manage"
-            form={form}
-            onFinish={onFinish}
-            autoComplete="off"
-            layout="vertical"
-            requiredMark={false}
-          >
-            {isEdit ? (
-              <AddNodeForm
-                data={data as ProjectTypePropertyReturnData[]}
-                isInitialLoading={isInitialLoading}
-                setStopSubmit={setStopSubmit}
-              />
-            ) : isInitialLoading ? (
-              <Skeleton />
-            ) : (
-              <VIewNode />
-            )}
-          </Form>
-        </Spin>
+        <>
+          <DocumentDrawerWrapper className="document-drawer"></DocumentDrawerWrapper>
+
+          <Spin spinning={isInitialLoading || isLoading}>
+            <Form
+              name="project-node-manage"
+              form={form}
+              onFinish={onFinish}
+              autoComplete="off"
+              layout="vertical"
+              requiredMark={false}
+            >
+              {isEdit ? (
+                <AddNodeForm
+                  data={data as ProjectTypePropertyReturnData[]}
+                  isInitialLoading={isInitialLoading}
+                  setStopSubmit={setStopSubmit}
+                />
+              ) : isInitialLoading ? (
+                <Skeleton />
+              ) : (
+                <VIewNode />
+              )}
+            </Form>
+          </Spin>
+        </>
       </Drawer>
     </ViewDatasheetContext.Provider>
   );

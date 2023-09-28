@@ -29,7 +29,7 @@ export const RightSectionAllData = () => {
   useGetNodesList();
 
   return (
-    <Row gutter={32}>
+    <Row>
       <Col span={hideLeftSection ? 18 : 24}>
         <VerticalSpace>
           <AllDataFilterSection
@@ -47,9 +47,11 @@ export const RightSectionAllData = () => {
           </ViewDatasheetProvider>
         </VerticalSpace>
       </Col>
-      <Col span={hideLeftSection ? 6 : 0}>
-        <QueriesButton />
-      </Col>
+      {hideLeftSection && (
+        <Col span={6}>
+          <QueriesButton />
+        </Col>
+      )}
     </Row>
   );
 };

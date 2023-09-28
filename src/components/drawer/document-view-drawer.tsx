@@ -51,18 +51,16 @@ export const DocumentViewDrawer = ({ items }: Props) => {
         closable={false}
         destroyOnClose
         width={600}
-        getContainer={document.querySelector('.datasheet-view-drawer .ant-drawer-body') as HTMLElement}
+        getContainer={document.querySelector('.datasheet-view-drawer .ant-drawer-body .document-drawer') as HTMLElement}
         placement="right"
         drawerStyle={{
           background: '#F2F2F2',
           boxShadow: '10px 10px 10px 0px rgba(111, 111, 111, 0.10) inset',
         }}
         contentWrapperStyle={{
-          marginTop: document.querySelector('.datasheet-view-drawer .ant-drawer-header')?.clientHeight || 0,
           boxShadow: 'none',
         }}
         style={{
-          // margin: '16px 16px 48px',
           background: 'transparent',
         }}
         bodyStyle={{ padding: '32px 18px 18px' }}

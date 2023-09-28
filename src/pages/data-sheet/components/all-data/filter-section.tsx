@@ -41,7 +41,7 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
   }, [setFilterValue, sortState]);
 
   return (
-    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
+    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }}>
       <Col span={16}>
         <Row gutter={24}>
           <Col span={8}>
@@ -53,7 +53,7 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
         </Row>
       </Col>
       <Col span={8}>
-        <Row gutter={24} justify="end">
+        <Row justify="end">
           <Col>
             <DeleteAllDataModal checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
           </Col>
