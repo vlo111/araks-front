@@ -100,7 +100,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
           ...((query.isConnectionType && query.depth !== 3) || (!query.isConnectionType && query.depth === 1)
             ? { action: getQueryFilterType(query.type) }
             : {}),
-          ...(query.isConnectionType && query.depth === 1 ? {} : { project_edge_type_id: query.id }),
+          ...(query.isConnectionType && query.depth !== 1 ? { project_edge_type_id: query.id } : {}),
           query:
             (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
               ? dataToMap.reduce((acc, item, index) => {
@@ -108,7 +108,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                     delete dataToMap[index];
                     return {
                       ...acc,
-                      [item.name]: {
+                      [item.name === 'node_icon' ? 'default_image' : item.name]: {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
