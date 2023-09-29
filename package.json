@@ -34,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-icomoon": "^2.5.7",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-lottie": "^1.2.3",
     "react-pdf": "^7.3.3",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.9.0",
@@ -82,6 +83,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-lottie": "^1.2.7",
     "@types/dompurify": "^3.0.2",
     "@types/google-map-react": "^2.1.7",
     "@types/lodash.debounce": "^4.0.7",
