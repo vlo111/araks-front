@@ -15,6 +15,8 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { DownloadFile } from 'components/actions/utils';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
 import { AUTH_KEYS } from 'helpers/constants';
+import { useParams } from 'react-router-dom';
+import { useGetProjectInfo } from 'api/projects/use-get-project-info';
 
 type ViewNodeProps = {
   id: string;
@@ -24,16 +26,18 @@ type ViewNodeProps = {
 };
 
 export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+  const params = useParams();
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const { nodeTypeId } = useDataSheetWrapper();
   const { projectInfo } = useProject();
   const { state } = useOverview();
   const isPublicPage = useIsPublicPage();
   const { state: selectedView } = useViewDatasheet();
+  const { data: projectData } = useGetProjectInfo({ id: params.id }, { enabled: !!params.id });
 
   const handleDownload = async () => {
     if (nodeTypeId) {
-      await DownloadFile(nodeTypeId, true, token, id);
+      await DownloadFile(nodeTypeId, true, token, id, projectData?.title);
     }
   };
 
