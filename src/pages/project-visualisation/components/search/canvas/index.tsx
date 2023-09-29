@@ -8,7 +8,7 @@ const ToolStyle = styled.div`
   flex-direction: column;
   gap: 8px;
   left: 490px;
-  top: 188px;
+  top: 176px;
   z-index: 1;
 
   > * {
