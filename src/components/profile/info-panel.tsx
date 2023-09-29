@@ -1,9 +1,12 @@
-import { Button, Col, Row, Space } from 'antd';
+import { Button, Col, message, Row, Space, Upload, UploadFile } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
 import { FC, useState } from 'react';
-import { COLORS } from 'helpers/constants';
+import { AUTH_KEYS, COLORS } from 'helpers/constants';
+import { RcFile, UploadChangeParam } from 'antd/es/upload';
+import { UploadProps } from 'antd/es/upload/interface';
+import { useLocalStorageGet } from 'hooks/use-local-storage-get';
 
 type Prop = FC<{ count: number }>;
 
@@ -72,16 +75,79 @@ const Footer = styled(Row)`
 export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
 
+  const [imageUrl, setImageUrl] = useState(user?.avatar);
+
   const [readMore, setReadMore] = useState(false);
 
   const hasLargeLength = user?.bio?.length !== undefined && user?.bio?.length > 80;
 
   const etc = hasLargeLength ? `${user?.bio?.slice(0, 80)}...` : user?.bio?.slice(0, 80);
+  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  };
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === 'uploading') {
+      return;
+    }
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj as RcFile, (url) => {
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
+  const customRequest: any = (options: any) => {
+    const { file, onSuccess, onError } = options;
+
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+    fetch('https://dev-apiaraks.analysed.ai/api/uploads/image-upload', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        onSuccess(result, file);
+      })
+      .catch((error) => {
+        onError(error, file);
+      });
+  };
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
       <Avatar>
-        <img src={user?.avatar} alt={user?.first_name} />
+        <Upload
+          name="avatar"
+          listType="picture-card"
+          action="https://dev-apiaraks.analysed.ai/api/uploads/image-upload"
+          className="avatar-uploader"
+          showUploadList={false}
+          customRequest={customRequest}
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+        >
+          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+        </Upload>
       </Avatar>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
       <Space>{`${user?.email}`}</Space>
