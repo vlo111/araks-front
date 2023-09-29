@@ -78,9 +78,9 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             name: child.label,
             labelHead: (
               <Space>
-                <StyledBadge color={element.source.color} text={<Text>{element.source.name}</Text>} />
+                <StyledBadge color={element.source.color} text={<Text>{child.source_name}</Text>} />
                 <EdgeDirection data={element} />
-                <StyledBadge color={element.target.color} text={<Text>{element.target.name}</Text>} />
+                <StyledBadge color={element.target.color} text={<Text>{child.target_name}</Text>} />
               </Space>
             ),
           };
@@ -173,6 +173,8 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
             key: item.id,
             id: item.id,
             parentName: item.name,
+            source_name: item.source.name,
+            target_name: item.target.name,
             children: item.properties?.map((itemChild) => ({
               label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
               title: (
@@ -223,6 +225,8 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
           value: item.id,
           key: item.id,
           id: item.id,
+          source_name: item.source.name,
+          target_name: item.target.name,
           parentName: item.name,
           children: item.properties?.map((itemChild) => ({
             label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
