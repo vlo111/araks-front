@@ -60,7 +60,7 @@ export const Share = () => {
     <div style={{ padding: '32px' }}>
       <VerticalSpace>
         <Title level={3} color={COLORS.PRIMARY.GRAY_DARK}>
-          Share
+          Share Perspective
         </Title>
         <Form name="share" form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
           <VerticalSpace size={48}>

@@ -187,18 +187,14 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   return { result, grandTotal };
 };
 
-export const expand = async (
+export const expandByNodeData = async (
   graph: Graph,
   item: Item,
-  target: HTMLElement,
+  nodeId: string,
+  project_edge_type_id: string,
+  direction: string,
   setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
 ) => {
-  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
-
-  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
-
-  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
-
   const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
 
   const graphData = formattedData(expandData.nodes, expandData.edges);
@@ -220,6 +216,21 @@ export const expand = async (
   setGraphInfo({
     nodeCount: graph.getNodes().length,
   });
+};
+
+export const expand = async (
+  graph: Graph,
+  item: Item,
+  target: HTMLElement,
+  setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
+) => {
+  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
+
+  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+
+  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
+
+  await expandByNodeData(graph, item, nodeId, project_edge_type_id, direction, setGraphInfo);
 };
 
 export const createCombos = (graph: Graph) => {

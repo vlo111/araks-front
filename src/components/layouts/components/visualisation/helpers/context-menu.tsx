@@ -1,6 +1,6 @@
 import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, expand, getMenuContexts, removeTooltip, updateExpandList } from './utils';
+import { addTooltip, expand, expandByNodeData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
 
 export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType, isEdit: boolean) => PluginBase = (
@@ -49,6 +49,23 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
             }
             case 'delete': {
               startDeleteNode({ id: item.getID() });
+              break;
+            }
+            case 'focus': {
+              graph.clear();
+
+              graph.addItem('node', item.getModel());
+
+              await expandByNodeData(
+                graph,
+                item,
+                item.getID(),
+                (item.getModel() as { nodeType: string }).nodeType ?? '',
+                'all',
+                setGraphInfo
+              );
+              graph.fitView(0, { ratioRule: 'min', direction: 'both', onlyOutOfViewPort: false }, true);
+
               break;
             }
             default: // startOpenNode({ id: item.getID() });

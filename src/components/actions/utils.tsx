@@ -1,5 +1,11 @@
 import { errorMessage } from 'helpers/utils';
-export async function DownloadFile(nodeTypeId: string, isPDF = false, token: string, nodeId?: string) {
+export async function DownloadFile(
+  nodeTypeId: string,
+  isPDF = false,
+  token: string,
+  nodeId?: string,
+  fileName?: string
+) {
   try {
     const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
     const nodeTypeIdQuery = `nodeTypeId=${nodeTypeId}`;
@@ -19,7 +25,12 @@ export async function DownloadFile(nodeTypeId: string, isPDF = false, token: str
     }
     const blob = await response.blob();
     const fileUrl = window.URL.createObjectURL(blob);
-    window.open(fileUrl);
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.setAttribute('download', fileName as string);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   } catch (error) {
     errorMessage(error);
   }
