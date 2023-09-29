@@ -9,6 +9,7 @@ import { Edges, Nodes } from '../visualisation/use-get-data';
 type ProjectEdgeResponse = {
   nodes: Nodes;
   edges: Edges;
+  relationsCounts: { [key: string]: number };
 };
 
 export type GetNeo4jData = {

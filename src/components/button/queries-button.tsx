@@ -11,7 +11,7 @@ import { UsefulInformationTooltip } from 'components/tool-tip/useful-information
 import { useOverview } from 'context/overview-context';
 import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
 import styled from 'styled-components';
-import { formattedData, formattedSearchData } from '../layouts/components/visualisation/helpers/format-node';
+import { formattedData } from '../layouts/components/visualisation/helpers/format-node';
 import { initData as initGraphData } from '../layouts/components/visualisation/container/initial/nodes';
 import { useGraph } from '../layouts/components/visualisation/wrapper';
 import { useGetData } from 'api/visualisation/use-get-data';
@@ -65,7 +65,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
   const { graph, setGraphInfo } = useGraph() ?? {};
-  const { nodes: nodesList, edges: edgesList } = useGetData();
+  const { nodes: nodesList, edges: edgesList, relationsCounts } = useGetData();
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
@@ -73,11 +73,11 @@ export const QueriesButton = ({ isQueries }: Props) => {
 
   const initData = useMemo(() => {
     if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
-      const { nodes, edges } = formattedData(nodesList, edgesList);
+      const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
       return { nodes, edges };
     }
     return { nodes: [], edges: [] };
-  }, [graph, nodesList, edgesList]);
+  }, [graph, nodesList, edgesList, relationsCounts]);
 
   const onClose = () => {
     setHideLeftSection(false);
@@ -167,7 +167,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
 
   useEffect(() => {
     if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
-      const { nodes, edges } = formattedSearchData(data?.nodes, data?.edges);
+      const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
       const result = { nodes, edges };
       initGraphData(graph, result);
 

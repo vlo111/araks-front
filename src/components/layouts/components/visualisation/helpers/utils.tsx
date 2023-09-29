@@ -197,7 +197,7 @@ export const expandByNodeData = async (
 ) => {
   const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
 
-  const graphData = formattedData(expandData.nodes, expandData.edges);
+  const graphData = formattedData(expandData.nodes, expandData.edges, expandData.relationsCounts);
 
   const radius = 200;
 

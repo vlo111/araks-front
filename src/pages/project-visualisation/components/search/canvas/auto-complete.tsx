@@ -9,8 +9,8 @@ import { renderTypes } from './options/node-type';
 import { renderEdgeTypes } from './options/edge-type';
 import { renderEdgeProperties } from './options/edge-property';
 import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-search';
-import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
 import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
+import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
 
 type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JSX.Element }> | undefined;
 
@@ -24,11 +24,10 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
   const { mutate } = useGetSelectedSearchData({
     onSuccess: (data) => {
       const {
-        data: { nodes, edges },
+        data: { nodes, edges, relationsCounts },
       } = data ?? {};
-      const formattedData = formattedSearchData(nodes, edges);
 
-      initData(graph, formattedData);
+      initData(graph, formattedData(nodes, edges, relationsCounts));
       graph.render && graph.render();
 
       setGraphInfo({
