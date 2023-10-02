@@ -139,7 +139,7 @@ export const InfoPanel: Prop = ({ count }) => {
 
   const handleRemove = () => {
     setImageUrl('');
-    setAvatar('');
+    setAvatar(null);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

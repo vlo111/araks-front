@@ -1,11 +1,10 @@
 import { createContext } from 'react';
 
 type UserContextType = {
-  avatar: string;
-  setAvatar: (avatar: string) => void;
+  avatar: string | null;
+  setAvatar: (avatar: string | null) => void;
 };
-
 export const UserContext = createContext<UserContextType>({
-  avatar: '',
-  setAvatar: (avatar: string) => undefined,
+  avatar: '' || null,
+  setAvatar: (avatar: string | null) => undefined,
 });
