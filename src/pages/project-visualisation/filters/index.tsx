@@ -36,7 +36,7 @@ export const Filters = () => {
       return { nodes, edges };
     }
     return { nodes: [], edges: [] };
-  }, [graph, nodesList, edgesList]);
+  }, [graph, nodesList, edgesList, relationsCounts]);
 
   const onCheck = async (checkedKeys: string[]) => {
     if (checkedKeys.length) {
