@@ -1,15 +1,16 @@
-import { Button, Col, message, Row, Space, Upload, UploadFile } from 'antd';
+import { Button, Col, message, Row, Space, Upload, UploadFile, Image } from 'antd';
 import styled from 'styled-components';
-import { useAuth } from '../../context/auth-context';
+import { useAuth } from 'context/auth-context';
 import { Title } from 'components/typography';
 import { FC, useState, useContext } from 'react';
 import { COLORS, PATHS } from 'helpers/constants';
 import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import { UploadProps } from 'antd/es/upload/interface';
 import { Link } from 'react-router-dom';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { UserContext } from '../../context/user-context';
-import { useImageUpload } from '../../api/upload/use-image-upload';
+import { CloseCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { UserContext } from 'context/user-context';
+import { useImageUpload } from 'api/upload/use-image-upload';
+import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
 
 type Prop = FC<{ count: number }>;
@@ -36,10 +37,11 @@ export const StyledLink = styled(Link)`
   }
 `;
 
-export const StyledDiv = styled.div`
-  &&& {
+const StyledDiv = styled.div`
+  && {
     .ant-upload-select {
       display: flex;
+      flex-direction: column;
       margin: 0 auto;
       min-width: 250px;
       max-width: 250px;
@@ -47,6 +49,12 @@ export const StyledDiv = styled.div`
       max-height: 250px;
     }
   }
+`;
+
+const StyledImage = styled(Image)`
+  width: 100%;
+  max-width: 250px;
+  height: 250px;
 `;
 
 const LearnMore = styled(Button)`
@@ -129,13 +137,12 @@ export const InfoPanel: Prop = ({ count }) => {
     }
   };
 
-  const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
+  const handleRemove = () => {
+    setImageUrl('');
+    setAvatar('');
+  };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const customRequest = async (options: any) => {
     const { file, onSuccess } = options;
     const { data } = await mutateAsync(file);
@@ -146,19 +153,35 @@ export const InfoPanel: Prop = ({ count }) => {
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
       <StyledDiv>
-        <ImgCrop rotationSlider>
-          <Upload
-            name="file"
-            listType="picture-card"
-            action="https://dev-apiaraks.analysed.ai/api/uploads/image-upload"
-            className="avatar-uploader"
-            customRequest={customRequest}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-          >
-            {imageUrl ? <img src={imageUrl} alt={user?.first_name} style={{ width: '100%' }} /> : uploadButton}
-          </Upload>
-        </ImgCrop>
+        {imageUrl ? (
+          <StyledImage
+            preview={{
+              visible: false,
+              mask: <CloseCircleOutlined style={{ fontSize: 24 }} onClick={handleRemove} />,
+            }}
+            src={imageUrl}
+            alt="avatar"
+          />
+        ) : (
+          <ImgCrop rotationSlider>
+            <Upload
+              action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+              name="file"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              maxCount={1}
+              customRequest={customRequest}
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
+            >
+              <div>
+                {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            </Upload>
+          </ImgCrop>
+        )}
       </StyledDiv>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
       <Space>{`${user?.email}`}</Space>

@@ -7,7 +7,7 @@ import { Button } from 'components/button';
 import { useUpdateProfile } from 'api/profile/use-update-profile';
 import { ProfileForm } from 'types/auth';
 import { rulesInput } from '../utils';
-import { UserContext } from '../../../../context/user-context';
+import { UserContext } from 'context/user-context';
 
 export const EditProfile = () => {
   const { avatar } = useContext(UserContext);
