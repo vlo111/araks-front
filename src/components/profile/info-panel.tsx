@@ -2,11 +2,15 @@ import { Button, Col, message, Row, Space, Upload, UploadFile } from 'antd';
 import styled from 'styled-components';
 import { useAuth } from '../../context/auth-context';
 import { Title } from 'components/typography';
-import { FC, useState } from 'react';
-import { AUTH_KEYS, COLORS } from 'helpers/constants';
+import { FC, useState, useContext } from 'react';
+import { COLORS, PATHS } from 'helpers/constants';
 import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import { UploadProps } from 'antd/es/upload/interface';
-import { useLocalStorageGet } from 'hooks/use-local-storage-get';
+import { Link } from 'react-router-dom';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { UserContext } from '../../context/user-context';
+import { useImageUpload } from '../../api/upload/use-image-upload';
+import ImgCrop from 'antd-img-crop';
 
 type Prop = FC<{ count: number }>;
 
@@ -24,14 +28,24 @@ const Wrapper = styled(Col)`
   }
 `;
 
-const Avatar = styled(Space)`
-  margin: 0 auto;
-  max-width: 250px;
-  min-width: 100px;
+export const StyledLink = styled(Link)`
+  color: #232f6a;
+  &:hover {
+    color: #232f6a;
+    opacity: 0.8;
+  }
+`;
 
-  img {
-    border-radius: 5px;
-    width: 100%;
+export const StyledDiv = styled.div`
+  &&& {
+    .ant-upload-select {
+      display: flex;
+      margin: 0 auto;
+      min-width: 250px;
+      max-width: 250px;
+      min-height: 250px;
+      max-height: 250px;
+    }
   }
 `;
 
@@ -74,7 +88,10 @@ const Footer = styled(Row)`
 
 export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
+  const { setAvatar } = useContext(UserContext);
+  const { mutateAsync } = useImageUpload();
 
+  const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(user?.avatar);
 
   const [readMore, setReadMore] = useState(false);
@@ -101,54 +118,48 @@ export const InfoPanel: Prop = ({ count }) => {
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'uploading') {
+      setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
       getBase64(info.file.originFileObj as RcFile, (url) => {
+        setLoading(false);
         setImageUrl(url);
       });
     }
   };
 
-  const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
-  const customRequest: any = (options: any) => {
-    const { file, onSuccess, onError } = options;
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
-    const formData = new FormData();
-    formData.append('profilePicture', file);
-    fetch('https://dev-apiaraks.analysed.ai/api/uploads/image-upload', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        onSuccess(result, file);
-      })
-      .catch((error) => {
-        onError(error, file);
-      });
+  const customRequest = async (options: any) => {
+    const { file, onSuccess } = options;
+    const { data } = await mutateAsync(file);
+    onSuccess(data, file);
+    setAvatar(data.uploadPath);
   };
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
-      <Avatar>
-        <Upload
-          name="avatar"
-          listType="picture-card"
-          action="https://dev-apiaraks.analysed.ai/api/uploads/image-upload"
-          className="avatar-uploader"
-          showUploadList={false}
-          customRequest={customRequest}
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-        >
-          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-        </Upload>
-      </Avatar>
+      <StyledDiv>
+        <ImgCrop rotationSlider>
+          <Upload
+            name="file"
+            listType="picture-card"
+            action="https://dev-apiaraks.analysed.ai/api/uploads/image-upload"
+            className="avatar-uploader"
+            customRequest={customRequest}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {imageUrl ? <img src={imageUrl} alt={user?.first_name} style={{ width: '100%' }} /> : uploadButton}
+          </Upload>
+        </ImgCrop>
+      </StyledDiv>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
       <Space>{`${user?.email}`}</Space>
       <Description>
@@ -160,11 +171,11 @@ export const InfoPanel: Prop = ({ count }) => {
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
           <Title level={1}>{`${count}`}</Title>
-          <Space>Projects</Space>
+          <StyledLink to={PATHS.ROOT}>Projects</StyledLink>
         </Col>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
           <Title level={1}>{`${0}`}</Title>
-          <Space>Shared Projects</Space>
+          <StyledLink to={PATHS.SHARED}>Shared Projects</StyledLink>
         </Col>
       </Footer>
     </Wrapper>

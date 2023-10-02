@@ -34,6 +34,7 @@ export type ProfileForm = {
   last_name: string;
   email: string;
   bio: string;
+  avatar?: string;
 };
 
 export type ProfilePassword = {
