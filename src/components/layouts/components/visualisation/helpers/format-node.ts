@@ -21,7 +21,7 @@ export const formattedData: FormattedData = (nodesList, edgeList, relationsCount
 
         const params = {
           ...formatNodeProperty({ typeName, properties }),
-          edgeCount: relationsCounts[field.properties.id],
+          edgeCount: relationsCounts[field.properties.id] ?? 0,
         };
         nodes.push(params);
       }
