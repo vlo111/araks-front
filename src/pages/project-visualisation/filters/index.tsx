@@ -15,11 +15,11 @@ export const Filters = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const { graph, setGraphInfo, graphInfo } = useGraph() ?? {};
   const { nodes, isInitialLoading } = useTypes();
-  const { nodes: nodesList, edges: edgesList } = useGetData();
+  const { nodes: nodesList, edges: edgesList, relationsCounts } = useGetData();
 
   const { mutate } = useManageFilters({
     onSuccess: ({ data }) => {
-      const { nodes, edges } = formattedData(data.nodes, data.edges);
+      const { nodes, edges } = formattedData(data.nodes, data.edges, relationsCounts);
       const result = { nodes, edges };
       initGraphData(graph, result);
       graph.render();
@@ -32,11 +32,11 @@ export const Filters = () => {
 
   const initData = useMemo(() => {
     if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
-      const { nodes, edges } = formattedData(nodesList, edgesList);
+      const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
       return { nodes, edges };
     }
     return { nodes: [], edges: [] };
-  }, [graph, nodesList, edgesList]);
+  }, [graph, nodesList, edgesList, relationsCounts]);
 
   const onCheck = async (checkedKeys: string[]) => {
     if (checkedKeys.length) {
