@@ -41,6 +41,7 @@ type ProjectEdgeResponse = {
   nodes: Nodes;
   edges: Edges;
   count: number;
+  relationsCounts: { [key: string]: number };
 };
 
 export const GET_EDGES = '/neo4j/all-data/:project_id';
@@ -66,6 +67,7 @@ type Result = {
   nodes: Nodes | undefined;
   edges: Edges | undefined;
   count: number;
+  relationsCounts: { [key: string]: number };
   isInitialLoading: boolean;
 };
 
@@ -83,7 +85,7 @@ export const useGetData = (options: Options = { enabled: true }): Result => {
 
   const { data, isInitialLoading } = result;
 
-  const { nodes, edges, count } = data?.data ?? {};
+  const { nodes, edges, count, relationsCounts } = data?.data ?? {};
 
-  return { isInitialLoading, nodes, edges, count: count ?? 0 };
+  return { isInitialLoading, nodes, edges, count: count ?? 0, relationsCounts: relationsCounts || {} };
 };

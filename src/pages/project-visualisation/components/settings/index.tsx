@@ -19,13 +19,13 @@ export const Settings = () => {
 
   const [isReseat, setIsReseat] = useState(false);
 
-  const { nodes, edges, count } = useGetData({
+  const { nodes, edges, count, relationsCounts } = useGetData({
     enabled: isReseat,
   });
 
   useEffect(() => {
     if (isReseat) {
-      const data = formattedData(nodes ?? [], edges ?? []);
+      const data = formattedData(nodes ?? [], edges ?? [], relationsCounts);
       if (data !== undefined) initData(graph, data);
       setGraphInfo({
         nodeCount: (count ?? 0) > 300 ? 300 : count,

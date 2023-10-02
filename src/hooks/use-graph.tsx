@@ -11,7 +11,7 @@ type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
   const { projectInfo } = useProject();
-  const { nodes, edges, count } = useGetData();
+  const { nodes, edges, count, relationsCounts } = useGetData();
 
   const { graph, setGraph, ...params } = useGraph() ?? {};
 
@@ -23,7 +23,7 @@ export const useGraphRef = () => {
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
-      const data = formattedData(nodes, edges);
+      const data = formattedData(nodes, edges, relationsCounts);
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
     }
