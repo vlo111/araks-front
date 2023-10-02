@@ -34,7 +34,7 @@ export const Settings = () => {
       graph.render();
       setIsReseat(false);
     }
-  }, [count, edges, graph, isReseat, nodes, setGraphInfo]);
+  }, [count, edges, graph, isReseat, nodes, setGraphInfo,relationsCounts]);
 
   const setLayout = useCallback(
     (layout: LayoutType) => {
