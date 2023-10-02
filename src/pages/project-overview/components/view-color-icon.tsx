@@ -78,9 +78,10 @@ const Inner = styled.div<InnerProp>`
 
 type Props = {
   project?: ProjectFullInfo;
+  isOwner?: boolean;
 };
 
-export const ViewColorIcon = ({ project }: Props) => {
+export const ViewColorIcon = ({ project, isOwner }: Props) => {
   const navigate = useNavigate();
   const isXXl = useIsXXlScreen();
   const params = useParams();
@@ -101,14 +102,16 @@ export const ViewColorIcon = ({ project }: Props) => {
     <Wrapper color={project?.color} isXXl={isXXl}>
       <Inner iconToShow={project?.icon} isXXl={isXXl}>
         <Icon color={COLORS.PRIMARY.GRAY} icon={project?.icon || 'araks'} size={isXXl ? 62 : 46} />
-        <div className="manage">
-          <Button block onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))}>
-            Edit
-          </Button>
-          <Button block onClick={resetIconAndColor}>
-            Reset
-          </Button>
-        </div>
+        {isOwner && (
+          <div className="manage">
+            <Button block onClick={() => navigate(PATHS.PROJECT_UPDATE.replace(':id', params.id || ''))}>
+              Edit
+            </Button>
+            <Button block onClick={resetIconAndColor}>
+              Reset
+            </Button>
+          </div>
+        )}
       </Inner>
     </Wrapper>
   );
