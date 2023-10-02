@@ -85,23 +85,25 @@ export const Share = () => {
             )}
             <VerticalSpace size={8}>
               {userPerspectiveId ? <UserList perspectiveId={userPerspectiveId} /> : <></>}
-              <ShareRow
-                onClick={() => {
-                  navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
-                }}
-              >
-                <Col span={2}>
-                  <Icon color="#353432" icon={'users'} size={25} />
-                </Col>
-                <Col span={20}>
-                  <Text
-                    style={{ textDecoration: 'underline', color: '#232F6A' }}
-                    onClick={() => setShowAllMembers(true)}
-                  >
-                    See all members
-                  </Text>
-                </Col>
-              </ShareRow>
+              {projectInfo?.role === UserProjectRole.Owner && (
+                <ShareRow
+                  onClick={() => {
+                    navigate(PATHS.PROJECT_OVERVIEW.replace(':id', params.id ?? ''));
+                  }}
+                >
+                  <Col span={2}>
+                    <Icon color="#353432" icon={'users'} size={25} />
+                  </Col>
+                  <Col span={20}>
+                    <Text
+                      style={{ textDecoration: 'underline', color: '#232F6A' }}
+                      onClick={() => setShowAllMembers(true)}
+                    >
+                      See all members
+                    </Text>
+                  </Col>
+                </ShareRow>
+              )}
             </VerticalSpace>
           </VerticalSpace>
         </Form>
