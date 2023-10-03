@@ -5,6 +5,8 @@ import { SelectItems } from 'components/select/share-select';
 import { ROLE_OPTIONS } from 'components/form/share-input-item';
 import styled from 'styled-components';
 import { useCreatePerspectiveUser } from 'api/perspective/shared-users/use-create-perspective-user';
+import { UserProjectRole } from 'api/types';
+import { useProject } from 'context/project-context';
 
 type Props = React.FC<{
   id: string;
@@ -58,6 +60,7 @@ const ListMeta = styled(List.Item.Meta)`
 
 export const UserListItem: Props = ({ id, index, user, visibleMetaData = true }) => {
   const { mutate } = useCreatePerspectiveUser({}, id);
+  const { projectInfo } = useProject();
 
   const value = useMemo(
     () => (user.value === 'owner' ? `Owner` : ROLE_OPTIONS.find((r) => r.value === user.value)?.value),
@@ -78,7 +81,7 @@ export const UserListItem: Props = ({ id, index, user, visibleMetaData = true })
           <SelectItems
             builtinPlacements={BUILT_IN_PLACEMENTS}
             onChange={changeRole}
-            disabled={user.value === 'owner'}
+            disabled={user.value === 'owner' || projectInfo?.role !== UserProjectRole.Owner}
             popupClassName="role-dropdown"
             value={value}
             options={ROLE_OPTIONS}

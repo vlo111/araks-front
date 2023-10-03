@@ -219,7 +219,15 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         style={{
           minHeight: 'calc(100vh - 130px)',
         }}
-        title={<ViewNodeTitle setIsEdit={setIsEdit} isEdit={isEdit} id={selectedViewId as string} onClose={onClose} />}
+        title={
+          <ViewNodeTitle
+            setIsEdit={setIsEdit}
+            isEdit={isEdit}
+            id={selectedViewId as string}
+            drawerIsOpened={!!selectedViewId}
+            onClose={onClose}
+          />
+        }
         mask={false}
         placement="right"
         onClose={onClose}

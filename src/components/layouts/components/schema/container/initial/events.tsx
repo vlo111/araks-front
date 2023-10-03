@@ -58,7 +58,7 @@ export const initSchemaEvents: InitEvents = (
     }
   });
 
-  if (projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor) {
+  if (projectInfo?.role === UserProjectRole.Owner) {
     graph.on('node:port:click', ({ node, port, view: { container } }) => {
       if (port === 'connector') return;
 

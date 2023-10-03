@@ -23,9 +23,10 @@ type ViewNodeProps = {
   isEdit: boolean;
   setIsEdit: (x: boolean) => void;
   onClose: () => void;
+  drawerIsOpened: boolean;
 };
 
-export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose, drawerIsOpened }: ViewNodeProps) => {
   const params = useParams();
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const { nodeTypeId } = useDataSheetWrapper();
@@ -58,7 +59,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose }: ViewNodeProps)
           />
         )}
         <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
-        <NodeCommentDrawer nodeId={id}>
+        <NodeCommentDrawer nodeId={id} parentDrawerClosed={!drawerIsOpened}>
           <Comments nodeId={id} />
         </NodeCommentDrawer>
         <Button

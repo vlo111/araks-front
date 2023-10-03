@@ -37,6 +37,7 @@ export type EdgeProperties = {
 type ProjectResponse = {
   nodes: Nodes;
   edges: Edges;
+  relationsCounts: { [key: string]: number };
 };
 
 export const GET_SEARCH_DATA = '/neo4j/shortest-path/:project_id';
