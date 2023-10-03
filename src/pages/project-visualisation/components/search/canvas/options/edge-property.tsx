@@ -27,7 +27,7 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
               <RelatedNodeSVG />
             </div>
             <div>
-              <StyledBadge color={source_color} text={source_name} />
+              <StyledBadge color={target_color} text={target_name} />
             </div>
           </div>
           <span className="edge-name">{getHighlightedText(relation, search)}</span>
@@ -56,7 +56,7 @@ export const renderEdgeProperties = (edge: EdgeProperties, search: string) => {
             <RelatedNodeSVG />
           </div>
           <div>
-            <StyledBadge color={source_color} text={source_name} />
+            <StyledBadge color={target_color} text={target_name} />
           </div>
         </div>
         <div className="edge-property">
