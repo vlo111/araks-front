@@ -12,6 +12,7 @@ import { UserContext } from 'context/user-context';
 import { useImageUpload } from 'api/upload/use-image-upload';
 import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
+import type { UploadRequestOption } from 'rc-upload/lib/interface';
 
 type Prop = FC<{ count: number }>;
 
@@ -142,11 +143,11 @@ export const InfoPanel: Prop = ({ count }) => {
     setAvatar(null);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customRequest = async (options: any) => {
+  const customRequest: (options: UploadRequestOption) => void = async (options) => {
     const { file, onSuccess } = options;
     const { data } = await mutateAsync(file);
-    onSuccess(data, file);
+
+    onSuccess && onSuccess(data);
     setAvatar(data.uploadPath);
   };
 
