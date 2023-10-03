@@ -54,8 +54,10 @@ const StyledDiv = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
+  min-width: 250px;
   max-width: 250px;
-  height: 250px;
+  min-height: 250px;
+  max-height: 250px;
 `;
 
 const LearnMore = styled(Button)`
@@ -97,7 +99,7 @@ const Footer = styled(Row)`
 
 export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
-  const { setAvatar } = useContext(UserContext);
+  const { avatar, setAvatar } = useContext(UserContext);
   const { mutateAsync } = useImageUpload();
 
   const [loading, setLoading] = useState(false);
@@ -154,13 +156,13 @@ export const InfoPanel: Prop = ({ count }) => {
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
       <StyledDiv>
-        {imageUrl ? (
+        {imageUrl || avatar ? (
           <StyledImage
             preview={{
               visible: false,
               mask: <CloseCircleOutlined style={{ fontSize: 24 }} onClick={handleRemove} />,
             }}
-            src={imageUrl}
+            src={imageUrl || avatar!}
             alt="avatar"
           />
         ) : (
