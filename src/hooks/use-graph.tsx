@@ -4,23 +4,14 @@ import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { initGraph } from 'components/layouts/components/visualisation/container/initial/graph';
 import { formattedData } from '../components/layouts/components/visualisation/helpers/format-node';
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
-import { Edges, Nodes } from '../api/visualisation/use-get-data';
+import { useGetData } from '../api/visualisation/use-get-data';
 import { useProject } from '../context/project-context';
 
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
-type Props = ({
-  nodes,
-  edges,
-  count,
-}: {
-  nodes: Nodes | undefined;
-  edges: Edges | undefined;
-  count: number;
-}) => GraphRef;
-
-export const useGraphRef: Props = ({ nodes, edges, count }) => {
+export const useGraphRef = () => {
   const { projectInfo } = useProject();
+  const { nodes, edges, count, relationsCounts } = useGetData();
 
   const { graph, setGraph, ...params } = useGraph() ?? {};
 
@@ -32,7 +23,7 @@ export const useGraphRef: Props = ({ nodes, edges, count }) => {
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
-      const data = formattedData(nodes, edges);
+      const data = formattedData(nodes, edges, relationsCounts);
       if (data !== undefined) initData(graph, data);
       graph.render && graph.render();
     }

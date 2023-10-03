@@ -23,7 +23,7 @@ export const createNodesTree = (nodesList: ProjectTreeReturnData[], noColors = f
   for (let i = 0; i < nodesList.length; i += 1) {
     if (
       (nodesList[i].parent_id && parentId && nodesList[i].parent_id !== parentId) ||
-      (!parentId && nodesList[i].parent_id) ||
+      (!parentId && nodesList[i].parent_id && nodesList.find((item) => item.id === nodesList[i].parent_id)) ||
       (parentId && !nodesList[i].parent_id)
     ) {
       continue;

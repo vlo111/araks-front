@@ -6,17 +6,25 @@ import { NotifyBadge } from 'components/notifications';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { useGetHeaderHeight } from 'hooks/use-get-header-height';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = Partial<DrawerProps> & {
   nodeId?: string;
+  parentDrawerClosed?: boolean;
 };
 
-export const NodeCommentDrawer = ({ children, nodeId, ...props }: Props) => {
+export const NodeCommentDrawer = ({ children, nodeId, parentDrawerClosed = false, ...props }: Props) => {
   const sectionHeight = useGetHeaderHeight();
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   const { data: commentsCount, isInitialLoading: commentsCountIsLoading } = useGetNodeCommentsCount(nodeId);
 
-  const [openDrawer, setOpenDrawer] = useState(false);
+  useEffect(() => {
+    if (parentDrawerClosed) {
+      setOpenDrawer(false);
+    }
+  }, [parentDrawerClosed]);
+
   return (
     <>
       <NotifyBadge

@@ -12,10 +12,7 @@ import { propsProjectBlockView, propsProjectGridView } from './constants';
 import { ProjectViewModal } from 'components/modal/project-view-modal';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from 'helpers/constants';
-import { PreviewChart } from './preview/chart';
 import { Graph } from '@antv/g6';
-import { useGetProjectInfo } from '../../../api/projects/use-get-project-info';
-import { PreviewEdgeFormat } from './preview/chart/data.format';
 
 type Props = {
   projectsUrl?: string;
@@ -31,7 +28,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true, isPublic = f
     destroy: null,
     graph: null,
   });
-  const { data: projectData } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
 
   const { state } = useView();
   const { state: sortState } = useSort();
@@ -71,20 +67,6 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true, isPublic = f
 
   const listTitle = title || (folder ? folder.title : null) || 'All Projects';
 
-  if (
-    projectData?.projectsNodeTypes &&
-    !graph.graph &&
-    document.getElementById('juJSlsfk') &&
-    !document.querySelector('canvas')
-  ) {
-    setGraph(
-      PreviewChart({
-        nodes: projectData?.projectsNodeTypes,
-        edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
-      })
-    );
-  }
-
   return (
     <Spin spinning={isInitialLoading}>
       <TitleSeparator name={listTitle} paginationProps={paginationProps} />
@@ -119,11 +101,11 @@ export const MyProjects = ({ projectsUrl, title, showCreate = true, isPublic = f
           </Col>
         ))}
       </Row>
-      {projectData && (
+      {projectId && (
         <ProjectViewModal
           isModalOpen={!!projectId}
           setIsModalOpen={setProjectId}
-          projectData={projectData}
+          projectId={projectId}
           graph={graph}
           setGraph={setGraph}
           isPublic={isPublic}

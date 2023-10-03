@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { Button } from 'components/button';
 import { Wrapper } from './shortest-wrapper';
 import { useGetShortestPath } from 'api/visualisation/use-get-shortest-path';
-import { formattedSearchData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
 
 export const ShortestPathWrapper = () => {
   const { graph, setGraphInfo } = useGraph() ?? {};
@@ -21,7 +21,7 @@ export const ShortestPathWrapper = () => {
   const { mutate } = useGetShortestPath({
     onSuccess: ({ data }) => {
       if (data) {
-        const formatted = formattedSearchData(data.nodes, data.edges);
+        const formatted = formattedData(data.nodes, data.edges, data.relationsCounts);
 
         if (formatted.nodes.length) {
           graph.data(formatted);
@@ -107,7 +107,7 @@ export const ShortestPathWrapper = () => {
           </Col>
           <Row gutter={[16, 16]} justify="center" style={{ width: '100%', margin: '2rem 0' }}>
             <Col span={24}>
-              <Button disabled={noResult} type="primary" block onClick={handleShowPath}>
+              <Button disabled={noResult || target === undefined} type="primary" block onClick={handleShowPath}>
                 Show Path
               </Button>
             </Col>
