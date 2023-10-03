@@ -6,10 +6,12 @@ import { formattedData } from '../components/layouts/components/visualisation/he
 import { initData } from '../components/layouts/components/visualisation/container/initial/nodes';
 import { useGetData } from '../api/visualisation/use-get-data';
 import { useProject } from '../context/project-context';
-
+import { useLocation } from 'react-router-dom';
+import { expandByNodeData } from '../components/layouts/components/visualisation/helpers/utils';
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 export const useGraphRef = () => {
+  const { state } = useLocation();
   const { projectInfo } = useProject();
   const { nodes, edges, count, relationsCounts } = useGetData();
 
@@ -23,12 +25,37 @@ export const useGraphRef = () => {
     }
 
     if (graph !== undefined && nodes !== undefined && edges !== undefined) {
-      const data = formattedData(nodes, edges, relationsCounts);
-      if (data !== undefined) initData(graph, data);
+      if (state?.data) {
+        focus();
+      } else {
+        const data = formattedData(nodes, edges, relationsCounts);
+
+        if (data !== undefined) initData(graph, data);
+      }
+
       graph.render && graph.render();
     }
     params.setGraphInfo && params.setGraphInfo({ nodeCount: nodes?.length, nodeCountAPI: count });
   }, [nodes, edges, graph, setGraph, projectInfo, count]);
+
+  const focus = () => {
+    const { nodes } = formattedData(state?.data.nodes, [], state?.data.relationsCounts);
+    if (nodes !== undefined) initData(graph, { nodes, edges: [] });
+
+    const focuses = async () => {
+      const node = nodes[0];
+
+      graph.addItem('node', node);
+
+      const item = graph.getNodes()[0];
+
+      await expandByNodeData(graph, item, node.id, '', 'all', params.setGraphInfo);
+
+      graph.fitView(0, { ratioRule: 'min', direction: 'both', onlyOutOfViewPort: false }, true);
+    };
+
+    focuses().then();
+  };
 
   return ref;
 };
