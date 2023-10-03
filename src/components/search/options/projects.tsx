@@ -3,12 +3,11 @@ import { ReactComponent as Araks } from '../../icons/araks-tiny.svg';
 import { ProjectWrapper, StyledTitle, StyledAvatar } from './styles';
 import { Icon } from '../../icon';
 
-export const renderProjects = (id: string, title: string, color: string, icon: string, privacy: string) => {
+export const renderProjects = (id: string, title: string, color: string, icon: string) => {
   return {
     id: id,
     mode: 'nodeType',
     value: id,
-    privacy,
     label: (
       <ProjectWrapper>
         <Badge>
