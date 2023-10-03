@@ -9,6 +9,12 @@ import { renderProjects } from './options/projects';
 import './index.css';
 import { PATHS } from 'helpers/constants';
 import { StyledSearchTitle } from './options/styles';
+
+enum ProjectPrivacy {
+  PUBLIC = 'public',
+  PRIVATE = 'private',
+}
+
 const AutoComplete = styled(AutoCompleteComponent)`
   .ant-input-affix-wrapper {
     border-color: #c3c3c3;
@@ -35,9 +41,8 @@ export const Search = () => {
     { enabled: search ? search.trim()?.length > 2 : false },
     search?.trim() ?? ''
   );
-
   const projects = useMemo(
-    () => data.projects?.map(({ id, title, color, icon }) => renderProjects(id, title, color, icon)),
+    () => data.projects?.map(({ id, title, color, icon, privacy }) => renderProjects(id, title, color, icon, privacy)),
     [data.projects]
   );
 
@@ -65,7 +70,12 @@ export const Search = () => {
   }
 
   const onSelect = (id: string | unknown) => {
-    navigate(`${PATHS.PROJECTS}/${id}`);
+    const project = projects?.find((project) => project.id === id);
+    if (project?.privacy === ProjectPrivacy.PUBLIC) {
+      navigate(`${PATHS.PUBLIC}${PATHS.PROJECTS}/${id}`);
+    } else {
+      navigate(`${PATHS.PROJECTS}/${id}`);
+    }
   };
 
   return (
