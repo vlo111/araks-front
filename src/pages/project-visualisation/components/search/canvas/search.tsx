@@ -5,6 +5,8 @@ import { SearchVisualization } from '../wrapper';
 export const Search: React.FC = () => {
   const [stretchSearch, setStretchSearch] = useState(false);
 
+  const [isEnterSearch, setIsEnterSearch] = useState('');
+
   const [search, setSearch] = useState<string>();
 
   const handleSearch: VoidFunction = () => {
@@ -13,8 +15,17 @@ export const Search: React.FC = () => {
   };
 
   return (
-    <SearchVisualization className={`${stretchSearch ? 'stretch' : ''}`} handleSearch={handleSearch}>
-      {stretchSearch && <AutoComplete search={search} setSearch={setSearch} />}
-    </SearchVisualization>
+    <>
+      <SearchVisualization className={`${stretchSearch ? 'stretch' : ''}`} handleSearch={handleSearch}>
+        {stretchSearch && (
+          <AutoComplete
+            search={search}
+            setSearch={setSearch}
+            isEnterSearch={isEnterSearch}
+            setIsEnterSearch={setIsEnterSearch}
+          />
+        )}
+      </SearchVisualization>
+    </>
   );
 };
