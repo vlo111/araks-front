@@ -16,6 +16,7 @@ import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { TreeSelect } from 'components/select';
 import { Rule } from 'antd/es/form';
+import { InverseFormItem } from './inverse-form-item';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -170,17 +171,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
               fieldNames={{ value: 'key' }}
             />
           </FormItem>
-
-          <FormItem name="inverse" valuePropName="checked" initialValue={false}>
-            <Checkbox>
-              <Space>
-                Inverse
-                <Tooltip title="Useful information" placement="right">
-                  <InfoCircleFilled style={{ fontSize: 16, color: '#C3C3C3' }} />
-                </Tooltip>
-              </Space>
-            </Checkbox>
-          </FormItem>
+          <InverseFormItem />
           <FormItem name="multiple" valuePropName="checked" initialValue={true}>
             <Checkbox disabled>
               <Space>
