@@ -8,7 +8,6 @@ import { UserContext } from 'context/user-context';
 
 export const Profile = () => {
   const [avatar, setAvatar] = useState<string | null>(null);
-
   const {
     data: { data: projects },
     isInitialLoading: loading,
