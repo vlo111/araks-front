@@ -64,6 +64,7 @@ export const NodeCreateDrawer: React.FC = () => {
         x: openNodeCreate.x,
         y: openNodeCreate.y,
         nodeType: nodeData.nodeType.id,
+        edgeCount: 0,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
