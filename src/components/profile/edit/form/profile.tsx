@@ -10,11 +10,17 @@ import { rulesInput } from '../utils';
 import { UserContext } from 'context/user-context';
 
 export const EditProfile = () => {
-  const { avatar } = useContext(UserContext);
+  const { avatar, setAvatar } = useContext(UserContext);
   const [form] = Form.useForm();
   const { user } = useAuth();
 
-  const { mutate: updateProfile } = useUpdateProfile();
+  const { mutate: updateProfile } = useUpdateProfile({
+    onSuccess: ({ data }) => {
+      if (data?.avatar) {
+        setAvatar(data.avatar);
+      }
+    },
+  });
 
   useEffect(() => {
     form.setFieldsValue({

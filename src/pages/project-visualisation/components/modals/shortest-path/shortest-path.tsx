@@ -107,7 +107,7 @@ export const ShortestPathWrapper = () => {
           </Col>
           <Row gutter={[16, 16]} justify="center" style={{ width: '100%', margin: '2rem 0' }}>
             <Col span={24}>
-              <Button disabled={noResult} type="primary" block onClick={handleShowPath}>
+              <Button disabled={noResult || target === undefined} type="primary" block onClick={handleShowPath}>
                 Show Path
               </Button>
             </Col>
