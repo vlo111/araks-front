@@ -58,7 +58,7 @@ export const initSchemaEvents: InitEvents = (
     }
   });
 
-  if (projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor) {
+  if (projectInfo?.role === UserProjectRole.Owner) {
     graph.on('node:port:click', ({ node, port, view: { container } }) => {
       if (port === 'connector') return;
 
@@ -104,7 +104,11 @@ export const initSchemaEvents: InitEvents = (
 export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo) => {
   graph.on('node:click', async ({ node, e: { target } }) => {
     if (!target.closest('.x6-port-body')) {
+      const openedCount = graph.getNodes().filter((n) => n.attrs?.body.allow).length;
+
       const isAllow = !!node?.attrs?.body.allow;
+
+      if (isAllow && openedCount <= 1) return;
 
       const response = isAllow ? await removeTypePerspective(node.id) : await addTypePerspective(node.id);
 

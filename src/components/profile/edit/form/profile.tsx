@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Col, Divider, Form, Row } from 'antd';
 import { useAuth } from 'context/auth-context';
 import { FormItem } from 'components/form/form-item';
@@ -7,12 +7,20 @@ import { Button } from 'components/button';
 import { useUpdateProfile } from 'api/profile/use-update-profile';
 import { ProfileForm } from 'types/auth';
 import { rulesInput } from '../utils';
+import { UserContext } from 'context/user-context';
 
 export const EditProfile = () => {
+  const { avatar, setAvatar } = useContext(UserContext);
   const [form] = Form.useForm();
   const { user } = useAuth();
 
-  const { mutate: updateProfile } = useUpdateProfile();
+  const { mutate: updateProfile } = useUpdateProfile({
+    onSuccess: ({ data }) => {
+      if (data?.avatar) {
+        setAvatar(data.avatar);
+      }
+    },
+  });
 
   useEffect(() => {
     form.setFieldsValue({
@@ -26,6 +34,7 @@ export const EditProfile = () => {
   const onFinish = (values: ProfileForm) => {
     updateProfile({
       ...values,
+      avatar,
     });
   };
 
