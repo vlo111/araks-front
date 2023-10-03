@@ -3,7 +3,8 @@ import { useMutation, UseQueryOptions } from '@tanstack/react-query';
 import client from '../client';
 import { FILE_UPLOAD_URL } from './constants';
 import { errorMessage } from 'helpers/utils';
-type Options = UseQueryOptions<string, unknown, Response>;
+import { RcFile } from 'antd/es/upload';
+type Options = UseQueryOptions<string | RcFile | Blob, unknown, Response>;
 
 type Response = {
   data: {
@@ -13,7 +14,7 @@ type Response = {
 };
 
 export const useImageUpload = (options?: Options) => {
-  const mutation = useMutation<Response, unknown, string>(
+  const mutation = useMutation<Response, unknown, string | RcFile | Blob>(
     async (file) => {
       const formData = new FormData();
       formData.append('file', file);

@@ -12,6 +12,7 @@ import { UserContext } from 'context/user-context';
 import { useImageUpload } from 'api/upload/use-image-upload';
 import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
+import type { UploadRequestOption } from 'rc-upload/lib/interface';
 
 type Prop = FC<{ count: number }>;
 
@@ -53,8 +54,10 @@ const StyledDiv = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
+  min-width: 250px;
   max-width: 250px;
-  height: 250px;
+  min-height: 250px;
+  max-height: 250px;
 `;
 
 const LearnMore = styled(Button)`
@@ -96,7 +99,7 @@ const Footer = styled(Row)`
 
 export const InfoPanel: Prop = ({ count }) => {
   const { user } = useAuth();
-  const { setAvatar } = useContext(UserContext);
+  const { avatar, setAvatar } = useContext(UserContext);
   const { mutateAsync } = useImageUpload();
 
   const [loading, setLoading] = useState(false);
@@ -142,24 +145,24 @@ export const InfoPanel: Prop = ({ count }) => {
     setAvatar(null);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const customRequest = async (options: any) => {
+  const customRequest: (options: UploadRequestOption) => void = async (options) => {
     const { file, onSuccess } = options;
     const { data } = await mutateAsync(file);
-    onSuccess(data, file);
+
+    onSuccess && onSuccess(data);
     setAvatar(data.uploadPath);
   };
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
       <StyledDiv>
-        {imageUrl ? (
+        {imageUrl || avatar ? (
           <StyledImage
             preview={{
               visible: false,
               mask: <CloseCircleOutlined style={{ fontSize: 24 }} onClick={handleRemove} />,
             }}
-            src={imageUrl}
+            src={imageUrl || avatar!}
             alt="avatar"
           />
         ) : (
