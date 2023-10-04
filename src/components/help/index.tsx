@@ -2,10 +2,11 @@ import { SetStateAction, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Col, Drawer, Menu, Row, Space } from 'antd';
 import { ReactComponent as Helpicon } from 'components/header-profile/icon/help.svg';
-import { OverviewSection } from './overview';
 import { ProjectsFolders } from './projects-and-folders';
+import { OverviewSection } from './overview';
 import { SchemaSection } from './schema-section';
 import { DataSheetSection } from './data-sheet';
+// import { VisualizationSection } from './visualization';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -19,15 +20,16 @@ function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[], 
 }
 
 const items: MenuProps['items'] = [
+  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Projects and Folders</span>, 'sub1', [
+    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Project</span>, 'sub1-1'),
+    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Folder</span>, 'sub1-2'),
+  ]),
   getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Overview</span>, 'sub4', [
     getItem(<span style={{ fontSize: '16px' }}>Project name and Privacy</span>, 'sub4-1'),
     getItem(<span style={{ fontSize: '16px' }}>See all members </span>, 'sub4-2'),
     getItem(<span style={{ fontSize: '16px' }}>Comments and Likes</span>, 'sub4-3'),
   ]),
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Projects and Folders</span>, 'sub1', [
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Project</span>, 'sub1-1'),
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Folder</span>, 'sub1-2'),
-  ]),
+
   getItem(<span style={{ fontWeight: '700', fontSize: '18px' }}>Schema section</span>, 'sub2', [
     getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Type</span>, 'sub2-1'),
     getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Property</span>, 'sub2-2'),
@@ -38,10 +40,21 @@ const items: MenuProps['items'] = [
   getItem(<span style={{ fontWeight: '700', fontSize: '18px' }}>Data sheet section</span>, 'sub3', [
     getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Type</span>, 'sub3-1'),
     getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Property</span>, 'sub3-2'),
+    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node</span>, 'sub3-7'),
     getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Connection</span>, 'sub3-3'),
     getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Connection Property</span>, 'sub3-4'),
     getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node in Connection</span>, 'sub3-5'),
     getItem(<span style={{ fontSize: '16px' }}>All data</span>, 'sub3-6'),
+  ]),
+  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Visualization</span>, 'sub5', [
+    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node</span>, 'sub5-1'),
+    getItem(<span style={{ fontSize: '16px' }}>Filters </span>, 'sub5-2'),
+    getItem(<span style={{ fontSize: '16px' }}>Queries</span>, 'sub5-3'),
+    getItem(<span style={{ fontSize: '16px' }}>Styling</span>, 'sub5-4'),
+    getItem(<span style={{ fontSize: '16px' }}>Focus, Expand, Shortest path</span>, 'sub5-5'),
+  ]),
+  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Perspective</span>, 'sub6', [
+    getItem(<span style={{ fontSize: '16px' }}></span>, 'sub6-1'),
   ]),
 ];
 export const Help: React.FC = () => {
@@ -57,13 +70,13 @@ export const Help: React.FC = () => {
   const handleMenuItemClick = (key: SetStateAction<string>) => {
     setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
-
   return (
     <Space>
       <Row gutter={16}>
         <Col span={24}>
           <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
         </Col>
+
         <Col span={24}>
           <Drawer title="Help" width={'55%'} closable={false} onClose={onClose} visible={open}>
             <Row gutter={16}>
@@ -76,10 +89,11 @@ export const Help: React.FC = () => {
                 />
               </Col>
               <Col span={14} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
-                <OverviewSection activeMenuItem={activeMenuItem} />
                 <ProjectsFolders activeMenuItem={activeMenuItem} />
+                <OverviewSection activeMenuItem={activeMenuItem} />
                 <SchemaSection activeMenuItem={activeMenuItem} />
                 <DataSheetSection activeMenuItem={activeMenuItem} />
+                {/*  <VisualizationSection activeMenuItem={activeMenuItem} /> */}
               </Col>
             </Row>
           </Drawer>
