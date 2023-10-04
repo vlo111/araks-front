@@ -78,9 +78,9 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             name: child.label,
             labelHead: (
               <Space>
-                <StyledBadge color={element.source.color} text={<Text>{child.source_name}</Text>} />
-                <EdgeDirection data={element} />
-                <StyledBadge color={element.target.color} text={<Text>{child.target_name}</Text>} />
+                <StyledBadge color={child.source.color} text={<Text>{child.source.name}</Text>} />
+                <EdgeDirection data={child} />
+                <StyledBadge color={child.target.color} text={<Text>{child.target.name}</Text>} />
               </Space>
             ),
           };
@@ -173,8 +173,9 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
             key: item.id,
             id: item.id,
             parentName: item.name,
-            source_name: item.source.name,
-            target_name: item.target.name,
+            inverse: item.inverse,
+            source: { name: item.source.name, color: item.source.color },
+            target: { name: item.target.name, color: item.target.color },
             children: item.properties?.map((itemChild) => ({
               label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
               title: (
@@ -225,8 +226,9 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
           value: item.id,
           key: item.id,
           id: item.id,
-          source_name: item.source.name,
-          target_name: item.target.name,
+          inverse: item.inverse,
+          source: { name: item.source.name, color: item.source.color },
+          target: { name: item.target.name, color: item.target.color },
           parentName: item.name,
           children: item.properties?.map((itemChild) => ({
             label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
@@ -268,6 +270,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
             value: item.id,
             key: item.id,
             id: item.id,
+            source: { name: item.source.name, color: item.source.color },
+            target: { name: item.target.name, color: item.target.color },
             parentName: item.name,
             title: (
               <Space>
@@ -309,6 +313,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
           value: item.id,
           key: item.id,
           id: item.id,
+          source: { name: item.source.name, color: item.source.color },
+          target: { name: item.target.name, color: item.target.color },
           parentName: item.name,
         },
       ],

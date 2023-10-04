@@ -168,7 +168,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
   useEffect(() => {
     if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
       const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
-      const result = { nodes, edges };
+      const result = { nodes: nodes || [], edges: edges || [] };
       initGraphData(graph, result);
 
       graph.render();

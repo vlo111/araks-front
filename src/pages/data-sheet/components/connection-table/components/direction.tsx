@@ -4,6 +4,7 @@ import { ConnectionInverseIcon } from 'components/icon/connection-inversion-icon
 import { ConnectionOneDirectionIcon } from 'components/icon/connection-one-direction-icon';
 import { Skeleton } from 'antd';
 import { TreeConnectionType } from 'pages/data-sheet/types';
+import { DefaultOptionType } from 'antd/es/cascader';
 
 const StyledCustomColumn = styled.div`
   display: flex;
@@ -16,14 +17,11 @@ const StyledCustomColumn = styled.div`
 
   .center {
     padding: 0 16px;
-    .inverseGradient {
-      stop-color: 'red';
-    }
   }
 `;
 
 type Props = {
-  data: EdgeTypePropertiesResponse | TreeConnectionType | undefined;
+  data: EdgeTypePropertiesResponse | TreeConnectionType | DefaultOptionType | undefined;
 };
 export const EdgeDirection = ({ data }: Props) => {
   if (!data) {
