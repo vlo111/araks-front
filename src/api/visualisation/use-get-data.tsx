@@ -71,14 +71,14 @@ type Result = {
   isInitialLoading: boolean;
 };
 
-export const useGetData = (options: Options = { enabled: true }): Result => {
+export const useGetData = (options: Options = { enabled: true }, search?: string): Result => {
   const params = useParams();
 
   const urlNodes = GET_EDGES.replace(':project_id', params?.id || '');
 
   const result = useQuery({
     queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes),
+    queryFn: () => client.get(urlNodes, { params: { search } }),
     ...options,
     onError: errorMessage,
   });

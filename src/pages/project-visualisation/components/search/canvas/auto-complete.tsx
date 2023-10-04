@@ -11,13 +11,36 @@ import { renderEdgeProperties } from './options/edge-property';
 import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-search';
 import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { useGetData } from 'api/visualisation/use-get-data';
 
 type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JSX.Element }> | undefined;
 
-type Props = React.FC<{ search: string | undefined; setSearch: (value: string) => void }>;
+type Props = React.FC<{
+  search: string | undefined;
+  setSearch: (value: string) => void;
+  setIsEnterSearch: React.Dispatch<React.SetStateAction<string>>;
+  isEnterSearch: string;
+}>;
 
-export const AutoComplete: Props = ({ search, setSearch }) => {
+export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnterSearch }) => {
   const { graph, setGraphInfo } = useGraph();
+
+  useGetData(
+    {
+      enabled: !!isEnterSearch,
+      onSuccess: ({ data }) => {
+        graph.clear();
+        initData(graph, formattedData(data.nodes, data.edges, data.relationsCounts));
+        graph.render && graph.render();
+
+        setGraphInfo({
+          nodeCount: graph.getNodes().length,
+        });
+        setIsEnterSearch('');
+      },
+    },
+    isEnterSearch
+  );
 
   const { data } = useGetSearchData({ enabled: search ? search.trim()?.length > 2 : false }, search?.trim() ?? '');
 
@@ -81,7 +104,14 @@ export const AutoComplete: Props = ({ search, setSearch }) => {
       options={options?.map((o, i) => ({ key: `${o.id}${i}`, ...o }))}
       value={search}
     >
-      <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search" />
+      <Input
+        onPressEnter={({ target }) => {
+          setIsEnterSearch((target as HTMLInputElement).value);
+        }}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="search"
+      />
     </AntAutoComplete>
   );
 };
