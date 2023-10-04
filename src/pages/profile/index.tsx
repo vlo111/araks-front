@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import { Spin } from 'antd';
 import { InfoPanel } from 'components/profile/info-panel';
 import { EditWrapper } from 'components/profile/edit/wrapper';
 import { useGetProjects } from 'api/projects/use-get-projects';
 import { Wrapper } from './wrapper';
-import { UserContext } from 'context/user-context';
 
 export const Profile = () => {
-  const [avatar, setAvatar] = useState<string | null>(null);
   const {
     data: { data: projects },
     isInitialLoading: loading,
@@ -19,13 +16,11 @@ export const Profile = () => {
   });
 
   return (
-    <UserContext.Provider value={{ avatar, setAvatar }}>
-      <Wrapper>
-        <Spin spinning={loading}>
-          <InfoPanel count={projects?.count} />
-          <EditWrapper />
-        </Spin>
-      </Wrapper>
-    </UserContext.Provider>
+    <Wrapper>
+      <Spin spinning={loading}>
+        <InfoPanel count={projects?.count} />
+        <EditWrapper />
+      </Spin>
+    </Wrapper>
   );
 };
