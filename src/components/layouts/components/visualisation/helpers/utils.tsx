@@ -5,11 +5,14 @@ import { renderTooltipModal } from './tooltip';
 import { Graph, IEdge, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
+import { PATHS } from 'helpers/constants';
 
 export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
-  const url = `${process.env.REACT_APP_BASE_URL}neo4j/expand/${projectId}`;
+  const url = `${process.env.REACT_APP_BASE_URL}${
+    location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
+  }neo4j/expand/${projectId}`;
 
   const params: { params: { id: string; direction?: string; project_edge_type_id?: string } } = {
     params: {
@@ -31,9 +34,9 @@ export const getExpandData = async (id: string, project_edge_type_id: string, di
 
 export const getExpandList = async (id: string) => {
   const expandList: ExpandListData | null = await client.get(
-    `${process.env.REACT_APP_BASE_URL}neo4j/expand-list/${location.pathname.substring(
-      location.pathname.lastIndexOf('/') + 1
-    )}`,
+    `${process.env.REACT_APP_BASE_URL}${
+      location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
+    }neo4j/expand-list/${location.pathname.substring(location.pathname.lastIndexOf('/') + 1)}`,
     {
       params: { id },
     }
