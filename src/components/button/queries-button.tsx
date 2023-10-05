@@ -183,7 +183,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         graph.render();
       }
     }
-  }, [graph, data, initData, count, setGraphInfo]);
+  }, [graph, initData, data.edges, data.nodes, data.relationsCounts, count, setGraphInfo]);
   const renderHeader = () => {
     return (
       <Row justify="space-around">
