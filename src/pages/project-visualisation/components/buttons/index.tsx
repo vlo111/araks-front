@@ -11,7 +11,7 @@ type Props = {
   resetFields: () => void;
 };
 
-export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdges }: Props) => {
+export const Buttons = ({ setOpenTable, resetFields, filteredEdges }: Props) => {
   const form = Form.useFormInstance();
   const queries = Form.useWatch('queries', form);
   const { graph } = useGraph() || {};
@@ -22,7 +22,7 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
   };
 
   const removeGraphStyle = () => {
-    filteredNodes.forEach((node) => {
+    graph.getNodes().forEach((node) => {
       graph.updateItem(node.getID(), {
         size: 40,
         icon: {
