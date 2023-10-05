@@ -275,7 +275,12 @@ export const createCombos = (graph: Graph) => {
 
       // Step 2.1: Move Nodes to Their Respective Combos
       nodes.forEach((node) => {
-        graph.updateItem(node.getID(), { comboId: comboId });
+        graph.updateItem(node.getID(), {
+          comboId: comboId,
+          style: {
+            fill: node.getModel().img ? 'transparent' : 'white',
+          },
+        });
       });
     });
 
