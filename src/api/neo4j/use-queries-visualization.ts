@@ -2,9 +2,10 @@ import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query
 import { useParams } from 'react-router-dom';
 import { AllDataDocumentListResponse, AllDataDocumentResponse } from 'types/node';
 import client from '../client';
-import { VISUALIZATION_URL } from './constants';
+import { VISUALIZATION_PUBLIC_URL, VISUALIZATION_URL } from './constants';
 import { VisualizationSubmitType } from './types';
 import { Edges, Nodes } from '../visualisation/use-get-data';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type ProjectEdgeResponse = {
   nodes: Nodes;
@@ -32,10 +33,15 @@ type Result = UseQueryResult<AllDataDocumentListResponse> & {
 
 export const useQueriesVisualization = (body: VisualizationSubmitType, options?: Options): Result => {
   const params = useParams();
-  const urlNodes = VISUALIZATION_URL.replace(':project_id', params.id || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlQuery = isPublicPage ? VISUALIZATION_PUBLIC_URL : VISUALIZATION_URL;
+
+  const url = urlQuery.replace(':project_id', params?.id || '');
+
   const result = useQuery({
-    queryKey: [urlNodes, body],
-    queryFn: () => client.post(urlNodes, body).then((data) => data.data),
+    queryKey: [url, body],
+    queryFn: () => client.post(url, body).then((data) => data.data),
     ...options,
   });
   const { data, isSuccess } = result;
