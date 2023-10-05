@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { PlusAction } from 'components/actions/plus';
 import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { formattedData } from '../layouts/components/visualisation/helpers/format-node';
 import { initData as initGraphData } from '../layouts/components/visualisation/container/initial/nodes';
 import { useGraph } from '../layouts/components/visualisation/wrapper';
-import { useGetData } from 'api/visualisation/use-get-data';
 import {
   StyledAddButton,
   StyledButtonsWrapper,
@@ -22,6 +21,7 @@ import {
   StyledDiv,
   StyledRunButton,
 } from '../../pages/project-visualisation/components/buttons/styles';
+import { useGetData } from '../../api/visualisation/use-get-data';
 
 type Props = {
   isQueries?: boolean;
@@ -69,15 +69,26 @@ export const QueriesButton = ({ isQueries }: Props) => {
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
-  const { data, count } = useQueriesVisualization(filter, { enabled: !!filter.queryArr?.length });
+  const { mutate } = useQueriesVisualization(filter, {
+    enabled: !!filter.queryArr?.length,
+    onSuccess: (data) => {
+      const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
+      const result = { nodes: nodes || [], edges: edges || [] };
 
-  const initData = useMemo(() => {
-    if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
-      const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
-      return { nodes, edges };
-    }
-    return { nodes: [], edges: [] };
-  }, [graph, nodesList, edgesList, relationsCounts]);
+      if (!nodes.length && nodesList?.length && edgesList?.length) {
+        const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
+        const result = { nodes: nodes || [], edges: edges || [] };
+        initGraphData(graph, result);
+        graph.render();
+      } else {
+        initGraphData(graph, result);
+        graph.render();
+      }
+      setGraphInfo({
+        nodeCount: graph.getNodes().length,
+      });
+    },
+  });
 
   const onClose = () => {
     setHideLeftSection(false);
@@ -154,6 +165,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
       queryArr: queryArr,
     } as VisualizationSubmitType;
     setFilter(data);
+    mutate(data);
   };
 
   useEffect(() => {
@@ -165,25 +177,6 @@ export const QueriesButton = ({ isQueries }: Props) => {
     setDrawerContentHeight(contentHeight);
   }, []);
 
-  useEffect(() => {
-    if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
-      const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
-      const result = { nodes: nodes || [], edges: edges || [] };
-      initGraphData(graph, result);
-
-      graph.render();
-
-      setGraphInfo({
-        nodeCount: graph.getNodes().length,
-      });
-    } else {
-      if (graph !== undefined) {
-        const result = { nodes: initData?.nodes, edges: initData?.edges };
-        initGraphData(graph, result);
-        graph.render();
-      }
-    }
-  }, [graph, initData, data.edges, data.nodes, data.relationsCounts, count, setGraphInfo]);
   const renderHeader = () => {
     return (
       <Row justify="space-around">
