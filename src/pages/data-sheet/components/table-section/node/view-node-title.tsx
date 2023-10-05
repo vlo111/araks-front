@@ -14,9 +14,10 @@ import { Comments } from 'pages/project-overview/components/comment-like/comment
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { DownloadFile } from 'components/actions/utils';
 import { useLocalStorageGet } from 'hooks/use-local-storage-get';
-import { AUTH_KEYS } from 'helpers/constants';
-import { useParams } from 'react-router-dom';
+import { AUTH_KEYS, PATHS } from 'helpers/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useGetProjectInfo } from 'api/projects/use-get-project-info';
+import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-search';
 
 type ViewNodeProps = {
   id: string;
@@ -28,6 +29,19 @@ type ViewNodeProps = {
 
 export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose, drawerIsOpened }: ViewNodeProps) => {
   const params = useParams();
+
+  const navigate = useNavigate();
+
+  const { mutate } = useGetSelectedSearchData({
+    onSuccess: (data) => {
+      navigate(PATHS.PROJECT_VISUALISATION.replace(':id', params?.id ?? ''), {
+        state: {
+          data: data.data,
+        },
+      });
+    },
+  });
+
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const { nodeTypeId } = useDataSheetWrapper();
   const { projectInfo } = useProject();
@@ -58,7 +72,11 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose, drawerIsOpened }
             onClick={() => setIsEdit(true)}
           />
         )}
-        <Button type="link" disabled icon={<Icon color="#414141" icon="visualisation" size={24} />} />
+        <Button
+          type="link"
+          onClick={() => mutate({ id, action: 'node' })}
+          icon={<Icon color="#414141" icon="visualisation" size={24} />}
+        />
         <NodeCommentDrawer nodeId={id} parentDrawerClosed={!drawerIsOpened}>
           <Comments nodeId={id} />
         </NodeCommentDrawer>

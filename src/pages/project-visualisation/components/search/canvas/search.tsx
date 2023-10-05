@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import { AutoComplete } from './auto-complete';
 import { SearchVisualization } from '../wrapper';
+import { Spin } from 'antd';
+import styled from 'styled-components';
+
+const Spinning = styled(Spin)`
+  position: fixed;
+  left: 0;
+  top: 150px;
+  width: 100% !important;
+  height: calc(100% - 150px) !important;
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const Search: React.FC = () => {
   const [stretchSearch, setStretchSearch] = useState(false);
+
+  const [isEnterSearch, setIsEnterSearch] = useState('');
 
   const [search, setSearch] = useState<string>();
 
@@ -13,8 +29,18 @@ export const Search: React.FC = () => {
   };
 
   return (
-    <SearchVisualization className={`${stretchSearch ? 'stretch' : ''}`} handleSearch={handleSearch}>
-      {stretchSearch && <AutoComplete search={search} setSearch={setSearch} />}
-    </SearchVisualization>
+    <>
+      {!!isEnterSearch && <Spinning spinning={true} />}
+      <SearchVisualization className={`${stretchSearch ? 'stretch' : ''}`} handleSearch={handleSearch}>
+        {stretchSearch && (
+          <AutoComplete
+            search={search}
+            setSearch={setSearch}
+            isEnterSearch={isEnterSearch}
+            setIsEnterSearch={setIsEnterSearch}
+          />
+        )}
+      </SearchVisualization>
+    </>
   );
 };
