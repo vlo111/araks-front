@@ -88,8 +88,8 @@ export const PropertyConnectionDetails = ({ isConnectionType }: Props) => {
               </Space>
             </Checkbox>
           </FormItem>
-          <FormItem name="multiple" valuePropName="checked" initialValue={false}>
-            <Checkbox>
+          <FormItem name="multiple" valuePropName="checked" initialValue={true}>
+            <Checkbox disabled>
               <Space>
                 Multiple
                 <UsefulInformationTooltip infoText="Can add multiple rows" />

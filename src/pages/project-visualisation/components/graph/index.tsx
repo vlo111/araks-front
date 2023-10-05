@@ -2,17 +2,16 @@ import React from 'react';
 import { useGraphRef } from 'hooks/use-graph';
 import { Wrapper } from './wrapper';
 import { useGetData } from 'api/visualisation/use-get-data';
-import { GraphLoading } from 'components/loading/graph-loading';
+import { Spin } from 'antd';
 
 export const Graph: React.FC = () => {
-  const { nodes, edges, count, isInitialLoading } = useGetData();
+  const { nodes, edges, count, relationsCounts, isInitialLoading } = useGetData();
 
-  const ref = useGraphRef({ nodes, edges, count });
+  const ref = useGraphRef({ nodes, edges, count, relationsCounts });
 
   return (
-    <>
-      {isInitialLoading && <GraphLoading />}
+    <Spin style={{ maxHeight: '100%' }} spinning={isInitialLoading}>
       <Wrapper ref={ref} />
-    </>
+    </Spin>
   );
 };

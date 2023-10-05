@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
-import { EditProfile } from './form/profile';
+import { EditProfile } from './form/profile-edit-info';
 import { FC } from 'react';
 
 const Mode = styled.div`

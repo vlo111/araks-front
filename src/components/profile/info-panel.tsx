@@ -2,17 +2,17 @@ import { Button, Col, message, Row, Space, Upload, UploadFile, Image } from 'ant
 import styled from 'styled-components';
 import { useAuth } from 'context/auth-context';
 import { Title } from 'components/typography';
-import { FC, useState, useContext } from 'react';
+import { FC, useState } from 'react';
 import { COLORS, PATHS } from 'helpers/constants';
 import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import { UploadProps } from 'antd/es/upload/interface';
 import { Link } from 'react-router-dom';
 import { CloseCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { UserContext } from 'context/user-context';
 import { useImageUpload } from 'api/upload/use-image-upload';
 import { FILE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
+import { useUpdateUserAvatar } from '../../api/user/use-update-avatar';
 
 type Prop = FC<{ count: number }>;
 
@@ -54,8 +54,10 @@ const StyledDiv = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
+  min-width: 250px;
   max-width: 250px;
-  height: 250px;
+  min-height: 250px;
+  max-height: 250px;
 `;
 
 const LearnMore = styled(Button)`
@@ -96,8 +98,8 @@ const Footer = styled(Row)`
 `;
 
 export const InfoPanel: Prop = ({ count }) => {
-  const { user } = useAuth();
-  const { setAvatar } = useContext(UserContext);
+  const { user, addUser } = useAuth();
+  const { mutate } = useUpdateUserAvatar();
   const { mutateAsync } = useImageUpload();
 
   const [loading, setLoading] = useState(false);
@@ -113,6 +115,7 @@ export const InfoPanel: Prop = ({ count }) => {
     reader.addEventListener('load', () => callback(reader.result as string));
     reader.readAsDataURL(img);
   };
+
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -140,7 +143,15 @@ export const InfoPanel: Prop = ({ count }) => {
 
   const handleRemove = () => {
     setImageUrl('');
-    setAvatar(null);
+    mutate({
+      avatar: null,
+    });
+    if (user) {
+      addUser({
+        ...user,
+        avatar: undefined,
+      });
+    }
   };
 
   const customRequest: (options: UploadRequestOption) => void = async (options) => {
@@ -148,7 +159,13 @@ export const InfoPanel: Prop = ({ count }) => {
     const { data } = await mutateAsync(file);
 
     onSuccess && onSuccess(data);
-    setAvatar(data.uploadPath);
+    mutate({ avatar: data.uploadPath });
+    if (user) {
+      addUser({
+        ...user,
+        avatar: data.uploadPath,
+      });
+    }
   };
 
   return (
@@ -160,7 +177,7 @@ export const InfoPanel: Prop = ({ count }) => {
               visible: false,
               mask: <CloseCircleOutlined style={{ fontSize: 24 }} onClick={handleRemove} />,
             }}
-            src={imageUrl}
+            src={imageUrl || user?.avatar}
             alt="avatar"
           />
         ) : (

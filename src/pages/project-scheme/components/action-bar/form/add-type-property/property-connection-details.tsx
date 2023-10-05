@@ -15,6 +15,10 @@ type Props = {
 export const PropertyConnectionDetailsSchema = ({ typeId }: Props) => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
+
+  const source = Form.useWatch('source_id', { preserve: true });
+  const target = Form.useWatch('target_id', { preserve: true });
+
   const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
 
   const { nodes } = useSchema() ?? {};
@@ -32,6 +36,12 @@ export const PropertyConnectionDetailsSchema = ({ typeId }: Props) => {
       form.resetFields(['source_id']);
     };
   }, [form, dataType, typeId]);
+
+  useEffect(() => {
+    if (target !== source) {
+      form.setFieldValue('inverse', false);
+    }
+  }, [form, source, target]);
 
   return (
     <>
@@ -63,7 +73,7 @@ export const PropertyConnectionDetailsSchema = ({ typeId }: Props) => {
             />
           </FormItem>
           <FormItem name="inverse" valuePropName="checked" initialValue={false}>
-            <Checkbox>
+            <Checkbox disabled={target !== source}>
               <Space>
                 Inverse
                 <Tooltip title="Useful information" placement="right">
@@ -72,8 +82,8 @@ export const PropertyConnectionDetailsSchema = ({ typeId }: Props) => {
               </Space>
             </Checkbox>
           </FormItem>
-          <FormItem name="multiple" valuePropName="checked" initialValue={false}>
-            <Checkbox>
+          <FormItem name="multiple" valuePropName="checked" initialValue={true}>
+            <Checkbox disabled>
               <Space>
                 Multiple
                 <Tooltip title="Useful information" placement="right">
