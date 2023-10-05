@@ -143,15 +143,14 @@ export const InfoPanel: Prop = ({ count }) => {
 
   const handleRemove = () => {
     setImageUrl('');
-    mutate({
-      avatar: null,
-    });
-    if (user) {
-      addUser({
-        ...user,
-        avatar: undefined,
-      });
-    }
+    mutate(
+      { avatar: null },
+      {
+        onSuccess: ({ data }) => {
+          if (data) addUser(data);
+        },
+      }
+    );
   };
 
   const customRequest: (options: UploadRequestOption) => void = async (options) => {
