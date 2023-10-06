@@ -5,6 +5,7 @@ import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useSort } from 'context/sort-context';
 import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
@@ -20,12 +21,19 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
   // const { setHideLeftSection, hideLeftSection } = useOverview();
 
   const { state: sortState } = useSort();
+  const isPublicPage = useIsPublicPage();
 
   const setSearchText = useCallback(
     ({ text, type }: SearchText) => {
-      setFilterValue((prevValue) => ({ ...prevValue, search: text, type, page: DEFAULT_PAGE_NUMBER }));
+      setFilterValue((prevValue) => ({
+        ...prevValue,
+        search: text,
+        type,
+        page: DEFAULT_PAGE_NUMBER,
+        ...(isPublicPage && type === 'document' ? { isPublic: true } : {}),
+      }));
     },
-    [setFilterValue]
+    [isPublicPage, setFilterValue]
   );
 
   useEffect(() => {
