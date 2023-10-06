@@ -1,17 +1,11 @@
 import { InitGraphEvents } from '../../types';
-import { Edge, IEdge, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, clearCanvas } from '../../helpers/utils';
+import { Edge, IG6GraphEvent } from '@antv/g6';
+import { addTooltip, clearCanvas, removeFakeEdge } from '../../helpers/utils';
 
 export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOpenEdge, startOpenEdgeCreate }) => {
   let isDoubleClick = false;
   let processingAfterCreateEdge = false;
   let selected = false;
-
-  const removeFakeEdge = () => {
-    const edges = graph.getEdges();
-    const fake_edge: IEdge = edges[edges.length - 1];
-    graph.removeItem(fake_edge?.getID());
-  };
 
   graph.on('node:dblclick', (evt) => {
     isDoubleClick = true;
@@ -20,7 +14,7 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
       id: evt.item?.getID(),
     });
 
-    removeFakeEdge();
+    removeFakeEdge(graph);
 
     setTimeout(() => {
       isDoubleClick = false;
