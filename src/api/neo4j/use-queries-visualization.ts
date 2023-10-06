@@ -1,54 +1,29 @@
-import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import { useMutation, UseQueryOptions } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { AllDataDocumentListResponse, AllDataDocumentResponse } from 'types/node';
 import client from '../client';
-import { VISUALIZATION_PUBLIC_URL, VISUALIZATION_URL } from './constants';
+import { VISUALIZATION_URL } from './constants';
 import { VisualizationSubmitType } from './types';
 import { Edges, Nodes } from '../visualisation/use-get-data';
-import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { errorMessage } from '../../helpers/utils';
 
 type ProjectEdgeResponse = {
+  count: number;
   nodes: Nodes;
   edges: Edges;
   relationsCounts: { [key: string]: number };
 };
 
-export type GetNeo4jData = {
-  data: ProjectEdgeResponse;
-  rows: AllDataDocumentResponse[];
-  count: number;
-};
+type Options = UseQueryOptions<VisualizationSubmitType, Error, ProjectEdgeResponse>;
 
-type QueryResponse = {
-  data: GetNeo4jData;
-};
-
-type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData>;
-
-type Result = UseQueryResult<AllDataDocumentListResponse> & {
-  data: ProjectEdgeResponse;
-  rowsData: AllDataDocumentResponse[];
-  count: number;
-};
-
-export const useQueriesVisualization = (body: VisualizationSubmitType, options?: Options): Result => {
+export const useQueriesVisualization = (body: VisualizationSubmitType, options?: Options) => {
   const params = useParams();
-  const isPublicPage = useIsPublicPage();
-
-  const urlQuery = isPublicPage ? VISUALIZATION_PUBLIC_URL : VISUALIZATION_URL;
-
-  const url = urlQuery.replace(':project_id', params?.id || '');
-
-  const result = useQuery({
-    queryKey: [url, body],
-    queryFn: () => client.post(url, body).then((data) => data.data),
-    ...options,
+  const urlNodes = VISUALIZATION_URL.replace(':project_id', params.id || '');
+  const mutation = useMutation<ProjectEdgeResponse, unknown, VisualizationSubmitType>({
+    mutationFn: () => client.post(urlNodes, body).then((data) => data.data),
+    onSuccess: (data, variables, context) => {
+      options?.onSuccess?.(data);
+    },
+    onError: errorMessage,
   });
-  const { data, isSuccess } = result;
-  return {
-    ...result,
-    data: (isSuccess ? data : {}) as AllDataDocumentListResponse,
-    rowsData: (isSuccess ? data.rows || [] : []) as AllDataDocumentResponse[],
-    count: (isSuccess ? data.count : 0) as number,
-  } as Result;
+  return mutation;
 };
