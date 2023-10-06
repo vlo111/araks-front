@@ -2,7 +2,7 @@ import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
 import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
-import { Graph, IEdge, INode, Item } from '@antv/g6';
+import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
@@ -396,4 +396,10 @@ export const clearCanvas = (graph: Graph) => {
   });
   graph.paint();
   graph.setAutoPaint(true);
+};
+
+export const removeFakeEdge = (graph: IGraph) => {
+  const edges = graph.getEdges();
+  const fake_edge: IEdge[] | undefined = edges?.filter((e) => e.getID().includes('edge-'));
+  if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
 };
