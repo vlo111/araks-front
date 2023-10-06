@@ -12,7 +12,7 @@ import { useOverview } from 'context/overview-context';
 import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
 import styled from 'styled-components';
 import { formattedData } from '../layouts/components/visualisation/helpers/format-node';
-import { initData as initGraphData } from '../layouts/components/visualisation/container/initial/nodes';
+import { initData } from '../layouts/components/visualisation/container/initial/nodes';
 import { useGraph } from '../layouts/components/visualisation/wrapper';
 import {
   StyledAddButton,
@@ -65,30 +65,35 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
   const { graph, setGraphInfo } = useGraph() ?? {};
-  const { nodes: nodesList, edges: edgesList, relationsCounts } = useGetData();
+  const { nodes: nodesList, edges: edgesList, count, relationsCounts } = useGetData();
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
+
   const { mutate } = useQueriesVisualization(filter, {
     enabled: !!filter.queryArr?.length,
     onSuccess: (data) => {
-      const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
-      const result = { nodes: nodes || [], edges: edges || [] };
-
-      if (!nodes.length && nodesList?.length && edgesList?.length) {
-        const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
-        const result = { nodes: nodes || [], edges: edges || [] };
-        initGraphData(graph, result);
-        graph.render();
+      if (!data.nodes.length) {
+        initGraphData();
       } else {
-        initGraphData(graph, result);
+        const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
+        const result = { nodes: nodes || [], edges: edges || [] };
+        initData(graph, result);
         graph.render();
+        setGraphInfo({
+          nodeCount: graph.getNodes().length,
+        });
       }
-      setGraphInfo({
-        nodeCount: graph.getNodes().length,
-      });
     },
   });
+  const initGraphData = () => {
+    const data = formattedData(nodesList ?? [], edgesList ?? [], relationsCounts);
+    if (data !== undefined) initData(graph, data);
+    setGraphInfo({
+      nodeCount: (count ?? 0) > 300 ? 300 : count,
+    });
+    graph.render();
+  };
 
   const onClose = () => {
     setHideLeftSection(false);
@@ -98,6 +103,11 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const clearFilter = useCallback(() => {
     setFilter({} as VisualizationSubmitType);
   }, []);
+
+  const handleCleanAll = () => {
+    form.resetFields();
+    initGraphData();
+  };
 
   const onFinish = (values: FormQueryValues) => {
     const dataToMap = values.queries;
@@ -146,7 +156,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         query:
           (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
             ? {
-                [query.name]: {
+                [query.name === 'node_icon' ? 'default_image' : query.name]: {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
@@ -229,7 +239,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
               <PlusAction /> Add
             </StyledAddButton>
             <StyledDiv>
-              <StyledCleanButton onClick={() => form.resetFields()} block>
+              <StyledCleanButton onClick={handleCleanAll} block>
                 Clean All
               </StyledCleanButton>
               <StyledRunButton type="primary" htmlType="submit" block>
