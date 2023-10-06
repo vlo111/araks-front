@@ -17,6 +17,8 @@ import { Profile } from './pages/profile';
 import { ProjectPerspectives } from './pages/project-perspectives';
 import { ProjectVisualisation } from './pages/project-visualisation';
 import { Shared } from 'pages/shared';
+import { ForgotPassword } from './pages/forgot-password';
+import { ResetPassword } from './pages/reset-password';
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ export const router = createBrowserRouter([
       {
         path: PATHS.SIGN_IN,
         element: <SignIn />,
+      },
+      {
+        path: PATHS.FORGOT_PASSWORD,
+        element: <ForgotPassword />,
+      },
+      {
+        path: PATHS.RESET_PASSWORD,
+        element: <ResetPassword />,
       },
     ],
   },
@@ -84,11 +94,19 @@ export const router = createBrowserRouter([
             element: <ProjectScheme />,
           },
           {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.PROJECT_SCHEME}`,
+            element: <ProjectScheme />,
+          },
+          {
             path: PATHS.PROJECT_PERSPECTIVES,
             element: <ProjectPerspectives />,
           },
           {
             path: PATHS.PROJECT_VISUALISATION,
+            element: <ProjectVisualisation />,
+          },
+          {
+            path: `${PATHS.PUBLIC_PREFIX}${PATHS.PROJECT_VISUALISATION}`,
             element: <ProjectVisualisation />,
           },
           {

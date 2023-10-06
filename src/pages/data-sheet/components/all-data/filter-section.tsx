@@ -5,6 +5,7 @@ import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useSort } from 'context/sort-context';
 import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
@@ -17,13 +18,22 @@ type Props = {
 };
 
 export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
+  // const { setHideLeftSection, hideLeftSection } = useOverview();
+
   const { state: sortState } = useSort();
+  const isPublicPage = useIsPublicPage();
 
   const setSearchText = useCallback(
     ({ text, type }: SearchText) => {
-      setFilterValue((prevValue) => ({ ...prevValue, search: text, type, page: DEFAULT_PAGE_NUMBER }));
+      setFilterValue((prevValue) => ({
+        ...prevValue,
+        search: text,
+        type,
+        page: DEFAULT_PAGE_NUMBER,
+        ...(isPublicPage && type === 'document' ? { isPublic: true } : {}),
+      }));
     },
-    [setFilterValue]
+    [isPublicPage, setFilterValue]
   );
 
   useEffect(() => {
@@ -39,7 +49,7 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
   }, [setFilterValue, sortState]);
 
   return (
-    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }} gutter={[8, 8]}>
+    <Row justify="space-between" style={{ padding: '24px 32px 32px 24px' }}>
       <Col span={16}>
         <Row gutter={24}>
           <Col span={8}>
@@ -51,12 +61,22 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
         </Row>
       </Col>
       <Col span={8}>
-        <Row gutter={24} justify="end">
+        <Row justify="end">
           <Col>
             <DeleteAllDataModal checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
           </Col>
         </Row>
       </Col>
+      {/*<Col>*/}
+      {/*  <DownloadAction />*/}
+      {/*</Col>*/}
+      {/*{!hideLeftSection && (*/}
+      {/*  <Col>*/}
+      {/*    <Button type="primary" block onClick={() => setHideLeftSection((prev) => !prev)}>*/}
+      {/*      Queries*/}
+      {/*    </Button>*/}
+      {/*  </Col>*/}
+      {/*)}*/}
     </Row>
   );
 };

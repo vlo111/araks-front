@@ -3,6 +3,15 @@ export type SignInForm = {
   password: string;
 };
 
+export type ForgotPasswordForm = {
+  email: string;
+};
+
+export type ResetPasswordForm = {
+  new_password: string;
+  token: string;
+};
+
 export interface UserDetails {
   avatar?: string;
   bio?: string;
@@ -25,6 +34,7 @@ export type ProfileForm = {
   last_name: string;
   email: string;
   bio: string;
+  avatar?: string | null;
 };
 
 export type ProfilePassword = {
@@ -35,4 +45,4 @@ export type ProfilePassword = {
 
 export type PasswordResponseData = { data: { success: string; data: UserDetails; message: string } };
 
-export type PasswordResponseDataError = { response: { data: { message: string } }};
+export type PasswordResponseDataError = { response: { data: { message: string } } };

@@ -54,7 +54,7 @@ export const ProjectOverview = () => {
       <VerticalSpace size={17} className="overview-form-items">
         <VerticalSpace size={42}>
           <div style={{ width: '100%', display: 'flex', gap: '22px' }}>
-            <ViewColorIcon project={data} />
+            <ViewColorIcon project={data} isOwner={!!(projectInfo && projectInfo?.role === UserProjectRole.Owner)} />
             <VerticalSpace size={14}>
               <Space style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
                 <MenuText ellipsis strong>

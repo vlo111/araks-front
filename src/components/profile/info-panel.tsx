@@ -1,9 +1,18 @@
-import { Button, Col, Row, Space } from 'antd';
+import { Button, Col, message, Row, Space, Upload, UploadFile, Image } from 'antd';
 import styled from 'styled-components';
-import { useAuth } from '../../context/auth-context';
+import { useAuth } from 'context/auth-context';
 import { Title } from 'components/typography';
 import { FC, useState } from 'react';
-import { COLORS } from 'helpers/constants';
+import { COLORS, PATHS } from 'helpers/constants';
+import { RcFile, UploadChangeParam } from 'antd/es/upload';
+import { UploadProps } from 'antd/es/upload/interface';
+import { Link } from 'react-router-dom';
+import { CloseCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { useImageUpload } from 'api/upload/use-image-upload';
+import { FILE_UPLOAD_URL } from 'api/upload/constants';
+import ImgCrop from 'antd-img-crop';
+import type { UploadRequestOption } from 'rc-upload/lib/interface';
+import { useUpdateUserAvatar } from '../../api/user/use-update-avatar';
 
 type Prop = FC<{ count: number }>;
 
@@ -21,15 +30,34 @@ const Wrapper = styled(Col)`
   }
 `;
 
-const Avatar = styled(Space)`
-  margin: 0 auto;
-  max-width: 250px;
-  min-width: 100px;
-
-  img {
-    border-radius: 5px;
-    width: 100%;
+export const StyledLink = styled(Link)`
+  color: #232f6a;
+  &:hover {
+    color: #232f6a;
+    opacity: 0.8;
   }
+`;
+
+const StyledDiv = styled.div`
+  && {
+    .ant-upload-select {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      min-width: 250px;
+      max-width: 250px;
+      min-height: 250px;
+      max-height: 250px;
+    }
+  }
+`;
+
+const StyledImage = styled(Image)`
+  width: 100%;
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 250px;
+  max-height: 250px;
 `;
 
 const LearnMore = styled(Button)`
@@ -70,19 +98,108 @@ const Footer = styled(Row)`
 `;
 
 export const InfoPanel: Prop = ({ count }) => {
-  const { user } = useAuth();
+  const { user, addUser } = useAuth();
+  const { mutate } = useUpdateUserAvatar();
+  const { mutateAsync } = useImageUpload();
+
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(user?.avatar);
 
   const [readMore, setReadMore] = useState(false);
 
   const hasLargeLength = user?.bio?.length !== undefined && user?.bio?.length > 80;
 
   const etc = hasLargeLength ? `${user?.bio?.slice(0, 80)}...` : user?.bio?.slice(0, 80);
+  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  };
+
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      getBase64(info.file.originFileObj as RcFile, (url) => {
+        setLoading(false);
+        setImageUrl(url);
+      });
+    }
+  };
+
+  const handleRemove = () => {
+    setImageUrl('');
+    mutate(
+      { avatar: null },
+      {
+        onSuccess: ({ data }) => {
+          if (data) addUser(data);
+        },
+      }
+    );
+  };
+
+  const customRequest: (options: UploadRequestOption) => void = async (options) => {
+    const { file, onSuccess } = options;
+    const { data } = await mutateAsync(file);
+
+    onSuccess && onSuccess(data);
+    mutate({ avatar: data.uploadPath });
+    if (user) {
+      addUser({
+        ...user,
+        avatar: data.uploadPath,
+      });
+    }
+  };
 
   return (
     <Wrapper span={9} xs={24} sm={24} md={9}>
-      <Avatar>
-        <img src={user?.avatar} alt={user?.first_name} />
-      </Avatar>
+      <StyledDiv>
+        {imageUrl ? (
+          <StyledImage
+            preview={{
+              visible: false,
+              mask: <CloseCircleOutlined style={{ fontSize: 24 }} onClick={handleRemove} />,
+            }}
+            src={imageUrl || user?.avatar}
+            alt="avatar"
+          />
+        ) : (
+          <ImgCrop rotationSlider>
+            <Upload
+              action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+              name="file"
+              listType="picture-card"
+              className="avatar-uploader"
+              showUploadList={false}
+              maxCount={1}
+              customRequest={customRequest}
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
+            >
+              <div>
+                {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            </Upload>
+          </ImgCrop>
+        )}
+      </StyledDiv>
       <Title level={1}>{`${user?.first_name} ${user?.last_name}`}</Title>
       <Space>{`${user?.email}`}</Space>
       <Description>
@@ -94,11 +211,11 @@ export const InfoPanel: Prop = ({ count }) => {
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
           <Title level={1}>{`${count}`}</Title>
-          <Space>Projects</Space>
+          <StyledLink to={PATHS.ROOT}>Projects</StyledLink>
         </Col>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
           <Title level={1}>{`${0}`}</Title>
-          <Space>Shared Projects</Space>
+          <StyledLink to={PATHS.SHARED}>Shared Projects</StyledLink>
         </Col>
       </Footer>
     </Wrapper>

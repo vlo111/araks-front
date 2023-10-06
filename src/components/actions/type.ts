@@ -4,6 +4,10 @@ import { ButtonProps } from 'antd';
 export type ActionProps = {
   icon?: Partial<CustomIconComponentProps>;
   button?: ButtonProps;
+  isPdf?: boolean;
+  token?: string;
+  nodeId?: string;
+  fileName?: string;
 };
 
 export type SearchActionProps = {

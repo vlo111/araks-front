@@ -1,14 +1,14 @@
+import { Link, Navigate } from 'react-router-dom';
 import { Col, Form, Row } from 'antd';
 import { useSignIn } from 'api/auth/use-sign-in';
 import { useAuth } from 'context/auth-context';
-import { Navigate } from 'react-router-dom';
 import { SignInForm } from 'types/auth';
-import { Button, SignUpButton } from '../../components/button';
-import { FormItem } from '../../components/form/form-item';
-import { Input } from '../../components/input';
-import { VerticalSpace } from '../../components/space/vertical-space';
-import { MenuText, SecondaryText, Title } from '../../components/typography';
-import { COLORS, PATHS } from '../../helpers/constants';
+import { Button } from 'components/button';
+import { FormItem } from 'components/form/form-item';
+import { Input } from 'components/input';
+import { VerticalSpace } from 'components/space/vertical-space';
+import { MenuText, SecondaryText, Title } from 'components/typography';
+import { COLORS, PATHS } from 'helpers/constants';
 
 export const SignIn = () => {
   const [form] = Form.useForm();
@@ -42,9 +42,9 @@ export const SignIn = () => {
                 label="Password"
                 rules={[{ required: true, min: 6 }]}
                 extra={
-                  <a href="/forgot-password">
+                  <Link to={PATHS.FORGOT_PASSWORD}>
                     <SecondaryText>Forgot Password?</SecondaryText>
-                  </a>
+                  </Link>
                 }
               >
                 <Input.Password />
@@ -54,7 +54,7 @@ export const SignIn = () => {
               <Button htmlType="submit" block type="primary">
                 Sign In
               </Button>
-              <SignUpButton block iconType="azure" />
+              {/*<SignUpButton block iconType="azure" />*/}
             </VerticalSpace>
           </VerticalSpace>
         </Form>

@@ -1,7 +1,12 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
-import { URL_COMMENTS_NODES_LIST, URL_COMMENT_DELETE, URL_COMMENT_NODES_DELETE } from 'api/comments/constants';
+import {
+  URL_COMMENTS_NODES_LIST,
+  URL_COMMENT_DELETE,
+  URL_COMMENT_NODES_COUNT,
+  URL_COMMENT_NODES_DELETE,
+} from 'api/comments/constants';
 import { useDeleteComment } from 'api/comments/use-delete-comment';
 import { Button } from 'components/button';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -22,6 +27,7 @@ export const DeleteComment = ({ id, nodeId }: Props) => {
     onSuccess: () => {
       if (nodeId) {
         queryClient.invalidateQueries([URL_COMMENTS_NODES_LIST.replace(':node_id', nodeId as string)]);
+        queryClient.invalidateQueries([URL_COMMENT_NODES_COUNT.replace(':id', nodeId as string)]);
       }
     },
   });

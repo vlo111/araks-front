@@ -23,11 +23,13 @@ export interface IOpenNodeCreate extends IIdOpen {
 
 export type GraphState = {
   graph?: Graph;
+  graphInfo?: { nodeCount: number; nodeCountAPI?: number };
   nodes?: IProjectType;
   edges?: ProjectEdgeResponse[];
   openNode?: IOpenIdState;
   openEdge?: IOpenEdgeState;
   openNodeCreate?: IIdOpen;
+  openShortestPath?: IOpenIdState;
   openEdgeCreate?: IIdOpen;
   deleteNode?: IIdOpen;
   deleteEdge?: IIdOpen;

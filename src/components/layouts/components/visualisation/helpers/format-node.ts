@@ -1,28 +1,53 @@
-import { GraphData, Node } from '../types';
 import { Edges, Nodes } from 'api/visualisation/use-get-data';
+import { GraphData, Node, Edge } from '../types';
 
-type FormattedData = (nodesList: Nodes, edgeList: Edges) => GraphData;
+type FormattedData = (nodesList: Nodes, edgeList: Edges, relationsCounts: { [key: string]: number }) => GraphData;
 
-export const formattedData: FormattedData = (nodesList, edgeList) => {
-  const data: GraphData = {
-    nodes: nodesList.map(({ _fields }) =>
-      formatNodeProperty({
-        typeName: _fields[0].labels[0],
-        properties: _fields[0].properties,
-      })
-    ),
-    edges: edgeList.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      project_edge_type_id: _fields[0].properties.project_edge_type_id,
-      source: _fields[0].properties.source_id,
-      target: _fields[0].properties.target_id,
-      label: _fields[0].type ?? '',
-    })),
-  };
-  return data;
+type FieldProperty = { labels: string[]; properties: { [key: string]: never } };
+
+type FormatNodeProperty = { typeName: string; properties: { [p: string]: never } };
+
+export const formattedData: FormattedData = (nodesList, edgeList, relationsCounts) => {
+  if (!relationsCounts) return {} as GraphData;
+
+  const nodes: (Node & { edgeCount?: number })[] = [];
+
+  nodesList.forEach(({ _fields }) => {
+    _fields?.forEach((node, index) => {
+      if (!node.hasOwnProperty('low')) {
+        const field = node as FieldProperty;
+
+        const [typeName, properties] = [field.labels[0], field.properties];
+
+        const params = {
+          ...formatNodeProperty({ typeName, properties }),
+          edgeCount: relationsCounts[field.properties.id] ?? 0,
+        };
+        nodes.push(params);
+      }
+    });
+  });
+
+  const edges: Edge[] = [];
+
+  edgeList.forEach(({ _fields }) => {
+    _fields?.forEach((edge) => {
+      if (edge) {
+        edges.push({
+          id: edge.properties.id ?? '',
+          project_edge_type_id: edge.properties.project_edge_type_id,
+          source: edge.properties.source_id,
+          target: edge.properties.target_id,
+          label: edge.type ?? '',
+        });
+      }
+    });
+  });
+
+  return { nodes, edges } as GraphData;
 };
 
-const formatNodeProperty = ({ typeName, properties }: { typeName: string; properties: { [p: string]: never } }) => {
+const formatNodeProperty = ({ typeName, properties }: FormatNodeProperty) => {
   const {
     created_at,
     updated_at,
@@ -50,36 +75,4 @@ const formatNodeProperty = ({ typeName, properties }: { typeName: string; proper
     nodeTypeName: typeName,
     properties: { ...params },
   };
-};
-
-export const formattedSearchData: FormattedData = (nodesList, edgeList) => {
-  const nodes: Node[] = [];
-  nodesList.forEach(({ _fields }) => {
-    const data = formatNodeProperty({
-      typeName: _fields[0].labels[0],
-      properties: _fields[0].properties,
-    });
-    nodes.push(data);
-
-    if (_fields.length > 1) {
-      const target = formatNodeProperty({
-        typeName: _fields[1].labels[0],
-        properties: _fields[1].properties,
-      });
-
-      nodes.push(target);
-    }
-  });
-
-  const data: GraphData = {
-    nodes,
-    edges: edgeList.map(({ _fields }) => ({
-      id: _fields[0].properties.id,
-      project_edge_type_id: _fields[0].properties.project_edge_type_id,
-      source: _fields[0].properties.source_id,
-      target: _fields[0].properties.target_id,
-      label: _fields[0].type ?? '',
-    })),
-  };
-  return data;
 };

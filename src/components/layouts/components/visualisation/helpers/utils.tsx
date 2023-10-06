@@ -2,14 +2,17 @@ import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
 import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
-import { Graph, IEdge, INode, Item } from '@antv/g6';
+import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
+import { PATHS } from 'helpers/constants';
 
 export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
-  const url = `${process.env.REACT_APP_BASE_URL}neo4j/expand/${projectId}`;
+  const url = `${process.env.REACT_APP_BASE_URL}${
+    location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
+  }neo4j/expand/${projectId}`;
 
   const params: { params: { id: string; direction?: string; project_edge_type_id?: string } } = {
     params: {
@@ -31,9 +34,9 @@ export const getExpandData = async (id: string, project_edge_type_id: string, di
 
 export const getExpandList = async (id: string) => {
   const expandList: ExpandListData | null = await client.get(
-    `${process.env.REACT_APP_BASE_URL}neo4j/expand-list/${location.pathname.substring(
-      location.pathname.lastIndexOf('/') + 1
-    )}`,
+    `${process.env.REACT_APP_BASE_URL}${
+      location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
+    }neo4j/expand-list/${location.pathname.substring(location.pathname.lastIndexOf('/') + 1)}`,
     {
       params: { id },
     }
@@ -48,27 +51,29 @@ export const getExpandList = async (id: string) => {
  * @param id
  * @param isNode
  */
-export const getMenuContexts = (id: string, isNode: boolean) => {
+export const getMenuContexts = (id: string, isNode: boolean, isEdit: boolean) => {
   const nodeContext = `<div class='menu'>
-      <span>Focus on node</span>
+      <span class='focus'>Focus on node</span>
       <span class="main-menu expand">Expand</span>
       <div class='menu submenu-container'>
         <div class='submenu'>
         </div>
       </div>
-      <span class='delete'>Delete</span>
+      <span class="shortest-path">Shortest path</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   const canvasContext = `<div class='menu'>
-      <span>Create Node</span>
+      ${isEdit ? '<span>Create Node</span>' : ''}
+      <span class="export">Export/PNG</span>
     </div>`;
 
   const edgeContext = `<div class='menu'>
-      <span class='delete'>Delete</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   const comboContext = `<div class='menu'>
-      <span class='delete'>Delete</span>
+      ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
   return { canvasContext, nodeContext, comboContext, edgeContext };
@@ -132,7 +137,7 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
             <div class="row">
             <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
               <p>
-                ${l.direction === 'in' ? inSvg : outSvg}
+                ${l.direction === 'in' ? outSvg : inSvg}
               </p>
               <div class="right-section">
                 <p class="name">${l.name}</p>
@@ -185,16 +190,17 @@ const calcExpandList: CalcExpandList = (data, visualizedConnections) => {
   return { result, grandTotal };
 };
 
-export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
-  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
-
-  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
-
-  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
-
+export const expandByNodeData = async (
+  graph: Graph,
+  item: Item,
+  nodeId: string,
+  project_edge_type_id: string,
+  direction: string,
+  setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
+) => {
   const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
 
-  const graphData = formattedData(expandData.nodes, expandData.edges);
+  const graphData = formattedData(expandData.nodes, expandData.edges, expandData.relationsCounts);
 
   const radius = 200;
 
@@ -209,6 +215,25 @@ export const expand = async (graph: Graph, item: Item, target: HTMLElement) => {
   graphData.edges.forEach((e) => {
     graph.addItem('edge', e);
   });
+
+  setGraphInfo({
+    nodeCount: graph.getNodes().length,
+  });
+};
+
+export const expand = async (
+  graph: Graph,
+  item: Item,
+  target: HTMLElement,
+  setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
+) => {
+  const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
+
+  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+
+  const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
+
+  await expandByNodeData(graph, item, nodeId, project_edge_type_id, direction, setGraphInfo);
 };
 
 export const createCombos = (graph: Graph) => {
@@ -253,7 +278,12 @@ export const createCombos = (graph: Graph) => {
 
       // Step 2.1: Move Nodes to Their Respective Combos
       nodes.forEach((node) => {
-        graph.updateItem(node.getID(), { comboId: comboId });
+        graph.updateItem(node.getID(), {
+          comboId: comboId,
+          style: {
+            fill: node.getModel().img ? 'transparent' : 'white',
+          },
+        });
       });
     });
 
@@ -323,13 +353,33 @@ export const removeCombos = (graph: Graph) => {
   if (comboSelect.length) {
     comboSelect.forEach((combo) => {
       graph.uncombo(combo.getID() as string);
-      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
     });
   }
 
   clearCanvas(graph);
 
-  graph.render();
+  graph.updateLayout(
+    {
+      type: 'gForce',
+      center: [window.innerWidth / 2, window.innerHeight / 2],
+      linkDistance: 100,
+      nodeStrength: 600,
+      edgeStrength: 200,
+      nodeSize: 5,
+      workerEnabled: true,
+      gpuEnabled: true,
+      fitView: true, // Fit the view to the entire graph
+      fitViewPadding: [30, 30], // Padding around the graph when fitting the view
+    },
+    'center',
+    { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    true
+  );
+  setTimeout(() => {
+    graph.fitCenter(true);
+
+    graph.fitView([30, 30], { ratioRule: 'min', direction: 'both', onlyOutOfViewPort: true }, true);
+  }, 500);
 };
 
 export const clearCanvas = (graph: Graph) => {
@@ -341,6 +391,15 @@ export const clearCanvas = (graph: Graph) => {
   graph.getEdges().forEach(function (edge) {
     graph.clearItemStates(edge);
   });
+  graph.getCombos().forEach(function (combo) {
+    graph.clearItemStates(combo);
+  });
   graph.paint();
   graph.setAutoPaint(true);
+};
+
+export const removeFakeEdge = (graph: IGraph) => {
+  const edges = graph.getEdges();
+  const fake_edge: IEdge[] | undefined = edges?.filter((e) => e.getID().includes('edge-'));
+  if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
 };

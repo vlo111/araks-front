@@ -104,7 +104,11 @@ export const initSchemaEvents: InitEvents = (
 export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPerspectiveInfo) => {
   graph.on('node:click', async ({ node, e: { target } }) => {
     if (!target.closest('.x6-port-body')) {
+      const openedCount = graph.getNodes().filter((n) => n.attrs?.body.allow).length;
+
       const isAllow = !!node?.attrs?.body.allow;
+
+      if (isAllow && openedCount <= 1) return;
 
       const response = isAllow ? await removeTypePerspective(node.id) : await addTypePerspective(node.id);
 
@@ -114,7 +118,9 @@ export const initPerspectiveEvents: InitPerspectiveEvents = (graph: Graph, setPe
 
       setPerspectiveInfo({
         typesLength: nodes.filter((a) => a.attrs?.body.allow).length,
-        propertiesLength: nodes.flatMap((a) => (a.attrs?.body.allow ? a.ports.items : [])).length,
+        propertiesLength: nodes
+          .flatMap((a) => (a.attrs?.body.allow ? a.ports.items : []))
+          .filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length,
       });
     }
   });

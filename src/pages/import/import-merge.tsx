@@ -5,19 +5,9 @@ import { useImport } from 'context/import-context';
 
 const columns = [
   {
-    title: 'Existing columns',
-    dataIndex: 'existingColumns',
-    key: 'existingColumns',
-  },
-  {
     title: 'Existing rows',
     dataIndex: 'existingRows',
     key: 'existingRows',
-  },
-  {
-    title: 'Imported columns',
-    dataIndex: 'importedColumns',
-    key: 'importedColumns',
   },
   {
     title: 'Imported Rows',

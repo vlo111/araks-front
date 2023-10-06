@@ -2,15 +2,20 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
-type Node = {
+export type Node = {
   id: string;
-  _fields: {
-    labels: string[];
-    properties: {
-      [key: string]: never;
-    };
-  }[];
+  _fields: [
+    {
+      labels: string[];
+      properties: {
+        [key: string]: never;
+      };
+      identity?: { low: number };
+    },
+    { low: number }
+  ];
 };
 
 type Edge = {
@@ -36,9 +41,12 @@ export type Edges = Edge[];
 type ProjectEdgeResponse = {
   nodes: Nodes;
   edges: Edges;
+  count: number;
+  relationsCounts: { [key: string]: number };
 };
 
-export const GET_EDGES = '/neo4j/all-data/:project_id';
+export const GET_ALL_DATA = '/neo4j/all-data/:project_id';
+export const GET_ALL_PUBLIC_DATA = '/public/neo4j/all-data/:project_id';
 
 type GetProjectParam = {
   id?: string;
@@ -60,24 +68,30 @@ type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData, QueryKey[]>;
 type Result = {
   nodes: Nodes | undefined;
   edges: Edges | undefined;
+  count: number;
+  relationsCounts: { [key: string]: number };
   isInitialLoading: boolean;
 };
 
-export const useGetData = (options: Options = { enabled: true }): Result => {
+export const useGetData = (options: Options = { enabled: true }, search?: string): Result => {
   const params = useParams();
 
-  const urlNodes = GET_EDGES.replace(':project_id', params?.id || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlAllData = isPublicPage ? GET_ALL_PUBLIC_DATA : GET_ALL_DATA;
+
+  const url = urlAllData.replace(':project_id', params?.id || '');
 
   const result = useQuery({
-    queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes),
+    queryKey: [url],
+    queryFn: () => client.get(url, { params: { search } }),
     ...options,
     onError: errorMessage,
   });
 
   const { data, isInitialLoading } = result;
 
-  const { nodes, edges } = data?.data ?? {};
+  const { nodes, edges, count, relationsCounts } = data?.data ?? {};
 
-  return { isInitialLoading, nodes, edges };
+  return { isInitialLoading, nodes, edges, count: count ?? 0, relationsCounts: relationsCounts || {} };
 };

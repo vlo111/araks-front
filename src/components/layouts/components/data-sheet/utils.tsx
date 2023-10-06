@@ -18,41 +18,37 @@ const StyledBadge = styled(({ defaultProprtyId, ...props }) => <Badge {...props}
   }
 `;
 
-export const createNodesTree = (nodesList: ProjectTreeReturnData[], noColors = false, parentId?: string) => {
-  const list = [];
-  for (let i = 0; i < nodesList.length; i += 1) {
-    if (
-      (nodesList[i].parent_id && parentId && nodesList[i].parent_id !== parentId) ||
-      (!parentId && nodesList[i].parent_id) ||
-      (parentId && !nodesList[i].parent_id)
-    ) {
-      continue;
-    }
-    const defaultProprtyId = nodesList[i].properties?.find((item) => item.default_property === true)?.id || '';
-    const key = nodesList[i].id;
+export const createNodesTree = (
+  nodesList: ProjectTreeReturnData[],
+  noColors = false,
+  parentId?: string
+): TreeNodeType[] => {
+  const filteredNodes = nodesList.filter(
+    (node) =>
+      (!parentId && !node.parent_id) ||
+      (parentId && node.parent_id === parentId) ||
+      (!noColors && !parentId && !node.parent_id)
+  );
+
+  return filteredNodes.map((node) => {
+    const defaultPropertyId = node.properties?.find((item) => item.default_property === true)?.id || '';
+
     const treeNode: TreeNodeType = {
       title: noColors ? (
-        <Text>{nodesList[i].name}</Text>
+        <Text>{node.name}</Text>
       ) : (
-        <StyledBadge
-          color={nodesList[i].color}
-          text={<Text>{nodesList[i].name}</Text>}
-          defaultProprtyId={defaultProprtyId}
-        />
+        <StyledBadge color={node.color} text={<Text>{node.name}</Text>} defaultProprtyId={defaultPropertyId} />
       ),
-      label: nodesList[i].name,
-      value: key,
-      key,
-      ...nodesList[i],
+      label: node.name,
+      value: node.id,
+      key: node.id,
+      ...node,
     };
 
-    for (let j = 0; j < nodesList.length; j += 1) {
-      treeNode.children = createNodesTree(nodesList, noColors, nodesList[i].id);
-    }
+    treeNode.children = createNodesTree(nodesList, noColors, node.id);
 
-    list.push(treeNode);
-  }
-  return list;
+    return treeNode;
+  });
 };
 
 export function findConnectionChildrenProperties(arr: TreeConnectionType[], selectedValue: string) {
@@ -78,9 +74,9 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             name: child.label,
             labelHead: (
               <Space>
-                <StyledBadge color={element.source.color} text={<Text>{element.source.name}</Text>} />
-                <EdgeDirection data={element} />
-                <StyledBadge color={element.target.color} text={<Text>{element.target.name}</Text>} />
+                <StyledBadge color={child.source.color} text={<Text>{child.source.name}</Text>} />
+                <EdgeDirection data={child} />
+                <StyledBadge color={child.target.color} text={<Text>{child.target.name}</Text>} />
               </Space>
             ),
           };
@@ -90,6 +86,7 @@ export function findConnectionChildrenProperties(arr: TreeConnectionType[], sele
             if (subChild.value === selectedValue) {
               return {
                 ...subChild,
+                id: element.id,
                 isConnectionType: true,
                 depth: 3,
                 labelName: `${element.name}.${child.label}.${subChild.name}`,
@@ -172,6 +169,9 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
             key: item.id,
             id: item.id,
             parentName: item.name,
+            inverse: item.inverse,
+            source: { name: item.source.name, color: item.source.color },
+            target: { name: item.target.name, color: item.target.color },
             children: item.properties?.map((itemChild) => ({
               label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
               title: (
@@ -222,6 +222,9 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
           value: item.id,
           key: item.id,
           id: item.id,
+          inverse: item.inverse,
+          source: { name: item.source.name, color: item.source.color },
+          target: { name: item.target.name, color: item.target.color },
           parentName: item.name,
           children: item.properties?.map((itemChild) => ({
             label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
@@ -263,6 +266,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
             value: item.id,
             key: item.id,
             id: item.id,
+            source: { name: item.source.name, color: item.source.color },
+            target: { name: item.target.name, color: item.target.color },
             parentName: item.name,
             title: (
               <Space>
@@ -304,6 +309,8 @@ export const createConnectionTree = (dataList: NodeEdgeTypesReturnData[]) =>
           value: item.id,
           key: item.id,
           id: item.id,
+          source: { name: item.source.name, color: item.source.color },
+          target: { name: item.target.name, color: item.target.color },
           parentName: item.name,
         },
       ],

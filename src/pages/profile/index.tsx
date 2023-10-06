@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
-import { InfoPanel } from '../../components/profile/info-panel';
-import { EditWrapper } from '../../components/profile/edit/wrapper';
-import { useGetProjects } from '../../api/projects/use-get-projects';
+import { InfoPanel } from 'components/profile/info-panel';
+import { EditWrapper } from 'components/profile/edit/wrapper';
+import { useGetProjects } from 'api/projects/use-get-projects';
 import { Wrapper } from './wrapper';
 
 export const Profile = () => {

@@ -4,7 +4,7 @@ import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.s
 import { Button } from 'components/button';
 import { MenuText, Text } from 'components/typography';
 import styled from 'styled-components';
-import { Col, Drawer, Row, Space } from 'antd';
+import { Col, Drawer, Row, Skeleton, Space, Spin } from 'antd';
 import { PATHS } from 'helpers/constants';
 import { ProjectLogo } from 'components/project/project-logo';
 import { ProjectButtonContent, ProjectList, ProjectStatisticsType } from 'types/project';
@@ -12,17 +12,20 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { ProjectStatistics } from 'components/project/project-statistics';
 import dotImage from '../../pages/project-visualisation/components/icons/dots.svg';
-import React, { Dispatch, useCallback, useState } from 'react';
+import React, { Dispatch, useCallback, useEffect, useState, useMemo } from 'react';
 import { ProjectActionContent } from '../../pages/projects/components/project-action-content';
 import { ProjectActionPopover } from '../popover';
 import { DeleteProjectModal } from './delete-project-modal';
 import { Graph } from '@antv/g6';
-import { ProjectFullInfo } from '../../api/types';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { useGetProjectInfo } from 'api/projects/use-get-project-info';
+import { PreviewChart } from 'pages/projects/components/preview/chart';
+import { PreviewEdgeFormat } from 'pages/projects/components/preview/chart/data.format';
 
 type Props = {
   isModalOpen: boolean;
   setIsModalOpen: (value: null | string) => void;
-  projectData: ProjectFullInfo;
+  projectId: string;
   graph: { destroy: (() => void) | null; graph: Graph | null };
   setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
   isPublic?: boolean;
@@ -32,6 +35,7 @@ type TitleProps = ProjectButtonContent &
   ProjectStatisticsType & {
     handleCancel: () => void;
     isClicked: boolean;
+    isPublicPage: boolean;
     setClicked: Dispatch<React.SetStateAction<boolean>>;
     openModal: () => void;
   };
@@ -117,6 +121,7 @@ const Title = ({
   isClicked,
   setClicked,
   openModal,
+  isPublicPage,
 }: TitleProps) => (
   <>
     <LeftCircle className="back-link" onClick={handleCancel} />
@@ -132,28 +137,56 @@ const Title = ({
       </Space>
       <Space size={30}>
         <ProjectStatistics comments={comments} likes={likes} views={views} size={size} />
-        <ProjectActionPopover
-          align={{ offset: [-20, -5] }}
-          open={isClicked}
-          onOpenChange={(open: boolean) => {
-            !open && setClicked(false);
-            return open;
-          }}
-          content={
-            <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
-          }
-        >
-          <StyledDotWrapper onClick={() => setClicked(true)}>
-            <DotsVertical />
-          </StyledDotWrapper>
-        </ProjectActionPopover>
+        {!isPublicPage && (
+          <ProjectActionPopover
+            align={{ offset: [-20, -5] }}
+            open={isClicked}
+            onOpenChange={(open: boolean) => {
+              !open && setClicked(false);
+              return open;
+            }}
+            content={
+              <ProjectActionContent
+                projectId={project.id}
+                folderId={project.folderId}
+                setIsDeleteModalOpen={openModal}
+              />
+            }
+          >
+            <StyledDotWrapper onClick={() => setClicked(true)}>
+              <DotsVertical />
+            </StyledDotWrapper>
+          </ProjectActionPopover>
+        )}
       </Space>
     </TitleWrapper>
   </>
 );
 
-export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, graph, setGraph, isPublic }: Props) => {
+export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph, setGraph, isPublic }: Props) => {
   const navigate = useNavigate();
+  const isPublicPage = useIsPublicPage();
+
+  const { data: projectData, isInitialLoading: projectDataLoading } = useGetProjectInfo(
+    { id: projectId },
+    { enabled: !!projectId }
+  );
+
+  useEffect(() => {
+    if (
+      projectData?.projectsNodeTypes &&
+      !graph.graph &&
+      document.getElementById('juJSlsfk') &&
+      !document.querySelector('canvas')
+    ) {
+      setGraph(
+        PreviewChart({
+          nodes: projectData?.projectsNodeTypes,
+          edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
+        })
+      );
+    }
+  }, [graph.graph, projectData?.projectsEdgeTypes, projectData?.projectsNodeTypes, setGraph]);
 
   const [isClicked, setClicked] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -171,22 +204,26 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
     setIsDeleteModalOpen(true);
   }, [setClicked]);
 
-  const project: ProjectList = projectData
-    ? {
-        id: projectData.id,
-        color: projectData.color,
-        name: projectData.title,
-        folderId: projectData.folder_id,
-        type: projectData.privacy,
-        dateTime: dayjs(projectData.updated_at).format('YYYY-MM-DD HH:mm'),
-        icon: projectData.icon,
-        user: {
-          first_name: projectData?.user?.first_name,
-          last_name: projectData?.user?.last_name,
-          id: projectData?.user?.id,
-        },
-      }
-    : ({} as ProjectList);
+  const project: ProjectList = useMemo(
+    () =>
+      projectData
+        ? {
+            id: projectData.id,
+            color: projectData.color,
+            name: projectData.title,
+            folderId: projectData.folder_id,
+            type: projectData.privacy,
+            dateTime: dayjs(projectData.updated_at).format('YYYY-MM-DD HH:mm'),
+            icon: projectData.icon,
+            user: {
+              first_name: projectData?.user?.first_name,
+              last_name: projectData?.user?.last_name,
+              id: projectData?.user?.id,
+            },
+          }
+        : ({} as ProjectList),
+    [projectData]
+  );
 
   return (
     <>
@@ -204,7 +241,10 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
               isClicked={isClicked}
               setClicked={setClicked}
               openModal={openModal}
+              isPublicPage={isPublicPage}
             />
+          ) : projectDataLoading ? (
+            <Skeleton.Input active block />
           ) : (
             ''
           )
@@ -213,19 +253,24 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
           <FooterWrapper>
             <Row justify="center">
               <Col span={12}>
-                <Button
-                  block
-                  type="primary"
-                  onClick={() =>
-                    navigate(
-                      `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id)
-                    )
-                  }
-                >
-                  <MenuText strong style={{ color: '#ffffff' }}>
-                    OPEN PROJECT
-                  </MenuText>
-                </Button>
+                {projectDataLoading ? (
+                  <Skeleton.Button active block />
+                ) : (
+                  <Button
+                    block
+                    type="primary"
+                    onClick={() =>
+                      project.id &&
+                      navigate(
+                        `${isPublic ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_OVERVIEW}`.replace(':id', project.id)
+                      )
+                    }
+                  >
+                    <MenuText strong style={{ color: '#ffffff' }}>
+                      OPEN PROJECT
+                    </MenuText>
+                  </Button>
+                )}
               </Col>
             </Row>
           </FooterWrapper>
@@ -234,7 +279,9 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectData, gra
         placement="right"
         width="50vw"
       >
-        <StyledContainer className="project-content" id={'juJSlsfk'} />
+        <Spin spinning={projectDataLoading}>
+          <StyledContainer className="project-content" id="juJSlsfk" />
+        </Spin>
       </ProjectWrapModal>
       <DeleteProjectModal
         isModalOpen={isDeleteModalOpen}

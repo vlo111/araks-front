@@ -62,7 +62,7 @@ export const FooterPanel: Props = ({ id, description, shared }) => {
   const share = () => startPerspectiveShare({ id, openShare: !(perspective?.openShare ?? false), sharedUsers: shared });
 
   const ColDisabledShare = (
-    <Col className="box disable" span={12} style={{ marginLeft: '1px' }}>
+    <Col className="box disable" span={24} style={{ marginLeft: '1px' }}>
       <Space className="text" align={'center'}>
         Share <p>({shared.length})</p>
       </Space>
@@ -70,7 +70,7 @@ export const FooterPanel: Props = ({ id, description, shared }) => {
   );
 
   const ColActiveShare = (
-    <Col className="box" span={12} style={{ marginLeft: '1px' }}>
+    <Col className="box" span={24} style={{ marginLeft: '1px' }}>
       <Space className="text" align={'center'} onClick={share}>
         Share <p>({shared.length})</p>
       </Space>
@@ -82,14 +82,7 @@ export const FooterPanel: Props = ({ id, description, shared }) => {
       <InfoSection />
       <span>{description}</span>
       <Wrapper>
-        <Row gutter={30}>
-          <Col className="box" span={12}>
-            <Space className="text" align={'center'}>
-              Visualization
-            </Space>
-          </Col>
-          {perspective_info?.typesLength ? ColActiveShare : ColDisabledShare}
-        </Row>
+        <Row gutter={30}>{perspective_info?.typesLength ? ColActiveShare : ColDisabledShare}</Row>
       </Wrapper>
     </>
   );

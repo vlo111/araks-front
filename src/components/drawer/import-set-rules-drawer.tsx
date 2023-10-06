@@ -39,6 +39,7 @@ export const ImportSetRulesDrawer = () => {
           </Col>
           <Col span={6}>
             <Button
+              disabled={isLoading}
               block
               type="primary"
               onClick={() =>

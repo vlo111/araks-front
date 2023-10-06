@@ -45,7 +45,7 @@ export const RightSection = () => {
   return (
     <ImportProvider>
       <ColorFill color={color} />
-      {projectInfo?.role === UserProjectRole.Owner && !isPublicPage && (
+      {projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
         <AddType
           titleText={titleText}
           onClick={startAddType}

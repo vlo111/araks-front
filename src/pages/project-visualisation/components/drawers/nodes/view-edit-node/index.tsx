@@ -5,61 +5,67 @@ import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
 import * as React from 'react';
 import { AddNodeForm } from 'components/form/add-node-form';
-import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
+import { NodeDataConnectionToSave, ProjectTypePropertyReturnData, UserProjectRole } from 'api/types';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useGetNode } from 'api/node/use-get-node';
-import { NodeBody, NodeDataSubmit, NodePropertiesValues, ResponseLocationType, UploadedFileType } from 'types/node';
+import {
+  NodeBody,
+  NodeDataResponse,
+  NodeDataSubmit,
+  NodePropertiesValues,
+  ResponseLocationType,
+  UploadedFileType,
+} from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { Location } from 'components/modal/types';
 import dayjs from 'dayjs';
 import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
+import { useProject } from 'context/project-context';
+export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
   switch (item.project_type_property_type) {
     case PropertyTypes.Location:
-      return (item.nodes_data as ResponseLocationType[])?.map(
-        (addr: ResponseLocationType) =>
-          ({
-            address: addr.address,
-            lat: addr.location.latitude,
-            lng: addr.location.longitude,
-          } as Location)
+      return (
+        (item.nodes_data as ResponseLocationType[])?.map((addr) => ({
+          address: addr.address,
+          lat: addr.location.latitude,
+          lng: addr.location.longitude,
+        })) || []
       );
     case PropertyTypes.DateTime:
     case PropertyTypes.Date:
-      return item.nodes_data?.map((rec) => dayjs(rec as string));
+      return (item.nodes_data || []).map((rec) => dayjs(rec as string));
     case PropertyTypes.IMAGE_URL:
-      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`));
+      return (item.nodes_data as string[])?.map((rec, index) => setUploadFileStructure(rec, `Image ${index}`)) || [];
     case PropertyTypes.Document:
-      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name));
+      return (item.nodes_data as UploadedFileType[])?.map((rec) => setUploadFileStructure(rec.url, rec.name)) || [];
     default:
-      return item.nodes_data;
+      return item.nodes_data || [];
   }
 };
 
 export const ViewEditNodeDrawer = () => {
   const [form] = Form.useForm();
+  const [selectedView, setSelectedView] = React.useState<VIewDataType>();
 
   const { graph, openNode, finishOpenNode } = useGraph() ?? {};
+  const { projectInfo } = useProject();
 
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const node = graph?.getNodes().find((n) => n?.getID && n?.getID() === openNode?.id);
-
-  const { data: nodeData } = useGetNode(node?.getID() ?? '', {
-    enabled: !!node?.getID(),
-    onSuccess: (nodeData) => {
+  const setFormValue = useCallback(
+    (data: NodeDataResponse | undefined) => {
       const initialAcc = {
-        name: [nodeData.name],
-        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
+        name: [data?.name],
+        node_icon: [setUploadFileStructure(data?.default_image ?? '', 'Default image')],
       };
 
-      const fieldsData = nodeData.properties?.reduce((acc, item) => {
+      const fieldsData = data?.properties?.reduce((acc, item) => {
         if (!item.nodes_data?.length) {
           return acc;
         }
@@ -69,7 +75,7 @@ export const ViewEditNodeDrawer = () => {
           [item.nodeTypeProperty.name]: getValue(item),
         } as NodePropertiesValues;
       }, initialAcc);
-      const groupList = groupedData(nodeData.edges);
+      const groupList = groupedData(data?.edges ?? []);
 
       const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
         return {
@@ -86,28 +92,39 @@ export const ViewEditNodeDrawer = () => {
 
       form.setFieldsValue({
         ...fieldsData,
-        name: [nodeData.name],
-        node_icon: [setUploadFileStructure(nodeData.default_image, 'Default image')],
+        name: [data?.name],
+        node_icon: [setUploadFileStructure(data?.default_image ?? '', 'Default image')],
         ...connectionFieldsData,
       });
     },
+    [form]
+  );
+
+  const { data: nodeData } = useGetNode(openNode?.id ?? '', {
+    enabled: !!openNode?.id,
+    onSuccess: (data) => {
+      setFormValue(data);
+      setSelectedView(data);
+    },
   });
 
-  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(node?.getModel()?.nodeType as string, {
-    enabled: !!node?.getModel()?.nodeType,
+  const { isInitialLoading, data: properties } = useGetProjectNodeTypeProperties(nodeData?.project_type_id, {
+    enabled: !!nodeData?.project_type_id,
   });
 
   const { mutate } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
-      updateEdges(data, variables);
-      updateNode();
+      if (graph.getNodes().find((n) => n.getID() === variables.nodeId)) {
+        updateNode(variables);
+        updateEdges(data, variables);
+      }
     },
   });
 
   const updateEdges = useCallback(
     (data: NodePropertiesValues, variables: NodeDataSubmit) => {
       /* Update deleted edges  */
-      const deleteEdges = nodeData?.edges.filter(
+      const deleteEdges = variables?.edges?.filter(
         (edges1) => !variables?.edges?.some((edges2) => edges1.id === edges2.id)
       );
 
@@ -115,7 +132,7 @@ export const ViewEditNodeDrawer = () => {
 
       /* Update created edges  */
       const createEdges = variables?.edges?.filter((edges1) =>
-        nodeData?.edges.some((edges2) => edges1.id === edges2.id)
+        variables?.edges?.some((edges2) => edges1.id === edges2.id)
       );
       createEdges?.forEach((edge) => {
         const type = properties?.find((p) => p.id === edge.project_edge_type_id);
@@ -128,22 +145,22 @@ export const ViewEditNodeDrawer = () => {
         });
       });
     },
-    [graph, nodeData?.edges, properties]
+    [graph, properties]
   );
 
-  const updateNode = useCallback(() => {
-    const name = form.getFieldValue('name')[0];
-    const img = form.getFieldValue('node_icon')[0]?.response?.data?.uploadPath;
-
-    graph.updateItem(openNode?.id ?? '', {
-      label: name,
-      type: img ? 'image' : 'circle',
-      img,
-      style: {
-        fill: img ? '#00000000' : 'white',
-      },
-    });
-  }, [form, graph, openNode]);
+  const updateNode = useCallback(
+    (variable: NodeDataSubmit) => {
+      graph.updateItem(variable.nodeId ?? '', {
+        label: variable.name,
+        type: variable.default_image ? 'image' : 'circle',
+        img: variable.default_image,
+        style: {
+          fill: variable.default_image ? '#00000000' : 'white',
+        },
+      });
+    },
+    [graph]
+  );
 
   const onClose = useCallback(() => {
     setIsEdit(false);
@@ -192,13 +209,13 @@ export const ViewEditNodeDrawer = () => {
           ...mainData,
           nodes: dataToSubmit,
           edges: dataToSubmitEdges?.flat() || [],
-          project_type_id: node?.getModel()?.nodeType || '',
+          project_type_id: nodeData?.project_type_id || '',
           nodeId: nodeData.id,
         } as NodeDataSubmit);
         onClose();
       }
     },
-    [mutate, node, nodeData, onClose, properties]
+    [mutate, nodeData, onClose, properties]
   );
 
   const footer = useMemo(
@@ -206,7 +223,7 @@ export const ViewEditNodeDrawer = () => {
       isEdit && (
         <Row gutter={16} justify="center">
           <Col span={4}>
-            <Button style={{ marginRight: 8 }} onClick={onClose} block>
+            <Button style={{ marginRight: 8 }} onClick={() => setIsEdit(false)} block>
               Cancel
             </Button>
           </Col>
@@ -217,13 +234,20 @@ export const ViewEditNodeDrawer = () => {
           </Col>
         </Row>
       ),
-    [isEdit, onClose, form]
+    [isEdit, form]
   );
+
+  const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
+
+  useEffect(() => {
+    setFormValue(nodeData);
+    return () => form.resetFields();
+  }, [form, nodeData, setFormValue]);
 
   return (
     <Drawer
       headerStyle={{
-        borderTop: `6px solid ${node?.getModel()?.style?.stroke}`,
+        borderTop: `6px solid ${nodeData?.nodeType?.color}`,
       }}
       closable={false}
       onClose={onClose}
@@ -232,8 +256,9 @@ export const ViewEditNodeDrawer = () => {
           setIsEdit={setIsEdit}
           isEdit={isEdit}
           id={nodeData?.id as string}
-          name={(node?.getModel().nodeTypeName as string) ?? ''}
+          name={nodeData?.name ?? ''}
           onClose={onClose}
+          canEdit={canEdit}
         />
       }
       footer={footer}
@@ -253,7 +278,7 @@ export const ViewEditNodeDrawer = () => {
       ) : isInitialLoading ? (
         <Skeleton />
       ) : (
-        <ViewNode formFata={form} properties={nodeData?.properties} />
+        <ViewNode selectedView={selectedView} properties={nodeData?.properties} />
       )}
     </Drawer>
   );

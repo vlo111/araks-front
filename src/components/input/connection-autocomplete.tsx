@@ -15,6 +15,11 @@ type Props = {
 
 const initPageData: SearchPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
 
+const customDropdownStyle = {
+  maxHeight: '100px',
+  overflow: 'auto',
+};
+
 export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = 'Search' }: Props) => {
   const [pageData] = useState(initPageData);
   const [initalRequest, setStartInitialRequest] = useState(false);
@@ -42,7 +47,6 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
   const handleSelectAction = (value: string) => {
     handleSelect(value, options);
     setSearchValue('');
-    setOptions([]);
     initalRequest && setStartInitialRequest(false);
   };
 
@@ -54,6 +58,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
       onSelect={handleSelectAction}
       notFoundContent="No Connection data found"
       style={{ width: '100%' }}
+      dropdownStyle={customDropdownStyle}
     >
       <Input
         onFocus={() => !options.length && !debouncedSearchValue && setStartInitialRequest(true)}

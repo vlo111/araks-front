@@ -6,17 +6,22 @@ const initState = {
 
 export enum ITEM {
   GRAPH = 'graph',
+  GRAPH_INFO = 'graphInfo',
   OPEN_NODE = 'openNode',
   OPEN_EDGE = 'openEdge',
   DELETE_NODE = 'deleteNode',
   DELETE_EDGE = 'deleteEdge',
   OPEN_CREATE_NODE = 'openNodeCreate',
   OPEN_CREATE_EDGE = 'openEdgeCreate',
+  OPEN_SHORTEST_PATH = 'openShortestPath',
 }
 
 export enum GraphAction {
   SET_GRAPH = 'SET_GRAPH',
+  SET_GRAPH_INFO = 'SET_GRAPH_INFO',
   OPEN_NODE_START = 'OPEN_NODE_START',
+  OPEN_SHORTEST_PATH_START = 'OPEN_SHORTEST_PATH_START',
+  SHORTEST_PATH_FINISH = 'SHORTEST_PATH_FINISH',
   OPEN_NODE_FINISH = 'OPEN_NODE_FINISH',
   OPEN_CREATE_NODE_START = 'OPEN_CREATE_NODE_START',
   OPEN_CREATE_NODE_FINISH = 'OPEN_CREATE_NODE_FINISH',
@@ -59,13 +64,23 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     [item]: { ...state[item], isOpened: false },
   });
 
+  const endWithClear = (item: ITEM) => ({
+    ...state,
+    [item]: {
+      ...state[item],
+      isOpened: false,
+      id: '',
+    },
+  });
+
   switch (type) {
     case GraphAction.SET_GRAPH:
       return insert(ITEM.GRAPH) as GraphState;
     case GraphAction.OPEN_NODE_START:
       return start(ITEM.OPEN_NODE);
-    case GraphAction.OPEN_NODE_FINISH:
-      return end(ITEM.OPEN_NODE);
+    case GraphAction.OPEN_NODE_FINISH: {
+      return endWithClear(ITEM.OPEN_NODE);
+    }
     case GraphAction.OPEN_CREATE_NODE_START:
       return {
         ...state,
@@ -83,15 +98,31 @@ export const graphReducer: (state: GraphState, action: GraphActionType) => Graph
     case GraphAction.OPEN_EDGE_START:
       return start(ITEM.OPEN_EDGE);
     case GraphAction.OPEN_EDGE_FINISH:
-      return end(ITEM.OPEN_EDGE);
+      return endWithClear(ITEM.OPEN_EDGE);
     case GraphAction.DELETE_EDGE_START:
       return start(ITEM.DELETE_EDGE);
     case GraphAction.DELETE_EDGE_FINISH:
       return end(ITEM.DELETE_EDGE);
     case GraphAction.OPEN_CREATE_EDGE_START:
       return start(ITEM.OPEN_CREATE_EDGE);
+    case GraphAction.OPEN_SHORTEST_PATH_START:
+      return start(ITEM.OPEN_SHORTEST_PATH);
+    case GraphAction.SHORTEST_PATH_FINISH:
+      return end(ITEM.OPEN_SHORTEST_PATH);
     case GraphAction.OPEN_CREATE_EDGE_FINISH:
       return end(ITEM.OPEN_CREATE_EDGE);
+    case GraphAction.SET_GRAPH_INFO:
+      if (state[ITEM.GRAPH_INFO]) {
+        return {
+          ...state,
+          [ITEM.GRAPH_INFO]: {
+            ...state[ITEM.GRAPH_INFO],
+            ...payload,
+          },
+        };
+      } else {
+        return insert(ITEM.GRAPH_INFO) as GraphState;
+      }
     default:
       return state;
   }

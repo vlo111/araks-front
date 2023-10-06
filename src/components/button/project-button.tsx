@@ -14,6 +14,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { DeleteProjectModal } from 'components/modal/delete-project-modal';
 import { ProjectActionTitle } from '../../pages/projects/components/project-action-title';
 import { useGetProjectInfo } from '../../api/projects/use-get-project-info';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type ProjectButtonDraw = ButtonProps &
   ProjectButtonContent & {
@@ -53,9 +54,11 @@ const DotsWrapper = styled.div<FullWidth>`
 `;
 
 const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
-  const { data: projectData } = useGetProjectInfo({ id: project.id }, { enabled: !!project.id });
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const isPublicPage = useIsPublicPage();
+
   const [isClicked, setIsClicked] = useState(false);
+  const { data: projectData } = useGetProjectInfo({ id: project.id }, { enabled: !!project.id && isClicked });
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const openModal = useCallback(() => {
     setIsClicked(false);
@@ -96,19 +99,29 @@ const ButtonContent = ({ project, fullWidth }: ProjectButtonContent) => {
             return open;
           }}
           content={
-            <ProjectActionContent projectId={project.id} folderId={project.folderId} setIsDeleteModalOpen={openModal} />
+            !isPublicPage ? (
+              <ProjectActionContent
+                projectId={project.id}
+                folderId={project.folderId}
+                setIsDeleteModalOpen={openModal}
+              />
+            ) : (
+              <></>
+            )
           }
         >
           <DotsWrapper fullWidth={fullWidth} onClick={() => setIsClicked((prev) => !prev)}>
             <DotsVertical className="more-dots" />
           </DotsWrapper>
         </ProjectActionPopover>
-        <DeleteProjectModal
-          isModalOpen={isDeleteModalOpen}
-          setIsModalOpen={setIsDeleteModalOpen}
-          folderId={project.folderId}
-          projectId={project.id}
-        />
+        {!isPublicPage && (
+          <DeleteProjectModal
+            isModalOpen={isDeleteModalOpen}
+            setIsModalOpen={setIsDeleteModalOpen}
+            folderId={project.folderId}
+            projectId={project.id}
+          />
+        )}
       </Space>
     </Space>
   );

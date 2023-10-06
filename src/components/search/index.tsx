@@ -1,60 +1,28 @@
-import { UserOutlined, SearchOutlined } from '@ant-design/icons';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AutoComplete as AutoCompleteComponent, Input } from 'antd';
-
-import './index.css';
+import { SearchOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { renderTypes } from './options/node-type';
+import { useGetUserGlobalSearch } from 'api/user/use-get-user-global-search';
+import { renderProjects } from './options/projects';
+import './index.css';
+import { PATHS } from 'helpers/constants';
+import { StyledSearchTitle } from './options/styles';
 
-const renderTitle = (title: string) => (
-  <span>
-    {title}
-    <a style={{ float: 'right' }} href="https://www.google.com/search?q=antd" target="_blank" rel="noopener noreferrer">
-      more
-    </a>
-  </span>
-);
-
-const renderItem = (title: string, count: number) => ({
-  value: title,
-  label: (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      {title}
-      <span>
-        <UserOutlined /> {count}
-      </span>
-    </div>
-  ),
-});
-
-const options = [
-  {
-    label: renderTitle('Libraries'),
-    options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-  },
-  {
-    label: renderTitle('Solutions'),
-    options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-  },
-  {
-    label: renderTitle('Articles'),
-    options: [renderItem('AntDesign design language', 100000)],
-  },
-];
+enum ProjectPrivacy {
+  PUBLIC = 'public',
+  PRIVATE = 'private',
+}
 
 const AutoComplete = styled(AutoCompleteComponent)`
   .ant-input-affix-wrapper {
     border-color: #c3c3c3;
-
     .ant-input-prefix {
       svg {
         color: #c3c3c3;
       }
     }
-
     .ant-input::placeholder {
       font-family: 'Rajdhani';
       font-weight: 500;
@@ -65,14 +33,67 @@ const AutoComplete = styled(AutoCompleteComponent)`
     }
   }
 `;
+export const Search = () => {
+  const [search, setSearch] = useState<string>();
+  const navigate = useNavigate();
 
-export const Search = () => (
-  <AutoComplete
-    popupClassName="certain-category-search-dropdown"
-    popupMatchSelectWidth={500}
-    style={{ width: 456 }}
-    options={options}
-  >
-    <Input prefix={<SearchOutlined style={{ fontSize: '18px' }} />} placeholder="Search" />
-  </AutoComplete>
-);
+  const { data } = useGetUserGlobalSearch(
+    { enabled: search ? search.trim()?.length > 2 : false },
+    search?.trim() ?? ''
+  );
+  const projects = useMemo(
+    () => data.projects?.map(({ id, title, color, icon, privacy }) => renderProjects(id, title, color, icon, privacy)),
+    [data.projects]
+  );
+
+  const nodeTypes = useMemo(
+    () => data.types?.map(({ id, title, color, node_type_name }) => renderTypes(id, title, color, node_type_name)),
+    [data.types]
+  );
+
+  const renderTitle = (title: string) => <StyledSearchTitle>{title}</StyledSearchTitle>;
+
+  const options = [];
+
+  if (projects && projects.length > 0) {
+    options.push({
+      label: renderTitle('Projects'),
+      options: projects,
+    });
+  }
+
+  if (nodeTypes && nodeTypes.length > 0) {
+    options.push({
+      label: renderTitle('Types'),
+      options: nodeTypes,
+    });
+  }
+
+  const onSelect = (id: string | unknown) => {
+    const project = projects?.find((project) => project.id === id);
+    if (project?.privacy === ProjectPrivacy.PUBLIC) {
+      navigate(`${PATHS.PUBLIC}${PATHS.PROJECTS}/${id}`);
+    } else {
+      navigate(`${PATHS.PROJECTS}/${id}`);
+    }
+  };
+
+  return (
+    <AutoComplete
+      popupClassName="certain-category-search-dropdown"
+      popupMatchSelectWidth={456}
+      dropdownMatchSelectWidth={400}
+      style={{ width: 456 }}
+      onSelect={onSelect}
+      options={options}
+      value={search}
+    >
+      <Input
+        prefix={<SearchOutlined style={{ fontSize: '18px' }} />}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="search"
+      />
+    </AutoComplete>
+  );
+};

@@ -1,0 +1,28 @@
+.pop-confirm-member .ant-popconfirm-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+}
+
+.pop-confirm-member .ant-popconfirm-buttons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100px;
+}
+
+.pop-confirm-member .ant-popconfirm-inner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pop-confirm-member .ant-popover-inner {
+    padding: 2rem;
+}
+
+.user-list ul {
+    list-style-type: none;
+    padding: 0;
+}

@@ -2,7 +2,7 @@ import { antTheme } from 'helpers/ant-theme';
 import { Graph } from '@antv/x6';
 import { Options } from '@antv/x6/lib/graph/options';
 import { Snapline } from '@antv/x6-plugin-snapline';
-import { initPerspectiveEvents, initSchemaEvents } from './events';
+import { initSchemaEvents } from './events';
 import { isPerspective } from '../../helpers/utils';
 import { InitGraph } from '../../types';
 
@@ -89,8 +89,7 @@ export const initGraph: InitGraph = (container, _params, projectInfo) => {
 
   const graph = new Graph(options);
 
-  if (isPerspective()) initPerspectiveEvents(graph, _params.setPerspectiveInfo);
-  else initSchemaEvents(graph, _params, projectInfo);
+  if (!isPerspective()) initSchemaEvents(graph, _params, projectInfo);
 
   graph.use(
     new Snapline({

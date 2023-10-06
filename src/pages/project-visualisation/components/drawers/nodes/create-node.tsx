@@ -18,7 +18,7 @@ import './add-node-select.css';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
-  const { graph, openNodeCreate, finishOpenNodeCreate } = useGraph() ?? {};
+  const { graph, openNodeCreate, finishOpenNodeCreate, graphInfo, setGraphInfo } = useGraph() ?? {};
   const { id } = useParams();
 
   const parent_id = Form.useWatch('parent_id', { form, preserve: true });
@@ -64,6 +64,8 @@ export const NodeCreateDrawer: React.FC = () => {
         x: openNodeCreate.x,
         y: openNodeCreate.y,
         nodeType: nodeData.nodeType.id,
+        nodeTypeName: nodeData.nodeType.name,
+        edgeCount: 0,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
@@ -79,12 +81,16 @@ export const NodeCreateDrawer: React.FC = () => {
       createNode(data);
       createEdge(data, variables);
       form.resetFields();
-      finishOpenNodeCreate();
+      setGraphInfo({
+        nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
+        nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
+      });
     },
   });
 
   const onFinish = useCallback(
     (values: NodeBody) => {
+      finishOpenNodeCreate();
       const mainData = { name: '', default_image: '' };
       const dataToSubmit = properties
         ?.map((item) => {
@@ -128,7 +134,7 @@ export const NodeCreateDrawer: React.FC = () => {
         project_type_id: parent_id || '',
       } as NodeDataSubmit);
     },
-    [properties, mutate, parent_id]
+    [finishOpenNodeCreate, properties, mutate, parent_id]
   );
 
   const treeSelect = useMemo(

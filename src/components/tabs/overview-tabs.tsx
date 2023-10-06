@@ -12,7 +12,7 @@ import { SchemaWrapper } from 'components/layouts/components/schema/wrapper';
 import { useOverview } from 'context/overview-context';
 import { useGetProject } from 'api/projects/use-get-project';
 import { VisualisationWrapper } from '../layouts/components/visualisation/wrapper';
-import { PerspectiveUser, UserProjectRole } from 'api/types';
+import { UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 
@@ -52,19 +52,6 @@ const Tabs = styled(TabsComponent)`
   }
 `;
 
-const priorityRoles: UserProjectRole[] = [UserProjectRole.Owner, UserProjectRole.Editor, UserProjectRole.Viewer];
-
-const getUserRoleForProject = (perspectiveUsers: PerspectiveUser[]) => {
-  for (const priorityRole of priorityRoles) {
-    const userRoleObj = perspectiveUsers?.find((roleObj) => roleObj.role === priorityRole);
-    if (userRoleObj) {
-      return userRoleObj.role;
-    }
-  }
-
-  return null;
-};
-
 export const OverviewTabs = () => {
   const { updateRole, projectInfo } = useProject();
   const location = useLocation();
@@ -79,7 +66,7 @@ export const OverviewTabs = () => {
       enabled: !!params.id,
       onSuccess: ({ data }) => {
         dispatch(data.title);
-        updateRole(getUserRoleForProject(data.perspective_users));
+        updateRole(data.role);
       },
     }
   );
@@ -91,7 +78,7 @@ export const OverviewTabs = () => {
         label: 'Overview',
       },
       {
-        key: PATHS.PROJECT_SCHEME,
+        key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_SCHEME}`,
         label: 'Scheme',
       },
       {
@@ -101,8 +88,8 @@ export const OverviewTabs = () => {
         label: 'Data sheet',
       },
       {
-        key: PATHS.PROJECT_VISUALISATION,
-        label: 'Visualisation',
+        key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_VISUALISATION}`,
+        label: 'Visualization',
       },
     ];
 
@@ -165,9 +152,11 @@ export const OverviewTabs = () => {
               (params.node_type_id
                 ? PATHS.NODE_OVERVIEW
                 : `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.DATA_SHEET}`) && <DataSheetWrapper />}
-            {item.key === PATHS.PROJECT_SCHEME && <SchemaWrapper />}
+            {item.key === `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_SCHEME}` && <SchemaWrapper />}
             {item.key === PATHS.PROJECT_PERSPECTIVES && <SchemaWrapper />}
-            {item.key === PATHS.PROJECT_VISUALISATION && <VisualisationWrapper />}
+            {item.key === `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_VISUALISATION}` && (
+              <VisualisationWrapper />
+            )}
           </div>
         ),
       }))}

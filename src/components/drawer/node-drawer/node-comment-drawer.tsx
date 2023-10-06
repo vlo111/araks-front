@@ -1,22 +1,43 @@
 import { RightOutlined } from '@ant-design/icons';
-import { Button, Col, Drawer, DrawerProps, Row, Space } from 'antd';
+import { Button, Col, Drawer, DrawerProps, Row, Space, Spin } from 'antd';
+import { useGetNodeCommentsCount } from 'api/comments/use-get-node-comments-count';
 import { Icon } from 'components/icon';
+import { NotifyBadge } from 'components/notifications';
 import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { useGetHeaderHeight } from 'hooks/use-get-header-height';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const NodeCommentDrawer = ({ children, ...props }: Partial<DrawerProps>) => {
+type Props = Partial<DrawerProps> & {
+  nodeId?: string;
+  parentDrawerClosed?: boolean;
+};
+
+export const NodeCommentDrawer = ({ children, nodeId, parentDrawerClosed = false, ...props }: Props) => {
   const sectionHeight = useGetHeaderHeight();
-
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const { data: commentsCount, isInitialLoading: commentsCountIsLoading } = useGetNodeCommentsCount(nodeId);
+
+  useEffect(() => {
+    if (parentDrawerClosed) {
+      setOpenDrawer(false);
+    }
+  }, [parentDrawerClosed]);
+
   return (
     <>
-      <Button
-        type="link"
-        onClick={() => setOpenDrawer(true)}
-        icon={<Icon color="#414141" icon="chat_bubble_outline_black" size={24} />}
-      />
+      <NotifyBadge
+        color="#F97070"
+        count={commentsCountIsLoading ? <Spin tip="Loading" size="small" /> : commentsCount}
+        offset={[-5, 10]}
+      >
+        <Button
+          type="link"
+          onClick={() => setOpenDrawer(true)}
+          icon={<Icon color="#414141" icon="chat_bubble_outline_black" size={24} />}
+        />
+      </NotifyBadge>
       <Drawer
         open={openDrawer}
         closable={false}
@@ -52,6 +73,7 @@ export const NodeCommentDrawer = ({ children, ...props }: Partial<DrawerProps>) 
         }}
         style={{
           background: 'transparent',
+          backdropFilter: 'blur(14px)',
         }}
         mask={false}
         {...props}

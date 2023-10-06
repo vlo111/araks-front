@@ -2,7 +2,7 @@ import { Form } from 'antd';
 import { PlusAction } from 'components/actions/plus';
 import { StyledButtonsWrapper, StyledAddButton, StyledDiv, StyledCleanButton, StyledRunButton } from './styles';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { IEdge, INode } from '@antv/g6';
+import G6, { IEdge, INode } from '@antv/g6';
 
 type Props = {
   setOpenTable: (value: boolean) => void;
@@ -11,7 +11,7 @@ type Props = {
   resetFields: () => void;
 };
 
-export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdges }: Props) => {
+export const Buttons = ({ setOpenTable, resetFields, filteredEdges }: Props) => {
   const form = Form.useFormInstance();
   const queries = Form.useWatch('queries', form);
   const { graph } = useGraph() || {};
@@ -22,14 +22,17 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
   };
 
   const removeGraphStyle = () => {
-    filteredNodes.forEach((node) => {
+    graph.getNodes().forEach((node) => {
       graph.updateItem(node.getID(), {
         size: 40,
         icon: {
           show: false,
+          img: node.getModel()?.img ? node.getModel()?.img : '',
         },
+        type: node.getModel()?.img ? 'image' : 'circle',
         style: {
           stroke: node.getModel()?.color as string,
+          fill: node.getModel()?.img ? 'transparent' : 'white',
         },
       });
     });
@@ -39,6 +42,11 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
           stroke: '#C3C3C3',
           lineWidth: 2,
           lineDash: [],
+          endArrow: {
+            fill: '#C3C3C3',
+            path: G6.Arrow.triangle(10, 15, 5),
+            d: 5,
+          },
         },
       });
     });
@@ -55,7 +63,9 @@ export const Buttons = ({ setOpenTable, filteredNodes, resetFields, filteredEdge
           <StyledCleanButton htmlType="submit" onClick={removeGraphStyle}>
             Clean All
           </StyledCleanButton>
-          <StyledRunButton htmlType="submit">Run</StyledRunButton>
+          <StyledRunButton htmlType="submit" onClick={form.submit}>
+            Run
+          </StyledRunButton>
         </StyledDiv>
       </StyledButtonsWrapper>
     </>

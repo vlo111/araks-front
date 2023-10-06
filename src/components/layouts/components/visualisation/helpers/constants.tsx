@@ -2,12 +2,14 @@ import G6 from '@antv/g6';
 import { renderTooltipModal } from './tooltip';
 
 const layout = {
-  type: 'concentric',
-  maxLevelDiff: 0.5,
-  sortBy: 'topology',
-  edgeLength: 10,
-  preventOverlap: true,
-  nodeSize: 80,
+  type: 'gForce',
+  center: [window.innerWidth, window.innerHeight],
+  linkDistance: 100,
+  nodeStrength: 600,
+  edgeStrength: 200,
+  nodeSize: 30,
+  workerEnabled: true,
+  gpuEnabled: true,
 };
 
 const defaultEdge = {
@@ -88,11 +90,11 @@ export const options = {
   animate: true,
   modes: {
     default: [
+      'create-edge',
       'drag-canvas',
       'drag-node',
       'drag-combo',
       'zoom-canvas',
-      'create-edge',
       {
         type: 'tooltip',
         formatText: (model: { [key: string]: unknown }) => {

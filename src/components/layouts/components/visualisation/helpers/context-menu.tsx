@@ -1,11 +1,12 @@
 import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, expand, getMenuContexts, removeTooltip, updateExpandList } from './utils';
+import { addTooltip, expand, expandByNodeData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
 
-export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType) => PluginBase = (
+export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType, isEdit: boolean) => PluginBase = (
   graph,
-  { startOpenNodeCreate, startOpenNode, startDeleteNode, startDeleteEdge }
+  { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge, setGraphInfo },
+  isEdit
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -19,8 +20,11 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
     const isCombo = itemType === 'combo';
 
     startOpenNodeCreate({ isOpened: false, x: evt?.x ?? 0, y: evt?.y ?? 0 });
-    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode);
-    updateExpandList(id, graph.getEdges());
+
+    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode, isEdit);
+    if (isNode) {
+      updateExpandList(id, graph.getEdges());
+    }
 
     return isCanvas ? canvasContext : isNode ? nodeContext : isCombo ? comboContext : edgeContext;
   };
@@ -30,20 +34,56 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
     handleMenuClick: async (target, item) => {
       const type = item?._cfg?.type || '';
       if (type === 'node') {
-        const isDelete = target.className === 'delete';
         const submenuClass = target.parentElement?.className;
+
         const isSubMenu = submenuClass === 'submenu' || submenuClass === 'right-section';
 
-        if (isDelete) startDeleteNode({ id: item.getID() });
-        else if (isSubMenu) await expand(graph, item, target);
-        else startOpenNode({ id: item.getID() });
+        if (isSubMenu) {
+          await expand(graph, item, target, setGraphInfo);
+          graph.fitView(0, { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true }, true);
+        } else {
+          switch (target.className) {
+            case 'shortest-path': {
+              startShortestPath({ id: item.getID() });
+              break;
+            }
+            case 'delete': {
+              startDeleteNode({ id: item.getID() });
+              break;
+            }
+            case 'focus': {
+              graph.clear();
+
+              graph.addItem('node', item.getModel());
+
+              await expandByNodeData(
+                graph,
+                item,
+                item.getID(),
+                (item.getModel() as { nodeType: string }).nodeType ?? '',
+                'all',
+                setGraphInfo
+              );
+              graph.fitView(0, { ratioRule: 'min', direction: 'both', onlyOutOfViewPort: false }, true);
+
+              break;
+            }
+            default: // startOpenNode({ id: item.getID() });
+          }
+        }
       } else if (type === 'edge') {
         startDeleteEdge({ id: item.getID() });
       } else if (type === 'combo') {
         const nodesId = item?._cfg?.nodes?.map((node: { _cfg: { id: string } }) => node._cfg.id) || [];
-        if (target.className === 'delete') startDeleteNode({ ids: nodesId });
+        if (target.className === 'delete') startDeleteNode({ id: undefined, ids: nodesId });
       } else {
-        startOpenNodeCreate({ isOpened: true });
+        if (target?.className === 'export') {
+          graph.downloadFullImage('default_graph', 'image/png', {
+            backgroundColor: '#F2F2F2',
+          });
+        } else {
+          startOpenNodeCreate({ isOpened: true });
+        }
       }
 
       addTooltip(graph);

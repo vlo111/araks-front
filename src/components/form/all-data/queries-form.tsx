@@ -17,7 +17,7 @@ export const QueriesForm = ({ openTable, setOpenTable, isVisualisation = false, 
     setOpenTable(newOpen);
   };
 
-  const popoverStyle = isVisualisation ? { width: '460px', height: '50%' } : { width: '90%', height: '50%' };
+  const popoverStyle = isVisualisation ? { width: '460px', height: '500px' } : { width: '90%', height: '50%' };
   // const [openTable, setOpenTable] = useState(false);
   // const ref = useRef<HTMLDivElement>(null);
 
@@ -78,7 +78,7 @@ export const QueriesForm = ({ openTable, setOpenTable, isVisualisation = false, 
               open={openTable}
               onOpenChange={handleOpenChange}
               getPopupContainer={() => document.getElementById('queries-form-body') as HTMLElement}
-              overlayInnerStyle={{ width: '90%', overflow: 'auto' }}
+              overlayInnerStyle={{ width: '90%', maxHeight: '500px', overflow: 'auto' }}
               overlayStyle={popoverStyle}
               content={
                 <TabTablesQueries

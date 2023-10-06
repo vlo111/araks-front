@@ -1,8 +1,10 @@
 import { Graph, IEdge } from '@antv/g6';
 import { IOpenNodeCreate, IOpenIdState, IOpenEdgeState } from './reducer/types';
+import { ContextTypeProject } from '../schema/types';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
+  setGraphInfo: (info: { nodeCount?: number; nodeCountAPI?: number }) => void;
   startOpenNode: (node?: IOpenIdState) => void;
   finishOpenNode: VoidFunction;
   startOpenNodeCreate: (item?: IOpenNodeCreate) => void;
@@ -14,16 +16,20 @@ export type VisualisationReducerSetState = {
   startOpenEdge: (item?: IOpenIdState) => void;
   finishOpenEdge: VoidFunction;
   startOpenEdgeCreate: (edge?: IOpenEdgeState) => void;
+  startShortestPath: (id?: IOpenIdState) => void;
+  finishShortestPath: VoidFunction;
   finishOpenEdgeCreate: VoidFunction;
 };
 
 export type VisualisationReducerState = {
   graph: Graph;
+  graphInfo: { nodeCount: number; nodeCountAPI?: number };
   openNode: IOpenIdState;
   openEdge: IOpenIdState;
   deleteNode: IOpenIdState;
   deleteEdge: IOpenIdState;
   openNodeCreate: IOpenNodeCreate;
+  openShortestPath: IOpenIdState;
   openEdgeCreate: IOpenEdgeState;
 };
 
@@ -31,7 +37,9 @@ export interface VisualisationContextType extends VisualisationReducerSetState, 
 
 export type PickVisualizationContextType = Pick<
   VisualisationContextType,
+  | 'setGraphInfo'
   | 'startOpenNode'
+  | 'startShortestPath'
   | 'startOpenNodeCreate'
   | 'startDeleteNode'
   | 'startOpenEdge'
@@ -39,7 +47,11 @@ export type PickVisualizationContextType = Pick<
   | 'startOpenEdgeCreate'
 >;
 
-export type InitGraph = (container: HTMLDivElement, params: PickVisualizationContextType) => Graph;
+export type InitGraph = (
+  container: HTMLDivElement,
+  params: PickVisualizationContextType,
+  projectInfo: ContextTypeProject | null
+) => Graph;
 
 export type Node = {
   id: string;
@@ -47,7 +59,13 @@ export type Node = {
   style: { stroke: string };
 };
 
-export type Edge = { id: string | undefined; source: string; target: string; label: string };
+export type Edge = {
+  id: string | undefined;
+  source: string;
+  target: string;
+  label: string;
+  project_edge_type_id?: string;
+};
 
 export type GraphData = {
   nodes: Node[];

@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { URL_GET_PROJECT_ALL_DATA } from 'api/all-data/constants';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
@@ -17,6 +18,7 @@ export const useDeleteNode = (nodeId: string, options?: UseQueryOptions) => {
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);
+      queryClient.invalidateQueries([URL_GET_PROJECT_ALL_DATA.replace(':project_id', params.id || '')]);
 
       options?.onSuccess?.(data);
     },

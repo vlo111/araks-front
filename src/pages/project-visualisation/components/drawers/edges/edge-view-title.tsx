@@ -9,26 +9,31 @@ type ViewNodeProps = {
   id: string;
   name: string;
   isEdit: boolean;
+  canEdit?: boolean;
   setIsEdit: (x: boolean) => void;
   onClose: () => void;
 };
 
-export const EdgeViewTitle = ({ id, name, isEdit, setIsEdit, onClose }: ViewNodeProps) => {
+export const EdgeViewTitle = ({ id, name, isEdit, setIsEdit, onClose, canEdit }: ViewNodeProps) => {
   const { startDeleteEdge } = useGraph();
 
   return (
     <Space style={{ width: '100%', justifyContent: 'space-between' }}>
       <div>
-        <MenuText strong>{name}</MenuText>
+        <MenuText strong>{name.toUpperCase()}</MenuText>
       </div>
-      <div>
-        <Button type="link" disabled={isEdit} icon={<EditOutlined />} onClick={() => setIsEdit(true)} />
-        <Button
-          type="link"
-          icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
-          onClick={() => startDeleteEdge({ id })}
-        />
-      </div>
+      {canEdit ? (
+        <div>
+          <Button type="link" disabled={isEdit} icon={<EditOutlined />} onClick={() => setIsEdit(true)} />
+          <Button
+            type="link"
+            icon={<Icon color="#414141" icon="delete_outline-simple" size={24} />}
+            onClick={() => startDeleteEdge({ id })}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </Space>
   );
 };

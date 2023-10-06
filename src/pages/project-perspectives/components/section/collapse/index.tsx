@@ -8,6 +8,8 @@ import { setPerspectiveData, switchTypePermission } from 'components/layouts/com
 import { IResponsePerspectiveData } from 'api/types';
 import { initPerspectiveEvents } from 'components/layouts/components/schema/container/initial/events';
 
+let clickEventAttached = false;
+
 export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => {
   const params = useParams();
   const { graph, setPerspectiveInfo } = useSchema() || {};
@@ -16,6 +18,20 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
   const isInitialMount = useRef(true);
   const [activeKey, setActiveKey] = useState<string>(mainId || '');
 
+  const attachClickEvent = () => {
+    if (clickEventAttached) return;
+    clickEventAttached = true;
+
+    initPerspectiveEvents(graph, setPerspectiveInfo);
+  };
+
+  const detachClickEvent = () => {
+    if (!clickEventAttached) return;
+    clickEventAttached = false;
+
+    graph.off('node:click');
+  };
+
   useGetPerspective(activeKey, {
     enabled: !!activeKey,
     onSuccess: (data) => {
@@ -23,12 +39,13 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
 
       const nodes = graph.getNodes();
       const typesLength = mainId === activeKey ? nodes.length : data.nodeType.length;
+
       const propertiesLength =
         mainId === activeKey
-          ? nodes.flatMap((n) => n.ports.items).length
-          : nodes.flatMap((n) =>
-              data.nodeType.some(({ project_node_type_id: id }) => id === n.id) ? n.ports.items : []
-            ).length;
+          ? nodes.flatMap((n) => n.ports.items).filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length
+          : nodes
+              .flatMap((n) => (data.nodeType.some(({ project_node_type_id: id }) => id === n.id) ? n.ports.items : []))
+              .filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length;
 
       nodes.forEach((node) => {
         const hasType = mainId === activeKey || data.nodeType.some(({ project_node_type_id: id }) => id === node.id);
@@ -39,9 +56,9 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
 
       if (mainId !== activeKey) {
         setPerspectiveData({ perspectiveId: data.id, project_id: params.id || '' });
-        initPerspectiveEvents(graph, setPerspectiveInfo);
+        attachClickEvent();
       } else {
-        graph.off('node:click');
+        detachClickEvent();
       }
     },
   });

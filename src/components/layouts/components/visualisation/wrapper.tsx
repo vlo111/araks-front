@@ -14,7 +14,10 @@ export const VisualisationWrapper: React.FC = () => {
   const callbacks = useMemo(
     () => ({
       setGraph: (payload: Graph) => handleAction(GraphAction.SET_GRAPH, payload),
+      setGraphInfo: (payload: { nodeCount: number; nodeCountAPI?: number }) =>
+        handleAction(GraphAction.SET_GRAPH_INFO, payload),
       startOpenNode: (payload: IOpenId) => handleAction(GraphAction.OPEN_NODE_START, payload),
+      startShortestPath: (payload: IOpenId) => handleAction(GraphAction.OPEN_SHORTEST_PATH_START, payload),
       finishOpenNode: () => handleAction(GraphAction.OPEN_NODE_FINISH),
       startDeleteNode: (payload: IOpenId) => handleAction(GraphAction.DELETE_NODE_START, payload),
       finishDeleteNode: () => handleAction(GraphAction.DELETE_NODE_FINISH),
@@ -26,6 +29,7 @@ export const VisualisationWrapper: React.FC = () => {
       finishDeleteEdge: () => handleAction(GraphAction.DELETE_EDGE_FINISH),
       startOpenEdgeCreate: (payload: IOpenEdge) => handleAction(GraphAction.OPEN_CREATE_EDGE_START, payload),
       finishOpenEdgeCreate: () => handleAction(GraphAction.OPEN_CREATE_EDGE_FINISH),
+      finishShortestPath: () => handleAction(GraphAction.SHORTEST_PATH_FINISH),
     }),
     [handleAction]
   );
