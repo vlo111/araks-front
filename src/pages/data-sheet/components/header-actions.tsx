@@ -29,8 +29,8 @@ export const HeaderActions = () => {
         <>
           {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
             <>
-              <DownloadAction icon={iconProps} />
-              {!isConnectionType && <UploadAction icon={iconProps} />}{' '}
+              {!isConnectionType && <DownloadAction icon={iconProps} />}
+              {!isConnectionType && <UploadAction icon={iconProps} />}
             </>
           )}
           {projectInfo?.role === UserProjectRole.Owner && <EditType icon={iconProps} {...editTypeProps} />}
