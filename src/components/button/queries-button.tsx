@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { PlusAction } from 'components/actions/plus';
 import { Col, Drawer, Form, Radio, Row, Space } from 'antd';
@@ -12,9 +12,8 @@ import { useOverview } from 'context/overview-context';
 import { TreeConnectionType, TreeNodeType } from 'pages/data-sheet/types';
 import styled from 'styled-components';
 import { formattedData } from '../layouts/components/visualisation/helpers/format-node';
-import { initData as initGraphData } from '../layouts/components/visualisation/container/initial/nodes';
+import { initData } from '../layouts/components/visualisation/container/initial/nodes';
 import { useGraph } from '../layouts/components/visualisation/wrapper';
-import { useGetData } from 'api/visualisation/use-get-data';
 import {
   StyledAddButton,
   StyledButtonsWrapper,
@@ -22,6 +21,7 @@ import {
   StyledDiv,
   StyledRunButton,
 } from '../../pages/project-visualisation/components/buttons/styles';
+import { useGetData } from '../../api/visualisation/use-get-data';
 
 type Props = {
   isQueries?: boolean;
@@ -65,19 +65,35 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const [openTable, setOpenTable] = useState(false);
   const [drawerContentHeight, setDrawerContentHeight] = useState('100%');
   const { graph, setGraphInfo } = useGraph() ?? {};
-  const { nodes: nodesList, edges: edgesList, relationsCounts } = useGetData();
+  const { nodes: nodesList, edges: edgesList, count, relationsCounts } = useGetData();
 
   const { hideLeftSection, setHideLeftSection } = useOverview();
   const [form] = Form.useForm();
-  const { data, count } = useQueriesVisualization(filter, { enabled: !!filter.queryArr?.length });
 
-  const initData = useMemo(() => {
-    if (graph !== undefined && nodesList !== undefined && edgesList !== undefined) {
-      const { nodes, edges } = formattedData(nodesList, edgesList, relationsCounts);
-      return { nodes, edges };
-    }
-    return { nodes: [], edges: [] };
-  }, [graph, nodesList, edgesList, relationsCounts]);
+  const { mutate } = useQueriesVisualization(filter, {
+    enabled: !!filter.queryArr?.length,
+    onSuccess: (data) => {
+      if (!data.nodes.length) {
+        initGraphData();
+      } else {
+        const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
+        const result = { nodes: nodes || [], edges: edges || [] };
+        initData(graph, result);
+        graph.render();
+        setGraphInfo({
+          nodeCount: graph.getNodes().length,
+        });
+      }
+    },
+  });
+  const initGraphData = () => {
+    const data = formattedData(nodesList ?? [], edgesList ?? [], relationsCounts);
+    if (data !== undefined) initData(graph, data);
+    setGraphInfo({
+      nodeCount: (count ?? 0) > 300 ? 300 : count,
+    });
+    graph.render();
+  };
 
   const onClose = () => {
     setHideLeftSection(false);
@@ -87,6 +103,11 @@ export const QueriesButton = ({ isQueries }: Props) => {
   const clearFilter = useCallback(() => {
     setFilter({} as VisualizationSubmitType);
   }, []);
+
+  const handleCleanAll = () => {
+    form.resetFields();
+    initGraphData();
+  };
 
   const onFinish = (values: FormQueryValues) => {
     const dataToMap = values.queries;
@@ -135,7 +156,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         query:
           (query.isConnectionType && query.depth === 3) || (!query.isConnectionType && query.depth === 2)
             ? {
-                [query.name]: {
+                [query.name === 'node_icon' ? 'default_image' : query.name]: {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
@@ -154,6 +175,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
       queryArr: queryArr,
     } as VisualizationSubmitType;
     setFilter(data);
+    mutate(data);
   };
 
   useEffect(() => {
@@ -165,25 +187,6 @@ export const QueriesButton = ({ isQueries }: Props) => {
     setDrawerContentHeight(contentHeight);
   }, []);
 
-  useEffect(() => {
-    if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
-      const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
-      const result = { nodes: nodes || [], edges: edges || [] };
-      initGraphData(graph, result);
-
-      graph.render();
-
-      setGraphInfo({
-        nodeCount: graph.getNodes().length,
-      });
-    } else {
-      if (graph !== undefined) {
-        const result = { nodes: initData?.nodes, edges: initData?.edges };
-        initGraphData(graph, result);
-        graph.render();
-      }
-    }
-  }, [graph, initData, data.edges, data.nodes, data.relationsCounts, count, setGraphInfo]);
   const renderHeader = () => {
     return (
       <Row justify="space-around">
@@ -236,7 +239,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
               <PlusAction /> Add
             </StyledAddButton>
             <StyledDiv>
-              <StyledCleanButton onClick={() => form.resetFields()} block>
+              <StyledCleanButton onClick={handleCleanAll} block>
                 Clean All
               </StyledCleanButton>
               <StyledRunButton type="primary" htmlType="submit" block>
