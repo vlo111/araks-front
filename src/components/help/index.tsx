@@ -6,7 +6,8 @@ import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
 import { SchemaSection } from './schema-section';
 import { DataSheetSection } from './data-sheet';
-// import { VisualizationSection } from './visualization';
+import { VisualizationSection } from './visualization';
+import { Perspective } from './perspective';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -53,9 +54,7 @@ const items: MenuProps['items'] = [
     getItem(<span style={{ fontSize: '16px' }}>Styling</span>, 'sub5-4'),
     getItem(<span style={{ fontSize: '16px' }}>Focus, Expand, Shortest path</span>, 'sub5-5'),
   ]),
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Perspective</span>, 'sub6', [
-    getItem(<span style={{ fontSize: '16px' }}></span>, 'sub6-1'),
-  ]),
+  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Perspective</span>, 'sub6'),
 ];
 export const Help: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -93,7 +92,8 @@ export const Help: React.FC = () => {
                 <OverviewSection activeMenuItem={activeMenuItem} />
                 <SchemaSection activeMenuItem={activeMenuItem} />
                 <DataSheetSection activeMenuItem={activeMenuItem} />
-                {/*  <VisualizationSection activeMenuItem={activeMenuItem} /> */}
+                <VisualizationSection activeMenuItem={activeMenuItem} />
+                <Perspective activeMenuItem={activeMenuItem} />
               </Col>
             </Row>
           </Drawer>

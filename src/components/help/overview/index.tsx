@@ -20,7 +20,6 @@ const menuItems: Record<string, MenuItem> = {
       <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
         <li>Click to the Edit icon and change:</li>
         <ul>
-          <li>Click to the Edit icon and change:</li>
           <li>Project name</li>
           <li>Project Image icon </li>
           <li>Project Image color</li>
@@ -30,7 +29,13 @@ const menuItems: Record<string, MenuItem> = {
             <li>Public - the project can see all Users (view permission)</li>
           </ul>
         </ul>
-        <li>Choose the Perspective And share</li>
+        <li>Share section</li>
+        <ul>
+          <li>Click the Dropdown and choose the Perspective </li>
+          <li>Write User email </li>
+          <li>Choose the role </li>
+          <li>Click the Send Invite button.</li>
+        </ul>
       </ul>,
     ],
     image: <Image key="3" src={ProjectName} />,
@@ -45,6 +50,10 @@ const menuItems: Record<string, MenuItem> = {
         <li>
           Click <b>See all members</b> and navigate to the all members page
         </li>
+        <li>Click the Dropdown and choose the Perspective </li>
+        <li>Write User email</li>
+        <li>Choose the role</li>
+        <li>Click the <b>Send Invite</b> button</li>
         <li>
           Change <b>Role</b> Edit or View
         </li>
