@@ -1,7 +1,7 @@
 import { SetStateAction, useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Col, Drawer, Menu, Row, Space } from 'antd';
-import { ReactComponent as Helpicon } from 'components/header-profile/icon/help.svg';
+import { ReactComponent as Helpicon } from 'components/help/images/help.svg';
 import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
 import { SchemaSection } from './schema-section';
@@ -65,24 +65,22 @@ export const Help: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const [activeMenuItem, setActiveMenuItem] = useState('');
+  const [activeMenuItem, setActiveMenuItem] = useState('sub1-1');
   const handleMenuItemClick = (key: SetStateAction<string>) => {
     setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
   return (
     <Space>
       <Row gutter={16}>
-        <Col span={24}>
           <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
-        </Col>
-
         <Col span={24}>
           <Drawer title="Help" width={'55%'} closable={false} onClose={onClose} visible={open}>
             <Row gutter={16}>
               <Col span={10} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
                 <Menu
                   onClick={({ key }) => handleMenuItemClick(key)}
-                  defaultOpenKeys={['sub1-1']}
+                  defaultOpenKeys={['sub1', 'sub1-1']}
+                  defaultSelectedKeys={['sub1', 'sub1-1']}
                   mode="inline"
                   items={items}
                 />
