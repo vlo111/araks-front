@@ -2,6 +2,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 export type Node = {
   id: string;
@@ -44,7 +45,8 @@ type ProjectEdgeResponse = {
   relationsCounts: { [key: string]: number };
 };
 
-export const GET_EDGES = '/neo4j/all-data/:project_id';
+export const GET_ALL_DATA = '/neo4j/all-data/:project_id';
+export const GET_ALL_PUBLIC_DATA = '/public/neo4j/all-data/:project_id';
 
 type GetProjectParam = {
   id?: string;
@@ -71,14 +73,18 @@ type Result = {
   isInitialLoading: boolean;
 };
 
-export const useGetData = (options: Options = { enabled: true }): Result => {
+export const useGetData = (options: Options = { enabled: true }, search?: string): Result => {
   const params = useParams();
 
-  const urlNodes = GET_EDGES.replace(':project_id', params?.id || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlAllData = isPublicPage ? GET_ALL_PUBLIC_DATA : GET_ALL_DATA;
+
+  const url = urlAllData.replace(':project_id', params?.id || '');
 
   const result = useQuery({
-    queryKey: [urlNodes],
-    queryFn: () => client.get(urlNodes),
+    queryKey: [url],
+    queryFn: () => client.get(url, { params: { search } }),
     ...options,
     onError: errorMessage,
   });

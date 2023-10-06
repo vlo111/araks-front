@@ -3,6 +3,7 @@ import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
 import { Edges, Nodes } from './use-get-data';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 export type NodeProperty = {
   id: string;
@@ -40,7 +41,8 @@ type ProjectResponse = {
   relationsCounts: { [key: string]: number };
 };
 
-export const GET_SEARCH_DATA = '/neo4j/shortest-path/:project_id';
+export const GET_SHORTEST_DATA = '/neo4j/shortest-path/:project_id';
+export const GET_SHORTEST_PUBLIC_DATA = '/public/neo4j/shortest-path/:project_id';
 
 type GetProjectParam = {
   id?: string;
@@ -62,11 +64,15 @@ type Options = UseQueryOptions<QueryResponse, Error, GetNeo4jData, QueryKey[]>;
 export const useGetShortestPath = (options: Options = { enabled: false }) => {
   const params = useParams();
 
-  const urlNodes = GET_SEARCH_DATA.replace(':project_id', params?.id || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlAllData = isPublicPage ? GET_SHORTEST_PUBLIC_DATA : GET_SHORTEST_DATA;
+
+  const url = urlAllData.replace(':project_id', params?.id || '');
 
   const result = useMutation({
-    mutationKey: [urlNodes],
-    mutationFn: ({ start, end }: { start: string; end: string }) => client.get(urlNodes, { params: { start, end } }),
+    mutationKey: [url],
+    mutationFn: ({ start, end }: { start: string; end: string }) => client.get(url, { params: { start, end } }),
     onSuccess: options.onSuccess,
     onError: errorMessage,
   });

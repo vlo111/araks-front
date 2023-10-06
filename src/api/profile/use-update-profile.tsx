@@ -12,7 +12,7 @@ type ResponseType = {
 
 type Options = UseQueryOptions<ProfileForm, unknown, ResponseType>;
 
-export const useUpdateProfile = (options: Options) => {
+export const useUpdateProfile = (options?: Options) => {
   const { addUser } = useAuth();
   const mutation = useMutation<ResponseType, unknown, ProfileForm>({
     mutationFn: (values: ProfileForm) => {

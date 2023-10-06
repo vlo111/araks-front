@@ -168,7 +168,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
   useEffect(() => {
     if (graph !== undefined && data.nodes !== undefined && data.edges !== undefined) {
       const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
-      const result = { nodes, edges };
+      const result = { nodes: nodes || [], edges: edges || [] };
       initGraphData(graph, result);
 
       graph.render();
@@ -183,7 +183,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         graph.render();
       }
     }
-  }, [graph, data, initData, count, setGraphInfo]);
+  }, [graph, initData, data.edges, data.nodes, data.relationsCounts, count, setGraphInfo]);
   const renderHeader = () => {
     return (
       <Row justify="space-around">
