@@ -68,6 +68,7 @@ export type NodePropertiesValues = {
   project_id: string;
   created_at: string;
   updated_at: string;
+  createdEdges?: ICreateEdge[];
 };
 
 export type NodeEdges = {
@@ -199,3 +200,16 @@ export type AllDataHelp = {
     updated_at: string;
   }[];
 };
+
+export type UpdateNodeEdges = {
+  createdEdges: ICreateEdge[];
+  destroyedEdgesIds: string[];
+};
+
+export interface ICreateEdge {
+  id: string;
+  label: string;
+  source_id: string;
+  target_id: string;
+  project_edge_type_id: string;
+}

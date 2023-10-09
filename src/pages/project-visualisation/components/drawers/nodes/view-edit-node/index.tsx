@@ -14,6 +14,7 @@ import {
   NodeDataSubmit,
   NodePropertiesValues,
   ResponseLocationType,
+  UpdateNodeEdges,
   UploadedFileType,
 } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
@@ -25,6 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
+import { createEdge } from '../../../../../../components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -115,38 +117,16 @@ export const ViewEditNodeDrawer = () => {
   const { mutate } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
       if (graph.getNodes().find((n) => n.getID() === variables.nodeId)) {
+        const { destroyedEdgesIds, createdEdges } = data as UpdateNodeEdges;
+
         updateNode(variables);
-        updateEdges(data, variables);
+
+        destroyedEdgesIds?.forEach((e) => graph.removeItem(e));
+
+        createEdge(graph, variables.nodeId ?? '', createdEdges);
       }
     },
   });
-
-  const updateEdges = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      /* Update deleted edges  */
-      const deleteEdges = variables?.edges?.filter(
-        (edges1) => !variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-
-      deleteEdges?.forEach((e) => graph.removeItem(e.id));
-
-      /* Update created edges  */
-      const createEdges = variables?.edges?.filter((edges1) =>
-        variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-      createEdges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
-    },
-    [graph, properties]
-  );
 
   const updateNode = useCallback(
     (variable: NodeDataSubmit) => {
@@ -157,6 +137,7 @@ export const ViewEditNodeDrawer = () => {
         style: {
           fill: variable.default_image ? '#00000000' : 'white',
         },
+        edgeCount: variable.edges?.length,
       });
     },
     [graph]
