@@ -1,6 +1,14 @@
 import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
-import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
+import {
+  CalcExpandList,
+  DrawEdgesParams,
+  ExpandList,
+  ExpandListData,
+  GroupAndCountResult,
+  GroupedData,
+  UpdateEdges,
+} from '../types';
 import { renderTooltipModal } from './tooltip';
 import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
@@ -405,11 +413,10 @@ export const removeFakeEdge = (graph: IGraph) => {
   if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
 };
 
-const getUniqueTargets = (edgesArray: ICreateEdge[]) =>
+export const getUniqueTargets = (edgesArray: ICreateEdge[]) =>
   edgesArray.map((a) => a.target_id).filter((value, index, array) => array.indexOf(value) === index);
 
 const getPosition: (item: number) => string = (item: number) => {
-  // top, top-right, right,bottom-right, bottom, bottom-left, left, top-left,
   switch (item) {
     case 0: {
       return 'top';
@@ -418,7 +425,19 @@ const getPosition: (item: number) => string = (item: number) => {
       return 'top-right';
     }
     case 2: {
+      return 'right';
+    }
+    case 3: {
       return 'bottom-right';
+    }
+    case 4: {
+      return 'bottom';
+    }
+    case 5: {
+      return 'bottom-left';
+    }
+    case 6: {
+      return 'left';
     }
     default: {
       return 'top-left';
@@ -426,20 +445,7 @@ const getPosition: (item: number) => string = (item: number) => {
   }
 };
 
-export const createEdge = (graph: Graph, nodeId: string, createdEdges: ICreateEdge[]) => {
-  createdEdges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
-    graph.addItem('edge', {
-      source,
-      target,
-      type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
-      ...edge,
-    });
-  });
-
-  //Self-loop
-  const groupLoopEdges = getUniqueTargets(createdEdges.filter((e) => e.source_id === nodeId && e.target_id === nodeId));
-
-  // Draw loop edges
+const drawSelfLoopEdges: DrawEdgesParams = (graph, nodeId, groupLoopEdges) => {
   groupLoopEdges?.forEach((target) => {
     const loopEdges = graph.getEdges().filter((e) => {
       const edge = e.getModel();
@@ -457,12 +463,9 @@ export const createEdge = (graph: Graph, nodeId: string, createdEdges: ICreateEd
       });
     });
   });
+};
 
-  const groupArcsEdges = getUniqueTargets(
-    createdEdges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId))
-  );
-
-  // Draw arcs edges
+const drawArcsEdges: DrawEdgesParams = (graph, nodeId, groupArcsEdges) => {
   groupArcsEdges?.forEach((target) => {
     const arcsEdges = graph.getEdges().filter((e) => {
       const edge = e.getModel();
@@ -477,6 +480,38 @@ export const createEdge = (graph: Graph, nodeId: string, createdEdges: ICreateEd
             ? 0
             : Math.ceil((i - (arcsEdges.length % 2) + 1) / 2) * -40 * (-1) ** ((i - (arcsEdges.length % 2)) % 2),
       });
+    });
+  });
+};
+
+export const drawMultiEdges: UpdateEdges = (...params) => {
+  const [graph, nodeId, edges, loopEdges, arcsEdges] = params;
+
+  // group loop edges
+  const groupLoopEdges = getUniqueTargets(edges.filter((e) => e.source_id === nodeId && e.target_id === nodeId));
+
+  drawSelfLoopEdges(graph, nodeId, groupLoopEdges);
+
+  const groupArcsEdges = getUniqueTargets(edges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId)));
+
+  drawArcsEdges(graph, nodeId, groupArcsEdges);
+
+  if (groupLoopEdges) {
+    drawSelfLoopEdges(graph, nodeId, loopEdges ?? []);
+  }
+
+  if (arcsEdges) {
+    drawArcsEdges(graph, nodeId, arcsEdges ?? []);
+  }
+};
+
+export const addEdges: UpdateEdges = (graph, nodeId, createdEdges) => {
+  createdEdges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
+    graph.addItem('edge', {
+      source,
+      target,
+      type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
+      ...edge,
     });
   });
 };

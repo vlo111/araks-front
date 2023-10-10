@@ -203,7 +203,7 @@ export type AllDataHelp = {
 
 export type UpdateNodeEdges = {
   createdEdges: ICreateEdge[];
-  destroyedEdgesIds: string[];
+  destroyedEdges: ICreateEdge[];
 };
 
 export interface ICreateEdge {

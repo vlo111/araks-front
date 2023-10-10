@@ -15,7 +15,7 @@ import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import './add-node-select.css';
-import { createEdge } from '../../../../../components/layouts/components/visualisation/helpers/utils';
+import { addEdges, drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -69,7 +69,11 @@ export const NodeCreateDrawer: React.FC = () => {
 
       createNode(nodePropertyValues, edgeCount);
 
-      createEdge(graph, nodePropertyValues.id, nodePropertyValues.createdEdges ?? []);
+      const { id, createdEdges = [] } = nodePropertyValues;
+
+      addEdges(graph, id, createdEdges);
+
+      drawMultiEdges(graph, id, createdEdges);
 
       form.resetFields();
 

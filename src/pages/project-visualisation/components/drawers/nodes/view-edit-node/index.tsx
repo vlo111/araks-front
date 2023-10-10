@@ -26,7 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
-import { createEdge } from '../../../../../../components/layouts/components/visualisation/helpers/utils';
+import { addEdges, drawMultiEdges, getUniqueTargets } from 'components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -116,14 +116,25 @@ export const ViewEditNodeDrawer = () => {
 
   const { mutate } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
-      if (graph.getNodes().find((n) => n.getID() === variables.nodeId)) {
-        const { destroyedEdgesIds, createdEdges } = data as UpdateNodeEdges;
+      const { nodeId } = variables;
+      if (graph.getNodes().find((n) => n.getID() === nodeId)) {
+        const { destroyedEdges, createdEdges } = data as UpdateNodeEdges;
 
         updateNode(variables);
 
-        destroyedEdgesIds?.forEach((e) => graph.removeItem(e));
+        const groupLoopEdges = getUniqueTargets(
+          destroyedEdges.filter((e) => e.source_id === nodeId && e.target_id === nodeId)
+        );
 
-        createEdge(graph, variables.nodeId ?? '', createdEdges);
+        const groupArcsEdges = getUniqueTargets(
+          destroyedEdges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId))
+        );
+
+        destroyedEdges?.forEach((e) => graph.removeItem(e.id));
+
+        addEdges(graph, nodeId ?? '', createdEdges);
+
+        drawMultiEdges(graph, nodeId ?? '', createdEdges, groupLoopEdges, groupArcsEdges);
       }
     },
   });
