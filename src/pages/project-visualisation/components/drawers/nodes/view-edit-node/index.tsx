@@ -265,7 +265,11 @@ export const ViewEditNodeDrawer = () => {
           requiredMark={false}
           onFinish={onFinish}
         >
-          <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+          <AddNodeForm
+            data={properties as ProjectTypePropertyReturnData[]}
+            isInitialLoading={isInitialLoading}
+            edges={nodeData?.edges}
+          />
         </Form>
       ) : isInitialLoading ? (
         <Skeleton />
