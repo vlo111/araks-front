@@ -473,12 +473,11 @@ const drawArcsEdges: DrawEdgesParams = (graph, nodeId, groupArcsEdges) => {
     });
 
     arcsEdges.forEach((edge, i) => {
+      const arcs = Math.ceil((i - (arcsEdges.length % 2) + 1) / 2) * -40 * (-1) ** ((i - (arcsEdges.length % 2)) % 2);
+
       graph.updateItem(edge.getID(), {
         curvePosition: 0.5,
-        curveOffset:
-          arcsEdges.length % 2 !== 0 && i === 0
-            ? 0
-            : Math.ceil((i - (arcsEdges.length % 2) + 1) / 2) * -40 * (-1) ** ((i - (arcsEdges.length % 2)) % 2),
+        curveOffset: arcsEdges.length % 2 !== 0 && i === 0 ? 0 : arcs,
       });
     });
   });
