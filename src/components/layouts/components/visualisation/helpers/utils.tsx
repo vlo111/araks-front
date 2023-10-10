@@ -1,11 +1,20 @@
 import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
-import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
+import {
+  CalcExpandList,
+  DrawEdgesParams,
+  ExpandList,
+  ExpandListData,
+  GroupAndCountResult,
+  GroupedData,
+  UpdateEdges,
+} from '../types';
 import { renderTooltipModal } from './tooltip';
 import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
+import { ICreateEdge } from 'types/node';
 
 export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -402,4 +411,106 @@ export const removeFakeEdge = (graph: IGraph) => {
   const edges = graph.getEdges();
   const fake_edge: IEdge[] | undefined = edges?.filter((e) => e.getID().includes('edge-'));
   if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
+};
+
+export const getUniqueTargets = (edgesArray: ICreateEdge[]) =>
+  edgesArray.map((a) => a.target_id).filter((value, index, array) => array.indexOf(value) === index);
+
+const getPosition: (item: number) => string = (item: number) => {
+  switch (item) {
+    case 0: {
+      return 'top';
+    }
+    case 1: {
+      return 'top-right';
+    }
+    case 2: {
+      return 'right';
+    }
+    case 3: {
+      return 'bottom-right';
+    }
+    case 4: {
+      return 'bottom';
+    }
+    case 5: {
+      return 'bottom-left';
+    }
+    case 6: {
+      return 'left';
+    }
+    default: {
+      return 'top-left';
+    }
+  }
+};
+
+const drawSelfLoopEdges: DrawEdgesParams = (graph, nodeId, groupLoopEdges) => {
+  groupLoopEdges?.forEach((target) => {
+    const loopEdges = graph.getEdges().filter((e) => {
+      const edge = e.getModel();
+
+      return edge.source === nodeId && edge.target === target;
+    });
+
+    loopEdges.forEach((edge, i) => {
+      graph.updateItem(edge.getID(), {
+        loopCfg: {
+          position: getPosition(i),
+          dist: 50,
+          clockwise: true,
+        },
+      });
+    });
+  });
+};
+
+const drawArcsEdges: DrawEdgesParams = (graph, nodeId, groupArcsEdges) => {
+  groupArcsEdges?.forEach((target) => {
+    const arcsEdges = graph.getEdges().filter((e) => {
+      const edge = e.getModel();
+      return (edge.source === nodeId && edge.target === target) || (edge.target === nodeId && edge.source === target);
+    });
+
+    arcsEdges.forEach((edge, i) => {
+      const arcs = Math.ceil((i - (arcsEdges.length % 2) + 1) / 2) * -40 * (-1) ** ((i - (arcsEdges.length % 2)) % 2);
+
+      graph.updateItem(edge.getID(), {
+        curvePosition: 0.5,
+        curveOffset: arcsEdges.length % 2 !== 0 && i === 0 ? 0 : arcs,
+      });
+    });
+  });
+};
+
+export const drawMultiEdges: UpdateEdges = (...params) => {
+  const [graph, nodeId, edges, loopEdges, arcsEdges] = params;
+
+  // group loop edges
+  const groupLoopEdges = getUniqueTargets(edges.filter((e) => e.source_id === nodeId && e.target_id === nodeId));
+
+  drawSelfLoopEdges(graph, nodeId, groupLoopEdges);
+
+  const groupArcsEdges = getUniqueTargets(edges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId)));
+
+  drawArcsEdges(graph, nodeId, groupArcsEdges);
+
+  if (groupLoopEdges) {
+    drawSelfLoopEdges(graph, nodeId, loopEdges ?? []);
+  }
+
+  if (arcsEdges) {
+    drawArcsEdges(graph, nodeId, arcsEdges ?? []);
+  }
+};
+
+export const addEdges: UpdateEdges = (graph, nodeId, createdEdges) => {
+  createdEdges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
+    graph.addItem('edge', {
+      source,
+      target,
+      type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
+      ...edge,
+    });
+  });
 };

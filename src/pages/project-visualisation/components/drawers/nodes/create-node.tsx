@@ -15,6 +15,7 @@ import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
 import './add-node-select.css';
+import { addEdges, drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -33,24 +34,8 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
 
-  const createEdge = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      variables?.edges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
-    },
-    [graph, properties]
-  );
-
   const createNode = useCallback(
-    (data: NodePropertiesValues) => {
+    (data: NodePropertiesValues, edgeCount: number) => {
       const nodeData = data as NodePropertiesValues & {
         nodeType: { color: string; id: string; name: string };
         default_image: string;
@@ -65,7 +50,7 @@ export const NodeCreateDrawer: React.FC = () => {
         y: openNodeCreate.y,
         nodeType: nodeData.nodeType.id,
         nodeTypeName: nodeData.nodeType.name,
-        edgeCount: 0,
+        edgeCount,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
@@ -77,10 +62,21 @@ export const NodeCreateDrawer: React.FC = () => {
   );
 
   const { mutate } = useManageNodesGraph({
-    onSuccess: ({ data, variables }) => {
-      createNode(data);
-      createEdge(data, variables);
+    onSuccess: ({ data }) => {
+      const nodePropertyValues = data as NodePropertiesValues;
+
+      const edgeCount = nodePropertyValues.createdEdges?.length ?? 0;
+
+      createNode(nodePropertyValues, edgeCount);
+
+      const { id, createdEdges = [] } = nodePropertyValues;
+
+      addEdges(graph, id, createdEdges);
+
+      drawMultiEdges(graph, id, createdEdges);
+
       form.resetFields();
+
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
