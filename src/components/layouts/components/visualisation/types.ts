@@ -111,12 +111,6 @@ export type CalcExpandList = (
   grandTotal: number;
 };
 
-export type UpdateEdges = (
-  graph: Graph,
-  nodeId: string,
-  createdEdges: ICreateEdge[],
-  groupLoopEdges?: string[],
-  groupArcsEdges?: string[]
-) => void;
+export type UpdateEdges = (graph: Graph, nodeId: string) => void;
 
-export type DrawEdgesParams = (graph: Graph, nodeId: string, createdEdges: string[]) => void;
+export type AddEdges = (graph: Graph, nodeId: string, edges: ICreateEdge[]) => void;
