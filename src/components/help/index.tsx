@@ -48,7 +48,7 @@ const items: ItemType[] = [
         value: 'See all members ',
       },
       {
-        key: 'sub4-2',
+        key: 'sub4-3',
         label: 'Comments and Likes',
         value: 'Comments and Likes',
       },
@@ -176,9 +176,11 @@ export const Help: React.FC = () => {
     setOpen(false);
   };
   const [activeMenuItem, setActiveMenuItem] = useState('sub1-1');
+
   const handleMenuItemClick = (key: SetStateAction<string>) => {
     setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
+  
   return (
     <Space>
       <Row gutter={16}>
@@ -197,13 +199,14 @@ export const Help: React.FC = () => {
                   allowClear
                   treeDefaultExpandAll
                   treeData={items}
+                  onChange={({ key }) => handleMenuItemClick(key)}
                 />
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={10} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
                 <Menu
-                  onClick={({ key }) => handleMenuItemClick(key)}
+                  onClick={({ key }) => handleMenuItemClick(key)}                  
                   defaultOpenKeys={['sub1', 'sub1-1']}
                   defaultSelectedKeys={['sub1', 'sub1-1']}
                   mode="inline"
