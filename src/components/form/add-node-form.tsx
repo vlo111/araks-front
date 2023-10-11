@@ -17,14 +17,16 @@ import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
+import { NodeEdges } from 'types/node';
 
 type Props = {
   data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
   isInitialLoading: boolean;
   setStopSubmit?: Dispatch<SetStateAction<boolean>>;
+  edges?: NodeEdges[] | undefined;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, edges }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -58,7 +60,7 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) =>
                 case PropertyTypes.Document:
                   return <DocumentType key={item.id} data={item} setStopSubmit={setStopSubmit} />;
                 case PropertyTypes.Connection:
-                  return <ConnectionType key={item.id} data={item} />;
+                  return <ConnectionType key={item.id} data={item} edges={edges} />;
                 default:
                   return <></>;
               }
