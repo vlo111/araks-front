@@ -1,6 +1,5 @@
 import { SetStateAction, useState } from 'react';
-import type { MenuProps } from 'antd';
-import { Col, Drawer, Menu, Row, Space } from 'antd';
+import { Col, Drawer, Menu, Row, Space, TreeSelect } from 'antd';
 import { ReactComponent as Helpicon } from 'components/help/images/help.svg';
 import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
@@ -9,59 +8,170 @@ import { DataSheetSection } from './data-sheet';
 import { VisualizationSection } from './visualization';
 import { Perspective } from './perspective';
 
-type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(label: React.ReactNode, key: React.Key, children?: MenuItem[], type?: 'group'): MenuItem {
-  return {
-    key,
-    children,
-    label,
-    type,
-  } as MenuItem;
-}
-
-const items: MenuProps['items'] = [
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Projects and Folders</span>, 'sub1', [
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Project</span>, 'sub1-1'),
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete the Folder</span>, 'sub1-2'),
-  ]),
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Overview</span>, 'sub4', [
-    getItem(<span style={{ fontSize: '16px' }}>Project name and Privacy</span>, 'sub4-1'),
-    getItem(<span style={{ fontSize: '16px' }}>See all members </span>, 'sub4-2'),
-    getItem(<span style={{ fontSize: '16px' }}>Comments and Likes</span>, 'sub4-3'),
-  ]),
-
-  getItem(<span style={{ fontWeight: '700', fontSize: '18px' }}>Schema section</span>, 'sub2', [
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Type</span>, 'sub2-1'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Property</span>, 'sub2-2'),
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Connection</span>, 'sub2-3'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Connection Property</span>, 'sub2-4'),
-    getItem(<span style={{ fontSize: '16px' }}>Search In Schema</span>, 'sub2-5'),
-  ]),
-  getItem(<span style={{ fontWeight: '700', fontSize: '18px' }}>Data sheet section</span>, 'sub3', [
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Type</span>, 'sub3-1'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Property</span>, 'sub3-2'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node</span>, 'sub3-7'),
-    getItem(<span style={{ fontSize: '16px' }}>Create, Edit and Delete Connection</span>, 'sub3-3'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Connection Property</span>, 'sub3-4'),
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node in Connection</span>, 'sub3-5'),
-    getItem(<span style={{ fontSize: '16px' }}>All data</span>, 'sub3-6'),
-  ]),
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Visualization</span>, 'sub5', [
-    getItem(<span style={{ fontSize: '16px' }}>Add, Edit and Delete Node</span>, 'sub5-1'),
-    getItem(<span style={{ fontSize: '16px' }}>Filters </span>, 'sub5-2'),
-    getItem(<span style={{ fontSize: '16px' }}>Queries</span>, 'sub5-3'),
-    getItem(<span style={{ fontSize: '16px' }}>Styling</span>, 'sub5-4'),
-    getItem(<span style={{ fontSize: '16px' }}>Focus, Expand, Shortest path</span>, 'sub5-5'),
-  ]),
-  getItem(<span style={{ fontWeight: '800', fontSize: '18px' }}>Perspective</span>, 'sub6'),
+type ItemType = {
+  value: string;
+  key: string;
+  label: string;
+  children?: ItemType[];
+};
+const items: ItemType[] = [
+  {
+    value: 'Projects and Folders',
+    label: 'Projects and Folders',
+    key: 'sub1',
+    children: [
+      {
+        key: 'sub1-1',
+        value: 'Create, Edit and Delete the Project',
+        label: 'Create, Edit and Delete the Project',
+      },
+      {
+        key: 'sub1-2',
+        value: 'Create, Edit and Delete the Folder',
+        label: 'Create, Edit and Delete the Folder',
+      },
+    ],
+  },
+  {
+    label: 'Overview',
+    value: 'Overview',
+    key: 'sub4',
+    children: [
+      {
+        key: 'sub4-1',
+        label: 'Project name and Privacy',
+        value: 'Project name and Privacy',
+      },
+      {
+        key: 'sub4-2',
+        label: 'See all members ',
+        value: 'See all members ',
+      },
+      {
+        key: 'sub4-2',
+        label: 'Comments and Likes',
+        value: 'Comments and Likes',
+      },
+    ],
+  },
+  {
+    value: 'Schema section',
+    label: 'Schema section',
+    key: 'sub2',
+    children: [
+      {
+        key: 'sub2-1',
+        label: 'Create, Edit and Delete Type',
+        value: 'Create, Edit and Delete Type',
+      },
+      {
+        key: 'sub2-2',
+        label: 'Add, Edit and Delete Property',
+        value: 'Add, Edit and Delete Property',
+      },
+      {
+        key: 'sub2-3',
+        label: 'Create, Edit and Delete Connection',
+        value: 'Create, Edit and Delete Connection',
+      },
+      {
+        key: 'sub2-4',
+        label: 'Add, Edit and Delete Connection Property',
+        value: 'Add, Edit and Delete Connection Property',
+      },
+      {
+        key: 'sub2-5',
+        label: 'Search In Schema',
+        value: 'Search In Schema',
+      },
+    ],
+  },
+  {
+    value: 'Data sheet section',
+    label: 'Data sheet section',
+    key: 'sub3',
+    children: [
+      {
+        key: 'sub3-1',
+        label: 'Create, Edit and Delete Type',
+        value: 'Create, Edit and Delete Type',
+      },
+      {
+        key: 'sub3-2',
+        label: 'Add, Edit and Delete Property',
+        value: 'Add, Edit and Delete Property',
+      },
+      {
+        key: 'sub3-3',
+        label: 'Create, Edit and Delete Connection',
+        value: 'Create, Edit and Delete Connection',
+      },
+      {
+        key: 'sub3-4',
+        label: 'Add, Edit and Delete Connection Property',
+        value: 'Add, Edit and Delete Connection Property',
+      },
+      {
+        key: 'sub3-5',
+        label: 'Search In Schema',
+        value: 'Search In Schema',
+      },
+      {
+        key: 'sub3-6',
+        label: 'All data',
+        value: 'All data',
+      },
+      {
+        key: 'sub3-7',
+        label: 'Add, Edit and Delete Node',
+        value: 'Add, Edit and Delete Node',
+      },
+    ],
+  },
+  {
+    label: 'Visualization',
+    value: 'Visualization',
+    key: 'sub5',
+    children: [
+      {
+        key: 'sub5-1',
+        label: 'Add, Edit and Delete Node',
+        value: 'Add, Edit and Delete Node',
+      },
+      {
+        key: 'sub5-2',
+        label: 'Filters',
+        value: 'Filters',
+      },
+      {
+        key: 'sub5-3',
+        label: 'Queries',
+        value: 'Queries',
+      },
+      {
+        key: 'sub5-4',
+        label: 'Styling',
+        value: 'Styling',
+      },
+      {
+        key: 'sub5-5',
+        label: 'Focus, Expand, Shortest path',
+        value: 'Focus, Expand, Shortest path',
+      },
+    ],
+  },
+  {
+    label: 'Perspective',
+    value: 'Perspective',
+    key: 'sub6',
+  },
 ];
+
 export const Help: React.FC = () => {
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
     setOpen(true);
   };
-
   const onClose = () => {
     setOpen(false);
   };
@@ -72,9 +182,24 @@ export const Help: React.FC = () => {
   return (
     <Space>
       <Row gutter={16}>
-          <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
+        <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
         <Col span={24}>
-          <Drawer title="Help" width={'55%'} closable={false} onClose={onClose} visible={open}>
+          <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
+            <Row gutter={16}>
+              <Col span={10}>
+                <h3 style={{ margin: '0' }}>Help</h3>
+              </Col>
+              <Col span={14}>
+                <TreeSelect
+                  style={{ width: '100%' }}
+                  showSearch
+                  placeholder="Search"
+                  allowClear
+                  treeDefaultExpandAll
+                  treeData={items}
+                />
+              </Col>
+            </Row>
             <Row gutter={16}>
               <Col span={10} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
                 <Menu
