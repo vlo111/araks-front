@@ -16,21 +16,21 @@ import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
 import { ICreateEdge } from 'types/node';
 
-export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
+export const getExpandData = async (id: string, label: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
   const url = `${process.env.REACT_APP_BASE_URL}${
     location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
   }neo4j/expand/${projectId}`;
 
-  const params: { params: { id: string; direction?: string; project_edge_type_id?: string } } = {
+  const params: { params: { id: string; direction?: string; label?: string } } = {
     params: {
       id,
     },
   };
 
-  if (project_edge_type_id) {
-    params.params.project_edge_type_id = project_edge_type_id;
+  if (label) {
+    params.params.label = label;
     params.params.direction = direction;
   } else {
     params.params.direction = 'all';
@@ -144,7 +144,7 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
           .map(
             (l) => `
             <div class="row">
-            <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
+            <div class="hidden">${l.name} ${l.direction}</div>
               <p>
                 ${l.direction === 'in' ? outSvg : inSvg}
               </p>
@@ -203,11 +203,11 @@ export const expandByNodeData = async (
   graph: Graph,
   item: Item,
   nodeId: string,
-  project_edge_type_id: string,
+  label: string,
   direction: string,
   setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
 ) => {
-  const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
+  const expandData = await getExpandData(nodeId, label, direction);
 
   const graphData = formattedData(expandData.nodes, expandData.edges, expandData.relationsCounts);
 
@@ -240,11 +240,11 @@ export const expand = async (
 ) => {
   const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
 
-  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+  const [label, direction] = textContent?.split(' ') ?? [];
 
   const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
 
-  await expandByNodeData(graph, item, nodeId, project_edge_type_id, direction, setGraphInfo);
+  await expandByNodeData(graph, item, nodeId, label, direction, setGraphInfo);
 };
 
 export const createCombos = (graph: Graph) => {

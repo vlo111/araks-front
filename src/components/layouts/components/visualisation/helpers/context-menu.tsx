@@ -71,7 +71,7 @@ export const contextMenuPlugin: (
                 graph,
                 item,
                 item.getID(),
-                (item.getModel() as { nodeType: string }).nodeType ?? '',
+                (item.getModel() as { label: string }).label ?? '',
                 'all',
                 setGraphInfo
               );
