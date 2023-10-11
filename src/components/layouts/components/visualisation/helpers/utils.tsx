@@ -1,8 +1,8 @@
 import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
 import {
+  AddEdges,
   CalcExpandList,
-  DrawEdgesParams,
   ExpandList,
   ExpandListData,
   GroupAndCountResult,
@@ -225,6 +225,8 @@ export const expandByNodeData = async (
     graph.addItem('edge', e);
   });
 
+  drawMultiEdges(graph, nodeId ?? '');
+
   setGraphInfo({
     nodeCount: graph.getNodes().length,
   });
@@ -445,67 +447,62 @@ const getPosition: (item: number) => string = (item: number) => {
   }
 };
 
-const drawSelfLoopEdges: DrawEdgesParams = (graph, nodeId, groupLoopEdges) => {
-  groupLoopEdges?.forEach((target) => {
-    const loopEdges = graph.getEdges().filter((e) => {
-      const edge = e.getModel();
-
-      return edge.source === nodeId && edge.target === target;
-    });
-
-    loopEdges.forEach((edge, i) => {
-      graph.updateItem(edge.getID(), {
-        loopCfg: {
-          position: getPosition(i),
-          dist: 50,
-          clockwise: true,
-        },
-      });
-    });
-  });
-};
-
-const drawArcsEdges: DrawEdgesParams = (graph, nodeId, groupArcsEdges) => {
-  groupArcsEdges?.forEach((target) => {
-    const arcsEdges = graph.getEdges().filter((e) => {
-      const edge = e.getModel();
-      return (edge.source === nodeId && edge.target === target) || (edge.target === nodeId && edge.source === target);
-    });
-
-    arcsEdges.forEach((edge, i) => {
-      const arcs = Math.ceil((i - (arcsEdges.length % 2) + 1) / 2) * -40 * (-1) ** ((i - (arcsEdges.length % 2)) % 2);
-
-      graph.updateItem(edge.getID(), {
-        curvePosition: 0.5,
-        curveOffset: arcsEdges.length % 2 !== 0 && i === 0 ? 0 : arcs,
-      });
-    });
-  });
-};
-
 export const drawMultiEdges: UpdateEdges = (...params) => {
-  const [graph, nodeId, edges, loopEdges, arcsEdges] = params;
+  const [graph, nodeId] = params;
 
-  // group loop edges
-  const groupLoopEdges = getUniqueTargets(edges.filter((e) => e.source_id === nodeId && e.target_id === nodeId));
+  const loops = [];
 
-  drawSelfLoopEdges(graph, nodeId, groupLoopEdges);
+  const adjacentNodeIds: string[] = [];
 
-  const groupArcsEdges = getUniqueTargets(edges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId)));
+  for (const edge of graph.getEdges()) {
+    if (edge.getModel().source === nodeId && edge.getModel().target === nodeId) {
+      loops.push(edge);
+    } else {
+      const adjacentId =
+        edge.getModel().source === nodeId ? (edge.getModel().target as string) : (edge.getModel().source as string);
 
-  drawArcsEdges(graph, nodeId, groupArcsEdges);
-
-  if (groupLoopEdges) {
-    drawSelfLoopEdges(graph, nodeId, loopEdges ?? []);
+      if (!adjacentNodeIds.some((a) => a === adjacentId)) adjacentNodeIds.push(adjacentId);
+    }
   }
 
-  if (arcsEdges) {
-    drawArcsEdges(graph, nodeId, arcsEdges ?? []);
+  for (const adjacentNodeId of adjacentNodeIds) {
+    const connectedEdges = graph
+      .getEdges()
+      .filter(
+        (e) =>
+          (e.getModel().source === adjacentNodeId && e.getModel().target === nodeId) ||
+          (e.getModel().target === adjacentNodeId && e.getModel().source === nodeId)
+      );
+
+    connectedEdges.forEach((edge, i) => {
+      const coefficient = edge.getModel().source === nodeId ? -80 : 80;
+
+      const ceil = Math.ceil((i - (connectedEdges.length % 2) + 1) / 2);
+
+      const arcs = ceil * coefficient * (-1) ** ((i - (connectedEdges.length % 2)) % 2);
+
+      graph.updateItem(edge.getID(), {
+        type: 'quadratic',
+        curvePosition: 0.5,
+        curveOffset: connectedEdges.length % 2 !== 0 && i === 0 ? 0 : arcs,
+      });
+    });
   }
+
+  loops.forEach((edge, i) => {
+    graph.updateItem(edge.getID(), {
+      type: 'loop',
+      loopCfg: {
+        position: getPosition(i),
+        dist: 50,
+        clockwise: true,
+      },
+    });
+  });
 };
 
-export const addEdges: UpdateEdges = (graph, nodeId, createdEdges) => {
-  createdEdges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
+export const addEdges: AddEdges = (graph, nodeId, edges) => {
+  edges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
     graph.addItem('edge', {
       source,
       target,

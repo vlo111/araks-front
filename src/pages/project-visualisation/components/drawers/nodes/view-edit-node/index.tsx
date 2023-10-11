@@ -1,5 +1,5 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
@@ -26,7 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
-import { addEdges, drawMultiEdges, getUniqueTargets } from 'components/layouts/components/visualisation/helpers/utils';
+import { addEdges, drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -122,19 +122,11 @@ export const ViewEditNodeDrawer = () => {
 
         updateNode(variables);
 
-        const groupLoopEdges = getUniqueTargets(
-          destroyedEdges.filter((e) => e.source_id === nodeId && e.target_id === nodeId)
-        );
-
-        const groupArcsEdges = getUniqueTargets(
-          destroyedEdges.filter((e) => !(e.source_id === nodeId && e.target_id === nodeId))
-        );
-
         destroyedEdges?.forEach((e) => graph.removeItem(e.id));
 
         addEdges(graph, nodeId ?? '', createdEdges);
 
-        drawMultiEdges(graph, nodeId ?? '', createdEdges, groupLoopEdges, groupArcsEdges);
+        drawMultiEdges(graph, nodeId ?? '');
       }
     },
   });

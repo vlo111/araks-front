@@ -73,7 +73,7 @@ export const NodeCreateDrawer: React.FC = () => {
 
       addEdges(graph, id, createdEdges);
 
-      drawMultiEdges(graph, id, createdEdges);
+      drawMultiEdges(graph, id);
 
       form.resetFields();
 
