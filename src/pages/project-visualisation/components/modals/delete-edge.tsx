@@ -4,23 +4,18 @@ import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 import { useDeleteEdge } from 'api/edges/use-delete-edge';
-import { drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
+import { updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const EdgeDeleteModal = () => {
   const { graph, deleteEdge, finishDeleteEdge, finishOpenEdge } = useGraph() ?? {};
 
   const { mutateAsync } = useDeleteEdge(deleteEdge?.id ?? '', {
     onSuccess: () => {
-      const source = graph
-        .getEdges()
-        .find((e) => e.getID() === deleteEdge.id)
-        ?.getModel().source as string;
-
       graph.removeItem(deleteEdge?.id ?? '');
       finishDeleteEdge();
       finishOpenEdge();
 
-      drawMultiEdges(graph, source);
+      updateConnector(graph);
     },
   });
 

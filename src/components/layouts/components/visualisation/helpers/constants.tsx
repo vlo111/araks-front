@@ -103,6 +103,10 @@ export const options = {
         offset: 10,
       },
       {
+        type: 'collapse-expand-combo',
+        relayout: false,
+      },
+      {
         type: 'brush-select',
         trigger: 'shift',
         includeEdges: false,

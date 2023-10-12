@@ -26,7 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
-import { addEdges, drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -126,7 +126,7 @@ export const ViewEditNodeDrawer = () => {
 
         addEdges(graph, nodeId ?? '', createdEdges);
 
-        drawMultiEdges(graph, nodeId ?? '');
+        updateConnector(graph);
       }
     },
   });
