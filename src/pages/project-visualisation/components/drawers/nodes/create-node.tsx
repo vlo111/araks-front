@@ -13,9 +13,9 @@ import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/typ
 import { useGetTypes } from 'api/schema/type/use-get-types';
 import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
+import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 import './add-node-select.css';
-import { addEdges, drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -73,7 +73,7 @@ export const NodeCreateDrawer: React.FC = () => {
 
       addEdges(graph, id, createdEdges);
 
-      drawMultiEdges(graph, id);
+      updateConnector(graph);
 
       form.resetFields();
 

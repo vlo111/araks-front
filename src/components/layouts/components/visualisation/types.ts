@@ -66,6 +66,8 @@ export type Edge = {
   target: string;
   label: string;
   project_edge_type_id?: string;
+  curvePosition?: number;
+  curveOffset?: number;
 };
 
 export type GraphData = {

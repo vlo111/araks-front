@@ -11,7 +11,7 @@ import { AddNodeForm } from 'components/form/add-node-form';
 import { EdgesCreate, EdgesCreateProperties } from 'types/edges';
 import { useManageEdge } from 'api/edges/use-manage-edge';
 import './add-edge-select.css';
-import { drawMultiEdges } from 'components/layouts/components/visualisation/helpers/utils';
+import { updateConnector } from '../../../../../components/layouts/components/visualisation/helpers/utils';
 
 export const EdgeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -45,7 +45,7 @@ export const EdgeCreateDrawer: React.FC = () => {
         label: edgeName,
       });
 
-      drawMultiEdges(graph, edge.source_id);
+      updateConnector(graph);
 
       finishOpenEdgeCreate();
 

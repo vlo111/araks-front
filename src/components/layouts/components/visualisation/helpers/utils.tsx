@@ -1,20 +1,12 @@
 import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
-import {
-  AddEdges,
-  CalcExpandList,
-  ExpandList,
-  ExpandListData,
-  GroupAndCountResult,
-  GroupedData,
-  UpdateEdges,
-} from '../types';
+import { AddEdges, CalcExpandList, Edge, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
 import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
-import { ICreateEdge } from 'types/node';
+import { initConnector } from '../container/initial/nodes';
 
 export const getExpandData = async (id: string, label: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -225,7 +217,7 @@ export const expandByNodeData = async (
     graph.addItem('edge', e);
   });
 
-  drawMultiEdges(graph, nodeId ?? '');
+  updateConnector(graph);
 
   setGraphInfo({
     nodeCount: graph.getNodes().length,
@@ -415,92 +407,6 @@ export const removeFakeEdge = (graph: IGraph) => {
   if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
 };
 
-export const getUniqueTargets = (edgesArray: ICreateEdge[]) =>
-  edgesArray.map((a) => a.target_id).filter((value, index, array) => array.indexOf(value) === index);
-
-const getPosition: (item: number) => string = (item: number) => {
-  switch (item) {
-    case 0: {
-      return 'top';
-    }
-    case 1: {
-      return 'top-right';
-    }
-    case 2: {
-      return 'right';
-    }
-    case 3: {
-      return 'bottom-right';
-    }
-    case 4: {
-      return 'bottom';
-    }
-    case 5: {
-      return 'bottom-left';
-    }
-    case 6: {
-      return 'left';
-    }
-    default: {
-      return 'top-left';
-    }
-  }
-};
-
-export const drawMultiEdges: UpdateEdges = (...params) => {
-  const [graph, nodeId] = params;
-
-  const loops = [];
-
-  const adjacentNodeIds: string[] = [];
-
-  for (const edge of graph.getEdges()) {
-    if (edge.getModel().source === nodeId && edge.getModel().target === nodeId) {
-      loops.push(edge);
-    } else {
-      const adjacentId =
-        edge.getModel().source === nodeId ? (edge.getModel().target as string) : (edge.getModel().source as string);
-
-      if (!adjacentNodeIds.some((a) => a === adjacentId)) adjacentNodeIds.push(adjacentId);
-    }
-  }
-
-  for (const adjacentNodeId of adjacentNodeIds) {
-    const connectedEdges = graph
-      .getEdges()
-      .filter(
-        (e) =>
-          (e.getModel().source === adjacentNodeId && e.getModel().target === nodeId) ||
-          (e.getModel().target === adjacentNodeId && e.getModel().source === nodeId)
-      );
-
-    connectedEdges.forEach((edge, i) => {
-      const coefficient = edge.getModel().source === nodeId ? -80 : 80;
-
-      const ceil = Math.ceil((i - (connectedEdges.length % 2) + 1) / 2);
-
-      const arcs = ceil * coefficient * (-1) ** ((i - (connectedEdges.length % 2)) % 2);
-
-      graph.updateItem(edge.getID(), {
-        type: 'quadratic',
-        curvePosition: 0.5,
-        curveOffset: connectedEdges.length % 2 !== 0 && i === 0 ? 0 : arcs,
-      });
-    });
-  }
-
-  loops.forEach((edge, i) => {
-    graph.updateItem(edge.getID(), {
-      type: 'loop',
-      loopCfg: {
-        position: getPosition(i),
-        dist: 50,
-        clockwise: true,
-      },
-    });
-  });
-};
-
 export const addEdges: AddEdges = (graph, nodeId, edges) => {
   edges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
     graph.addItem('edge', {
@@ -508,6 +414,19 @@ export const addEdges: AddEdges = (graph, nodeId, edges) => {
       target,
       type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
       ...edge,
+    });
+  });
+};
+
+export const updateConnector = (graph: Graph) => {
+  const edges = graph.save().edges as Edge[];
+
+  initConnector(edges);
+
+  graph.getEdges().forEach((edge, i) => {
+    graph.updateItem(edge, {
+      curveOffset: edges[i].curveOffset,
+      curvePosition: edges[i].curvePosition,
     });
   });
 };
