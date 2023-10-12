@@ -1,5 +1,5 @@
-import { SetStateAction, useState } from 'react';
-import { Col, Drawer, Menu, Row, Space, TreeSelect } from 'antd';
+import React, { useState } from 'react';
+import { Col, Drawer, Input, Menu, Row, Space, Typography } from 'antd';
 import { ReactComponent as Helpicon } from 'components/help/images/help.svg';
 import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
@@ -7,180 +7,94 @@ import { SchemaSection } from './schema-section';
 import { DataSheetSection } from './data-sheet';
 import { VisualizationSection } from './visualization';
 import { Perspective } from './perspective';
+import { SearchOutlined } from '@ant-design/icons';
 
-type ItemType = {
-  value: string;
-  key: string;
-  label: string;
-  children?: ItemType[];
-};
-const items: ItemType[] = [
+const items = [
   {
-    value: 'Projects and Folders',
     label: 'Projects and Folders',
-    key: 'sub1',
-    children: [
-      {
-        key: 'sub1-1',
-        value: 'Create, Edit and Delete the Project',
-        label: 'Create, Edit and Delete the Project',
-      },
-      {
-        key: 'sub1-2',
-        value: 'Create, Edit and Delete the Folder',
-        label: 'Create, Edit and Delete the Folder',
-      },
+    subMenuKey: 'sub1',
+    items: [
+      { label: 'Create, Edit and Delete the Project', subMenuKey: 'sub1-1' },
+      { label: 'Create, Edit and Delete the Folder', subMenuKey: 'sub1-2' },
     ],
   },
   {
     label: 'Overview',
-    value: 'Overview',
-    key: 'sub4',
-    children: [
-      {
-        key: 'sub4-1',
-        label: 'Project name and Privacy',
-        value: 'Project name and Privacy',
-      },
-      {
-        key: 'sub4-2',
-        label: 'See all members ',
-        value: 'See all members ',
-      },
-      {
-        key: 'sub4-3',
-        label: 'Comments and Likes',
-        value: 'Comments and Likes',
-      },
+    subMenuKey: 'sub4',
+    items: [
+      { label: 'Project name and Privacy', subMenuKey: 'sub4-1' },
+      { label: 'See all members', subMenuKey: 'sub4-2' },
+      { label: 'Comments and Likes', subMenuKey: 'sub4-3' },
     ],
   },
   {
-    value: 'Schema section',
     label: 'Schema section',
-    key: 'sub2',
-    children: [
-      {
-        key: 'sub2-1',
-        label: 'Create, Edit and Delete Type',
-        value: 'Create, Edit and Delete Type',
-      },
-      {
-        key: 'sub2-2',
-        label: 'Add, Edit and Delete Property',
-        value: 'Add, Edit and Delete Property',
-      },
-      {
-        key: 'sub2-3',
-        label: 'Create, Edit and Delete Connection',
-        value: 'Create, Edit and Delete Connection',
-      },
-      {
-        key: 'sub2-4',
-        label: 'Add, Edit and Delete Connection Property',
-        value: 'Add, Edit and Delete Connection Property',
-      },
-      {
-        key: 'sub2-5',
-        label: 'Search In Schema',
-        value: 'Search In Schema',
-      },
+    subMenuKey: 'sub2',
+    items: [
+      { label: 'Create, Edit and Delete Type', subMenuKey: 'sub2-1' },
+      { label: 'Add, Edit and Delete Property', subMenuKey: 'sub2-2' },
+      { label: 'Create, Edit and Delete Connection', subMenuKey: 'sub2-3' },
+      { label: 'Add, Edit and Delete Connection Property', subMenuKey: 'sub2-4' },
+      { label: 'Search In Schema', subMenuKey: 'sub2-5' },
     ],
   },
   {
-    value: 'Data sheet section',
     label: 'Data sheet section',
-    key: 'sub3',
-    children: [
-      {
-        key: 'sub3-1',
-        label: 'Create, Edit and Delete Type',
-        value: 'Create, Edit and Delete Type',
-      },
-      {
-        key: 'sub3-2',
-        label: 'Add, Edit and Delete Property',
-        value: 'Add, Edit and Delete Property',
-      },
-      {
-        key: 'sub3-3',
-        label: 'Create, Edit and Delete Connection',
-        value: 'Create, Edit and Delete Connection',
-      },
-      {
-        key: 'sub3-4',
-        label: 'Add, Edit and Delete Connection Property',
-        value: 'Add, Edit and Delete Connection Property',
-      },
-      {
-        key: 'sub3-5',
-        label: 'Search In Schema',
-        value: 'Search In Schema',
-      },
-      {
-        key: 'sub3-6',
-        label: 'All data',
-        value: 'All data',
-      },
-      {
-        key: 'sub3-7',
-        label: 'Add, Edit and Delete Node',
-        value: 'Add, Edit and Delete Node',
-      },
+    subMenuKey: 'sub3',
+    items: [
+      { label: 'Create, Edit and Delete Type', subMenuKey: 'sub3-1' },
+      { label: 'Add, Edit and Delete Property', subMenuKey: 'sub3-2' },
+      { label: 'Add, Edit and Delete Node', subMenuKey: 'sub3-7' },
+      { label: 'Create, Edit and Delete Connection', subMenuKey: 'sub3-3' },
+      { label: 'Add, Edit and Delete Connection Property', subMenuKey: 'sub3-4' },
+      { label: 'Add, Edit and Delete Node in Connection', subMenuKey: 'sub3-5' },
+      { label: 'All data', subMenuKey: 'sub3-6' },
     ],
   },
   {
     label: 'Visualization',
-    value: 'Visualization',
-    key: 'sub5',
-    children: [
-      {
-        key: 'sub5-1',
-        label: 'Add, Edit and Delete Node',
-        value: 'Add, Edit and Delete Node',
-      },
-      {
-        key: 'sub5-2',
-        label: 'Filters',
-        value: 'Filters',
-      },
-      {
-        key: 'sub5-3',
-        label: 'Queries',
-        value: 'Queries',
-      },
-      {
-        key: 'sub5-4',
-        label: 'Styling',
-        value: 'Styling',
-      },
-      {
-        key: 'sub5-5',
-        label: 'Focus, Expand, Shortest path',
-        value: 'Focus, Expand, Shortest path',
-      },
+    subMenuKey: 'sub5',
+    items: [
+      { label: 'Add, Edit and Delete Node', subMenuKey: 'sub5-1' },
+      { label: 'Filters', subMenuKey: 'sub5-2' },
+      { label: 'Queries', subMenuKey: 'sub5-3' },
+      { label: 'Styling', subMenuKey: 'sub5-4' },
+      { label: 'Focus, Expand, Shortest path', subMenuKey: 'sub5-5' },
     ],
   },
   {
     label: 'Perspective',
-    value: 'Perspective',
-    key: 'sub6',
+    subMenuKey: 'sub6',
   },
 ];
 
 export const Help: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [activeMenuItem, setActiveMenuItem] = useState('sub1-1');
+  const [search, setSearch] = useState<string>('');
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
-  const [activeMenuItem, setActiveMenuItem] = useState('sub1-1');
 
-  const handleMenuItemClick = (key: SetStateAction<string>) => {
+  const filteredItems = items.filter((item) => {
+    const labelMatches = item.label.toLowerCase().includes(search.toLowerCase());
+    if (labelMatches) {
+      return true;
+    } else {
+      if (item.items) {
+        return item.items.some((subItem) => subItem.label.toLowerCase().includes(search.toLowerCase()));
+      }
+    }
+    return false;
+  });
+
+  const handleMenuItemClick = (key: string) => {
     setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
-  
+
   return (
     <Space>
       <Row gutter={16}>
@@ -189,29 +103,34 @@ export const Help: React.FC = () => {
           <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
             <Row gutter={16}>
               <Col span={10}>
-                <h3 style={{ margin: '0' }}>Help</h3>
+                <Typography.Title level={2} style={{ margin: 0 }}>
+                  Help
+                </Typography.Title>
               </Col>
               <Col span={14}>
-                <TreeSelect
-                  style={{ width: '100%' }}
-                  showSearch
+                <Input
+                  prefix={<SearchOutlined style={{ fontSize: '18px' }} />}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search"
-                  allowClear
-                  treeDefaultExpandAll
-                  treeData={items}
-                  onChange={({ key }) => handleMenuItemClick(key)}
                 />
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={10} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
                 <Menu
-                  onClick={({ key }) => handleMenuItemClick(key)}                  
+                  onClick={({ key }) => handleMenuItemClick(key)}
                   defaultOpenKeys={['sub1', 'sub1-1']}
-                  defaultSelectedKeys={['sub1', 'sub1-1']}
+                  defaultSelectedKeys={[activeMenuItem]}
                   mode="inline"
-                  items={items}
-                />
+                >
+                  {filteredItems.map((item) => (
+                    <Menu.SubMenu key={item.subMenuKey} title={item.label}>
+                      {item.items &&
+                        item.items.map((subItem) => <Menu.Item key={subItem.subMenuKey}>{subItem.label}</Menu.Item>)}
+                    </Menu.SubMenu>
+                  ))}
+                </Menu>
               </Col>
               <Col span={14} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
                 <ProjectsFolders activeMenuItem={activeMenuItem} />
