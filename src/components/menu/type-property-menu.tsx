@@ -11,7 +11,7 @@ import { useSetPropertyDefault } from 'api/project-node-type-property/use-set-pr
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { PropertyMenu } from './property-menu';
 import { AddNodeTypePopover } from 'components/popover';
-import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { AddTypePropertyForm } from 'components/form/type-property/add-type-property-form';
 import { useState } from 'react';
 
 type MenuItem = Required<MenuProps>['items'][number];

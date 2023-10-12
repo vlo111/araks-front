@@ -24,6 +24,7 @@ const editPropertyList = {
     PropertyTypes.URL,
     PropertyTypes.Boolean,
     PropertyTypes.Location,
+    PropertyTypes.Connection,
   ],
   [PropertyTypes.Date]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],
   [PropertyTypes.DateTime]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],

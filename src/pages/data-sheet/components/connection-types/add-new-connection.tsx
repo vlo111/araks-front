@@ -1,5 +1,5 @@
 import { AddAction } from 'components/actions/add';
-import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { AddTypePropertyForm } from 'components/form/type-property/add-type-property-form';
 import { AddNodeTypePopover } from 'components/popover';
 import { useState } from 'react';
 
