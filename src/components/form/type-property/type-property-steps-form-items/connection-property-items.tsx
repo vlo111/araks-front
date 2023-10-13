@@ -8,13 +8,15 @@ import { VerticalSpace } from '../../../space/vertical-space';
 import { Button } from '../../../button';
 import styled from 'styled-components';
 import { SetCreateConnection } from '../add-type-property-form';
+import { useGetProjectEdgeTypes } from '../../../../api/node-edge-type/use-get-edge-types-beetwen-types';
 
 type Props = {
   dataTypeSelect: ReactNode;
   setCreateConnection: SetCreateConnection;
+  hide: () => void;
 };
 
-const AddNewButton = styled.div`
+const AddNewButton = styled.div<{ disabled: boolean }>`
   background: none;
   border: none;
   color: #232f6a;
@@ -25,15 +27,22 @@ const AddNewButton = styled.div`
   cursor: pointer;
   user-select: none;
   margin: 1rem 0;
+  width: 11rem;
+
+  ${({ disabled }) => !disabled && 'color: #BFBFBF; cursor: auto'};
 `;
 
-export const ConnectionPropertyFormItems = ({ dataTypeSelect, setCreateConnection }: Props) => {
+export const ConnectionPropertyFormItems = ({ dataTypeSelect, setCreateConnection, hide }: Props) => {
   const [hasNodeType, setHasNodeType] = useState(false);
   const form = Form.useFormInstance();
   const source = Form.useWatch('source_id', { preserve: true });
   const target = Form.useWatch('target_id', { preserve: true });
   const inverse = Form.useWatch('inverse', { preserve: true });
   const { nodesList, nodeTypeId } = useDataSheetWrapper();
+
+  const { data } = useGetProjectEdgeTypes(source, target, {
+    enabled: !!(source && target),
+  });
 
   useEffect(() => {
     if (nodeTypeId) {
@@ -98,14 +107,21 @@ export const ConnectionPropertyFormItems = ({ dataTypeSelect, setCreateConnectio
         label="Connection Name"
         rules={[{ required: true, message: 'Node property data type is required' }]}
       >
-        <Select style={{ width: '100%' }} placeholder="Please select" fieldNames={{ value: 'id', label: 'name' }} />
+        <Select
+          options={data}
+          style={{ width: '100%' }}
+          placeholder="Please select"
+          fieldNames={{ value: 'id', label: 'name' }}
+        />
       </FormItem>
       <AddNewButton
-        onClick={() =>
-          setCreateConnection({
-            isOpen: true,
-          })
-        }
+        disabled={!!target}
+        onClick={() => {
+          if (!!target)
+            setCreateConnection({
+              isOpen: true,
+            });
+        }}
       >
         +Add New Connection
       </AddNewButton>
@@ -114,7 +130,7 @@ export const ConnectionPropertyFormItems = ({ dataTypeSelect, setCreateConnectio
           <Button block type="primary" htmlType="submit">
             Save
           </Button>
-          <Button block type="text">
+          <Button block type="text" onClick={hide}>
             Cancel
           </Button>
         </VerticalSpace>

@@ -43,6 +43,7 @@ export const TypePropertyFormItems = ({
     onSuccess: (data) => {
       form.setFieldsValue({
         ...data,
+        ref_property_type_id: dataType || data.ref_property_type_id,
       });
     },
   });
@@ -77,8 +78,12 @@ export const TypePropertyFormItems = ({
         <Text>{isConnectionType ? 'Create Connection type' : isEdit ? 'Edit Property' : 'Add property for type'}</Text>
         <UsefulInformationTooltip infoText="Inherit parent options" />
       </Space>
-      {dataType === PropertyTypes.Connection ? (
-        <ConnectionPropertyFormItems dataTypeSelect={dataSelectItem} setCreateConnection={setCreateConnection} />
+      {!isConnectionType && dataType === PropertyTypes.Connection && isEdit ? (
+        <ConnectionPropertyFormItems
+          dataTypeSelect={dataSelectItem}
+          setCreateConnection={setCreateConnection}
+          hide={hide}
+        />
       ) : (
         <>
           {!form.getFieldValue('default_property') && (
