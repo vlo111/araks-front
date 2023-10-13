@@ -25,10 +25,22 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-1': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete Type</Title>
-        <Text>1. Create a New Type</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete Type
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Create a New Type
+        </Text>
         <ul style={{ color: '#808080' }}>
-          <li>Click <b>+</b> and the system will open “Create New Type” pop-up</li>
+          <li>
+            Click <b>+</b> and the system will open “Create New Type” pop-up
+          </li>
           <li>
             Type the <b>Node Type Name</b> (required)
           </li>
@@ -40,7 +52,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={CreateANewType} />
-        <Text>2. Edit or Delete the Type</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the Type
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> the current Type
@@ -60,8 +74,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-2': {
     content: (
       <>
-        <Title level={5}>Add, Edit and Delete Property</Title>
-        <Text>1. Add a New Property</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Add, Edit and Delete Property
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Add a New Property
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add property</b> and the system will open “Add Property for type” pop-up
@@ -79,7 +103,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NewProperty} />
-        <p>2. Edit or Delete the Property </p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the Property{' '}
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> the current Type
@@ -103,8 +129,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-3': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete Connection</Title>
-        <Text>1. Create a New Connection (by selecting Data type - connection)</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete Connection
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Create a New Connection (by selecting Data type - connection)
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add property</b> and the system will open “Add Property for type” pop-up
@@ -123,11 +159,13 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NewConnection} />
-        <Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
-          <li>Click <b>+</b> and the system will open “Create Connection type” pop-up</li>
+          <li>
+            Click <b>+</b> and the system will open “Create Connection type” pop-up
+          </li>
           <li>
             Type the <b>Connection</b> name (required)
           </li>
@@ -147,7 +185,9 @@ const menuItems: Record<string, MenuItem> = {
             <Image src={ConnectionTypes} />
           </Col>
         </Row>
-        <Text>3. Edit or Delete the Connection</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          3. Edit or Delete the Connection
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Target-Source</b> of the current connection
@@ -173,8 +213,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-4': {
     content: (
       <>
-        <Title level={5}>Add, Edit and Delete Connection Property</Title>
-        <Text>1. Add a New Connection Property</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Add, Edit and Delete Connection Property
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Add a New Connection Property
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>Click + and the system will open “Add property for connection type ” pop-up</li>
           <li>Type the Property Name (required and First character must be letter)</li>
@@ -184,7 +234,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={DeleteConnectionProperty} />
-        <p>2. Edit or Delete the Connection Property </p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the Connection Property{' '}
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click on <b>the property</b> and the system will open “Edit connection property” pop-up
@@ -207,8 +259,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-5': {
     content: (
       <>
-        <Title level={5}>Add, Edit and Delete Node in Connection</Title>
-        <Text>1. Add a New Node in Connection </Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Add, Edit and Delete Node in Connection
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Add a New Node in Connection{' '}
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add Node</b> and the system will open “Add New Node” pop-up
@@ -221,7 +283,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NodeInConnection} />
-        <p>2. Edit or Delete the nodes of connection </p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the nodes of connection{' '}
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>the Node</b> and the system will open “Connection Node” pop-up
@@ -247,7 +311,15 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-6': {
     content: (
       <>
-        <Title level={5}>All data</Title>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          All data
+        </Title>
         <ul style={{ color: '#808080' }}>
           <li>Click to the check box of the taxonomy and the system will show the nodes of the selecting type</li>
           <li>Check the boxes and click to the “delete” Icon to Delete the nodes</li>
@@ -269,7 +341,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={AllData} />
-        <p>2. Edit or Delete the nodes of connection</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the nodes of connection
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>the Node</b> and the system will open “Connection Node” pop-up
@@ -295,8 +369,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-7': {
     content: (
       <>
-        <Title level={5}>Add, Edit and Delete Node</Title>
-        <Text>1. Add a New Node</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Add, Edit and Delete Node
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Add a New Node
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add Node</b> and the system will open “Add New Node” pop-up
@@ -311,7 +395,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={AddNode} />
-        <p>2. Node View, Edit or Delete </p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Node View, Edit or Delete{' '}
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click to the <b>Node name</b> and the system will open “Node view” drawer
@@ -346,7 +432,7 @@ export const DataSheetSection: React.FC<DataSheetSectionProps> = ({ activeMenuIt
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
+      <div style={{ fontSize: '16px', marginTop: 0 }}>
         {menuItem.content}
         {menuItem.image}
       </div>

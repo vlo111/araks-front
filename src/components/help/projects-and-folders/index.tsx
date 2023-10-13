@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Image, Row, Typography } from 'antd';
+import { Col, Image, Row, Space, Typography } from 'antd';
 import CreateAProjectImg from 'components/help/images/create-a-project.svg';
 import EditProject from 'components/help/images/edit-project.svg';
 import EditProjects from 'components/help/images/edit-projects.svg';
@@ -18,9 +18,19 @@ const menuItems: Record<string, MenuItem> = {
   'sub1-1': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete the Project</Title>
-        <Text>1. Create a Project</Text>
-        <p>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete the Project
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Create a Project
+        </Text>
+        <p style={{ marginLeft: '10px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -41,7 +51,9 @@ const menuItems: Record<string, MenuItem> = {
           </ul>
         </ul>
         <Image src={CreateAProjectImg} />
-        <Text>2. Edit the Project</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit the Project
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Project
@@ -62,7 +74,9 @@ const menuItems: Record<string, MenuItem> = {
             <Image src={EditProjects} />
           </Col>
         </Row>
-        <Text>3. Delete the Project</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          3. Delete the Project
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Project
@@ -81,9 +95,19 @@ const menuItems: Record<string, MenuItem> = {
   'sub1-2': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete the Folder</Title>
-        <Text>1. Create a Folder</Text>
-        <p>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete the Folder
+        </Title>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Create a Folder
+        </Text>
+        <p style={{ marginLeft: '10px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -98,7 +122,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={CreateFolder} />
-        <Text>2. Edit the Folder</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit the Folder
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Folder
@@ -112,7 +138,9 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={EditFolder} />
-        <Text>3. Delete the Folder</Text>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          3. Delete the Folder
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Folder
@@ -139,10 +167,12 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
-        {menuItem.content}
-        {menuItem.image}
-      </div>
+      <Space>
+        <div style={{ fontSize: '16px' }}>
+          {menuItem.content}
+          {menuItem.image}
+        </div>
+      </Space>
     );
   }
 

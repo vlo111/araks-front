@@ -12,13 +12,22 @@ interface MenuItem {
 const { Title } = Typography;
 
 const menuItems: Record<string, MenuItem> = {
-  sub6: {
+  'sub6-1': {
     content: (
       <>
-        <Title level={5}>Perspective</Title>
-
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          Perspective
+        </Title>
         <ul style={{ color: '#808080' }}>
-          <li>Click to the <b>+</b> button and Add New perspective</li>
+          <li>
+            Click to the <b>+</b> button and Add New perspective
+          </li>
           <li>Open the “Eye” of the Type for sharing (For all types, share the Main perspective)</li>
           <li>
             Click to the Share button and the system will open “Share” drawer:

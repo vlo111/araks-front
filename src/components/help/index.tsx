@@ -8,66 +8,115 @@ import { DataSheetSection } from './data-sheet';
 import { VisualizationSection } from './visualization';
 import { Perspective } from './perspective';
 import { SearchOutlined } from '@ant-design/icons';
-
+const { Text } = Typography;
 const items = [
   {
-    label: 'Projects and Folders',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Projects and Folders</span>,
     subMenuKey: 'sub1',
     items: [
-      { label: 'Create, Edit and Delete the Project', subMenuKey: 'sub1-1' },
-      { label: 'Create, Edit and Delete the Folder', subMenuKey: 'sub1-2' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete the Project</span>,
+        subMenuKey: 'sub1-1',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete the Folder</span>,
+        subMenuKey: 'sub1-2',
+      },
     ],
   },
   {
-    label: 'Overview',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Overview</span>,
     subMenuKey: 'sub4',
     items: [
-      { label: 'Project name and Privacy', subMenuKey: 'sub4-1' },
-      { label: 'See all members', subMenuKey: 'sub4-2' },
-      { label: 'Comments and Likes', subMenuKey: 'sub4-3' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Project name and Privacy</span>,
+        subMenuKey: 'sub4-1',
+      },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>See all members</span>, subMenuKey: 'sub4-2' },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Comments and Likes</span>, subMenuKey: 'sub4-3' },
     ],
   },
   {
-    label: 'Schema section',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Schema section</span>,
     subMenuKey: 'sub2',
     items: [
-      { label: 'Create, Edit and Delete Type', subMenuKey: 'sub2-1' },
-      { label: 'Add, Edit and Delete Property', subMenuKey: 'sub2-2' },
-      { label: 'Create, Edit and Delete Connection', subMenuKey: 'sub2-3' },
-      { label: 'Add, Edit and Delete Connection Property', subMenuKey: 'sub2-4' },
-      { label: 'Search In Schema', subMenuKey: 'sub2-5' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete Type</span>,
+        subMenuKey: 'sub2-1',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Property</span>,
+        subMenuKey: 'sub2-2',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete Connection</span>,
+        subMenuKey: 'sub2-3',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Connection Property</span>,
+        subMenuKey: 'sub2-4',
+      },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Search In Schema</span>, subMenuKey: 'sub2-5' },
     ],
   },
   {
-    label: 'Data sheet section',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Data sheet section</span>,
     subMenuKey: 'sub3',
     items: [
-      { label: 'Create, Edit and Delete Type', subMenuKey: 'sub3-1' },
-      { label: 'Add, Edit and Delete Property', subMenuKey: 'sub3-2' },
-      { label: 'Add, Edit and Delete Node', subMenuKey: 'sub3-7' },
-      { label: 'Create, Edit and Delete Connection', subMenuKey: 'sub3-3' },
-      { label: 'Add, Edit and Delete Connection Property', subMenuKey: 'sub3-4' },
-      { label: 'Add, Edit and Delete Node in Connection', subMenuKey: 'sub3-5' },
-      { label: 'All data', subMenuKey: 'sub3-6' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete Type</span>,
+        subMenuKey: 'sub3-1',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Property</span>,
+        subMenuKey: 'sub3-2',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Node</span>,
+        subMenuKey: 'sub3-7',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Create, Edit and Delete Connection</span>,
+        subMenuKey: 'sub3-3',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Connection Property</span>,
+        subMenuKey: 'sub3-4',
+      },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Node in Connection</span>,
+        subMenuKey: 'sub3-5',
+      },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>All data</span>, subMenuKey: 'sub3-6' },
     ],
   },
   {
-    label: 'Visualization',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Visualization</span>,
     subMenuKey: 'sub5',
     items: [
-      { label: 'Add, Edit and Delete Node', subMenuKey: 'sub5-1' },
-      { label: 'Filters', subMenuKey: 'sub5-2' },
-      { label: 'Queries', subMenuKey: 'sub5-3' },
-      { label: 'Styling', subMenuKey: 'sub5-4' },
-      { label: 'Focus, Expand, Shortest path', subMenuKey: 'sub5-5' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Node</span>,
+        subMenuKey: 'sub5-1',
+      },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Filters</span>, subMenuKey: 'sub5-2' },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Queries</span>, subMenuKey: 'sub5-3' },
+      { label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Styling</span>, subMenuKey: 'sub5-4' },
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Focus, Expand, Shortest path</span>,
+        subMenuKey: 'sub5-5',
+      },
     ],
   },
   {
-    label: 'Perspective',
-    subMenuKey: 'sub6',
+    label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Perspective</span>,
+    items: [
+      {
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Perspective</span>,
+        subMenuKey: 'sub6-1',
+      },
+    ],
   },
 ];
-
 export const Help: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('sub1-1');
@@ -80,70 +129,81 @@ export const Help: React.FC = () => {
   };
 
   const filteredItems = items.filter((item) => {
-    const labelMatches = item.label.toLowerCase().includes(search.toLowerCase());
-    if (labelMatches) {
-      return true;
-    } else {
-      if (item.items) {
-        return item.items.some((subItem) => subItem.label.toLowerCase().includes(search.toLowerCase()));
+    if (search.length >= 3) {
+      const labelText = typeof item.label === 'string' ? item.label : item.label.props.children;
+      const labelMatches = labelText.toLowerCase().includes(search.toLowerCase());
+      if (labelMatches) {
+        return true;
+      } else if (item.items) {
+        return item.items.some((subItem) => {
+          const subItemText = typeof subItem.label === 'string' ? subItem.label : subItem.label.props.children;
+          return subItemText.toLowerCase().includes(search.toLowerCase());
+        });
       }
     }
-    return false;
+    return true;
   });
 
   const handleMenuItemClick = (key: string) => {
     setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
 
+  const [isSearching, setIsSearching] = useState(false);
+
   return (
     <Space>
-      <Row gutter={16}>
-        <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
-        <Col span={24}>
-          <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
-            <Row gutter={16}>
-              <Col span={10}>
-                <Typography.Title level={2} style={{ margin: 0 }}>
+      <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
+      <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
+        <Row gutter={[8, 8]}>
+          <Col span={8} style={{ padding: 0 }}>
+            <Row style={{ borderBottom: '2px solid rgba(220, 223, 244, 0.7)', paddingBottom: '5px' }}>
+              <Col span={5}>
+                <Text strong style={{ margin: 0, color: '#232F6A' }}>
                   Help
-                </Typography.Title>
+                </Text>
               </Col>
-              <Col span={14}>
+              <Col span={18}>
                 <Input
-                  prefix={<SearchOutlined style={{ fontSize: '18px' }} />}
+                  prefix={<SearchOutlined style={{ fontSize: '18px', color: '#C3C3C3' }} />}
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setIsSearching(e.target.value.length >= 3);
+                  }}
                   placeholder="Search"
+                  style={{ height: '25px', borderColor: '#C3C3C3', fontSize: '15px' }}
                 />
               </Col>
             </Row>
-            <Row gutter={16}>
-              <Col span={10} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
-                <Menu
-                  onClick={({ key }) => handleMenuItemClick(key)}
-                  defaultOpenKeys={['sub1', 'sub1-1']}
-                  defaultSelectedKeys={[activeMenuItem]}
-                  mode="inline"
+            <Menu
+              onClick={({ key }) => handleMenuItemClick(key)}
+              defaultOpenKeys={['sub1', 'sub1-1']}
+              defaultSelectedKeys={[activeMenuItem]}
+              mode="inline"
+              style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}
+            >
+              {filteredItems.map((item) => (
+                <Menu.SubMenu
+                  style={{ background: isSearching ? '#EDE06D' : 'white' }}
+                  key={item.subMenuKey}
+                  title={item.label}
                 >
-                  {filteredItems.map((item) => (
-                    <Menu.SubMenu key={item.subMenuKey} title={item.label}>
-                      {item.items &&
-                        item.items.map((subItem) => <Menu.Item key={subItem.subMenuKey}>{subItem.label}</Menu.Item>)}
-                    </Menu.SubMenu>
-                  ))}
-                </Menu>
-              </Col>
-              <Col span={14} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}>
-                <ProjectsFolders activeMenuItem={activeMenuItem} />
-                <OverviewSection activeMenuItem={activeMenuItem} />
-                <SchemaSection activeMenuItem={activeMenuItem} />
-                <DataSheetSection activeMenuItem={activeMenuItem} />
-                <VisualizationSection activeMenuItem={activeMenuItem} />
-                <Perspective activeMenuItem={activeMenuItem} />
-              </Col>
-            </Row>
-          </Drawer>
-        </Col>
-      </Row>
+                  {item.items &&
+                    item.items.map((subItem) => <Menu.Item key={subItem.subMenuKey}>{subItem.label}</Menu.Item>)}
+                </Menu.SubMenu>
+              ))}
+            </Menu>
+          </Col>
+          <Col span={16} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)', padding: 0 }}>
+            <ProjectsFolders activeMenuItem={activeMenuItem} />
+            <OverviewSection activeMenuItem={activeMenuItem} />
+            <SchemaSection activeMenuItem={activeMenuItem} />
+            <DataSheetSection activeMenuItem={activeMenuItem} />
+            <VisualizationSection activeMenuItem={activeMenuItem} />
+            <Perspective activeMenuItem={activeMenuItem} />
+          </Col>
+        </Row>
+      </Drawer>
     </Space>
   );
 };

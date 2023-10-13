@@ -14,7 +14,14 @@ const menuItems: Record<string, MenuItem> = {
   'sub4-1': {
     title: 'Project name and Privacy',
     content: [
-      <Title level={5} key="1">
+      <Title
+        style={{
+          marginTop: 0,
+          paddingLeft: '10px',
+          fontSize: '18px',
+        }}
+        key="1"
+      >
         Project name and Privacy
       </Title>,
       <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
@@ -43,7 +50,14 @@ const menuItems: Record<string, MenuItem> = {
   'sub4-2': {
     title: 'See all members',
     content: [
-      <Title level={5} key="1">
+      <Title
+        style={{
+          marginTop: 0,
+          paddingLeft: '10px',
+          fontSize: '18px',
+        }}
+        key="1"
+      >
         See all members
       </Title>,
       <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
@@ -53,7 +67,9 @@ const menuItems: Record<string, MenuItem> = {
         <li>Click the Dropdown and choose the Perspective </li>
         <li>Write User email</li>
         <li>Choose the role</li>
-        <li>Click the <b>Send Invite</b> button</li>
+        <li>
+          Click the <b>Send Invite</b> button
+        </li>
         <li>
           Change <b>Role</b> Edit or View
         </li>
@@ -67,7 +83,14 @@ const menuItems: Record<string, MenuItem> = {
   'sub4-3': {
     title: 'Comments and Likes',
     content: [
-      <Title level={5} key="1">
+      <Title
+        style={{
+          marginTop: 0,
+          paddingLeft: '10px',
+          fontSize: '18px',
+        }}
+        key="1"
+      >
         Comments and Likes
       </Title>,
       <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>

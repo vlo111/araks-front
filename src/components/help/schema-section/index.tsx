@@ -10,7 +10,7 @@ import EditDeleteConnectionProperty from 'components/help/images/edit-delete-con
 import SearchInSchema from 'components/help/images/search-in-schema.svg';
 import CreateNewType from 'components/help/images/create-new-type.svg';
 import EditDeleteType from 'components/help/images/edit-delete-type.svg';
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const sections: Record<
   string,
@@ -23,11 +23,13 @@ const sections: Record<
     title: 'Create, Edit and Delete Type',
     content: (
       <>
-        <p>1. Create a New Type</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          1. Create a New Type
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+</b> and the cursor pointer will move with the mouse
-            </li>
+          </li>
           <li>Click on the canvas and the system will open the “Add New Type” pop-up</li>
           <li>
             Type the <b>Node Type Name</b> (required)
@@ -39,9 +41,11 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        
+
         <Image src={CreateNewType} />
-        <p>2. Edit or Delete the Type</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+          2. Edit or Delete the Type
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current Type
@@ -62,10 +66,10 @@ const sections: Record<
     title: 'Add, Edit and Delete Property',
     content: (
       <>
-        <p>1. Add a New Property</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Add a New Property</Text>
         <ul style={{ color: '#808080' }}>
           <li>
-           Click <b>+Add property</b> and the system will open the “Add New Property” pop-up
+            Click <b>+Add property</b> and the system will open the “Add New Property” pop-up
           </li>
           <li>
             Type the <b>Property Name</b> (required and the first character must be a letter)
@@ -80,7 +84,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={AddNewProperty} />
-        <p>2. Edit or Delete the Property</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Property</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current Type.
@@ -105,7 +109,7 @@ const sections: Record<
     title: 'Create, Edit and Delete Connection',
     content: (
       <>
-        <p>1. Create a New Connection</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Create a New Connection</Text>
         <ul style={{ color: '#808080' }}>
           <li>Select the type and drag the connection line to another type and connect it</li>
           <li>The system will open the “Add Connection” pop-up</li>
@@ -120,7 +124,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={CreateConnection} />
-        <p>2. Edit or Delete the Connection</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Connection</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current connection.
@@ -147,9 +151,11 @@ const sections: Record<
     title: 'Add, Edit and Delete Connection Property',
     content: (
       <>
-        <p><b>1.  Add a New Connection Property</b></p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Add a New Connection Property</Text>
         <ul style={{ color: '#808080' }}>
-          <li>Click <b>+</b> and the system will open the “Add property for connection type” pop-up</li>
+          <li>
+            Click <b>+</b> and the system will open the “Add property for connection type” pop-up
+          </li>
           <li>
             Type the <b>Property Name</b> (required and the first character must be a letter)
           </li>
@@ -159,7 +165,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={AddConnectionProperty} />
-        <p>2. Edit or Delete the Connection Property</p>
+        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Connection Property</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click on <b>the property</b> and the system will open the “Edit connection property” pop-up
@@ -196,7 +202,9 @@ const sections: Record<
             <li>Connection</li>
             <li>Connection property</li>
           </ul>
-          <li>Click <b>Search</b> and the system will display the result</li>
+          <li>
+            Click <b>Search</b> and the system will display the result
+          </li>
         </ul>
         <Image src={SearchInSchema} />
       </>
@@ -214,7 +222,16 @@ export const SchemaSection: React.FC<SchemaSectionProps> = ({ activeMenuItem }) 
   if (section) {
     return (
       <div style={{ fontSize: '16px' }}>
-        <Title level={5}>{section.title}</Title> {section.content}
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '10px',
+            fontSize: '18px',
+          }}
+        >
+          {section.title}
+        </Title>
+        {section.content}
       </div>
     );
   }
