@@ -6,17 +6,15 @@ import { useTypeProperty } from 'pages/data-sheet/components/table-section/table
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
-import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { NodeEdgeTypesSubmit } from 'types/node-edge-types';
 import { PropertyTypes } from '../property/types';
-import { useQueryClient } from '@tanstack/react-query';
-import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { TypePropertyFormItems } from './type-property-steps-form-items/type-property-items';
 import { CreateConnection } from './type-property-steps-form-items/create-connection-items';
 import { ProjectEdgeForm } from 'types/project-edge';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { useParams } from 'react-router-dom';
 import { GET_PROJECT_EDGE_TYPES } from 'api/node-edge-type/use-get-edge-types-beetwen-types';
+import { useUpdateProjectEdgeType } from '../../../api/node-edge-type/use-update-type-connection';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -34,7 +32,6 @@ type Props = {
 
 /** This component used only for creating node type property, editing node type property and for creating type connection property */
 export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnectionType = false }: Props) => {
-  const queryClient = useQueryClient();
   const { nodeTypeId, dataList } = useDataSheetWrapper();
   const { dispatch } = useTypeProperty();
   const [createConnection, setCreateConnection] = useState<{ selected?: string; isOpen: boolean } | undefined>();
@@ -47,7 +44,10 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         ':target_type_id',
         form.getFieldValue('source_id')
       );
+
       form.resetFields(['connection_name']);
+
+      form.setFieldValue('edit_connection_name', data.data.id);
     },
   });
 
@@ -71,11 +71,10 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   );
 
   // connect connection property
-  const { mutate: mutateConnection } = useCreateNodeEdgeType(undefined, {
-    onSuccess: ({ data }) => {
+  const { mutate: mutateConnection } = useUpdateProjectEdgeType(propertyId, {
+    onSuccess: () => {
       hide?.();
       form.resetFields();
-      queryClient.invalidateQueries([GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', nodeTypeId || '')]);
     },
   });
 
@@ -103,19 +102,21 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         target_attribute_id,
       });
     } else {
+      // eslint-disable-next-line no-debugger
+      debugger;
       /** EDIT PROPERTY WITH CONNECTION DATA TYPE */
       const { ref_property_type_id, ...values } = value as ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit;
 
       if (ref_property_type_id === PropertyTypes.Connection) {
+        const { edit_connection_name, target_id } = value as (ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) & {
+          edit_connection_name: string;
+          target_id: string;
+        };
+
         mutateConnection({
-          ...values,
-          target_attribute_id: dataList
-            ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
-            ?.properties?.find((property) => property.default_property === true)?.id,
-          source_attribute_id: dataList
-            ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
-            ?.properties?.find((property) => property.default_property === true)?.id,
-        } as NodeEdgeTypesSubmit);
+          project_edge_type_id: edit_connection_name,
+          target_type_id: target_id,
+        });
       } else {
         mutate({
           ...values,

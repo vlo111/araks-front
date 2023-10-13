@@ -98,6 +98,7 @@ export const ConnectionPropertyFormItems = ({ dataTypeSelect, setCreateConnectio
               'target_attribute_id',
               node.properties.find((item: ProjectNodeTypePropertyReturnData) => item.name === 'name').id
             );
+            form.setFieldValue('edit_connection_name', undefined);
           }}
         />
       </FormItem>
