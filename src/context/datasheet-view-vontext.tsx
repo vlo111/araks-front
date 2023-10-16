@@ -216,9 +216,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       {children}
       <Drawer
         className="datasheet-view-drawer"
-        style={{
-          minHeight: 'calc(100vh - 130px)',
-        }}
         title={
           <ViewNodeTitle
             setIsEdit={setIsEdit}

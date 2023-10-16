@@ -6,6 +6,7 @@ const { Panel } = Collapse;
 
 interface Props {
   panels: Array<PropsPanel>;
+  height?: string;
   defaultActiveKey?: string | string[];
 }
 
@@ -13,7 +14,7 @@ interface PropsPanel extends CollapsePanelProps {
   children: React.ReactNode;
 }
 
-export const SiderCollapse = ({ panels, defaultActiveKey }: Props) => {
+export const SiderCollapse = ({ panels, defaultActiveKey, height }: Props) => {
   return (
     <Collapse
       expandIcon={({ isActive }) => (
@@ -25,7 +26,7 @@ export const SiderCollapse = ({ panels, defaultActiveKey }: Props) => {
     >
       {panels.map((panelProps) => (
         // eslint-disable-next-line react/jsx-key
-        <Panel {...panelProps} style={{ maxHeight: '30vh', overflowY: 'auto' }} />
+        <Panel {...panelProps} style={{ maxHeight: height ?? '30vh', overflowY: 'auto' }} />
       ))}
     </Collapse>
   );

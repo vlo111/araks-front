@@ -88,7 +88,7 @@ export const LeftSection: Props = ({ collapsed, setCollapsed }) => {
             defaultActiveKey="1"
             items={Items.map((item) => ({
               ...item,
-              children: item.key === '1' ? <Filters /> : item.key === '2' ? <Queries /> : <Styling />,
+              children: item.key === '1' ? <Filters height="auto" /> : item.key === '2' ? <Queries /> : <Styling />,
             }))}
           />
         </StyledCol>
