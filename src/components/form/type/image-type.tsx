@@ -1,7 +1,7 @@
 import { PaperClipOutlined } from '@ant-design/icons';
 import { Form, message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
-import { FILE_UPLOAD_URL } from 'api/upload/constants';
+import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
 import { AddNewFieldButton } from 'components/button/add-new-field-button';
 import { SecondaryText, Text } from 'components/typography';
@@ -62,7 +62,7 @@ export const ImageType = ({ data }: Props) => {
         getValueFromEvent={normFile}
       >
         <StyledUpload
-          action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+          action={`${process.env.REACT_APP_BASE_URL}${IMAGE_UPLOAD_URL}`}
           name="file"
           multiple={data.multiple_type}
           headers={{

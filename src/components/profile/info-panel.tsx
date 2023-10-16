@@ -9,7 +9,7 @@ import { UploadProps } from 'antd/es/upload/interface';
 import { Link } from 'react-router-dom';
 import { CloseCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { useImageUpload } from 'api/upload/use-image-upload';
-import { FILE_UPLOAD_URL } from 'api/upload/constants';
+import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useUpdateUserAvatar } from '../../api/user/use-update-avatar';
@@ -182,7 +182,7 @@ export const InfoPanel: Prop = ({ count }) => {
         ) : (
           <ImgCrop rotationSlider>
             <Upload
-              action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+              action={`${process.env.REACT_APP_BASE_URL}${IMAGE_UPLOAD_URL}`}
               name="file"
               listType="picture-card"
               className="avatar-uploader"
