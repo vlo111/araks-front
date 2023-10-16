@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { SiderCollapse } from 'components/collapse/sider-collapse';
 import { NodeTypesView } from '../../data-sheet/components/node-types-view';
@@ -11,7 +11,7 @@ import { useGetData } from 'api/visualisation/use-get-data';
 import { useManageFilters } from './use-manage-filters';
 import { initData as initGraphData } from 'components/layouts/components/visualisation/container/initial/nodes';
 
-export const Filters = () => {
+export const Filters: React.FC<{ height?: string }> = ({ height }) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const { graph, setGraphInfo, graphInfo } = useGraph() ?? {};
   const { nodes, isInitialLoading } = useTypes();
@@ -56,6 +56,7 @@ export const Filters = () => {
   ) : (
     <SiderCollapse
       defaultActiveKey="1"
+      height={height}
       panels={[
         {
           header: <NodesHeader setSearchVisible={setSearchVisible} />,
