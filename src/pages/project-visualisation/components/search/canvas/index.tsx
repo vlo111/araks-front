@@ -35,7 +35,7 @@ export const SearchData: Props = ({ collapsed }) => {
   return (
     <>
       <ToolStyle style={{ left: collapsed ? '490px' : '30px' }}>
-        <Search />
+        <Search collapsed={collapsed} />
       </ToolStyle>
     </>
   );

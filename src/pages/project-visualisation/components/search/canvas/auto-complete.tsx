@@ -20,9 +20,10 @@ type Props = React.FC<{
   setSearch: (value: string) => void;
   setIsEnterSearch: React.Dispatch<React.SetStateAction<string>>;
   isEnterSearch: string;
+  collapsed?: boolean;
 }>;
 
-export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnterSearch }) => {
+export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnterSearch, collapsed }) => {
   const { graph, setGraphInfo } = useGraph();
 
   useGetData(
@@ -94,7 +95,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       dropdownMatchSelectWidth={400}
       style={{ width: 400 }}
       dropdownStyle={{
-        left: 490,
+        left: collapsed ? 490 : 30,
         top: 228,
         backdropFilter: 'blur(7px)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)',
