@@ -14,6 +14,7 @@ import { Button } from 'components/button';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useProject } from 'context/project-context';
 import { useParams } from 'react-router-dom';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 type TypeInfoProps = {
   color?: string;
@@ -59,6 +60,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
   const params = useParams();
   const { dispatch } = useViewDatasheet();
   const { projectInfo } = useProject();
+  const isXXl = useIsXXlScreen();
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -86,6 +88,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
   return (
     <Spin spinning={isInitialLoading}>
       <List
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 216}px)` }}
         pagination={false}
         dataSource={rowsData}
         renderItem={(item, index) => {
