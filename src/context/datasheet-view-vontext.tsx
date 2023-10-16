@@ -275,6 +275,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             >
               {isEdit ? (
                 <AddNodeForm
+                  nodeId={nodeData?.id}
                   data={data as ProjectTypePropertyReturnData[]}
                   isInitialLoading={isInitialLoading}
                   setStopSubmit={setStopSubmit}

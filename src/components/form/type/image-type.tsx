@@ -12,6 +12,7 @@ import { FormItem } from '../form-item';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
+  nodeId?: string;
 };
 
 const StyledButton = styled(Button)`
@@ -40,7 +41,7 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-export const ImageType = ({ data }: Props) => {
+export const ImageType = ({ nodeId, data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const imagesUploaded = Form.useWatch(data.name);
 
@@ -62,6 +63,12 @@ export const ImageType = ({ data }: Props) => {
         getValueFromEvent={normFile}
       >
         <StyledUpload
+          data={{
+            property_id: data.id,
+            project_id: data.project_id,
+            project_node_type_id: data.project_type_id,
+            node_id: nodeId,
+          }}
           action={`${process.env.REACT_APP_BASE_URL}${IMAGE_UPLOAD_URL}`}
           name="file"
           multiple={data.multiple_type}
