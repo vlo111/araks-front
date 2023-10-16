@@ -258,6 +258,7 @@ export const ViewEditNodeDrawer = () => {
           onFinish={onFinish}
         >
           <AddNodeForm
+            nodeId={openNode?.id}
             data={properties as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
             edges={nodeData?.edges}

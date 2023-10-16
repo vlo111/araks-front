@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
+import { FC } from 'react';
+
+type Props = FC<{ collapsed?: boolean }>;
 
 const Wrapper = styled.div`
   position: fixed;
   width: auto;
-  left: 500px;
   bottom: 10px;
-
+  transition: left 0.5s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -38,11 +40,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export const GraphInfo = () => {
+export const GraphInfo: Props = ({ collapsed }) => {
   const { graphInfo } = useGraph() ?? {};
 
   return graphInfo?.nodeCountAPI ? (
-    <Wrapper>
+    <Wrapper style={{ left: collapsed ? '490px' : '30px' }}>
       <div className="info">
         <span className="node-count info-text">Visualized nodes</span>
         <div className="node-info">

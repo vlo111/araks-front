@@ -1,7 +1,7 @@
 import { useMutation, UseQueryOptions } from '@tanstack/react-query';
 
 import client from '../client';
-import { FILE_UPLOAD_URL } from './constants';
+import { IMAGE_UPLOAD_URL } from './constants';
 import { errorMessage } from 'helpers/utils';
 import { RcFile } from 'antd/es/upload';
 type Options = UseQueryOptions<string | RcFile | Blob, unknown, Response>;
@@ -18,7 +18,7 @@ export const useImageUpload = (options?: Options) => {
     async (file) => {
       const formData = new FormData();
       formData.append('file', file);
-      return client.post(FILE_UPLOAD_URL, formData);
+      return client.post(IMAGE_UPLOAD_URL, formData);
     },
     {
       onSuccess: (data) => {

@@ -3,11 +3,13 @@ import { renderTooltipModal } from './tooltip';
 
 const layout = {
   type: 'gForce',
-  center: [window.innerWidth, window.innerHeight],
-  linkDistance: 600,
-  nodeStrength: 400,
-  edgeStrength: 1000,
-  nodeSize: 30,
+  center: [window.innerWidth / 2, window.innerHeight / 2],
+  nodeSize: 5,
+  linkDistance: 100,
+  nodeStrength: 600,
+  edgeStrength: 200,
+  fitView: true,
+  fitViewPadding: [30, 30],
   workerEnabled: true,
   gpuEnabled: true,
 };
