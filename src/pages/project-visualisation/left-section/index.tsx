@@ -45,7 +45,6 @@ export const StyledCol = styled(Col)`
   position: absolute;
   top: 0;
   left: 0;
-  height: calc(100vh - 152px);
   overflow-y: auto;
   transition: width 0.5s ease-in-out;
   overflow-x: hidden;
@@ -78,7 +77,7 @@ export const LeftSection: Props = ({ collapsed, setCollapsed }) => {
     <Row>
       <Row className="overview">
         <StyledCol
-          style={{ width: collapsed ? '480px' : '20px' }}
+          style={{ width: collapsed ? '480px' : '20px', height: `calc(100vh - ${isXXL ? '152px' : '130px'})` }}
           className="overview__section project-save"
           id="datasheet-tree-list"
         >

@@ -16,7 +16,7 @@ const Spinning = styled(Spin)`
   align-items: center;
 `;
 
-export const Search: React.FC = () => {
+export const Search: React.FC<{ collapsed?: boolean }> = ({ collapsed }) => {
   const [stretchSearch, setStretchSearch] = useState(false);
 
   const [isEnterSearch, setIsEnterSearch] = useState('');
@@ -35,6 +35,7 @@ export const Search: React.FC = () => {
         {stretchSearch && (
           <AutoComplete
             search={search}
+            collapsed={collapsed}
             setSearch={setSearch}
             isEnterSearch={isEnterSearch}
             setIsEnterSearch={setIsEnterSearch}
