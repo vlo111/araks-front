@@ -1,19 +1,6 @@
 import G6 from '@antv/g6';
 import { renderTooltipModal } from './tooltip';
 
-const layout = {
-  type: 'gForce',
-  center: [window.innerWidth / 2, window.innerHeight / 2],
-  nodeSize: 5,
-  linkDistance: 100,
-  nodeStrength: 600,
-  edgeStrength: 200,
-  fitView: true,
-  fitViewPadding: [30, 30],
-  workerEnabled: true,
-  gpuEnabled: true,
-};
-
 const defaultEdge = {
   labelCfg: {
     autoRotate: true,
@@ -52,8 +39,6 @@ const defaultNode = {
     ry: 15,
     width: 15,
     height: 15,
-    x: 0,
-    y: 0,
   },
   labelCfg: {
     style: {
@@ -122,5 +107,4 @@ export const options = {
   defaultNode,
   nodeStateStyles,
   edgeStateStyles,
-  layout,
 };
