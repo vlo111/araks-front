@@ -279,6 +279,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
                   data={data as ProjectTypePropertyReturnData[]}
                   isInitialLoading={isInitialLoading}
                   setStopSubmit={setStopSubmit}
+                  edges={nodeData?.edges}
                 />
               ) : isInitialLoading ? (
                 <Skeleton />
