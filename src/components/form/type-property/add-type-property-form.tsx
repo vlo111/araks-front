@@ -18,6 +18,7 @@ import { useUpdateProjectEdgeType } from 'api/node-edge-type/use-update-type-con
 import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useQueryClient } from '@tanstack/react-query';
+import { URL_NODES_LIST } from 'api/node/constants';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -87,6 +88,11 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
     onSuccess: () => {
       hide?.();
       form.resetFields();
+
+      queryClient.invalidateQueries([GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', nodeTypeId ?? '')]);
+      queryClient.invalidateQueries([
+        URL_NODES_LIST.replace(':project_id', id || '').replace(':project_type_id', nodeTypeId || ''),
+      ]);
     },
   });
 
