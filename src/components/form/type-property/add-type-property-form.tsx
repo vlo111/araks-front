@@ -14,7 +14,10 @@ import { ProjectEdgeForm } from 'types/project-edge';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { useParams } from 'react-router-dom';
 import { GET_PROJECT_EDGE_TYPES } from 'api/node-edge-type/use-get-edge-types-beetwen-types';
-import { useUpdateProjectEdgeType } from '../../../api/node-edge-type/use-update-type-connection';
+import { useUpdateProjectEdgeType } from 'api/node-edge-type/use-update-type-connection';
+import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-type';
+import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -37,6 +40,16 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   const [createConnection, setCreateConnection] = useState<{ selected?: string; isOpen: boolean } | undefined>();
   const [form] = Form.useForm();
   const { id } = useParams();
+  const queryClient = useQueryClient();
+
+  const { mutate: mutateCreateConnection } = useCreateNodeEdgeType(undefined, {
+    onSuccess: ({ data }) => {
+      hide?.();
+      form.resetFields();
+      queryClient.invalidateQueries([GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', nodeTypeId || '')]);
+    },
+  });
+
   const { mutate: createEdge } = useCreateEdge(id, {
     onSuccess: (data) => {
       setCreateConnection({ isOpen: false });
@@ -54,8 +67,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   // create node type property
   const { mutate } = useCreateProjectNodeTypeProperty(
     {
-      onSuccess: ({ data }) => {
-        hide?.();
+      onSuccess: () => {
         form.resetFields();
         if (isEdit) {
           dispatch({ type: TypePropertyActionKind.EDIT_TYPE_FINISH, payload: {} });
@@ -102,21 +114,33 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         target_attribute_id,
       });
     } else {
-      // eslint-disable-next-line no-debugger
-      debugger;
-      /** EDIT PROPERTY WITH CONNECTION DATA TYPE */
+      hide?.();
       const { ref_property_type_id, ...values } = value as ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit;
 
       if (ref_property_type_id === PropertyTypes.Connection) {
-        const { edit_connection_name, target_id } = value as (ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) & {
-          edit_connection_name: string;
-          target_id: string;
-        };
+        if (isEdit) {
+          /** EDIT PROPERTY WITH CONNECTION DATA TYPE */
+          const { edit_connection_name, target_id } = value as (ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit) & {
+            edit_connection_name: string;
+            target_id: string;
+          };
 
-        mutateConnection({
-          project_edge_type_id: edit_connection_name,
-          target_type_id: target_id,
-        });
+          mutateConnection({
+            project_edge_type_id: edit_connection_name,
+            target_type_id: target_id,
+          });
+        } else {
+          /** CREATE CONNECTION */
+          mutateCreateConnection({
+            ...values,
+            target_attribute_id: dataList
+              ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.target_id)
+              ?.properties?.find((property) => property.default_property === true)?.id,
+            source_attribute_id: dataList
+              ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
+              ?.properties?.find((property) => property.default_property === true)?.id,
+          } as NodeEdgeTypesSubmit);
+        }
       } else {
         mutate({
           ...values,
