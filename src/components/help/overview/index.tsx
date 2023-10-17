@@ -17,7 +17,7 @@ const menuItems: Record<string, MenuItem> = {
       <Title
         style={{
           marginTop: 0,
-          paddingLeft: '10px',
+          paddingLeft: '20px',
           fontSize: '18px',
         }}
         key="1"
@@ -53,7 +53,7 @@ const menuItems: Record<string, MenuItem> = {
       <Title
         style={{
           marginTop: 0,
-          paddingLeft: '10px',
+          paddingLeft: '20px',
           fontSize: '18px',
         }}
         key="1"
@@ -86,7 +86,7 @@ const menuItems: Record<string, MenuItem> = {
       <Title
         style={{
           marginTop: 0,
-          paddingLeft: '10px',
+          paddingLeft: '20px',
           fontSize: '18px',
         }}
         key="1"
@@ -109,6 +109,7 @@ const menuItems: Record<string, MenuItem> = {
 interface OverviewSectionProps {
   activeMenuItem: string;
 }
+
 export const OverviewSection: React.FC<OverviewSectionProps> = ({ activeMenuItem }) => {
   const menuItem = menuItems[activeMenuItem];
   if (menuItem) {

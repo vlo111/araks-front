@@ -28,13 +28,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Create, Edit and Delete Type
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Type
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -52,7 +52,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={CreateANewType} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -77,13 +77,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Add, Edit and Delete Property
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -103,7 +103,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NewProperty} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property{' '}
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -132,13 +132,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Create, Edit and Delete Connection
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Connection (by selecting Data type - connection)
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -159,7 +159,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NewConnection} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -185,7 +185,7 @@ const menuItems: Record<string, MenuItem> = {
             <Image src={ConnectionTypes} />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Edit or Delete the Connection
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -216,13 +216,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Add, Edit and Delete Connection Property
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Connection Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -234,7 +234,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={DeleteConnectionProperty} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property{' '}
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -262,13 +262,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Add, Edit and Delete Node in Connection
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Node in Connection{' '}
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -283,7 +283,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={NodeInConnection} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection{' '}
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -314,7 +314,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
@@ -341,7 +341,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={AllData} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -372,13 +372,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Add, Edit and Delete Node
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Node
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -395,7 +395,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={AddNode} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Node View, Edit or Delete{' '}
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>

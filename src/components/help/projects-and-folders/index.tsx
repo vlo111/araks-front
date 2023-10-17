@@ -21,16 +21,16 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Create, Edit and Delete the Project
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a Project
         </Text>
-        <p style={{ marginLeft: '10px' }}>
+        <p style={{ marginLeft: '20px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -51,7 +51,7 @@ const menuItems: Record<string, MenuItem> = {
           </ul>
         </ul>
         <Image src={CreateAProjectImg} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Project
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -74,7 +74,7 @@ const menuItems: Record<string, MenuItem> = {
             <Image src={EditProjects} />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Project
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -98,16 +98,16 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Create, Edit and Delete the Folder
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a Folder
         </Text>
-        <p style={{ marginLeft: '10px' }}>
+        <p style={{ marginLeft: '20px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -122,7 +122,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={CreateFolder} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Folder
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -138,7 +138,7 @@ const menuItems: Record<string, MenuItem> = {
           </li>
         </ul>
         <Image src={EditFolder} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>

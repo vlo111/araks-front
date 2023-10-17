@@ -22,13 +22,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Add, Edit and Delete Node
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Node
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -50,7 +50,7 @@ const menuItems: Record<string, MenuItem> = {
             <Image src={VisualizationAddNodes} />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Node View, Edit or Delete
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -82,13 +82,13 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
           Filters
         </Title>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -109,7 +109,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
@@ -150,7 +150,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
@@ -192,7 +192,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >

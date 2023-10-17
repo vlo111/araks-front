@@ -18,7 +18,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >

@@ -23,7 +23,7 @@ const sections: Record<
     title: 'Create, Edit and Delete Type',
     content: (
       <>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Type
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -43,7 +43,7 @@ const sections: Record<
         </ul>
 
         <Image src={CreateNewType} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -66,7 +66,7 @@ const sections: Record<
     title: 'Add, Edit and Delete Property',
     content: (
       <>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Add a New Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Add a New Property</Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add property</b> and the system will open the “Add New Property” pop-up
@@ -84,7 +84,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={AddNewProperty} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Property</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current Type.
@@ -109,7 +109,7 @@ const sections: Record<
     title: 'Create, Edit and Delete Connection',
     content: (
       <>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Create a New Connection</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Create a New Connection</Text>
         <ul style={{ color: '#808080' }}>
           <li>Select the type and drag the connection line to another type and connect it</li>
           <li>The system will open the “Add Connection” pop-up</li>
@@ -124,7 +124,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={CreateConnection} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Connection</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Connection</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current connection.
@@ -151,7 +151,7 @@ const sections: Record<
     title: 'Add, Edit and Delete Connection Property',
     content: (
       <>
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>1. Add a New Connection Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Add a New Connection Property</Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+</b> and the system will open the “Add property for connection type” pop-up
@@ -165,7 +165,7 @@ const sections: Record<
           </li>
         </ul>
         <Image src={AddConnectionProperty} />
-        <Text strong style={{ marginLeft: '10px', fontSize: '16px' }}>2. Edit or Delete the Connection Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Connection Property</Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click on <b>the property</b> and the system will open the “Edit connection property” pop-up
@@ -225,7 +225,7 @@ export const SchemaSection: React.FC<SchemaSectionProps> = ({ activeMenuItem }) 
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '10px',
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >

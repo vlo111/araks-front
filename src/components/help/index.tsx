@@ -127,36 +127,36 @@ export const Help: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
+  const filteredItems = items
+    .map((item) => {
+      const itemLabel = typeof item.label === 'string' ? item.label : item.label.props.children;
+      const filteredSubItems = item.items
+        ? item.items.filter((subItem) => {
+            const subItemLabel = typeof subItem.label === 'string' ? subItem.label : subItem.label.props.children;
 
-  const filteredItems = items.filter((item) => {
-    if (search.length >= 3) {
-      const labelText = typeof item.label === 'string' ? item.label : item.label.props.children;
-      const labelMatches = labelText.toLowerCase().includes(search.toLowerCase());
-      if (labelMatches) {
-        return true;
-      } else if (item.items) {
-        return item.items.some((subItem) => {
-          const subItemText = typeof subItem.label === 'string' ? subItem.label : subItem.label.props.children;
-          return subItemText.toLowerCase().includes(search.toLowerCase());
-        });
+            return subItemLabel.toLowerCase().includes(search.toLowerCase());
+          })
+        : [];
+      if (filteredSubItems.length > 0 || itemLabel.toLowerCase().includes(search.toLowerCase())) {
+        return {
+          ...item,
+          items: filteredSubItems,
+        };
       }
-    }
-    return true;
-  });
-
-  const handleMenuItemClick = (key: string) => {
-    setActiveMenuItem(key === activeMenuItem ? '' : key);
-  };
-
+      return null;
+    })
+    .filter(Boolean);
   const [isSearching, setIsSearching] = useState(false);
-
+  const handleMenuItemClick = (key: string) => {
+    setActiveMenuItem(key === activeMenuItem ? key : '');
+  };
   return (
     <Space>
       <Helpicon onClick={showDrawer} style={{ cursor: 'pointer' }} />
       <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
         <Row gutter={[8, 8]}>
           <Col span={8} style={{ padding: 0 }}>
-            <Row style={{ borderBottom: '2px solid rgba(220, 223, 244, 0.7)', paddingBottom: '5px' }}>
+            <Row>
               <Col span={5}>
                 <Text strong style={{ margin: 0, color: '#232F6A' }}>
                   Help
@@ -180,18 +180,23 @@ export const Help: React.FC = () => {
               defaultOpenKeys={['sub1', 'sub1-1']}
               defaultSelectedKeys={[activeMenuItem]}
               mode="inline"
-              style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)' }}
+              style={{
+                overflowY: 'auto',
+                maxHeight: 'calc(100vh - 64px)',
+              }}
             >
-              {filteredItems.map((item) => (
-                <Menu.SubMenu
-                  style={{ background: isSearching ? '#EDE06D' : 'white' }}
-                  key={item.subMenuKey}
-                  title={item.label}
-                >
-                  {item.items &&
-                    item.items.map((subItem) => <Menu.Item key={subItem.subMenuKey}>{subItem.label}</Menu.Item>)}
-                </Menu.SubMenu>
-              ))}
+              {filteredItems.map(
+                (item) =>
+                  item && (
+                    <Menu.SubMenu key={item.subMenuKey} title={item.label}>
+                      {item.items.map((subItem) => (
+                        <Menu.Item key={subItem.subMenuKey} style={{ background: isSearching ? '#EDE06D' : 'white' }}>
+                          {subItem.label}
+                        </Menu.Item>
+                      ))}
+                    </Menu.SubMenu>
+                  )
+              )}
             </Menu>
           </Col>
           <Col span={16} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)', padding: 0 }}>
