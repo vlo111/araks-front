@@ -22,7 +22,7 @@ const menuItems: Record<string, MenuItem> = {
             fontSize: '18px',
           }}
         >
-          Perspective
+          Add, Edit and Delete Perspective
         </Title>
         <ul style={{ color: '#808080' }}>
           <li>

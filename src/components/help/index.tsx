@@ -111,7 +111,7 @@ const items = [
     label: <span style={{ fontWeight: '700', fontSize: '18px' }}>Perspective</span>,
     items: [
       {
-        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Perspective</span>,
+        label: <span style={{ fontWeight: '600', fontSize: '16px' }}>Add, Edit and Delete Perspective</span>,
         subMenuKey: 'sub6-1',
       },
     ],
@@ -148,7 +148,7 @@ export const Help: React.FC = () => {
     .filter(Boolean);
   const [isSearching, setIsSearching] = useState(false);
   const handleMenuItemClick = (key: string) => {
-    setActiveMenuItem(key === activeMenuItem ? key : '');
+    setActiveMenuItem(key === activeMenuItem ? '' : key);
   };
   return (
     <Space>
@@ -190,7 +190,11 @@ export const Help: React.FC = () => {
                   item && (
                     <Menu.SubMenu key={item.subMenuKey} title={item.label}>
                       {item.items.map((subItem) => (
-                        <Menu.Item key={subItem.subMenuKey} style={{ background: isSearching ? '#EDE06D' : 'white' }}>
+                        <Menu.Item
+                          onClick={({ key }) => handleMenuItemClick(key)}
+                          key={subItem.subMenuKey}
+                          style={{ background: isSearching ? '#EDE06D' : 'white' }}
+                        >
                           {subItem.label}
                         </Menu.Item>
                       ))}
