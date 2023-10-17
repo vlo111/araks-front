@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { UserProjectRole } from 'api/types';
@@ -85,10 +85,40 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
     },
   });
 
+  const [isAllCheck, setIsAllCheck] = useState(false);
+
+  useEffect(() => {
+    setCheckedItems(isAllCheck ? rowsData.map((r) => r.id) : []);
+  }, [isAllCheck, rowsData, setCheckedItems]);
+
   return (
     <Spin spinning={isInitialLoading}>
+      {projectInfo?.role !== UserProjectRole.Viewer && (
+        <div style={{ margin: '1rem 1.5rem', position: 'absolute', top: -60 }}>
+          <Checkbox
+            id="allCheck"
+            className="all-data-checkbox"
+            style={{ marginRight: '16px' }}
+            checked={isAllCheck}
+            onChange={() => {
+              setIsAllCheck(!isAllCheck);
+            }}
+          />
+          <label
+            htmlFor="allCheck"
+            style={{
+              cursor: 'pointer',
+              color: '#808080',
+              fontWeight: '600',
+              letterSpacing: '1.4px',
+            }}
+          >
+            All Nodes
+          </label>
+        </div>
+      )}
       <List
-        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 216}px)` }}
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 232}px)` }}
         pagination={false}
         dataSource={rowsData}
         renderItem={(item, index) => {

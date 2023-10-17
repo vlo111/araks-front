@@ -2,7 +2,6 @@ import { Col, Row } from 'antd';
 import { AllDataPageParameters } from 'api/types';
 import { QueriesButton } from 'components/button/queries-button';
 import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { ViewDatasheetProvider } from 'context/datasheet-view-vontext';
 import { useOverview } from 'context/overview-context';
 import { initPageData } from 'helpers/constants';
@@ -30,22 +29,27 @@ export const RightSectionAllData = () => {
 
   return (
     <Row>
-      <Col span={hideLeftSection ? 18 : 24}>
-        <VerticalSpace>
-          <AllDataFilterSection
+      <Col
+        span={hideLeftSection ? 18 : 24}
+        style={{
+          display: 'flex',
+          gap: '2rem',
+          flexDirection: 'column',
+        }}
+      >
+        <AllDataFilterSection
+          setFilterValue={setFilterValue}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+        />
+        <ViewDatasheetProvider>
+          <AllDataList
             setFilterValue={setFilterValue}
             checkedItems={checkedItems}
             setCheckedItems={setCheckedItems}
+            filterValue={filterValue}
           />
-          <ViewDatasheetProvider>
-            <AllDataList
-              setFilterValue={setFilterValue}
-              checkedItems={checkedItems}
-              setCheckedItems={setCheckedItems}
-              filterValue={filterValue}
-            />
-          </ViewDatasheetProvider>
-        </VerticalSpace>
+        </ViewDatasheetProvider>
       </Col>
       {hideLeftSection && (
         <Col span={6}>
