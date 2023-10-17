@@ -102,7 +102,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
                   return node ? (
                     <Button
                       type="link"
-                      href={(node as UploadedFileType).url}
+                      href={`${process.env.REACT_APP_AWS_URL}${(node as UploadedFileType).url}`}
                       target="_blank"
                       key={(node as UploadedFileType).url}
                       icon={<DownloadOutlined />}
@@ -149,7 +149,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             return node ? (
               <Button
                 type="link"
-                href={(node as UploadedFileType).url}
+                href={`${process.env.REACT_APP_AWS_URL}${(node as UploadedFileType).url}`}
                 target="_blank"
                 key={(node as UploadedFileType).url}
               >
@@ -247,7 +247,12 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   } else if (isUploadFileType(nodeData)) {
     /** @TODO @deprecated remove this section  */
     return (
-      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined key={nodeData.url} />}>
+      <Button
+        type="link"
+        href={`${process.env.REACT_APP_AWS_URL}${nodeData.url}`}
+        target="_blank"
+        icon={<LinkOutlined key={nodeData.url} />}
+      >
         <Text color={COLORS.PRIMARY.GRAY_DARK}>{nodeData.name}</Text>
       </Button>
     );
