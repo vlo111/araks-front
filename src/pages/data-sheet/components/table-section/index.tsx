@@ -57,7 +57,7 @@ export const TableSection = () => {
           {
             key: row.id,
             name: <NodeViewButton text={row.name} rowData={row} />,
-            node_icon: showAvatar(row.default_image),
+            node_icon: showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`),
           } as DataType
         ),
         ...row.edges?.reduce((curr: DataType, item) => {

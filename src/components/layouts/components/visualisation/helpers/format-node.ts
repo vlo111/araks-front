@@ -69,7 +69,7 @@ const formatNodeProperty = ({ typeName, properties }: FormatNodeProperty) => {
     style: {
       stroke: color ?? '',
     },
-    img: default_image,
+    img: `${process.env.REACT_APP_AWS_URL}${default_image}`,
     type: default_image ? 'image' : 'circle',
     nodeType: project_type_id,
     nodeTypeName: typeName,
