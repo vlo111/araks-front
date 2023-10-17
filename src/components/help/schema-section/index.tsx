@@ -42,7 +42,7 @@ const sections: Record<
           </li>
         </ul>
 
-        <Image src={CreateNewType} />
+        <Image wrapperStyle={{ display: 'block' }} src={CreateNewType} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -58,7 +58,7 @@ const sections: Record<
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image src={EditDeleteType} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteType} />
       </>
     ),
   },
@@ -66,7 +66,9 @@ const sections: Record<
     title: 'Add, Edit and Delete Property',
     content: (
       <>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Add a New Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Add a New Property
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+Add property</b> and the system will open the “Add New Property” pop-up
@@ -83,8 +85,10 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={AddNewProperty} />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Property</Text>
+        <Image wrapperStyle={{ display: 'block' }} src={AddNewProperty} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Edit or Delete the Property
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current Type.
@@ -101,7 +105,7 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image src={EditDeleteProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteProperty} />
       </>
     ),
   },
@@ -109,7 +113,9 @@ const sections: Record<
     title: 'Create, Edit and Delete Connection',
     content: (
       <>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Create a New Connection</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Create a New Connection
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>Select the type and drag the connection line to another type and connect it</li>
           <li>The system will open the “Add Connection” pop-up</li>
@@ -123,8 +129,10 @@ const sections: Record<
             Click <b>Save</b> button to connect types
           </li>
         </ul>
-        <Image src={CreateConnection} />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Connection</Text>
+        <Image wrapperStyle={{ display: 'block' }} src={CreateConnection} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Edit or Delete the Connection
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> on the current connection.
@@ -143,7 +151,7 @@ const sections: Record<
             Click <b>Delete</b> button (The Connection will be deleted if there is no data)
           </li>
         </ul>
-        <Image src={EditDeleteConnection} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteConnection} />
       </>
     ),
   },
@@ -151,7 +159,9 @@ const sections: Record<
     title: 'Add, Edit and Delete Connection Property',
     content: (
       <>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>1. Add a New Connection Property</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Add a New Connection Property
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b>+</b> and the system will open the “Add property for connection type” pop-up
@@ -164,8 +174,10 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={AddConnectionProperty} />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>2. Edit or Delete the Connection Property</Text>
+        <Image wrapperStyle={{ display: 'block' }} src={AddConnectionProperty} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Edit or Delete the Connection Property
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click on <b>the property</b> and the system will open the “Edit connection property” pop-up
@@ -181,7 +193,7 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image src={EditDeleteConnectionProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteConnectionProperty} />
       </>
     ),
   },
@@ -206,7 +218,7 @@ const sections: Record<
             Click <b>Search</b> and the system will display the result
           </li>
         </ul>
-        <Image src={SearchInSchema} />
+        <Image wrapperStyle={{ display: 'block' }} src={SearchInSchema} />
       </>
     ),
   },

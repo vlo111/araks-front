@@ -50,7 +50,7 @@ const menuItems: Record<string, MenuItem> = {
             <li>Public (Can see all users)</li>
           </ul>
         </ul>
-        <Image src={CreateAProjectImg} />
+        <Image wrapperStyle={{ display: 'block' }} src={CreateAProjectImg} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Project
         </Text>
@@ -68,10 +68,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={EditProject} />
+            <Image wrapperStyle={{ display: 'block' }} src={EditProject} />
           </Col>
           <Col span={12}>
-            <Image src={EditProjects} />
+            <Image wrapperStyle={{ display: 'block' }} src={EditProjects} />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -88,7 +88,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Project
           </li>
         </ul>
-        <Image src={DeleteProject} />
+        <Image wrapperStyle={{ display: 'block' }} src={DeleteProject} />
       </>
     ),
   },
@@ -121,7 +121,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={CreateFolder} />
+        <Image wrapperStyle={{ display: 'block' }} src={CreateFolder} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Folder
         </Text>
@@ -137,7 +137,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> to keep changes
           </li>
         </ul>
-        <Image src={EditFolder} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditFolder} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
@@ -152,7 +152,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Folder
           </li>
         </ul>
-        <Image src={DeleteFolder} />
+        <Image wrapperStyle={{ display: 'block' }} src={DeleteFolder} />
       </>
     ),
   },
@@ -168,10 +168,12 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
   if (menuItem) {
     return (
       <Space>
+        {/* <StyleImage> */}
         <div style={{ fontSize: '16px' }}>
           {menuItem.content}
           {menuItem.image}
         </div>
+        {/* </StyleImage> */}
       </Space>
     );
   }

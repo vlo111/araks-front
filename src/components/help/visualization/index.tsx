@@ -44,10 +44,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={VisualizationAddNode} />
+            <Image wrapperStyle={{ display: 'block' }} src={VisualizationAddNode} />
           </Col>
           <Col span={12}>
-            <Image src={VisualizationAddNodes} />
+            <Image wrapperStyle={{ display: 'block' }} src={VisualizationAddNodes} />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -72,7 +72,7 @@ const menuItems: Record<string, MenuItem> = {
             Clicl <b>Delete</b> Icon and the node will be deleted
           </li>
         </ul>
-        <Image src={VisualizationEdit} />
+        <Image wrapperStyle={{ display: 'block' }} src={VisualizationEdit} />
       </>
     ),
   },
@@ -99,7 +99,7 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image src={Filters} />
+        <Image wrapperStyle={{ display: 'block' }} src={Filters} />
       </>
     ),
   },
@@ -140,7 +140,7 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image src={Queries} />
+        <Image wrapperStyle={{ display: 'block' }} src={Queries} />
       </>
     ),
   },
@@ -177,10 +177,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={Styling} />
+            <Image wrapperStyle={{ display: 'block' }} src={Styling} />
           </Col>
           <Col span={12}>
-            <Image src={Style} />
+            <Image wrapperStyle={{ display: 'block' }} src={Style} />
           </Col>
         </Row>
       </>
@@ -220,10 +220,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={Focus} />
+            <Image wrapperStyle={{ display: 'block' }} src={Focus} />
           </Col>
           <Col span={12}>
-            <Image src={Expand} />
+            <Image wrapperStyle={{ display: 'block' }} src={Expand} />
           </Col>
         </Row>
       </>

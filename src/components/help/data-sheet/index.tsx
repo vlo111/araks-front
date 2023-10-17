@@ -51,7 +51,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={CreateANewType} />
+        <Image wrapperStyle={{ display: 'block' }} src={CreateANewType} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -67,7 +67,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image src={EditDeleteTypes} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteTypes} />
       </>
     ),
   },
@@ -102,7 +102,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={NewProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={NewProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property{' '}
         </Text>
@@ -122,7 +122,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image src={EditProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditProperty} />
       </>
     ),
   },
@@ -158,7 +158,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button for connect types
           </li>
         </ul>
-        <Image src={NewConnection} />
+        <Image wrapperStyle={{ display: 'block' }} src={NewConnection} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
@@ -179,10 +179,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={ConnectionType} />
+            <Image wrapperStyle={{ display: 'block' }} src={ConnectionType} />
           </Col>
           <Col span={12}>
-            <Image src={ConnectionTypes} />
+            <Image wrapperStyle={{ display: 'block' }} src={ConnectionTypes} />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -206,7 +206,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The Connection will be deleted if there are no data)
           </li>
         </ul>
-        <Image src={EditConnection} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditConnection} />
       </>
     ),
   },
@@ -233,7 +233,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={DeleteConnectionProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={DeleteConnectionProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property{' '}
         </Text>
@@ -252,7 +252,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image src={EditConnectionProperty} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditConnectionProperty} />
       </>
     ),
   },
@@ -282,7 +282,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={NodeInConnection} />
+        <Image wrapperStyle={{ display: 'block' }} src={NodeInConnection} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection{' '}
         </Text>
@@ -304,7 +304,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> Icon (The node will be deleted)
           </li>
         </ul>
-        <Image src={EditNodes} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditNodes} />
       </>
     ),
   },
@@ -340,7 +340,7 @@ const menuItems: Record<string, MenuItem> = {
             </ul>
           </li>
         </ul>
-        <Image src={AllData} />
+        <Image wrapperStyle={{ display: 'block' }} src={AllData} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection
         </Text>
@@ -362,7 +362,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> Icon (The node will be deleted)
           </li>
         </ul>
-        <Image src={EditNodes} />
+        <Image wrapperStyle={{ display: 'block' }} src={EditNodes} />
       </>
     ),
   },
@@ -394,7 +394,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={AddNode} />
+        <Image wrapperStyle={{ display: 'block' }} src={AddNode} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Node View, Edit or Delete{' '}
         </Text>
@@ -417,7 +417,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={ViewNode} />
+        <Image wrapperStyle={{ display: 'block' }} src={ViewNode} />
       </>
     ),
   },
