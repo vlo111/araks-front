@@ -117,7 +117,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  return node ? <Avatar src={node as string} key={node as string} /> : '';
+                  return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
                 })}
               </Space>
             ) : (
@@ -138,7 +138,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
       return (
         <Space>
           {item.nodes_data?.map((node) => {
-            return node ? <Avatar src={node as string} key={node as string} /> : '';
+            return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
           })}
         </Space>
       );
@@ -261,7 +261,14 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
 
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
-      return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
+      return (
+        <Image
+          src={`${process.env.REACT_APP_AWS_URL}${text}`}
+          width={161}
+          height={127}
+          style={{ borderRadius: '4px', ...centerImageStyle }}
+        />
+      );
     // case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (

@@ -133,7 +133,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
                 />
               )}
               <List.Item.Meta
-                avatar={<Avatar src={item.default_image} />}
+                avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${item.default_image}`} />}
                 title={
                   <Row align="middle">
                     <Col span={6}>

@@ -27,7 +27,7 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
     <VerticalSpace>
       {selectedView?.default_image && (
         <Image
-          src={selectedView?.default_image}
+          src={`${process.env.REACT_APP_AWS_URL}${selectedView?.default_image}`}
           width={161}
           height={127}
           style={{ borderRadius: '4px', ...centerImageStyle }}
