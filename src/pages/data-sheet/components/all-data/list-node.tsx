@@ -91,6 +91,10 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
     setCheckedItems(isAllCheck ? rowsData.map((r) => r.id) : []);
   }, [isAllCheck, rowsData, setCheckedItems]);
 
+  useEffect(() => {
+    setIsAllCheck(false);
+  }, [filterValue]);
+
   return (
     <Spin spinning={isInitialLoading}>
       {projectInfo?.role !== UserProjectRole.Viewer && (
