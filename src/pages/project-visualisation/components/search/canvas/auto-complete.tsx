@@ -12,6 +12,7 @@ import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-sea
 import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
 import { useGetData } from 'api/visualisation/use-get-data';
+import { graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 
 type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JSX.Element }> | undefined;
 
@@ -32,7 +33,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       onSuccess: ({ data }) => {
         graph.clear();
         initData(graph, formattedData(data.nodes, data.edges, data.relationsCounts));
-        graph.render && graph.render();
+        graphRender(graph);
 
         setGraphInfo({
           nodeCount: graph.getNodes().length,
@@ -52,7 +53,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       } = data ?? {};
 
       initData(graph, formattedData(nodes, edges, relationsCounts));
-      graph.render && graph.render();
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: graph.getNodes().length,

@@ -6,7 +6,7 @@ import { ReactComponent as RadialSvg } from './icons/radial.svg';
 import { ReactComponent as ConcentricSvg } from './icons/concentric.svg';
 import { ReactComponent as CircularSvg } from './icons/circular.svg';
 import { ReactComponent as GridSvg } from './icons/grid.svg';
-import { createCombos } from 'components/layouts/components/visualisation/helpers/utils';
+import { createCombos, graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 import { LayoutConfig, LayoutType } from './types';
 import { ReactComponent as ResetSvg } from './icons/reset.svg';
 import { useGetData } from 'api/visualisation/use-get-data';
@@ -31,10 +31,11 @@ export const Settings = () => {
         nodeCount: (count ?? 0) > 300 ? 300 : count,
       });
 
-      graph.render();
+      graphRender(graph);
+
       setIsReseat(false);
     }
-  }, [count, edges, graph, isReseat, nodes, setGraphInfo,relationsCounts]);
+  }, [count, edges, graph, isReseat, nodes, setGraphInfo, relationsCounts]);
 
   const setLayout = useCallback(
     (layout: LayoutType) => {
@@ -47,13 +48,13 @@ export const Settings = () => {
             sortBy: 'topology',
             edgeLength: 10,
             preventOverlap: true,
-            nodeSize: 80,
+            nodeSize: 20,
           },
           grid: {
-            begin: [0, 0],
+            begin: [0 - window.innerWidth / 2, 148 - window.innerHeight / 2],
             preventOverlap: true,
             preventOverlapPadding: 20,
-            nodeSize: 30,
+            nodeSize: 20,
             condense: false,
             rows: 5,
             cols: 5,
@@ -62,20 +63,26 @@ export const Settings = () => {
           },
           circular: {
             ordering: 'topology',
+            radius: graph.getNodes().length * 10,
           },
           radial: {
             type: 'gForce',
-            center: [window.innerWidth, window.innerHeight],
+            center: [window.innerWidth / 2, window.innerHeight / 2],
             linkDistance: 100,
             nodeStrength: 600,
             edgeStrength: 200,
-            nodeSize: 30,
+            nodeSize: 20,
             workerEnabled: true,
             gpuEnabled: true,
           },
         };
 
-        graph.updateLayout({ ...params, ...layoutConfig[layout] });
+        graph.updateLayout(
+          { ...params, ...layoutConfig[layout] },
+          'center',
+          { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+          true
+        );
       }
     },
     [graph]

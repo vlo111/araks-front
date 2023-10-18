@@ -7,7 +7,8 @@ import { initData } from '../components/layouts/components/visualisation/contain
 import { Edges, Nodes } from '../api/visualisation/use-get-data';
 import { useProject } from '../context/project-context';
 import { useLocation } from 'react-router-dom';
-import { expandByNodeData } from '../components/layouts/components/visualisation/helpers/utils';
+import { expandByNodeData, graphRender } from '../components/layouts/components/visualisation/helpers/utils';
+import { nodeLabelCfgStyle } from '../components/layouts/components/visualisation/helpers/constants';
 type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 type Props = ({
@@ -44,7 +45,7 @@ export const useGraphRef: Props = ({ nodes, edges, count, relationsCounts }) => 
         if (data !== undefined) initData(graph, data);
       }
 
-      graph.render && graph.render();
+      graphRender(graph);
     }
     params.setGraphInfo && params.setGraphInfo({ nodeCount: nodes?.length, nodeCountAPI: count });
   }, [nodes, edges, graph, setGraph, projectInfo, count]);
@@ -56,7 +57,10 @@ export const useGraphRef: Props = ({ nodes, edges, count, relationsCounts }) => 
     const focuses = async () => {
       const node = nodes[0];
 
-      graph.addItem('node', node);
+      graph.addItem('node', {
+        ...node,
+        labelCfg: nodeLabelCfgStyle,
+      });
 
       const item = graph.getNodes()[0];
 
