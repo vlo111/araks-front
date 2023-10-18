@@ -10,7 +10,7 @@ import { Button } from 'components/button';
 import { Icon } from 'components/icon';
 import { MarkedText } from 'components/typography/marked-text';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
-import { useIsXXlScreen } from '../../../../hooks/use-breakpoint';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 type TypeInfoProps = {
   color?: string;
