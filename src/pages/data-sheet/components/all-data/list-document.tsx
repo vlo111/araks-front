@@ -10,6 +10,7 @@ import { Button } from 'components/button';
 import { Icon } from 'components/icon';
 import { MarkedText } from 'components/typography/marked-text';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
+import { useIsXXlScreen } from '../../../../hooks/use-breakpoint';
 
 type TypeInfoProps = {
   color?: string;
@@ -53,6 +54,8 @@ type Props = {
 };
 
 export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
+  const isXXl = useIsXXlScreen();
+
   const {
     rowsData,
     count: pageCount,
@@ -67,6 +70,7 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
       <List
         pagination={false}
         dataSource={rowsData}
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 232}px)` }}
         renderItem={(item, index) => {
           return (
             <StyledListItem key={item.node_id} color={item.color}>
