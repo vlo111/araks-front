@@ -51,7 +51,7 @@ export const Settings = () => {
             nodeSize: 20,
           },
           grid: {
-            begin: [0, 0],
+            begin: [0 - window.innerWidth / 2, 148 - window.innerHeight / 2],
             preventOverlap: true,
             preventOverlapPadding: 20,
             nodeSize: 20,
@@ -63,6 +63,7 @@ export const Settings = () => {
           },
           circular: {
             ordering: 'topology',
+            radius: graph.getNodes().length * 10,
           },
           radial: {
             type: 'gForce',
