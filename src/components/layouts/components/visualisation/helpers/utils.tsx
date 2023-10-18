@@ -7,6 +7,7 @@ import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
 import { initConnector } from '../container/initial/nodes';
+import { edgeLabelCfgStyle, nodeLabelCfgStyle } from './constants';
 
 export const getExpandData = async (id: string, label: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
@@ -208,13 +209,17 @@ export const expandByNodeData = async (
   graphData.nodes.forEach((n, index) => {
     graph.addItem('node', {
       ...n,
+      labelCfg: nodeLabelCfgStyle,
       x: (item?._cfg?.model?.x ?? 0) + radius * Math.sin((Math.PI * 2 * index) / graphData.nodes.length),
       y: (item?._cfg?.model?.y ?? 0) - radius * Math.cos((Math.PI * 2 * index) / graphData.nodes.length),
     });
   });
 
   graphData.edges.forEach((e) => {
-    graph.addItem('edge', e);
+    graph.addItem('edge', {
+      ...e,
+      labelCfg: edgeLabelCfgStyle,
+    });
   });
 
   updateConnector(graph);
@@ -414,6 +419,7 @@ export const addEdges: AddEdges = (graph, nodeId, edges) => {
       target,
       type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
       ...edge,
+      labelCfg: edgeLabelCfgStyle,
     });
   });
 };
@@ -427,6 +433,58 @@ export const updateConnector = (graph: Graph) => {
     graph.updateItem(edge, {
       curveOffset: edges[i].curveOffset,
       curvePosition: edges[i].curvePosition,
+    });
+  });
+};
+
+export const graphRender = (graph: Graph) => {
+  graph.destroyLayout && graph.destroyLayout();
+
+  graph.render && graph.render();
+
+  graph.fitCenter();
+  graph.fitView([20, 20], { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true });
+
+  setTimeout(() => {
+    graph.updateLayout(
+      {
+        type: 'gForce',
+        center: [window.innerWidth, window.innerHeight],
+        linkDistance: 100,
+        nodeStrength: 600,
+        edgeStrength: 200,
+        nodeSize: 20,
+        workerEnabled: true,
+        gpuEnabled: true,
+        fitCenter: true,
+        fitView: true, // Fit the view to the entire graph
+        fitViewPadding: [10, 10], // Padding around the graph when fitting the view
+      },
+      'center',
+      { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+      true
+    );
+  }, 400);
+
+  setTimeout(() => {
+    updateItemsLabelName(graph);
+  }, 1000);
+};
+
+const updateItemsLabelName = (graph: Graph) => {
+  graph.getNodes().map((n) => {
+    graph.updateItem(n.getID(), {
+      labelCfg: nodeLabelCfgStyle,
+      style: {
+        stroke: n.getModel()?.color as string,
+        fill: n.getModel()?.img ? 'transparent' : 'white',
+      },
+    });
+  });
+
+  graph.getEdges().map((n) => {
+    graph.update(n, {
+      labelCfg: edgeLabelCfgStyle,
     });
   });
 };

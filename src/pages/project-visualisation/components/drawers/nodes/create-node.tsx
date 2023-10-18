@@ -16,6 +16,7 @@ import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 import './add-node-select.css';
+import { nodeLabelCfgStyle } from 'components/layouts/components/visualisation/helpers/constants';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -44,7 +45,7 @@ export const NodeCreateDrawer: React.FC = () => {
       const node = {
         id: nodeData.id,
         label: nodeData.name as unknown as string,
-        img: nodeData.default_image,
+        img: `${process.env.REACT_APP_AWS_URL}${nodeData.default_image}`,
         type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,
@@ -54,9 +55,13 @@ export const NodeCreateDrawer: React.FC = () => {
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
+        labelCfg: nodeLabelCfgStyle,
       };
 
-      graph.addItem('node', node);
+      graph.addItem('node', {
+        ...node,
+        labelCfg: nodeLabelCfgStyle,
+      });
     },
     [graph, openNodeCreate]
   );

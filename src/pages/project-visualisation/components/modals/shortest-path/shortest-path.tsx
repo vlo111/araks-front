@@ -6,6 +6,7 @@ import { Button } from 'components/button';
 import { Wrapper } from './shortest-wrapper';
 import { useGetShortestPath } from 'api/visualisation/use-get-shortest-path';
 import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
+import { graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const ShortestPathWrapper = () => {
   const { graph, setGraphInfo } = useGraph() ?? {};
@@ -26,7 +27,7 @@ export const ShortestPathWrapper = () => {
         if (formatted.nodes.length) {
           graph.data(formatted);
 
-          graph.render();
+          graphRender(graph);
 
           setGraphInfo({
             nodeCount: formatted.nodes.length ?? 0,

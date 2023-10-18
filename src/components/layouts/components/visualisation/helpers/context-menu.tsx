@@ -2,6 +2,7 @@ import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { addTooltip, expand, expandByNodeData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
+import { nodeLabelCfgStyle } from './constants';
 
 export const contextMenuPlugin: (
   graph: Graph,
@@ -65,7 +66,10 @@ export const contextMenuPlugin: (
             case 'focus': {
               graph.clear();
 
-              graph.addItem('node', item.getModel());
+              graph.addItem('node', {
+                ...item.getModel(),
+                labelCfg: nodeLabelCfgStyle,
+              });
 
               await expandByNodeData(
                 graph,

@@ -10,6 +10,7 @@ import { formattedData } from 'components/layouts/components/visualisation/helpe
 import { useGetData } from 'api/visualisation/use-get-data';
 import { useManageFilters } from './use-manage-filters';
 import { initData as initGraphData } from 'components/layouts/components/visualisation/container/initial/nodes';
+import { graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const Filters: React.FC<{ height?: string }> = ({ height }) => {
   const [searchVisible, setSearchVisible] = useState(false);
@@ -22,7 +23,8 @@ export const Filters: React.FC<{ height?: string }> = ({ height }) => {
       const { nodes, edges } = formattedData(data.nodes, data.edges, relationsCounts);
       const result = { nodes, edges };
       initGraphData(graph, result);
-      graph.render();
+
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: nodes.length,
@@ -43,7 +45,8 @@ export const Filters: React.FC<{ height?: string }> = ({ height }) => {
       mutate(checkedKeys);
     } else {
       initGraphData(graph, initData);
-      graph.render();
+
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCountAPI ?? 0) > 300 ? 300 : graphInfo?.nodeCountAPI,
