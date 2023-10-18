@@ -438,9 +438,13 @@ export const updateConnector = (graph: Graph) => {
 };
 
 export const graphRender = (graph: Graph) => {
-  graph.destroyLayout && graph.destroyLayout();
+  if (!graph || typeof graph.render !== 'function') {
+    return;
+  }
 
-  graph.render && graph.render();
+  graph.destroyLayout();
+
+  graph.render();
 
   graph.fitCenter();
   graph.fitView([20, 20], { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true });
