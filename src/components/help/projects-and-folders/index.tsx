@@ -7,13 +7,11 @@ import DeleteProject from 'components/help/images/delete-project.svg';
 import CreateFolder from 'components/help/images/create-folder.svg';
 import EditFolder from 'components/help/images/edit-folder.svg';
 import DeleteFolder from 'components/help/images/delete-folder.svg';
-
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
 }
 const { Title, Text } = Typography;
-
 const menuItems: Record<string, MenuItem> = {
   'sub1-1': {
     content: (
@@ -50,7 +48,7 @@ const menuItems: Record<string, MenuItem> = {
             <li>Public (Can see all users)</li>
           </ul>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={CreateAProjectImg} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateAProjectImg} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Project
         </Text>
@@ -68,10 +66,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={EditProject} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProject} />
           </Col>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={EditProjects} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProjects} />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -88,7 +86,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Project
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={DeleteProject} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteProject} />
       </>
     ),
   },
@@ -121,7 +119,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={CreateFolder} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateFolder} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Folder
         </Text>
@@ -137,7 +135,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> to keep changes
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditFolder} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditFolder} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
@@ -152,7 +150,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Folder
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={DeleteFolder} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteFolder} />
       </>
     ),
   },
@@ -168,12 +166,10 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
   if (menuItem) {
     return (
       <Space>
-        {/* <StyleImage> */}
         <div style={{ fontSize: '16px' }}>
           {menuItem.content}
           {menuItem.image}
         </div>
-        {/* </StyleImage> */}
       </Space>
     );
   }

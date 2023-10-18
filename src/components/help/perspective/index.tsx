@@ -51,16 +51,16 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={MainPerspective} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={MainPerspective} />
           </Col>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={AddNewPerspective} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNewPerspective} />
           </Col>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={NewPerspective} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewPerspective} />
           </Col>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={SharePerspective} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={SharePerspective} />
           </Col>
         </Row>
       </>

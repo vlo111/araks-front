@@ -42,7 +42,7 @@ const sections: Record<
           </li>
         </ul>
 
-        <Image wrapperStyle={{ display: 'block' }} src={CreateNewType} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateNewType} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -58,7 +58,7 @@ const sections: Record<
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteType} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteType} />
       </>
     ),
   },
@@ -85,7 +85,7 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={AddNewProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNewProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property
         </Text>
@@ -105,7 +105,7 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteProperty} />
       </>
     ),
   },
@@ -129,7 +129,7 @@ const sections: Record<
             Click <b>Save</b> button to connect types
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={CreateConnection} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateConnection} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection
         </Text>
@@ -151,7 +151,7 @@ const sections: Record<
             Click <b>Delete</b> button (The Connection will be deleted if there is no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteConnection} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteConnection} />
       </>
     ),
   },
@@ -174,7 +174,7 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={AddConnectionProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddConnectionProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property
         </Text>
@@ -193,7 +193,7 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteConnectionProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteConnectionProperty} />
       </>
     ),
   },
@@ -218,7 +218,7 @@ const sections: Record<
             Click <b>Search</b> and the system will display the result
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={SearchInSchema} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={SearchInSchema} />
       </>
     ),
   },

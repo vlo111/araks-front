@@ -51,7 +51,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={CreateANewType} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateANewType} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -67,7 +67,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditDeleteTypes} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteTypes} />
       </>
     ),
   },
@@ -102,7 +102,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={NewProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property{' '}
         </Text>
@@ -122,7 +122,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditProperty} />
       </>
     ),
   },
@@ -158,7 +158,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button for connect types
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={NewConnection} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewConnection} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
@@ -179,10 +179,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={ConnectionType} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ConnectionType} />
           </Col>
           <Col span={12}>
-            <Image wrapperStyle={{ display: 'block' }} src={ConnectionTypes} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ConnectionTypes} />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -206,7 +206,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The Connection will be deleted if there are no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditConnection} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditConnection} />
       </>
     ),
   },
@@ -233,7 +233,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={DeleteConnectionProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={DeleteConnectionProperty} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property{' '}
         </Text>
@@ -252,7 +252,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditConnectionProperty} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditConnectionProperty} />
       </>
     ),
   },
@@ -282,7 +282,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={NodeInConnection} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NodeInConnection} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection{' '}
         </Text>
@@ -304,7 +304,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> Icon (The node will be deleted)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditNodes} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditNodes} />
       </>
     ),
   },
@@ -340,7 +340,7 @@ const menuItems: Record<string, MenuItem> = {
             </ul>
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={AllData} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AllData} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection
         </Text>
@@ -362,7 +362,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> Icon (The node will be deleted)
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={EditNodes} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditNodes} />
       </>
     ),
   },
@@ -394,7 +394,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={AddNode} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNode} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Node View, Edit or Delete{' '}
         </Text>
@@ -417,7 +417,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image wrapperStyle={{ display: 'block' }} src={ViewNode} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ViewNode} />
       </>
     ),
   },

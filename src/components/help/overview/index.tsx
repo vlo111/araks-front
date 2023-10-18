@@ -45,7 +45,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
       </ul>,
     ],
-    image: <Image key="3" src={ProjectName} />,
+    image: <Image rootClassName="help-image" key="3" src={ProjectName} />,
   },
   'sub4-2': {
     title: 'See all members',
@@ -78,7 +78,7 @@ const menuItems: Record<string, MenuItem> = {
         </li>
       </ul>,
     ],
-    image: <Image key="3" src={AllMembers} />,
+    image: <Image rootClassName="help-image" key="3" src={AllMembers} />,
   },
   'sub4-3': {
     title: 'Comments and Likes',
@@ -103,7 +103,7 @@ const menuItems: Record<string, MenuItem> = {
         </li>
       </ul>,
     ],
-    image: <Image key="3" src={Comments} />,
+    image: <Image rootClassName="help-image" key="3" src={Comments} />,
   },
 };
 interface OverviewSectionProps {
