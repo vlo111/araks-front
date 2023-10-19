@@ -9,9 +9,10 @@ import { useState } from 'react';
 type Props = {
   checkedItems: string[];
   setCheckedItems: (checkedItems: string[]) => void;
+  onSubmit: VoidFunction;
 };
 
-export const DeleteAllDataModal = ({ checkedItems, setCheckedItems }: Props) => {
+export const DeleteAllDataModal = ({ checkedItems, setCheckedItems, onSubmit }: Props) => {
   const [isDeleteStart, setDeleteStart] = useState(false);
   const { mutate } = useDeleteAllDataChecked(checkedItems);
 
@@ -19,6 +20,7 @@ export const DeleteAllDataModal = ({ checkedItems, setCheckedItems }: Props) => 
     await mutate();
     setDeleteStart(false);
     setCheckedItems([]);
+    onSubmit();
   };
 
   return (

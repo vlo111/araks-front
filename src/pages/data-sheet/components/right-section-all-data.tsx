@@ -23,6 +23,7 @@ export const defaultAllDataFilter: AllDataPageParameters = {
 export const RightSectionAllData = () => {
   const [filterValue, setFilterValue] = useState(defaultAllDataFilter); // state to store the input value
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [isAllCheck, setIsAllCheck] = useState(false);
   const { hideLeftSection } = useOverview();
 
   useGetNodesList();
@@ -38,12 +39,15 @@ export const RightSectionAllData = () => {
         }}
       >
         <AllDataFilterSection
+          setIsAllCheck={setIsAllCheck}
           setFilterValue={setFilterValue}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
         />
         <ViewDatasheetProvider>
           <AllDataList
+            isAllCheck={isAllCheck}
+            setIsAllCheck={setIsAllCheck}
             setFilterValue={setFilterValue}
             checkedItems={checkedItems}
             setCheckedItems={setCheckedItems}
