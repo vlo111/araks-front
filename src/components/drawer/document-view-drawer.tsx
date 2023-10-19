@@ -16,7 +16,7 @@ export const DocumentViewDrawer = ({ items }: Props) => {
 
   return (
     <>
-      <Row gutter={[10, 10]}>
+      <Row gutter={[10, 10]} style={{ display: 'flex', flexDirection: 'column' }}>
         {items?.map((node, index) => {
           return (
             <Col xs={12} xxl={6} key={index}>
@@ -38,7 +38,7 @@ export const DocumentViewDrawer = ({ items }: Props) => {
                   boxShadow: '0px 2.32421875px 3.486328125px 0px rgba(111, 111, 111, 0.10)',
                 }}
               >
-                <Text style={{ maxWidth: '200px' }} ellipsis title={(node as UploadedFileType).name as string}>
+                <Text ellipsis title={(node as UploadedFileType).name as string}>
                   {(node as UploadedFileType).name as string}
                 </Text>
               </Button>

@@ -331,7 +331,7 @@ export const getRowData = (item: NodePropertiesValues) => {
       return <DocumentViewDrawer items={item.nodes_data} />;
     case PropertyTypes.URL:
       return isMultiple ? (
-        <Row gutter={[10, 10]}>
+        <Row gutter={[10, 10]} style={{ display: 'flex', flexDirection: 'column' }}>
           {item.nodes_data.map((data, index) => (
             <Col xs={12} lg={6} key={index}>
               {dataByType(data, PropertyTypes.URL)}
@@ -343,7 +343,7 @@ export const getRowData = (item: NodePropertiesValues) => {
       );
     case PropertyTypes.Location:
       return (
-        <Row gutter={[10, 10]}>
+        <Row gutter={[10, 10]} style={{ display: 'flex', flexDirection: 'column' }}>
           {item.nodes_data.map((data, index) => (
             <Col xs={12} lg={6} key={index}>
               {dataByType(data, PropertyTypes.Location)}

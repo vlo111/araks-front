@@ -3,6 +3,7 @@ import { useMutation, UseQueryOptions } from '@tanstack/react-query';
 import client from '../client';
 import { errorMessage } from 'helpers/utils';
 import { RcFile } from 'antd/es/upload';
+import { AVATAR_UPLOAD_URL } from './constants';
 type Options = UseQueryOptions<string | RcFile | Blob, unknown, Response>;
 
 type Response = {
@@ -17,7 +18,7 @@ export const useAvatarUpload = (options?: Options) => {
     async (file) => {
       const formData = new FormData();
       formData.append('file', file);
-      return client.post('uploads/avatar-upload', formData);
+      return client.post(AVATAR_UPLOAD_URL, formData);
     },
     {
       onSuccess: (data) => {
