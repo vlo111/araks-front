@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { defaultAllDataFilter } from '../right-section-all-data';
 import { AllDataListNode } from './list-node';
@@ -9,12 +9,21 @@ type Props = {
   filterValue: typeof defaultAllDataFilter;
   checkedItems: string[];
   setCheckedItems: (values: string[]) => void;
+  setIsAllCheck: Dispatch<SetStateAction<boolean>>;
+  isAllCheck: boolean;
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
 
-export const AllDataList = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
+export const AllDataList = ({
+  filterValue,
+  setFilterValue,
+  checkedItems,
+  setCheckedItems,
+  isAllCheck,
+  setIsAllCheck,
+}: Props) => {
   const { allDataTypesList } = useDataSheetWrapper();
 
   useEffect(() => {
@@ -31,6 +40,8 @@ export const AllDataList = ({ filterValue, setFilterValue, checkedItems, setChec
     <>
       {filterValue.type === 'node' && (
         <AllDataListNode
+          isAllCheck={isAllCheck}
+          setIsAllCheck={setIsAllCheck}
           setFilterValue={setFilterValue}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}

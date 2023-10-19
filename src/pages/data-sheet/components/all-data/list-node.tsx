@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { UserProjectRole } from 'api/types';
@@ -51,12 +51,21 @@ type Props = {
   filterValue: typeof defaultAllDataFilter;
   checkedItems: string[];
   setCheckedItems: (values: string[]) => void;
+  setIsAllCheck: Dispatch<SetStateAction<boolean>>;
+  isAllCheck: boolean;
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
 
-export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
+export const AllDataListNode = ({
+  filterValue,
+  setFilterValue,
+  checkedItems,
+  setCheckedItems,
+  isAllCheck,
+  setIsAllCheck,
+}: Props) => {
   const params = useParams();
   const { dispatch } = useViewDatasheet();
   const { projectInfo } = useProject();
@@ -85,15 +94,13 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
     },
   });
 
-  const [isAllCheck, setIsAllCheck] = useState(false);
-
   useEffect(() => {
     setCheckedItems(isAllCheck ? rowsData.map((r) => r.id) : []);
   }, [isAllCheck, rowsData, setCheckedItems]);
 
   useEffect(() => {
     setIsAllCheck(false);
-  }, [filterValue]);
+  }, [filterValue, setIsAllCheck]);
 
   return (
     <Spin spinning={isInitialLoading}>
