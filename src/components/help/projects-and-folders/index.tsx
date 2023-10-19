@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Image, Row, Typography } from 'antd';
+import { Col, Image, Row, Space, Typography } from 'antd';
 import CreateAProjectImg from 'components/help/images/create-a-project.svg';
 import EditProject from 'components/help/images/edit-project.svg';
 import EditProjects from 'components/help/images/edit-projects.svg';
@@ -7,20 +7,28 @@ import DeleteProject from 'components/help/images/delete-project.svg';
 import CreateFolder from 'components/help/images/create-folder.svg';
 import EditFolder from 'components/help/images/edit-folder.svg';
 import DeleteFolder from 'components/help/images/delete-folder.svg';
-
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
 }
 const { Title, Text } = Typography;
-
 const menuItems: Record<string, MenuItem> = {
   'sub1-1': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete the Project</Title>
-        <Text>1. Create a Project</Text>
-        <p>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete the Project
+        </Title>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Create a Project
+        </Text>
+        <p style={{ marginLeft: '20px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -40,8 +48,10 @@ const menuItems: Record<string, MenuItem> = {
             <li>Public (Can see all users)</li>
           </ul>
         </ul>
-        <Image src={CreateAProjectImg} />
-        <Text>2. Edit the Project</Text>
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateAProjectImg} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Edit the Project
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Project
@@ -56,13 +66,15 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={EditProject} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProject} />
           </Col>
           <Col span={12}>
-            <Image src={EditProjects} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProjects} />
           </Col>
         </Row>
-        <Text>3. Delete the Project</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          3. Delete the Project
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Project
@@ -74,16 +86,26 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Project
           </li>
         </ul>
-        <Image src={DeleteProject} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteProject} />
       </>
     ),
   },
   'sub1-2': {
     content: (
       <>
-        <Title level={5}>Create, Edit and Delete the Folder</Title>
-        <Text>1. Create a Folder</Text>
-        <p>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Create, Edit and Delete the Folder
+        </Title>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Create a Folder
+        </Text>
+        <p style={{ marginLeft: '20px' }}>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -97,8 +119,10 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image src={CreateFolder} />
-        <Text>2. Edit the Folder</Text>
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateFolder} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Edit the Folder
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Folder
@@ -111,8 +135,10 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> to keep changes
           </li>
         </ul>
-        <Image src={EditFolder} />
-        <Text>3. Delete the Folder</Text>
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditFolder} />
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          3. Delete the Folder
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>Setting</b> button on the current Folder
@@ -124,7 +150,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Folder
           </li>
         </ul>
-        <Image src={DeleteFolder} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteFolder} />
       </>
     ),
   },
@@ -139,10 +165,12 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
-        {menuItem.content}
-        {menuItem.image}
-      </div>
+      <Space>
+        <div style={{ fontSize: '16px' }}>
+          {menuItem.content}
+          {menuItem.image}
+        </div>
+      </Space>
     );
   }
 

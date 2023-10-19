@@ -19,8 +19,18 @@ const menuItems: Record<string, MenuItem> = {
   'sub5-1': {
     content: (
       <>
-        <Title level={5}> Add, Edit and Delete Node</Title>
-        <Text>1. Add a New Node</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Add, Edit and Delete Node
+        </Title>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Add a New Node
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>Click on the canvas and the system will open “Add New Node” drawer</li>
           <li>
@@ -34,13 +44,15 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={VisualizationAddNode} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNode} />
           </Col>
           <Col span={12}>
-            <Image src={VisualizationAddNodes} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNodes} />
           </Col>
         </Row>
-        <Text>2. Node View, Edit or Delete</Text>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          2. Node View, Edit or Delete
+        </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click the <b>Node name</b> and the system will open “Node view” drawer
@@ -60,15 +72,25 @@ const menuItems: Record<string, MenuItem> = {
             Clicl <b>Delete</b> Icon and the node will be deleted
           </li>
         </ul>
-        <Image src={VisualizationEdit} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationEdit} />
       </>
     ),
   },
   'sub5-2': {
     content: (
       <>
-        <Title level={5}>Filters</Title>
-        <Text>1. Add a New Property</Text>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Filters
+        </Title>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+          1. Add a New Property
+        </Text>
         <ul style={{ color: '#808080' }}>
           <li>
             Click the <b>Checkbox</b> of the type and the system will show the nodes of the selecting type(s)
@@ -77,21 +99,29 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image src={Filters} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Filters} />
       </>
     ),
   },
   'sub5-3': {
     content: (
       <>
-        <Title level={5}>Queries</Title>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Queries
+        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Click <b> And</b> button and start query (to achieve the correct result, follow the points as written):
             <ul>
               <li>Select - Type, connection, other Type or</li>
               <li>Select - Type, the same Types property, connection, other Type or</li>
-              <li> Select - Type, connection, other Type, the same Types property</li>
+              <li>Select - Type, connection, other Type, the same Types property</li>
             </ul>
           </li>
           <p>The system will display nodes whose “Type” or “Types property” is written first in the query</p>
@@ -99,23 +129,33 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Or</b> button and start query (to achieve the correct result, follow the points as written):
             <ul>
               <li>Select - Type, connection, other Type or</li>
-              Select - Type, Connection, or any other option you prefer
+              <li> Select - Type, Connection, or any other option you prefer</li>
             </ul>
             <p>
               The system will display all nodes and connections whose “Type”, “Types property” or “Connection” is
               written in the query
             </p>
           </li>
-          <li>Click the <b>Reset</b> button and the Data will be previews</li>
+          <li>
+            Click the <b>Reset</b> button and the Data will be previews
+          </li>
         </ul>
-        <Image src={Queries} />
+        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Queries} />
       </>
     ),
   },
   'sub5-4': {
     content: (
       <>
-        <Title level={5}>Styling</Title>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Styling
+        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Styling can be applied to all data and can also include the use of time for filtering, querying, or
@@ -131,14 +171,16 @@ const menuItems: Record<string, MenuItem> = {
           <li>
             Click <b>Delete</b> icon (x) and delete the style or click <b>Clean all</b> button and delete all styles
           </li>
-          <li>Click <b>Reset</b>  button and the Data will be previews</li>
+          <li>
+            Click <b>Reset</b> button and the Data will be previews
+          </li>
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={Styling} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Styling} />
           </Col>
           <Col span={12}>
-            <Image src={Style} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Style} />
           </Col>
         </Row>
       </>
@@ -147,14 +189,24 @@ const menuItems: Record<string, MenuItem> = {
   'sub5-5': {
     content: (
       <>
-        <Title level={5}>Focus, Expand, Shortest path</Title>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingLeft: '20px',
+            fontSize: '18px',
+          }}
+        >
+          Focus, Expand, Shortest path
+        </Title>
         <ul style={{ color: '#808080' }}>
           <li>Right-click on the node and choose Function</li>
           <li>
             Click <b>Focus on node</b> button and the system will hide all nodes and display that node with first
             category connections
           </li>
-          <li>Click <b> Expand</b> button and the system will display that nodes connections</li>
+          <li>
+            Click <b> Expand</b> button and the system will display that nodes connections
+          </li>
           <li>
             Click <b>Shortest path</b>button and the system will open “Shortest path” drawer:
             <ul>
@@ -162,14 +214,16 @@ const menuItems: Record<string, MenuItem> = {
               <li>Target - choose the node</li>
             </ul>
           </li>
-          <li>Click <b>Show path</b> button and the system will display the path</li>
+          <li>
+            Click <b>Show path</b> button and the system will display the path
+          </li>
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image src={Focus} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Focus} />
           </Col>
           <Col span={12}>
-            <Image src={Expand} />
+            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Expand} />
           </Col>
         </Row>
       </>
