@@ -29,6 +29,7 @@ export const TabTables = ({ isCheckable = false, noColors = false, hideConnectio
   return (
     <SiderCollapse
       defaultActiveKey="1"
+      height={!isCheckable ? '32vh' : 'auto'}
       panels={[
         {
           header: <NodesHeader setSearchVisible={setSearchVisible} />,
