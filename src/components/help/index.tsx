@@ -203,7 +203,10 @@ export const Help: React.FC = () => {
               )}
             </Menu>
           </Col>
-          <Col span={16} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)', padding: 0 }}>
+          <Col
+            span={16}
+            style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: 'calc(100vh - 64px)', padding: 0 }}
+          >
             <ProjectsFolders activeMenuItem={activeMenuItem} />
             <OverviewSection activeMenuItem={activeMenuItem} />
             <SchemaSection activeMenuItem={activeMenuItem} />
