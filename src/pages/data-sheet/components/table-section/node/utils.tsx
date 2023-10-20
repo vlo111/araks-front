@@ -463,7 +463,9 @@ export const setNodeDataUpdateValue = (item: NodePropertiesValues, values: NodeB
     return (values[item.nodeTypeProperty.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
   if (Array.isArray(values[item.nodeTypeProperty.name])) {
-    return (values[item.nodeTypeProperty.name] as unknown[])?.filter((item) => item !== undefined && item !== null);
+    return (values[item.nodeTypeProperty.name] as unknown[])?.filter(
+      (item) => item !== undefined && item !== null && item !== ''
+    );
   }
 
   return values[item.nodeTypeProperty.name];
