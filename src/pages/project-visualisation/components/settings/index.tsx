@@ -6,7 +6,7 @@ import { ReactComponent as RadialSvg } from './icons/radial.svg';
 import { ReactComponent as ConcentricSvg } from './icons/concentric.svg';
 import { ReactComponent as CircularSvg } from './icons/circular.svg';
 import { ReactComponent as GridSvg } from './icons/grid.svg';
-import { createCombos, graphRender } from 'components/layouts/components/visualisation/helpers/utils';
+import { createCombos, gpuEnabled, graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 import { LayoutConfig, LayoutType } from './types';
 import { ReactComponent as ResetSvg } from './icons/reset.svg';
 import { useGetData } from 'api/visualisation/use-get-data';
@@ -73,7 +73,7 @@ export const Settings = () => {
             edgeStrength: 200,
             nodeSize: 20,
             workerEnabled: true,
-            gpuEnabled: true,
+            gpuEnabled: gpuEnabled,
           },
         };
 
