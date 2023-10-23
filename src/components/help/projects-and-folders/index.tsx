@@ -21,6 +21,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Create, Edit and Delete the Project
@@ -48,7 +49,11 @@ const menuItems: Record<string, MenuItem> = {
             <li>Public (Can see all users)</li>
           </ul>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateAProjectImg} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={CreateAProjectImg}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Project
         </Text>
@@ -66,10 +71,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProject} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={EditProject}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditProjects} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={EditProjects}
+            />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -86,7 +99,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Project
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteProject} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={DeleteProject}
+        />
       </>
     ),
   },
@@ -98,6 +115,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Create, Edit and Delete the Folder
@@ -119,7 +137,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={CreateFolder} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={CreateFolder}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Folder
         </Text>
@@ -135,7 +157,7 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> to keep changes
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={EditFolder} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={EditFolder} />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
@@ -150,7 +172,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Ok</b> to delete the Folder
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={DeleteFolder} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={DeleteFolder}
+        />
       </>
     ),
   },

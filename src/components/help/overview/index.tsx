@@ -19,6 +19,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >
@@ -55,6 +56,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >
@@ -88,6 +90,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >

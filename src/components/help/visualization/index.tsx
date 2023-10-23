@@ -24,6 +24,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Node
@@ -44,10 +45,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNode} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={VisualizationAddNode}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNodes} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={VisualizationAddNodes}
+            />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -72,7 +81,11 @@ const menuItems: Record<string, MenuItem> = {
             Clicl <b>Delete</b> Icon and the node will be deleted
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationEdit} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={VisualizationEdit}
+        />
       </>
     ),
   },
@@ -84,6 +97,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Filters
@@ -99,7 +113,7 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Filters} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Filters} />
       </>
     ),
   },
@@ -111,6 +125,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Queries
@@ -140,7 +155,7 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Queries} />
+        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Queries} />
       </>
     ),
   },
@@ -152,6 +167,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Styling
@@ -177,10 +193,14 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Styling} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={Styling}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Style} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Style} />
           </Col>
         </Row>
       </>
@@ -194,6 +214,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Focus, Expand, Shortest path
@@ -220,10 +241,10 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Focus} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Focus} />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Expand} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Expand} />
           </Col>
         </Row>
       </>

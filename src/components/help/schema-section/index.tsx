@@ -22,7 +22,7 @@ const sections: Record<
   'sub2-1': {
     title: 'Create, Edit and Delete Type',
     content: (
-      <>
+      <div style={{ marginTop: '30px' }}>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Type
         </Text>
@@ -42,7 +42,11 @@ const sections: Record<
           </li>
         </ul>
 
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateNewType} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={CreateNewType}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -58,14 +62,18 @@ const sections: Record<
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteType} />
-      </>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={EditDeleteType}
+        />
+      </div>
     ),
   },
   'sub2-2': {
     title: 'Add, Edit and Delete Property',
     content: (
-      <>
+      <div style={{ marginTop: '30px' }}>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Property
         </Text>
@@ -85,7 +93,11 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNewProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={AddNewProperty}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property
         </Text>
@@ -105,14 +117,18 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteProperty} />
-      </>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={EditDeleteProperty}
+        />
+      </div>
     ),
   },
   'sub2-3': {
     title: 'Create, Edit and Delete Connection',
     content: (
-      <>
+      <div style={{ marginTop: '30px' }}>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Connection
         </Text>
@@ -129,7 +145,11 @@ const sections: Record<
             Click <b>Save</b> button to connect types
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateConnection} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={CreateConnection}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection
         </Text>
@@ -151,14 +171,18 @@ const sections: Record<
             Click <b>Delete</b> button (The Connection will be deleted if there is no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteConnection} />
-      </>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={EditDeleteConnection}
+        />
+      </div>
     ),
   },
   'sub2-4': {
     title: 'Add, Edit and Delete Connection Property',
     content: (
-      <>
+      <div style={{ marginTop: '30px' }}>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Connection Property
         </Text>
@@ -174,7 +198,11 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddConnectionProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={AddConnectionProperty}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property
         </Text>
@@ -193,16 +221,20 @@ const sections: Record<
             Click <b>Delete</b> button (The property will be deleted if there is no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteConnectionProperty} />
-      </>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={EditDeleteConnectionProperty}
+        />
+      </div>
     ),
   },
   'sub2-5': {
     title: 'Search In Schema',
     content: (
       <>
-        <ul style={{ color: '#808080' }}>
-          <li>
+        <ul style={{ color: '#808080', marginTop: '30px' }}>
+          <li style={{ marginTop: '30px' }}>
             Click <b>Search</b> and the system will open the search input
           </li>
           <li>Type in the search and the result can be:</li>
@@ -218,7 +250,11 @@ const sections: Record<
             Click <b>Search</b> and the system will display the result
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={SearchInSchema} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={SearchInSchema}
+        />
       </>
     ),
   },

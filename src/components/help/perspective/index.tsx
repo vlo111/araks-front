@@ -20,6 +20,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Perspective
@@ -51,16 +52,16 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={MainPerspective} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={MainPerspective} />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNewPerspective} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={AddNewPerspective} />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewPerspective} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={NewPerspective} />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={SharePerspective} />
+            <Image rootClassName="help-image" wrapperStyle={{ display: 'block' }} src={SharePerspective} />
           </Col>
         </Row>
       </>
