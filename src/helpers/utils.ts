@@ -2,7 +2,7 @@ import { AUTH_KEYS, DEFAULT_ICON } from './constants';
 import { iconsList } from 'components/icon';
 import { AxiosError } from 'axios';
 import { Modal } from 'antd';
-import { CustomError } from 'api/types';
+import { CustomError, ProjectTreeReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
 import dayjs from 'dayjs';
 
@@ -110,3 +110,11 @@ export function formatTimeDifference(likedTime: string) {
     return `${years} years ago`;
   }
 }
+
+export const updateTypeParentId = (types: ProjectTreeReturnData[] | undefined) => {
+  types?.forEach((t) => {
+    if (!types?.some((n) => n.id === t.parent_id)) {
+      t.parent_id = null;
+    }
+  });
+};
