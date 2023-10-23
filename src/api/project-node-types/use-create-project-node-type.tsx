@@ -34,7 +34,7 @@ export const useCreateProjectNodeType = (options: Options, nodeTypeId?: string) 
     mutationFn: ({ parent_id, ...values }: ProjectNodeTypeSubmit) => {
       const type = nodeTypeId ? RequestTypes.Put : RequestTypes.Post;
       const body = nodeTypeId
-        ? { ...values, ...{ parent_id: parent_id ?? null } }
+        ? { ...values, ...{ parent_id: parent_id || null } }
         : { ...values, project_id: params.id, parent_id };
       return client[type](url, body);
     },
