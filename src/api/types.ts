@@ -118,7 +118,7 @@ export type ProjectTreeReturnData = {
   color: string;
   id: string;
   name: string;
-  parent_id: string;
+  parent_id: string | null;
   properties?: ProjectTreeProperties[];
 };
 
@@ -136,7 +136,7 @@ export interface IProjectType {
   color: string;
   id: string;
   name: string;
-  parent_id: string;
+  parent_id: string | null;
   fx: number;
   fy: number;
   x?: number;
