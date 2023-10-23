@@ -108,7 +108,11 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
     >
       <Input
         onPressEnter={({ target }) => {
-          setIsEnterSearch((target as HTMLInputElement).value);
+          const value = (target as HTMLInputElement).value;
+
+          if (value.length > 2) {
+            setIsEnterSearch((target as HTMLInputElement).value);
+          }
         }}
         value={search}
         onChange={(e) => setSearch(e.target.value)}

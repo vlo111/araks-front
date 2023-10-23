@@ -375,7 +375,7 @@ export const removeCombos = (graph: Graph) => {
       edgeStrength: 200,
       nodeSize: 5,
       workerEnabled: true,
-      gpuEnabled: true,
+      gpuEnabled: gpuEnabled,
       fitView: true, // Fit the view to the entire graph
       fitViewPadding: [30, 30], // Padding around the graph when fitting the view
     },
@@ -447,28 +447,27 @@ export const graphRender = (graph: Graph) => {
   graph.render();
 
   graph.fitCenter();
+
   graph.fitView([20, 20], { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true });
 
-  setTimeout(() => {
-    graph.updateLayout(
-      {
-        type: 'gForce',
-        center: [window.innerWidth, window.innerHeight],
-        linkDistance: 100,
-        nodeStrength: 600,
-        edgeStrength: 200,
-        nodeSize: 20,
-        workerEnabled: true,
-        gpuEnabled: true,
-        fitCenter: true,
-        fitView: true, // Fit the view to the entire graph
-        fitViewPadding: [10, 10], // Padding around the graph when fitting the view
-      },
-      'center',
-      { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-      true
-    );
-  }, 400);
+  graph.updateLayout(
+    {
+      type: 'gForce',
+      center: [window.innerWidth, window.innerHeight],
+      linkDistance: 100,
+      nodeStrength: 600,
+      edgeStrength: 200,
+      nodeSize: 20,
+      workerEnabled: true,
+      gpuEnabled: gpuEnabled,
+      fitCenter: true,
+      fitView: true,
+      fitViewPadding: [10, 10],
+    },
+    'center',
+    { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    true
+  );
 
   setTimeout(() => {
     updateItemsLabelName(graph);
@@ -492,3 +491,10 @@ const updateItemsLabelName = (graph: Graph) => {
     });
   });
 };
+
+const isSafariOrFirefox = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return (/safari/.test(userAgent) && !/chrome/.test(userAgent)) || /firefox/.test(userAgent);
+};
+
+export const gpuEnabled = !isSafariOrFirefox();
