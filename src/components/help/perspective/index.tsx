@@ -1,11 +1,11 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
-  MainPerspective = 'main-perspective.svg',
-  AddNewPerspective = 'add-new-perspective.svg',
-  NewPerspective = 'new-perspective.svg',
-  SharePerspective = 'share-perspective.svg',
+  MainPerspective = 'helps/main-perspective.svg',
+  AddNewPerspective = 'helps/add-new-perspective.svg',
+  NewPerspective = 'helps/new-perspective.svg',
+  SharePerspective = 'helps/share-perspective.svg',
 }
 interface MenuItem {
   content: JSX.Element;

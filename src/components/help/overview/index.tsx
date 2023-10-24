@@ -1,10 +1,10 @@
 import React from 'react';
 import { Image, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
-  ProjectName = 'project-name.svg',
-  AllMembers = 'all-members.svg',
-  Comments = 'comments.svg',
+  ProjectName = 'helps/project-name.svg',
+  AllMembers = 'helps/all-members.svg',
+  Comments = 'helps/comments.svg',
 }
 interface MenuItem {
   title: string;

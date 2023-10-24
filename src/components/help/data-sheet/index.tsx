@@ -1,23 +1,23 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 
 enum Paths {
-  NewType = 'new-type.svg',
-  EditDeleteType = 'edit-type.svg',
-  NewProperty = 'new-property.svg',
-  EditProperty = 'edit-property.svg',
-  NewConnection = 'new-connect ion.svg',
-  ConnectionType = 'connection-type.svg',
-  ConnectionTypes = 'connection-types.svg',
-  EditConnection = 'edit-connection.svg',
-  DeleteConnectionProperty = 'delete-con-prop.svg',
-  NodeInConnection = 'node-incon.svg',
-  EditConnectionProperty = 'edit-con-prop.svg',
-  EditNodes = 'edit-nodes.svg',
-  AllData = 'all-data.svg',
-  AddNode = 'add-node.svg',
-  ViewNode = 'view-node.svg',
+  NewType = 'helps/new-type.svg',
+  EditDeleteType = 'helps/edit-type.svg',
+  NewProperty = 'helps/new-property.svg',
+  EditProperty = 'helps/edit-property.svg',
+  NewConnection = 'helps/new-connect ion.svg',
+  ConnectionType = 'helps/connection-type.svg',
+  ConnectionTypes = 'helps/connection-types.svg',
+  EditConnection = 'helps/edit-connection.svg',
+  DeleteConnectionProperty = 'helps/delete-con-prop.svg',
+  NodeInConnection = 'helps/node-incon.svg',
+  EditConnectionProperty = 'helps/edit-con-prop.svg',
+  EditNodes = 'helps/edit-nodes.svg',
+  AllData = 'helps/all-data.svg',
+  AddNode = 'helps/add-node.svg',
+  ViewNode = 'helps/view-node.svg',
 }
 
 interface MenuItem {

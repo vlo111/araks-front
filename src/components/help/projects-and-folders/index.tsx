@@ -1,14 +1,14 @@
 import React from 'react';
 import { Col, Image, Row, Space, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
-  CreateAProjectImg = 'create-a-project.svg',
-  EditProject = 'edit-project.svg',
-  EditProjects = 'edit-projects.svg',
-  DeleteProject = 'delete-project.svg',
-  CreateFolder = 'create-folder.svg',
-  EditFolder = 'edit-folder.svg',
-  DeleteFolder = 'delete-folder.svg',
+  CreateAProjectImg = 'helps/create-a-project.svg',
+  EditProject = 'helps/edit-project.svg',
+  EditProjects = 'helps/edit-projects.svg',
+  DeleteProject = 'helps/delete-project.svg',
+  CreateFolder = 'helps/create-folder.svg',
+  EditFolder = 'helps/edit-folder.svg',
+  DeleteFolder = 'helps/delete-folder.svg',
 }
 interface MenuItem {
   content: JSX.Element;

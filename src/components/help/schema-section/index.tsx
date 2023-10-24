@@ -1,16 +1,18 @@
 import React from 'react';
 import { Image, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+
 enum Paths {
-  AddNewProperty = 'add-new-property.svg',
-  EditDeleteProperty = 'edit-delete-property.svg',
-  CreateConnection = 'create-connection.svg',
-  EditDeleteConnection = 'edit-delete-connection.svg',
-  AddConnectionProperty = 'add-connection-property.svg',
-  EditDeleteConnectionProperty = 'edit-delete-connection-propoerty.svg',
-  SearchInSchema = 'search-in-schema.svg',
-  CreateNewType = 'create-new-type.svg',
-  EditDeleteType = 'edit-delete-type.svg',
+  AddNewProperty = 'helps/add-new-property.svg',
+  EditDeleteProperty = 'helps/edit-delete-property.svg',
+  CreateConnection = 'helps/create-connection.svg',
+  EditDeleteConnection = 'helps/edit-delete-connection.svg',
+  AddConnectionProperty = 'helps/add-connection-property.svg',
+  EditDeleteConnectionProperty = 'helps/edit-delete-connection-propoerty.svg',
+  SearchInSchema = 'helps/search-in-schema.svg',
+  CreateNewType = 'helps/create-new-type.svg',
+  EditDeleteType = 'helps/edit-delete-type.svg',
 }
 const { Title, Text } = Typography;
 

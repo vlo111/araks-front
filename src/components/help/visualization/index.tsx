@@ -1,16 +1,16 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
-  VisualizationAddNode = 'visualization-add-node.svg',
-  VisualizationAddNodes = 'visualization-add-nodes.svg',
-  VisualizationEdit = 'visualization-edit.svg ',
-  Filters = 'filters.svg',
-  Queries = 'queries.svg',
-  Styling = 'styling.svg',
-  Style = 'style.svg',
-  Focus = 'focus.svg',
-  Expand = 'expand.svg',
+  VisualizationAddNode = 'helps/visualization-add-node.svg',
+  VisualizationAddNodes = 'helps/visualization-add-nodes.svg',
+  VisualizationEdit = 'helps/visualization-edit.svg ',
+  Filters = 'helps/filters.svg',
+  Queries = 'helps/queries.svg',
+  Styling = 'helps/styling.svg',
+  Style = 'helps/style.svg',
+  Focus = 'helps/focus.svg',
+  Expand = 'helps/expand.svg',
 }
 interface MenuItem {
   content: JSX.Element;
