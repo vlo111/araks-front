@@ -28,7 +28,7 @@ export const getQueryFilterType = (type: QueryFilterTypes): string => {
     case QueryFilterTypes.IS:
       return 'IS_VALUE';
     case QueryFilterTypes.RANGE:
-      return 'RANGE';
+      return 'BETWEEN';
     case QueryFilterTypes.BETWEEN:
       return 'BETWEEN';
     case QueryFilterTypes.IS_NULL:

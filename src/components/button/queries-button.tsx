@@ -75,7 +75,11 @@ export const QueriesButton = ({ isQueries }: Props) => {
     enabled: !!filter.queryArr?.length,
     onSuccess: (data) => {
       if (!data.nodes.length) {
-        initGraphData();
+        initData(graph, { edges: [], nodes: [] });
+        graphRender(graph);
+        setGraphInfo({
+          nodeCount: 0,
+        });
       } else {
         const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
         const result = { nodes: nodes || [], edges: edges || [] };

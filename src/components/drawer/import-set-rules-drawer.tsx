@@ -42,7 +42,17 @@ export const ImportSetRulesDrawer = () => {
               disabled={isLoading}
               block
               type="primary"
-              onClick={() =>
+              onClick={() => {
+                // eslint-disable-next-line no-debugger
+                debugger;
+
+                state.dataToSave?.forEach((data) => {
+                  const saveData = data as unknown as { value: string | null }[];
+
+                  saveData.forEach((d) => {
+                    d.value = d.value === '' ? null : d.value;
+                  });
+                });
                 !state.setRulesSkipOverwrite || !state.dataToSave
                   ? api.warning({
                       message: 'Please set rule at first!',
@@ -50,8 +60,8 @@ export const ImportSetRulesDrawer = () => {
                   : mutate({
                       rule: state.setRulesSkipOverwrite,
                       datas: state.dataToSave,
-                    })
-              }
+                    });
+              }}
             >
               Import
             </Button>
