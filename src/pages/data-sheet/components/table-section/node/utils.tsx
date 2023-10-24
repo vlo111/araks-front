@@ -102,7 +102,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
                   return node ? (
                     <Button
                       type="link"
-                      href={(node as UploadedFileType).url}
+                      href={`${process.env.REACT_APP_AWS_URL}${(node as UploadedFileType).url}`}
                       target="_blank"
                       key={(node as UploadedFileType).url}
                       icon={<DownloadOutlined />}
@@ -117,7 +117,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  return node ? <Avatar src={node as string} key={node as string} /> : '';
+                  return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
                 })}
               </Space>
             ) : (
@@ -138,7 +138,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
       return (
         <Space>
           {item.nodes_data?.map((node) => {
-            return node ? <Avatar src={node as string} key={node as string} /> : '';
+            return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
           })}
         </Space>
       );
@@ -149,7 +149,7 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             return node ? (
               <Button
                 type="link"
-                href={(node as UploadedFileType).url}
+                href={`${process.env.REACT_APP_AWS_URL}${(node as UploadedFileType).url}`}
                 target="_blank"
                 key={(node as UploadedFileType).url}
               >
@@ -247,7 +247,12 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
   } else if (isUploadFileType(nodeData)) {
     /** @TODO @deprecated remove this section  */
     return (
-      <Button type="link" href={nodeData.url} target="_blank" icon={<LinkOutlined key={nodeData.url} />}>
+      <Button
+        type="link"
+        href={`${process.env.REACT_APP_AWS_URL}${nodeData.url}`}
+        target="_blank"
+        icon={<LinkOutlined key={nodeData.url} />}
+      >
         <Text color={COLORS.PRIMARY.GRAY_DARK}>{nodeData.name}</Text>
       </Button>
     );
@@ -261,7 +266,14 @@ const dataByType = (nodeData: NodeDataType, propertyType: PropertyTypes) => {
 
   switch (propertyType) {
     case PropertyTypes.IMAGE_URL:
-      return <Image src={text} width={161} height={127} style={{ borderRadius: '4px', ...centerImageStyle }} />;
+      return (
+        <Image
+          src={`${process.env.REACT_APP_AWS_URL}${text}`}
+          width={161}
+          height={127}
+          style={{ borderRadius: '4px', ...centerImageStyle }}
+        />
+      );
     // case PropertyTypes.Document:
     case PropertyTypes.URL:
       return (
@@ -319,7 +331,7 @@ export const getRowData = (item: NodePropertiesValues) => {
       return <DocumentViewDrawer items={item.nodes_data} />;
     case PropertyTypes.URL:
       return isMultiple ? (
-        <Row gutter={[10, 10]}>
+        <Row gutter={[10, 10]} style={{ display: 'flex', flexDirection: 'column' }}>
           {item.nodes_data.map((data, index) => (
             <Col xs={12} lg={6} key={index}>
               {dataByType(data, PropertyTypes.URL)}
@@ -331,7 +343,7 @@ export const getRowData = (item: NodePropertiesValues) => {
       );
     case PropertyTypes.Location:
       return (
-        <Row gutter={[10, 10]}>
+        <Row gutter={[10, 10]} style={{ display: 'flex', flexDirection: 'column' }}>
           {item.nodes_data.map((data, index) => (
             <Col xs={12} lg={6} key={index}>
               {dataByType(data, PropertyTypes.Location)}
@@ -451,7 +463,9 @@ export const setNodeDataUpdateValue = (item: NodePropertiesValues, values: NodeB
     return (values[item.nodeTypeProperty.name] as UploadFile[]).map((item) => item?.response?.data.uploadPath);
   }
   if (Array.isArray(values[item.nodeTypeProperty.name])) {
-    return (values[item.nodeTypeProperty.name] as unknown[])?.filter((item) => item !== undefined && item !== null);
+    return (values[item.nodeTypeProperty.name] as unknown[])?.filter(
+      (item) => item !== undefined && item !== null && item !== ''
+    );
   }
 
   return values[item.nodeTypeProperty.name];

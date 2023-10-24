@@ -12,6 +12,7 @@ import { useGetSelectedSearchData } from 'api/visualisation/use-get-selected-sea
 import { initData } from 'components/layouts/components/visualisation/container/initial/nodes';
 import { formattedData } from 'components/layouts/components/visualisation/helpers/format-node';
 import { useGetData } from 'api/visualisation/use-get-data';
+import { graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 
 type FilterOption = boolean | FilterFunc<{ key: string; value: string; label: JSX.Element }> | undefined;
 
@@ -20,9 +21,10 @@ type Props = React.FC<{
   setSearch: (value: string) => void;
   setIsEnterSearch: React.Dispatch<React.SetStateAction<string>>;
   isEnterSearch: string;
+  collapsed?: boolean;
 }>;
 
-export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnterSearch }) => {
+export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnterSearch, collapsed }) => {
   const { graph, setGraphInfo } = useGraph();
 
   useGetData(
@@ -31,7 +33,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       onSuccess: ({ data }) => {
         graph.clear();
         initData(graph, formattedData(data.nodes, data.edges, data.relationsCounts));
-        graph.render && graph.render();
+        graphRender(graph);
 
         setGraphInfo({
           nodeCount: graph.getNodes().length,
@@ -51,7 +53,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       } = data ?? {};
 
       initData(graph, formattedData(nodes, edges, relationsCounts));
-      graph.render && graph.render();
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: graph.getNodes().length,
@@ -94,7 +96,7 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
       dropdownMatchSelectWidth={400}
       style={{ width: 400 }}
       dropdownStyle={{
-        left: 490,
+        left: collapsed ? 490 : 30,
         top: 228,
         backdropFilter: 'blur(7px)',
         background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%)',
@@ -106,7 +108,11 @@ export const AutoComplete: Props = ({ search, setSearch, isEnterSearch, setIsEnt
     >
       <Input
         onPressEnter={({ target }) => {
-          setIsEnterSearch((target as HTMLInputElement).value);
+          const value = (target as HTMLInputElement).value;
+
+          if (value.length > 2) {
+            setIsEnterSearch((target as HTMLInputElement).value);
+          }
         }}
         value={search}
         onChange={(e) => setSearch(e.target.value)}

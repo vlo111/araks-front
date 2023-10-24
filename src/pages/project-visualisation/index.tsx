@@ -11,14 +11,17 @@ import { ViewEditNodeDrawer } from './components/drawers/nodes/view-edit-node';
 import { SearchData } from './components/search/canvas';
 import { ShortestPathModal } from './components/modals/shortest-path';
 import { GraphInfo } from './components/info';
+import { useState } from 'react';
 
 export const ProjectVisualisation = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <div style={{ overflow: 'hidden' }}>
       <Graph />
-      <SearchData />
+      <SearchData collapsed={collapsed} />
       <ToolbarVisualization />
-      <LeftSection />
+      <LeftSection collapsed={collapsed} setCollapsed={setCollapsed} />
       <Settings />
       <NodeCreateDrawer />
       <ViewEditNodeDrawer />
@@ -27,7 +30,7 @@ export const ProjectVisualisation = () => {
       <EdgeDeleteModal />
       <EdgeCreateDrawer />
       <EdgeViewDrawer />
-      <GraphInfo />
+      <GraphInfo collapsed={collapsed} />
     </div>
   );
 };

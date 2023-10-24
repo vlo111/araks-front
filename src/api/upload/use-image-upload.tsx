@@ -1,9 +1,9 @@
 import { useMutation, UseQueryOptions } from '@tanstack/react-query';
 
 import client from '../client';
-import { FILE_UPLOAD_URL } from './constants';
 import { errorMessage } from 'helpers/utils';
 import { RcFile } from 'antd/es/upload';
+import { AVATAR_UPLOAD_URL } from './constants';
 type Options = UseQueryOptions<string | RcFile | Blob, unknown, Response>;
 
 type Response = {
@@ -13,12 +13,12 @@ type Response = {
   };
 };
 
-export const useImageUpload = (options?: Options) => {
+export const useAvatarUpload = (options?: Options) => {
   const mutation = useMutation<Response, unknown, string | RcFile | Blob>(
     async (file) => {
       const formData = new FormData();
       formData.append('file', file);
-      return client.post(FILE_UPLOAD_URL, formData);
+      return client.post(AVATAR_UPLOAD_URL, formData);
     },
     {
       onSuccess: (data) => {

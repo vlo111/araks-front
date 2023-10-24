@@ -3,10 +3,10 @@ import { Checkbox, Form, Space, Tooltip } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 import { FormItem } from 'components/form/form-item';
 
-export const InverseFormItem: React.FC = () => {
+export const InverseFormItem: React.FC<{ source?: string }> = ({ source }) => {
   const form = Form.useFormInstance();
 
-  const sourceId = Form.useWatch('source_id', { preserve: true });
+  const sourceId = Form.useWatch('source_id', { preserve: true }) || source;
   const targetId = Form.useWatch('target_id', { preserve: true });
 
   useEffect(() => {

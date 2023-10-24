@@ -13,8 +13,10 @@ import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/typ
 import { useGetTypes } from 'api/schema/type/use-get-types';
 import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
+import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 import './add-node-select.css';
+import { nodeLabelCfgStyle } from 'components/layouts/components/visualisation/helpers/constants';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -33,24 +35,8 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
 
-  const createEdge = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      variables?.edges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
-    },
-    [graph, properties]
-  );
-
   const createNode = useCallback(
-    (data: NodePropertiesValues) => {
+    (data: NodePropertiesValues, edgeCount: number) => {
       const nodeData = data as NodePropertiesValues & {
         nodeType: { color: string; id: string; name: string };
         default_image: string;
@@ -59,28 +45,43 @@ export const NodeCreateDrawer: React.FC = () => {
       const node = {
         id: nodeData.id,
         label: nodeData.name as unknown as string,
-        img: nodeData.default_image,
+        img: `${process.env.REACT_APP_AWS_URL}${nodeData.default_image}`,
         type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,
         nodeType: nodeData.nodeType.id,
         nodeTypeName: nodeData.nodeType.name,
-        edgeCount: 0,
+        edgeCount,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
+        labelCfg: nodeLabelCfgStyle,
       };
 
-      graph.addItem('node', node);
+      graph.addItem('node', {
+        ...node,
+        labelCfg: nodeLabelCfgStyle,
+      });
     },
     [graph, openNodeCreate]
   );
 
   const { mutate } = useManageNodesGraph({
-    onSuccess: ({ data, variables }) => {
-      createNode(data);
-      createEdge(data, variables);
+    onSuccess: ({ data }) => {
+      const nodePropertyValues = data as NodePropertiesValues;
+
+      const edgeCount = nodePropertyValues.createdEdges?.length ?? 0;
+
+      createNode(nodePropertyValues, edgeCount);
+
+      const { id, createdEdges = [] } = nodePropertyValues;
+
+      addEdges(graph, id, createdEdges);
+
+      updateConnector(graph);
+
       form.resetFields();
+
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,

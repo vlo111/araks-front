@@ -1,15 +1,17 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { Search } from './search';
+
+type Props = FC<{ collapsed?: boolean }>;
 
 const ToolStyle = styled.div`
   position: fixed;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  left: 490px;
   top: 176px;
   z-index: 1;
+  transition: left 0.5s ease-in-out;
 
   > * {
     width: 40px;
@@ -29,11 +31,11 @@ const ToolStyle = styled.div`
   }
 `;
 
-export const SearchData: React.FC = () => {
+export const SearchData: Props = ({ collapsed }) => {
   return (
     <>
-      <ToolStyle>
-        <Search />
+      <ToolStyle style={{ left: collapsed ? '490px' : '30px' }}>
+        <Search collapsed={collapsed} />
       </ToolStyle>
     </>
   );

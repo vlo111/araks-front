@@ -27,8 +27,6 @@ export const EdgeViewButton = ({ text, rowData }: Props) => {
   const isPublicPage = useIsPublicPage();
   const { projectInfo } = useProject();
 
-  // eslint-disable-next-line no-console
-  console.log('projectInfo', projectInfo);
   return (
     <>
       <Button

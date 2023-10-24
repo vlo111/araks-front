@@ -4,6 +4,7 @@ import { TreeNodeType } from 'pages/data-sheet/types';
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import client from '../client';
 import { useMemo } from 'react';
+import { updateTypeParentId } from 'helpers/utils';
 
 export const GET_PROJECT_NODE_TYPES_PARENT = '/projects-node-types/get-parent/:id/:project_id';
 export const GET_PROJECT_NODE_TYPES_LIST = '/projects-node-types/:project_id';
@@ -45,6 +46,9 @@ export const useGetProjectNoteTypes = (
     () => (isSuccess ? createNodesTree(data.data, noColors) : []),
     [data?.data, isSuccess, noColors]
   );
+
+  updateTypeParentId(data?.data);
+
   return {
     ...result,
     data: isSuccess ? data.data : ([] as ProjectTreeReturnData[]),

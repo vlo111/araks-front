@@ -1,27 +1,29 @@
 import client from 'api/client';
 import { GetNeo4jData } from 'api/visualisation/use-get-data';
-import { CalcExpandList, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
+import { AddEdges, CalcExpandList, Edge, ExpandList, ExpandListData, GroupAndCountResult, GroupedData } from '../types';
 import { renderTooltipModal } from './tooltip';
 import { Graph, IEdge, IGraph, INode, Item } from '@antv/g6';
 import { allSvg, inSvg, outSvg } from './svgs';
 import { formattedData } from './format-node';
 import { PATHS } from 'helpers/constants';
+import { initConnector } from '../container/initial/nodes';
+import { edgeLabelCfgStyle, nodeLabelCfgStyle } from './constants';
 
-export const getExpandData = async (id: string, project_edge_type_id: string, direction: string) => {
+export const getExpandData = async (id: string, label: string, direction: string) => {
   const projectId = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
 
   const url = `${process.env.REACT_APP_BASE_URL}${
     location.pathname.startsWith(PATHS.PUBLIC_PREFIX) ? 'public/' : ''
   }neo4j/expand/${projectId}`;
 
-  const params: { params: { id: string; direction?: string; project_edge_type_id?: string } } = {
+  const params: { params: { id: string; direction?: string; label?: string } } = {
     params: {
       id,
     },
   };
 
-  if (project_edge_type_id) {
-    params.params.project_edge_type_id = project_edge_type_id;
+  if (label) {
+    params.params.label = label;
     params.params.direction = direction;
   } else {
     params.params.direction = 'all';
@@ -51,7 +53,7 @@ export const getExpandList = async (id: string) => {
  * @param id
  * @param isNode
  */
-export const getMenuContexts = (id: string, isNode: boolean, isEdit: boolean) => {
+export const getMenuContexts = (id: string, isNode: boolean, isEdit: boolean, showShortestPath: boolean) => {
   const nodeContext = `<div class='menu'>
       <span class='focus'>Focus on node</span>
       <span class="main-menu expand">Expand</span>
@@ -59,7 +61,7 @@ export const getMenuContexts = (id: string, isNode: boolean, isEdit: boolean) =>
         <div class='submenu'>
         </div>
       </div>
-      <span class="shortest-path">Shortest path</span>
+      ${showShortestPath ? "<span class='shortest-path'>Shortest path</span>" : ''}
       ${isEdit ? "<span class='delete'>Delete</span>" : ''}
     </div>`;
 
@@ -135,7 +137,7 @@ export const updateExpandList = (id: string, edges: IEdge[]) => {
           .map(
             (l) => `
             <div class="row">
-            <div class="hidden">${l.project_edge_type_id} ${l.direction}</div>
+            <div class="hidden">${l.name} ${l.direction}</div>
               <p>
                 ${l.direction === 'in' ? outSvg : inSvg}
               </p>
@@ -194,11 +196,11 @@ export const expandByNodeData = async (
   graph: Graph,
   item: Item,
   nodeId: string,
-  project_edge_type_id: string,
+  label: string,
   direction: string,
   setGraphInfo: (info: { nodeCount?: number | undefined; nodeCountAPI?: number | undefined }) => void
 ) => {
-  const expandData = await getExpandData(nodeId, project_edge_type_id, direction);
+  const expandData = await getExpandData(nodeId, label, direction);
 
   const graphData = formattedData(expandData.nodes, expandData.edges, expandData.relationsCounts);
 
@@ -207,14 +209,20 @@ export const expandByNodeData = async (
   graphData.nodes.forEach((n, index) => {
     graph.addItem('node', {
       ...n,
+      labelCfg: nodeLabelCfgStyle,
       x: (item?._cfg?.model?.x ?? 0) + radius * Math.sin((Math.PI * 2 * index) / graphData.nodes.length),
       y: (item?._cfg?.model?.y ?? 0) - radius * Math.cos((Math.PI * 2 * index) / graphData.nodes.length),
     });
   });
 
   graphData.edges.forEach((e) => {
-    graph.addItem('edge', e);
+    graph.addItem('edge', {
+      ...e,
+      labelCfg: edgeLabelCfgStyle,
+    });
   });
+
+  updateConnector(graph);
 
   setGraphInfo({
     nodeCount: graph.getNodes().length,
@@ -229,11 +237,11 @@ export const expand = async (
 ) => {
   const textContent = target.closest('.row')?.firstElementChild?.textContent?.trim();
 
-  const [project_edge_type_id, direction] = textContent?.split(' ') ?? [];
+  const [label, direction] = textContent?.split(' ') ?? [];
 
   const nodeId = (item._cfg?.model as { id: string })?.id ?? '';
 
-  await expandByNodeData(graph, item, nodeId, project_edge_type_id, direction, setGraphInfo);
+  await expandByNodeData(graph, item, nodeId, label, direction, setGraphInfo);
 };
 
 export const createCombos = (graph: Graph) => {
@@ -367,7 +375,7 @@ export const removeCombos = (graph: Graph) => {
       edgeStrength: 200,
       nodeSize: 5,
       workerEnabled: true,
-      gpuEnabled: true,
+      gpuEnabled: gpuEnabled,
       fitView: true, // Fit the view to the entire graph
       fitViewPadding: [30, 30], // Padding around the graph when fitting the view
     },
@@ -403,3 +411,90 @@ export const removeFakeEdge = (graph: IGraph) => {
   const fake_edge: IEdge[] | undefined = edges?.filter((e) => e.getID().includes('edge-'));
   if (fake_edge?.length) fake_edge.forEach((edge) => graph.removeItem(edge?.getID()));
 };
+
+export const addEdges: AddEdges = (graph, nodeId, edges) => {
+  edges?.forEach(({ source_id: source, target_id: target, ...edge }) => {
+    graph.addItem('edge', {
+      source,
+      target,
+      type: source === nodeId && target === nodeId ? 'loop' : 'quadratic',
+      ...edge,
+      labelCfg: edgeLabelCfgStyle,
+    });
+  });
+};
+
+export const updateConnector = (graph: Graph) => {
+  const edges = graph.save().edges as Edge[];
+
+  initConnector(edges);
+
+  graph.getEdges().forEach((edge, i) => {
+    graph.updateItem(edge, {
+      curveOffset: edges[i].curveOffset,
+      curvePosition: edges[i].curvePosition,
+    });
+  });
+};
+
+export const graphRender = (graph: Graph) => {
+  if (!graph || typeof graph.render !== 'function') {
+    return;
+  }
+
+  graph.destroyLayout();
+
+  graph.render();
+
+  graph.fitCenter();
+
+  graph.fitView([20, 20], { ratioRule: 'max', direction: 'both', onlyOutOfViewPort: true });
+
+  graph.updateLayout(
+    {
+      type: 'gForce',
+      center: [window.innerWidth, window.innerHeight],
+      linkDistance: 100,
+      nodeStrength: 600,
+      edgeStrength: 200,
+      nodeSize: 20,
+      workerEnabled: true,
+      gpuEnabled: gpuEnabled,
+      fitCenter: true,
+      fitView: true,
+      fitViewPadding: [10, 10],
+    },
+    'center',
+    { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    true
+  );
+
+  setTimeout(() => {
+    updateItemsLabelName(graph);
+  }, 1000);
+};
+
+const updateItemsLabelName = (graph: Graph) => {
+  graph.getNodes().map((n) => {
+    graph.updateItem(n.getID(), {
+      labelCfg: nodeLabelCfgStyle,
+      style: {
+        stroke: n.getModel()?.color as string,
+        fill: n.getModel()?.img ? 'transparent' : 'white',
+      },
+    });
+  });
+
+  graph.getEdges().map((n) => {
+    graph.update(n, {
+      labelCfg: edgeLabelCfgStyle,
+    });
+  });
+};
+
+const isSafariOrFirefox = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return (/safari/.test(userAgent) && !/chrome/.test(userAgent)) || /firefox/.test(userAgent);
+};
+
+export const gpuEnabled = !isSafariOrFirefox();

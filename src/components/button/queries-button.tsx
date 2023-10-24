@@ -22,6 +22,7 @@ import {
   StyledRunButton,
 } from '../../pages/project-visualisation/components/buttons/styles';
 import { useGetData } from '../../api/visualisation/use-get-data';
+import { graphRender } from '../layouts/components/visualisation/helpers/utils';
 
 type Props = {
   isQueries?: boolean;
@@ -79,7 +80,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
         const { nodes, edges } = formattedData(data?.nodes, data?.edges, data.relationsCounts);
         const result = { nodes: nodes || [], edges: edges || [] };
         initData(graph, result);
-        graph.render();
+        graphRender(graph);
         setGraphInfo({
           nodeCount: graph.getNodes().length,
         });
@@ -92,7 +93,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
     setGraphInfo({
       nodeCount: (count ?? 0) > 300 ? 300 : count,
     });
-    graph.render();
+    graphRender(graph);
   };
 
   const onClose = () => {

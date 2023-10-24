@@ -1,7 +1,7 @@
 import { IProjectType, ProjectFullInfo } from 'api/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from '../../client';
-import { errorMessage } from 'helpers/utils';
+import { errorMessage, updateTypeParentId } from 'helpers/utils';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 export const GET_TYPES = '/projects/:project_id/node-types';
@@ -39,6 +39,8 @@ export const useGetTypes = ({ ...params }: GetProjectParam, options: Options = {
   const { data, isSuccess } = result;
 
   const nodes = isSuccess ? data.data.projectsNodeTypes : undefined;
+
+  updateTypeParentId(nodes);
 
   return {
     ...result,

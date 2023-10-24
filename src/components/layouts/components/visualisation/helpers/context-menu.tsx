@@ -2,11 +2,18 @@ import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
 import { addTooltip, expand, expandByNodeData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
+import { nodeLabelCfgStyle } from './constants';
 
-export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextType, isEdit: boolean) => PluginBase = (
+export const contextMenuPlugin: (
+  graph: Graph,
+  items: PickVisualizationContextType,
+  isEdit: boolean,
+  showShortestPath: boolean
+) => PluginBase = (
   graph,
   { startOpenNodeCreate, startShortestPath, startDeleteNode, startDeleteEdge, setGraphInfo },
-  isEdit
+  isEdit,
+  showShortestPath
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
@@ -21,7 +28,12 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
 
     startOpenNodeCreate({ isOpened: false, x: evt?.x ?? 0, y: evt?.y ?? 0 });
 
-    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(id, isNode, isEdit);
+    const { canvasContext, nodeContext, comboContext, edgeContext } = getMenuContexts(
+      id,
+      isNode,
+      isEdit,
+      showShortestPath
+    );
     if (isNode) {
       updateExpandList(id, graph.getEdges());
     }
@@ -54,13 +66,16 @@ export const contextMenuPlugin: (graph: Graph, items: PickVisualizationContextTy
             case 'focus': {
               graph.clear();
 
-              graph.addItem('node', item.getModel());
+              graph.addItem('node', {
+                ...item.getModel(),
+                labelCfg: nodeLabelCfgStyle,
+              });
 
               await expandByNodeData(
                 graph,
                 item,
                 item.getID(),
-                (item.getModel() as { nodeType: string }).nodeType ?? '',
+                (item.getModel() as { label: string }).label ?? '',
                 'all',
                 setGraphInfo
               );

@@ -79,7 +79,7 @@ export const OverviewTabs = () => {
       },
       {
         key: `${isPublicPage ? PATHS.PUBLIC_PREFIX : ''}${PATHS.PROJECT_SCHEME}`,
-        label: 'Scheme',
+        label: 'Schema',
       },
       {
         key: params.node_type_id

@@ -5,7 +5,7 @@ import { Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import { AddNodeTypePopover } from 'components/popover';
 import { VerticalButtonWrapper } from './vertical-button-wrapper';
-import { AddTypePropertyForm } from 'components/form/add-type-property-form';
+import { AddTypePropertyForm } from 'components/form/type-property/add-type-property-form';
 import { useProject } from 'context/project-context';
 import { UserProjectRole } from 'api/types';
 import { useIsPublicPage } from 'hooks/use-is-public-page';

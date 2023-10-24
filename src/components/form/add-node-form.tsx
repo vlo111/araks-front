@@ -17,14 +17,17 @@ import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
+import { NodeEdges } from 'types/node';
 
 type Props = {
   data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
   isInitialLoading: boolean;
   setStopSubmit?: Dispatch<SetStateAction<boolean>>;
+  edges?: NodeEdges[] | undefined;
+  nodeId?: string;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, edges }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -43,7 +46,7 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) =>
                 case PropertyTypes.URL:
                   return <UrlType key={item.id} data={item} />;
                 case PropertyTypes.IMAGE_URL:
-                  return <ImageType key={item.id} data={item} />;
+                  return <ImageType nodeId={nodeId} key={item.id} data={item} />;
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
                   return <NumericType key={item.id} data={item} />;
@@ -56,9 +59,9 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) =>
                 case PropertyTypes.RichText:
                   return <RichTextType key={item.id} data={item} />;
                 case PropertyTypes.Document:
-                  return <DocumentType key={item.id} data={item} setStopSubmit={setStopSubmit} />;
+                  return <DocumentType nodeId={nodeId} key={item.id} data={item} setStopSubmit={setStopSubmit} />;
                 case PropertyTypes.Connection:
-                  return <ConnectionType key={item.id} data={item} />;
+                  return <ConnectionType key={item.id} data={item} edges={edges} />;
                 default:
                   return <></>;
               }

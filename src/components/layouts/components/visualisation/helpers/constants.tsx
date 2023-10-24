@@ -1,29 +1,40 @@
 import G6 from '@antv/g6';
 import { renderTooltipModal } from './tooltip';
 
-const layout = {
-  type: 'gForce',
-  center: [window.innerWidth, window.innerHeight],
-  linkDistance: 100,
-  nodeStrength: 600,
-  edgeStrength: 200,
-  nodeSize: 30,
-  workerEnabled: true,
-  gpuEnabled: true,
+export const edgeLabelCfgStyle = {
+  style: {
+    opacity: 1,
+    fontSize: 10,
+    fontWeight: 600,
+    fill: '#605f5f',
+    background: {
+      fill: '#F2F2F2',
+      padding: [2, 2, 2, 2],
+      radius: 2,
+    },
+  },
+};
+
+export const nodeLabelCfgStyle = {
+  style: {
+    opacity: 1,
+    fontSize: 14,
+    fill: '#151515',
+    fontWeight: 600,
+    background: {
+      padding: [3, 2, 3, 2],
+      radius: 2,
+      lineWidth: 3,
+    },
+  },
 };
 
 const defaultEdge = {
   labelCfg: {
     autoRotate: true,
     style: {
-      fontSize: 10,
-      fontWeight: '600',
-      fill: '#605f5f',
-      background: {
-        fill: '#F2F2F2',
-        padding: [2, 2, 2, 2],
-        radius: 2,
-      },
+      ...edgeLabelCfgStyle.style,
+      opacity: 0,
     },
   },
   style: {
@@ -50,19 +61,11 @@ const defaultNode = {
     ry: 15,
     width: 15,
     height: 15,
-    x: 0,
-    y: 0,
   },
   labelCfg: {
     style: {
-      fontSize: 14,
-      fill: '#151515',
-      fontWeight: '600',
-      background: {
-        padding: [3, 2, 3, 2],
-        radius: 2,
-        lineWidth: 3,
-      },
+      ...nodeLabelCfgStyle.style,
+      opacity: 0,
     },
     offset: 10,
     position: 'bottom',
@@ -116,9 +119,13 @@ export const options = {
       },
     ],
   },
+  grid: null,
   defaultEdge,
   defaultNode,
   nodeStateStyles,
   edgeStateStyles,
-  layout,
+  animateCfg: {
+    duration: 1000,
+    easing: 'easeCubicInOut',
+  },
 };

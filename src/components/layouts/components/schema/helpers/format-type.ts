@@ -143,7 +143,7 @@ export const formattedTypes = (
             cursor: 'pointer',
             allow: isPerspective(),
           },
-          parentId: node.parent_id,
+          parentId: node.parent_id || '',
           [PORT_EYE_PATH]: isPerspective()
             ? { d: EyeD, refX: 130, refY: 17, fill: colorPropertyType, cursor: 'pointer' }
             : undefined,

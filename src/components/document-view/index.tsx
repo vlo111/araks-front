@@ -30,7 +30,7 @@ const theme = {
 };
 
 export const DocumentView = ({ node }: Props) => {
-  const docs = [{ uri: node.url, fileName: node.name }];
+  const docs = [{ uri: `${process.env.REACT_APP_AWS_URL}${node.url}`, fileName: node.name }];
 
   return (
     <DocViewer

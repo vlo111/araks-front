@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { Avatar, Col, List, Row, Skeleton, Spin } from 'antd';
 import { useGetProjectAllData } from 'api/all-data/use-get-project-all-data';
 import { UserProjectRole } from 'api/types';
@@ -14,6 +14,7 @@ import { Button } from 'components/button';
 import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useProject } from 'context/project-context';
 import { useParams } from 'react-router-dom';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 type TypeInfoProps = {
   color?: string;
@@ -50,15 +51,25 @@ type Props = {
   filterValue: typeof defaultAllDataFilter;
   checkedItems: string[];
   setCheckedItems: (values: string[]) => void;
+  setIsAllCheck: Dispatch<SetStateAction<boolean>>;
+  isAllCheck: boolean;
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
 
-export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, setCheckedItems }: Props) => {
+export const AllDataListNode = ({
+  filterValue,
+  setFilterValue,
+  checkedItems,
+  setCheckedItems,
+  isAllCheck,
+  setIsAllCheck,
+}: Props) => {
   const params = useParams();
   const { dispatch } = useViewDatasheet();
   const { projectInfo } = useProject();
+  const isXXl = useIsXXlScreen();
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -83,9 +94,42 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
     },
   });
 
+  useEffect(() => {
+    setCheckedItems(isAllCheck ? rowsData.map((r) => r.id) : []);
+  }, [isAllCheck, rowsData, setCheckedItems]);
+
+  useEffect(() => {
+    setIsAllCheck(false);
+  }, [filterValue, setIsAllCheck]);
+
   return (
     <Spin spinning={isInitialLoading}>
+      {projectInfo?.role !== UserProjectRole.Viewer && (
+        <div style={{ margin: '1rem 1.5rem', position: 'absolute', top: -60 }}>
+          <Checkbox
+            id="allCheck"
+            className="all-data-checkbox"
+            style={{ marginRight: '16px' }}
+            checked={isAllCheck}
+            onChange={() => {
+              setIsAllCheck(!isAllCheck);
+            }}
+          />
+          <label
+            htmlFor="allCheck"
+            style={{
+              cursor: 'pointer',
+              color: '#808080',
+              fontWeight: '600',
+              letterSpacing: '1.4px',
+            }}
+          >
+            All Nodes
+          </label>
+        </div>
+      )}
       <List
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 232}px)` }}
         pagination={false}
         dataSource={rowsData}
         renderItem={(item, index) => {
@@ -100,7 +144,7 @@ export const AllDataListNode = ({ filterValue, setFilterValue, checkedItems, set
                 />
               )}
               <List.Item.Meta
-                avatar={<Avatar src={item.default_image} />}
+                avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${item.default_image}`} />}
                 title={
                   <Row align="middle">
                     <Col span={6}>

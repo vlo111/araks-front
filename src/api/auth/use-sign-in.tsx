@@ -3,6 +3,7 @@ import { useAuth } from 'context/auth-context';
 import { SignInForm, User } from 'types/auth';
 
 import client from '../client';
+import { errorMessage } from 'helpers/utils';
 
 const url = 'auth/sign-in';
 
@@ -18,6 +19,7 @@ export const useSignIn = () => {
         access_token: data.access_token,
       });
     },
+    onError: errorMessage,
   });
   return mutation;
 };

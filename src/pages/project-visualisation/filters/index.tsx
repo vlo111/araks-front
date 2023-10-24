@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Skeleton } from 'antd';
 import { SiderCollapse } from 'components/collapse/sider-collapse';
 import { NodeTypesView } from '../../data-sheet/components/node-types-view';
@@ -10,8 +10,9 @@ import { formattedData } from 'components/layouts/components/visualisation/helpe
 import { useGetData } from 'api/visualisation/use-get-data';
 import { useManageFilters } from './use-manage-filters';
 import { initData as initGraphData } from 'components/layouts/components/visualisation/container/initial/nodes';
+import { graphRender } from 'components/layouts/components/visualisation/helpers/utils';
 
-export const Filters = () => {
+export const Filters: React.FC<{ height?: string }> = ({ height }) => {
   const [searchVisible, setSearchVisible] = useState(false);
   const { graph, setGraphInfo, graphInfo } = useGraph() ?? {};
   const { nodes, isInitialLoading } = useTypes();
@@ -22,7 +23,8 @@ export const Filters = () => {
       const { nodes, edges } = formattedData(data.nodes, data.edges, relationsCounts);
       const result = { nodes, edges };
       initGraphData(graph, result);
-      graph.render();
+
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: nodes.length,
@@ -43,7 +45,8 @@ export const Filters = () => {
       mutate(checkedKeys);
     } else {
       initGraphData(graph, initData);
-      graph.render();
+
+      graphRender(graph);
 
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCountAPI ?? 0) > 300 ? 300 : graphInfo?.nodeCountAPI,
@@ -56,6 +59,7 @@ export const Filters = () => {
   ) : (
     <SiderCollapse
       defaultActiveKey="1"
+      height={height}
       panels={[
         {
           header: <NodesHeader setSearchVisible={setSearchVisible} />,

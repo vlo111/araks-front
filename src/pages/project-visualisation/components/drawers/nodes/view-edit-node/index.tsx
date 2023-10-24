@@ -1,5 +1,5 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
@@ -14,6 +14,7 @@ import {
   NodeDataSubmit,
   NodePropertiesValues,
   ResponseLocationType,
+  UpdateNodeEdges,
   UploadedFileType,
 } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
@@ -25,6 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -114,49 +116,31 @@ export const ViewEditNodeDrawer = () => {
 
   const { mutate } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
-      if (graph.getNodes().find((n) => n.getID() === variables.nodeId)) {
+      const { nodeId } = variables;
+      if (graph.getNodes().find((n) => n.getID() === nodeId)) {
+        const { destroyedEdges, createdEdges } = data as UpdateNodeEdges;
+
         updateNode(variables);
-        updateEdges(data, variables);
+
+        destroyedEdges?.forEach((e) => graph.removeItem(e.id));
+
+        addEdges(graph, nodeId ?? '', createdEdges);
+
+        updateConnector(graph);
       }
     },
   });
-
-  const updateEdges = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      /* Update deleted edges  */
-      const deleteEdges = variables?.edges?.filter(
-        (edges1) => !variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-
-      deleteEdges?.forEach((e) => graph.removeItem(e.id));
-
-      /* Update created edges  */
-      const createEdges = variables?.edges?.filter((edges1) =>
-        variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-      createEdges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
-    },
-    [graph, properties]
-  );
 
   const updateNode = useCallback(
     (variable: NodeDataSubmit) => {
       graph.updateItem(variable.nodeId ?? '', {
         label: variable.name,
         type: variable.default_image ? 'image' : 'circle',
-        img: variable.default_image,
+        img: `${process.env.REACT_APP_AWS_URL}${variable.default_image}`,
         style: {
           fill: variable.default_image ? '#00000000' : 'white',
         },
+        edgeCount: variable.edges?.length,
       });
     },
     [graph]
@@ -273,7 +257,12 @@ export const ViewEditNodeDrawer = () => {
           requiredMark={false}
           onFinish={onFinish}
         >
-          <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+          <AddNodeForm
+            nodeId={openNode?.id}
+            data={properties as ProjectTypePropertyReturnData[]}
+            isInitialLoading={isInitialLoading}
+            edges={nodeData?.edges}
+          />
         </Form>
       ) : isInitialLoading ? (
         <Skeleton />
