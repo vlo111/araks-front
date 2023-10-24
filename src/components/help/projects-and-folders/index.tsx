@@ -1,12 +1,15 @@
 import React from 'react';
 import { Col, Image, Row, Space, Typography } from 'antd';
-import CreateAProjectImg from 'components/help/images/create-a-project.svg';
-import EditProject from 'components/help/images/edit-project.svg';
-import EditProjects from 'components/help/images/edit-projects.svg';
-import DeleteProject from 'components/help/images/delete-project.svg';
-import CreateFolder from 'components/help/images/create-folder.svg';
-import EditFolder from 'components/help/images/edit-folder.svg';
-import DeleteFolder from 'components/help/images/delete-folder.svg';
+const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+enum Paths {
+  CreateAProjectImg = 'create-a-project.svg',
+  EditProject = 'edit-project.svg',
+  EditProjects = 'edit-projects.svg',
+  DeleteProject = 'delete-project.svg',
+  CreateFolder = 'create-folder.svg',
+  EditFolder = 'edit-folder.svg',
+  DeleteFolder = 'delete-folder.svg',
+}
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
@@ -52,7 +55,7 @@ const menuItems: Record<string, MenuItem> = {
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={CreateAProjectImg}
+          src={`${helpUrl}${Paths.CreateAProjectImg}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Project
@@ -74,14 +77,14 @@ const menuItems: Record<string, MenuItem> = {
             <Image
               rootClassName="help-image"
               wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-              src={EditProject}
+              src={`${helpUrl}${Paths.EditProject}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
               wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-              src={EditProjects}
+              src={`${helpUrl}${Paths.EditProjects}`}
             />
           </Col>
         </Row>
@@ -102,7 +105,7 @@ const menuItems: Record<string, MenuItem> = {
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={DeleteProject}
+          src={`${helpUrl}${Paths.DeleteProject}`}
         />
       </>
     ),
@@ -140,7 +143,7 @@ const menuItems: Record<string, MenuItem> = {
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={CreateFolder}
+          src={`${helpUrl}${Paths.CreateFolder}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit the Folder
@@ -157,7 +160,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> to keep changes
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={EditFolder} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditFolder}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
@@ -175,7 +182,7 @@ const menuItems: Record<string, MenuItem> = {
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={DeleteFolder}
+          src={`${helpUrl}${Paths.DeleteFolder}`}
         />
       </>
     ),

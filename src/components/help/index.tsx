@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Drawer, Input, Menu, Row, Space, Typography } from 'antd';
-import { ReactComponent as Helpicon } from 'components/help/images/help.svg';
+import { ReactComponent as Helpicon } from 'components/help/help.svg';
 import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
 import { SchemaSection } from './schema-section';

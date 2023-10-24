@@ -1,14 +1,17 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-import VisualizationAddNode from 'components/help/images/visualization-add-node.svg';
-import VisualizationAddNodes from 'components/help/images/visualization-add-nodes.svg';
-import VisualizationEdit from 'components/help/images/visualization-edit.svg';
-import Filters from 'components/help/images/filters.svg';
-import Queries from 'components/help/images/queries.svg';
-import Styling from 'components/help/images/styling.svg';
-import Style from 'components/help/images/style.svg';
-import Focus from 'components/help/images/focus.svg';
-import Expand from 'components/help/images/expand.svg';
+const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+enum Paths {
+  VisualizationAddNode = 'visualization-add-node.svg',
+  VisualizationAddNodes = 'visualization-add-nodes.svg',
+  VisualizationEdit = 'visualization-edit.svg ',
+  Filters = 'filters.svg',
+  Queries = 'queries.svg',
+  Styling = 'styling.svg',
+  Style = 'style.svg',
+  Focus = 'focus.svg',
+  Expand = 'expand.svg',
+}
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
@@ -48,14 +51,14 @@ const menuItems: Record<string, MenuItem> = {
             <Image
               rootClassName="help-image"
               wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-              src={VisualizationAddNode}
+              src={`${helpUrl}${Paths.VisualizationAddNode}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
               wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-              src={VisualizationAddNodes}
+              src={`${helpUrl}${Paths.VisualizationAddNodes}`}
             />
           </Col>
         </Row>
@@ -84,7 +87,7 @@ const menuItems: Record<string, MenuItem> = {
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={VisualizationEdit}
+          src={`${helpUrl}${Paths.VisualizationEdit}`}
         />
       </>
     ),
@@ -113,7 +116,11 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Filters} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.Filters}`}
+        />
       </>
     ),
   },
@@ -155,7 +162,11 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Queries} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.Queries}`}
+        />
       </>
     ),
   },
@@ -196,11 +207,15 @@ const menuItems: Record<string, MenuItem> = {
             <Image
               rootClassName="help-image"
               wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-              src={Styling}
+              src={`${helpUrl}${Paths.Styling}`}
             />
           </Col>
           <Col span={12}>
-            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Style} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Style}`}
+            />
           </Col>
         </Row>
       </>
@@ -241,10 +256,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Focus} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Focus}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName="help-image" wrapperStyle={{ display: 'block', paddingBottom: '20px' }} src={Expand} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Expand}`}
+            />
           </Col>
         </Row>
       </>

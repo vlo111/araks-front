@@ -1,15 +1,17 @@
 import React from 'react';
 import { Image, Typography } from 'antd';
-
-import AddNewProperty from 'components/help/images/add-new-property.svg';
-import EditDeleteProperty from 'components/help/images/edit-delete-property.svg';
-import CreateConnection from 'components/help/images/create-connection.svg';
-import EditDeleteConnection from 'components/help/images/edit-delete-connection.svg';
-import AddConnectionProperty from 'components/help/images/add-connection-property.svg';
-import EditDeleteConnectionProperty from 'components/help/images/edit-delete-connection-propoerty.svg';
-import SearchInSchema from 'components/help/images/search-in-schema.svg';
-import CreateNewType from 'components/help/images/create-new-type.svg';
-import EditDeleteType from 'components/help/images/edit-delete-type.svg';
+const helpUrl = `${process.env.REACT_APP_HELP_URL}`;
+enum Paths {
+  AddNewProperty = 'add-new-property.svg',
+  EditDeleteProperty = 'edit-delete-property.svg',
+  CreateConnection = 'create-connection.svg',
+  EditDeleteConnection = 'edit-delete-connection.svg',
+  AddConnectionProperty = 'add-connection-property.svg',
+  EditDeleteConnectionProperty = 'edit-delete-connection-propoerty.svg',
+  SearchInSchema = 'search-in-schema.svg',
+  CreateNewType = 'create-new-type.svg',
+  EditDeleteType = 'edit-delete-type.svg',
+}
 const { Title, Text } = Typography;
 
 const sections: Record<
@@ -45,7 +47,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={CreateNewType}
+          src={`${helpUrl}${Paths.CreateNewType}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
@@ -65,7 +67,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={EditDeleteType}
+          src={`${helpUrl}${Paths.EditDeleteType}`}
         />
       </div>
     ),
@@ -96,7 +98,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={AddNewProperty}
+          src={`${helpUrl}${Paths.AddNewProperty}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property
@@ -120,7 +122,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={EditDeleteProperty}
+          src={`${helpUrl}${Paths.EditDeleteProperty}`}
         />
       </div>
     ),
@@ -148,7 +150,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={CreateConnection}
+          src={`${helpUrl}${Paths.CreateConnection}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection
@@ -174,7 +176,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={EditDeleteConnection}
+          src={`${helpUrl}${Paths.EditDeleteConnection}`}
         />
       </div>
     ),
@@ -201,7 +203,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={AddConnectionProperty}
+          src={`${helpUrl}${Paths.AddConnectionProperty}`}
         />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property
@@ -224,7 +226,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={EditDeleteConnectionProperty}
+          src={`${helpUrl}${Paths.EditDeleteConnectionProperty}`}
         />
       </div>
     ),
@@ -253,7 +255,7 @@ const sections: Record<
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={SearchInSchema}
+          src={`${helpUrl}${Paths.SearchInSchema}`}
         />
       </>
     ),
