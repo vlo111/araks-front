@@ -1,9 +1,11 @@
 import React from 'react';
 import { Image, Typography } from 'antd';
-import ProjectName from 'components/help/images/project-name.svg';
-import AllMembers from 'components/help/images/all-members.svg';
-import Comments from 'components/help/images/comments.svg';
-
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+enum Paths {
+  ProjectName = 'helps/project-name.svg',
+  AllMembers = 'helps/all-members.svg',
+  Comments = 'helps/comments.svg',
+}
 interface MenuItem {
   title: string;
   content: JSX.Element[];
@@ -19,6 +21,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >
@@ -45,7 +48,8 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
       </ul>,
     ],
-    image: <Image rootClassName="help-image" key="3" src={ProjectName} />,
+
+    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.ProjectName}`} />,
   },
   'sub4-2': {
     title: 'See all members',
@@ -55,6 +59,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >
@@ -78,7 +83,7 @@ const menuItems: Record<string, MenuItem> = {
         </li>
       </ul>,
     ],
-    image: <Image rootClassName="help-image" key="3" src={AllMembers} />,
+    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.AllMembers}`} />,
   },
   'sub4-3': {
     title: 'Comments and Likes',
@@ -88,6 +93,7 @@ const menuItems: Record<string, MenuItem> = {
           marginTop: 0,
           paddingLeft: '20px',
           fontSize: '18px',
+          marginBottom: '30px',
         }}
         key="1"
       >
@@ -103,7 +109,7 @@ const menuItems: Record<string, MenuItem> = {
         </li>
       </ul>,
     ],
-    image: <Image rootClassName="help-image" key="3" src={Comments} />,
+    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.Comments}`} />,
   },
 };
 interface OverviewSectionProps {
