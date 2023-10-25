@@ -139,6 +139,9 @@ const menuItems: Record<string, MenuItem> = {
         </Title>
         <ul style={{ color: '#808080' }}>
           <li>
+            Click to the <b>+Add</b> button and start query
+          </li>
+          <li>
             Click <b> And</b> button and start query (to achieve the correct result, follow the points as written):
             <ul>
               <li>Select - Type, connection, other Type or</li>
@@ -157,6 +160,9 @@ const menuItems: Record<string, MenuItem> = {
               The system will display all nodes and connections whose “Type”, “Types property” or “Connection” is
               written in the query
             </p>
+          </li>
+          <li>
+            Click <b>Run</b> button and the system will display the result.
           </li>
           <li>
             Click the <b>Reset</b> button and the Data will be previews

@@ -7,7 +7,7 @@ enum Paths {
   EditDeleteType = 'helps/edit-type.svg',
   NewProperty = 'helps/new-property.svg',
   EditProperty = 'helps/edit-property.svg',
-  NewConnection = 'helps/new-connect ion.svg',
+  NewConnection = 'helps/new-connection.svg',
   ConnectionType = 'helps/connection-type.svg',
   ConnectionTypes = 'helps/connection-types.svg',
   EditConnection = 'helps/edit-connection.svg',
@@ -380,19 +380,31 @@ const menuItems: Record<string, MenuItem> = {
           All data
         </Title>
         <ul style={{ color: '#808080' }}>
-          <li>Click to the check box of the taxonomy and the system will show the nodes of the selecting type</li>
-          <li>Check the boxes and click to the “delete” Icon to Delete the nodes</li>
+          <li>
+            Click to the <b>check box</b> of the taxonomy and the system will show the nodes of the selecting type
+          </li>
+          <li>
+            Check the boxes and click to the “delete” Icon to <b>Delete</b> the nodes
+          </li>
           <li>
             Click Sort By:
             <ul>
-              <li>A to Z - the nodes starting with the letter A appearing first</li>
-              <li>Z to A - the nodes starting with the letter A appearing first</li>
-              <li>Newest First - the last update nodes appearing first</li>
-              <li>Oldest First - the old update nodes appearing first</li>
+              <li>
+                <b>A to Z</b> - the nodes starting with the letter A appearing first
+              </li>
+              <li>
+                <b>Z to A</b> - the nodes starting with the letter A appearing first
+              </li>
+              <li>
+                <b>Newest First</b> - the last update nodes appearing first
+              </li>
+              <li>
+                <b>Oldest First </b>- the old update nodes appearing first
+              </li>
             </ul>
           </li>
           <li>
-            Search:
+            <b>Search:</b>
             <ul>
               <li>Node-search node</li>
               <li>Document-search document</li>
@@ -403,33 +415,6 @@ const menuItems: Record<string, MenuItem> = {
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AllData}`}
-        />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Edit or Delete the nodes of connection
-        </Text>
-        <ul style={{ color: '#808080', fontSize: '16px' }}>
-          <li>
-            Click <b>the Node</b> and the system will open “Connection Node” pop-up
-          </li>
-          <li>
-            Edit the nodes <b>Target/source</b>
-          </li>
-          <li>Change the Data of the connection property</li>
-          <li>
-            Click <b>Save</b> button to keep changes
-          </li>
-          <li>
-            Click <b>Cancel</b> button
-          </li>
-          <li>
-            Click <b>Delete</b> Icon (The node will be deleted)
-          </li>
-        </ul>
-        <Image
-          rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-          src={`${helpUrl}${Paths.EditNodes}`}
-          //changethis
         />
       </>
     ),
