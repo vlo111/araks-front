@@ -1,6 +1,14 @@
 import { PickVisualizationContextType } from '../types';
 import G6, { Graph, IG6GraphEvent } from '@antv/g6';
-import { addTooltip, expand, expandByNodeData, getMenuContexts, removeTooltip, updateExpandList } from './utils';
+import {
+  addTooltip,
+  expand,
+  expandByNodeData,
+  getMenuContexts,
+  removeFakeEdge,
+  removeTooltip,
+  updateExpandList,
+} from './utils';
 import PluginBase from '@antv/g6-plugin/lib/base';
 import { nodeLabelCfgStyle } from './constants';
 
@@ -17,6 +25,7 @@ export const contextMenuPlugin: (
 ) => {
   const getContent = (evt: IG6GraphEvent | undefined) => {
     removeTooltip(graph);
+    removeFakeEdge(graph);
 
     const target = evt?.target;
     const isCanvas = target?.isCanvas?.();
