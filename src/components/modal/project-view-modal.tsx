@@ -167,10 +167,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
   const navigate = useNavigate();
   const isPublicPage = useIsPublicPage();
 
-  const { data: projectData, isLoading: projectDataLoading } = useGetProjectInfo(
-    { id: projectId },
-    { enabled: !!projectId }
-  );
+  const { data: projectData, isFetching } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
 
   useEffect(() => {
     if (
@@ -243,7 +240,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
               openModal={openModal}
               isPublicPage={isPublicPage}
             />
-          ) : projectDataLoading ? (
+          ) : isFetching ? (
             <Skeleton.Input active block />
           ) : (
             ''
@@ -253,7 +250,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
           <FooterWrapper>
             <Row justify="center">
               <Col span={12}>
-                {projectDataLoading ? (
+                {isFetching ? (
                   <Skeleton.Button active block />
                 ) : (
                   <Button
@@ -279,7 +276,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
         placement="right"
         width="50vw"
       >
-        <Spin spinning={projectDataLoading}>
+        <Spin spinning={isFetching}>
           <StyledContainer className="project-content" id="project-overview" />
         </Spin>
       </ProjectWrapModal>
