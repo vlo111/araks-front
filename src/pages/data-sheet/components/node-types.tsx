@@ -13,6 +13,7 @@ import { DataSheetActionKind } from 'components/layouts/components/data-sheet/ho
 import { NodeTypesView } from './node-types-view';
 import { useCallback } from 'react';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { updateTypeParentId } from 'helpers/utils';
 
 type Props = PropsSetState & TableStyleBasedOnTab;
 
@@ -35,6 +36,8 @@ export const NodeTypes = ({ searchVisible, setSearchVisible, isCheckable = false
     {
       enabled: !!(params.id && !!selectNodeType && !allTypeSelected),
       onSuccess: (data) => {
+        updateTypeParentId(data?.data);
+
         /** This condition sets selected fisr node type when first time enter to this page */
         /** WONT work wor all type as the data already exists */
         const nodesList = createNodesTree(data.data, noColors);
