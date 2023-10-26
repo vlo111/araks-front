@@ -176,7 +176,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
     if (
       projectData?.projectsNodeTypes &&
       !graph.graph &&
-      document.getElementById('juJSlsfk') &&
+      document.getElementById('project-overview') &&
       !document.querySelector('canvas')
     ) {
       setGraph(
