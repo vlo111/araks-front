@@ -285,6 +285,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                                       isConnection={queriesList[fieldName].isConnectionType}
                                       isVisualisation={isVisualisation}
                                       propertyType={queriesList[fieldName]?.ref_property_type_id}
+                                      isMultiple={queriesList[fieldName]?.multiple_type}
                                     />
                                   </Form.Item>
                                   <QueriesContent
@@ -334,6 +335,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                         depth={queriesList[fieldName].depth}
                         isConnection={queriesList[fieldName].isConnectionType}
                         propertyType={queriesList[fieldName]?.ref_property_type_id}
+                        isMultiple={queriesList[fieldName]?.multiple_type}
                       />
                     </Form.Item>
                     <QueriesContent fieldName={fieldName} propertyType={queriesList[fieldName].ref_property_type_id} />
