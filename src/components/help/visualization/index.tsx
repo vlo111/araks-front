@@ -1,14 +1,17 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-import VisualizationAddNode from 'components/help/images/visualization-add-node.svg';
-import VisualizationAddNodes from 'components/help/images/visualization-add-nodes.svg';
-import VisualizationEdit from 'components/help/images/visualization-edit.svg';
-import Filters from 'components/help/images/filters.svg';
-import Queries from 'components/help/images/queries.svg';
-import Styling from 'components/help/images/styling.svg';
-import Style from 'components/help/images/style.svg';
-import Focus from 'components/help/images/focus.svg';
-import Expand from 'components/help/images/expand.svg';
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+enum Paths {
+  VisualizationAddNode = 'helps/visualization-add-node.svg',
+  VisualizationAddNodes = 'helps/visualization-add-nodes.svg',
+  VisualizationEdit = 'helps/visualization-edit.svg ',
+  Filters = 'helps/filters.svg',
+  Queries = 'helps/queries.svg',
+  Styling = 'helps/styling.svg',
+  Style = 'helps/style.svg',
+  Focus = 'helps/focus.svg',
+  Expand = 'helps/expand.svg',
+}
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
@@ -24,6 +27,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Node
@@ -44,10 +48,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNode} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.VisualizationAddNode}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationAddNodes} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.VisualizationAddNodes}`}
+            />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -72,7 +84,11 @@ const menuItems: Record<string, MenuItem> = {
             Clicl <b>Delete</b> Icon and the node will be deleted
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={VisualizationEdit} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.VisualizationEdit}`}
+        />
       </>
     ),
   },
@@ -84,6 +100,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Filters
@@ -99,7 +116,11 @@ const menuItems: Record<string, MenuItem> = {
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Filters} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.Filters}`}
+        />
       </>
     ),
   },
@@ -111,11 +132,15 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Queries
         </Title>
         <ul style={{ color: '#808080' }}>
+          <li>
+            Click to the <b>+Add</b> button and start query
+          </li>
           <li>
             Click <b> And</b> button and start query (to achieve the correct result, follow the points as written):
             <ul>
@@ -137,10 +162,17 @@ const menuItems: Record<string, MenuItem> = {
             </p>
           </li>
           <li>
+            Click <b>Run</b> button and the system will display the result.
+          </li>
+          <li>
             Click the <b>Reset</b> button and the Data will be previews
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Queries} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.Queries}`}
+        />
       </>
     ),
   },
@@ -152,6 +184,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Styling
@@ -177,10 +210,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Styling} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Styling}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Style} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Style}`}
+            />
           </Col>
         </Row>
       </>
@@ -194,6 +235,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Focus, Expand, Shortest path
@@ -220,10 +262,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Focus} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Focus}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={Expand} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.Expand}`}
+            />
           </Col>
         </Row>
       </>

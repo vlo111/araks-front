@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Col, Drawer, Input, Menu, Row, Space, Typography } from 'antd';
-import { ReactComponent as Helpicon } from 'components/help/images/help.svg';
+import { ReactComponent as Helpicon } from 'components/help/help.svg';
 import { ProjectsFolders } from './projects-and-folders';
 import { OverviewSection } from './overview';
 import { SchemaSection } from './schema-section';
@@ -156,7 +156,7 @@ export const Help: React.FC = () => {
       <Drawer width={'55%'} closable={false} onClose={onClose} visible={open}>
         <Row gutter={[8, 8]}>
           <Col span={8} style={{ padding: 0 }}>
-            <Row>
+            <Row style={{ marginBottom: '15px' }}>
               <Col span={5}>
                 <Text strong style={{ margin: 0, color: '#232F6A' }}>
                   Help
@@ -193,7 +193,7 @@ export const Help: React.FC = () => {
                         <Menu.Item
                           onClick={({ key }) => handleMenuItemClick(key)}
                           key={subItem.subMenuKey}
-                          style={{ background: isSearching ? '#EDE06D' : 'white' }}
+                          style={{ background: isSearching ? '#EDE06D' : '' }}
                         >
                           {subItem.label}
                         </Menu.Item>
@@ -203,7 +203,10 @@ export const Help: React.FC = () => {
               )}
             </Menu>
           </Col>
-          <Col span={16} style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 64px)', padding: 0 }}>
+          <Col
+            span={16}
+            style={{ overflowY: 'auto', overflowX: 'hidden', maxHeight: 'calc(100vh - 64px)', padding: 0 }}
+          >
             <ProjectsFolders activeMenuItem={activeMenuItem} />
             <OverviewSection activeMenuItem={activeMenuItem} />
             <SchemaSection activeMenuItem={activeMenuItem} />

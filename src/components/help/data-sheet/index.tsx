@@ -1,20 +1,25 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-import EditDeleteTypes from 'components/help/images/edit-type.svg';
-import NewProperty from 'components/help/images/new-property.svg';
-import EditProperty from 'components/help/images/edit-property.svg';
-import CreateANewType from 'components/help/images/new-type.svg';
-import NewConnection from 'components/help/images/new-connection.svg';
-import ConnectionType from 'components/help/images/connection-type.svg';
-import ConnectionTypes from 'components/help/images/connection-types.svg';
-import DeleteConnectionProperty from 'components/help/images/delete-con-prop.svg';
-import EditConnectionProperty from 'components/help/images/edit-con-prop.svg';
-import EditConnection from 'components/help/images/edit-connection.svg';
-import NodeInConnection from 'components/help/images/node-incon.svg';
-import EditNodes from 'components/help/images/edit-nodes.svg';
-import AllData from 'components/help/images/all-data.svg';
-import AddNode from 'components/help/images/add-node.svg';
-import ViewNode from 'components/help/images/view-node.svg';
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+
+enum Paths {
+  NewType = 'helps/new-type.svg',
+  EditDeleteType = 'helps/edit-type.svg',
+  NewProperty = 'helps/new-property.svg',
+  EditProperty = 'helps/edit-property.svg',
+  NewConnection = 'helps/new-connection.svg',
+  ConnectionType = 'helps/connection-type.svg',
+  ConnectionTypes = 'helps/connection-types.svg',
+  EditConnection = 'helps/edit-connection.svg',
+  DeleteConnectionProperty = 'helps/delete-con-prop.svg',
+  NodeInConnection = 'helps/node-incon.svg',
+  EditConnectionProperty = 'helps/edit-con-prop.svg',
+  EditNodes = 'helps/edit-nodes.svg',
+  AllData = 'helps/all-data.svg',
+  AddNode = 'helps/add-node.svg',
+  ViewNode = 'helps/view-node.svg',
+}
+
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
@@ -30,11 +35,12 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Create, Edit and Delete Type
         </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px', marginBottom: '30px' }}>
           1. Create a New Type
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -51,7 +57,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={CreateANewType} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.NewType}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
@@ -67,7 +77,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The system will remove if the Type is Empty)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditDeleteTypes} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditDeleteType}`}
+        />
       </>
     ),
   },
@@ -79,6 +93,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Property
@@ -102,7 +117,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.NewProperty}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property{' '}
         </Text>
@@ -122,7 +141,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditProperty}`}
+        />
       </>
     ),
   },
@@ -134,6 +157,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Create, Edit and Delete Connection
@@ -158,7 +182,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button for connect types
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewConnection} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.NewConnection}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
@@ -179,10 +207,18 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ConnectionType} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.ConnectionType}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ConnectionTypes} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              src={`${helpUrl}${Paths.ConnectionTypes}`}
+            />
           </Col>
         </Row>
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
@@ -206,7 +242,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The Connection will be deleted if there are no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditConnection} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditConnection}`}
+        />
       </>
     ),
   },
@@ -218,11 +258,12 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Connection Property
         </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px', marginBottom: '30px' }}>
           1. Add a New Connection Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -233,7 +274,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={DeleteConnectionProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.DeleteConnectionProperty}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property{' '}
         </Text>
@@ -252,7 +297,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> button (The property will be deleted if there are no data)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditConnectionProperty} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditConnectionProperty}`}
+        />
       </>
     ),
   },
@@ -264,6 +313,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Node in Connection
@@ -282,7 +332,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NodeInConnection} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.NodeInConnection}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the nodes of connection{' '}
         </Text>
@@ -304,7 +358,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Delete</b> Icon (The node will be deleted)
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditNodes} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.EditNodes}`}
+        />
       </>
     ),
   },
@@ -316,53 +374,48 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           All data
         </Title>
         <ul style={{ color: '#808080' }}>
-          <li>Click to the check box of the taxonomy and the system will show the nodes of the selecting type</li>
-          <li>Check the boxes and click to the “delete” Icon to Delete the nodes</li>
+          <li>
+            Click to the <b>check box</b> of the taxonomy and the system will show the nodes of the selecting type
+          </li>
+          <li>
+            Check the boxes and click to the “delete” Icon to <b>Delete</b> the nodes
+          </li>
           <li>
             Click Sort By:
             <ul>
-              <li>A to Z - the nodes starting with the letter A appearing first</li>
-              <li>Z to A - the nodes starting with the letter A appearing first</li>
-              <li>Newest First - the last update nodes appearing first</li>
-              <li>Oldest First - the old update nodes appearing first</li>
+              <li>
+                <b>A to Z</b> - the nodes starting with the letter A appearing first
+              </li>
+              <li>
+                <b>Z to A</b> - the nodes starting with the letter A appearing first
+              </li>
+              <li>
+                <b>Newest First</b> - the last update nodes appearing first
+              </li>
+              <li>
+                <b>Oldest First </b>- the old update nodes appearing first
+              </li>
             </ul>
           </li>
           <li>
-            Search:
+            <b>Search:</b>
             <ul>
               <li>Node-search node</li>
               <li>Document-search document</li>
             </ul>
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AllData} />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Edit or Delete the nodes of connection
-        </Text>
-        <ul style={{ color: '#808080', fontSize: '16px' }}>
-          <li>
-            Click <b>the Node</b> and the system will open “Connection Node” pop-up
-          </li>
-          <li>
-            Edit the nodes <b>Target/source</b>
-          </li>
-          <li>Change the Data of the connection property</li>
-          <li>
-            Click <b>Save</b> button to keep changes
-          </li>
-          <li>
-            Click <b>Cancel</b> button
-          </li>
-          <li>
-            Click <b>Delete</b> Icon (The node will be deleted)
-          </li>
-        </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={EditNodes} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.AllData}`}
+        />
       </>
     ),
   },
@@ -374,6 +427,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Node
@@ -394,7 +448,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNode} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.AddNode}`}
+        />
         <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Node View, Edit or Delete{' '}
         </Text>
@@ -417,7 +475,11 @@ const menuItems: Record<string, MenuItem> = {
             Click <b>Save</b> button
           </li>
         </ul>
-        <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={ViewNode} />
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.ViewNode}`}
+        />
       </>
     ),
   },

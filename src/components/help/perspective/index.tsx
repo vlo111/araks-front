@@ -1,10 +1,12 @@
 import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
-import MainPerspective from 'components/help/images/main-perspective.svg';
-import AddNewPerspective from 'components/help/images/add-new-perspective.svg';
-import NewPerspective from 'components/help/images/new-perspective.svg';
-import SharePerspective from 'components/help/images/share-perspective.svg';
-
+const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+enum Paths {
+  MainPerspective = 'helps/main-perspective.svg',
+  AddNewPerspective = 'helps/add-new-perspective.svg',
+  NewPerspective = 'helps/new-perspective.svg',
+  SharePerspective = 'helps/share-perspective.svg',
+}
 interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
@@ -20,6 +22,7 @@ const menuItems: Record<string, MenuItem> = {
             marginTop: 0,
             paddingLeft: '20px',
             fontSize: '18px',
+            marginBottom: '30px',
           }}
         >
           Add, Edit and Delete Perspective
@@ -51,16 +54,32 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Row gutter={8}>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={MainPerspective} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block' }}
+              src={`${helpUrl}${Paths.MainPerspective}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={AddNewPerspective} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block' }}
+              src={`${helpUrl}${Paths.AddNewPerspective}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={NewPerspective} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block' }}
+              src={`${helpUrl}${Paths.NewPerspective}`}
+            />
           </Col>
           <Col span={12}>
-            <Image rootClassName='help-image' wrapperStyle={{ display: 'block' }}  src={SharePerspective} />
+            <Image
+              rootClassName="help-image"
+              wrapperStyle={{ display: 'block' }}
+              src={`${helpUrl}${Paths.SharePerspective}`}
+            />
           </Col>
         </Row>
       </>
