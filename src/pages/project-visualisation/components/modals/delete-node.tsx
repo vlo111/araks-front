@@ -23,6 +23,9 @@ export const NodeDeleteModal = () => {
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) - deleteNodeLength,
       });
 
+      const selectCombo = graph.findById('combo-select');
+      if (selectCombo) graph.uncombo(selectCombo.getID());
+
       graph.addBehaviors('drag-node', 'default');
     },
   });
