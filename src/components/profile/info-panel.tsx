@@ -159,7 +159,7 @@ export const InfoPanel: Prop = ({ count }) => {
 
     onSuccess && onSuccess(data);
 
-    mutate({ avatar: `${process.env.REACT_APP_AWS_URL}${data.uploadPath}` });
+    mutate({ avatar: data.uploadPath });
 
     if (user) {
       addUser({
