@@ -65,7 +65,7 @@ export const PreviewChart = ({ nodes, edges }: PreviewGraphType) => {
   const graph = new G6.Graph({
     width: width,
     height: height,
-    container: 'juJSlsfk',
+    container: 'project-overview',
     fitView: true,
     renderer: 'canvas',
     layout: {
@@ -109,9 +109,9 @@ export const PreviewChart = ({ nodes, edges }: PreviewGraphType) => {
       style: {
         endArrow: {
           fill: '#C3C3C3',
-            path: G6.Arrow.triangle()
-        }
-    }
+          path: G6.Arrow.triangle(),
+        },
+      },
     },
     modes: {
       default: ['drag-canvas', 'drag-node', { type: 'zoom-canvas', minZoom: 0.5, maxZoom: 1.5 }],

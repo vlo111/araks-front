@@ -75,8 +75,6 @@ const getOptions = (
       const dateProperties = [
         { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
         { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
-        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
-        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
       ];
       if (isMultiple) return dateProperties;
       else return [...dateProperties, { name: QueryFilterTypes.RANGE, value: QueryFilterTypes.RANGE }];

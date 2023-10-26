@@ -167,7 +167,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
   const navigate = useNavigate();
   const isPublicPage = useIsPublicPage();
 
-  const { data: projectData, isInitialLoading: projectDataLoading } = useGetProjectInfo(
+  const { data: projectData, isLoading: projectDataLoading } = useGetProjectInfo(
     { id: projectId },
     { enabled: !!projectId }
   );
@@ -280,7 +280,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
         width="50vw"
       >
         <Spin spinning={projectDataLoading}>
-          <StyledContainer className="project-content" id="juJSlsfk" />
+          <StyledContainer className="project-content" id="project-overview" />
         </Spin>
       </ProjectWrapModal>
       <DeleteProjectModal
