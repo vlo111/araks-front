@@ -54,7 +54,7 @@ export function filterConnectionTreeData(
 
 export const setUploadFileStructure = (url: string, name = 'Default image') =>
   ({
-    url: url,
+    url: `${process.env.REACT_APP_AWS_URL}${url}`,
     name: name,
     response: { data: { uploadPath: url, originalFileName: name } },
   } as UploadFile);
