@@ -82,6 +82,8 @@ export const initGraphEvents: InitGraphEvents = (graph, { startOpenNode, startOp
   graph.on('canvas:click', (e) => {
     addTooltip(graph);
 
+    removeFakeEdge(graph);
+
     return true;
   });
 };
