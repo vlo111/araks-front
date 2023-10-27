@@ -43,9 +43,6 @@ export const ImportSetRulesDrawer = () => {
               block
               type="primary"
               onClick={() => {
-                // eslint-disable-next-line no-debugger
-                debugger;
-
                 state.dataToSave?.forEach((data) => {
                   const saveData = data as unknown as { value: string | null }[];
 

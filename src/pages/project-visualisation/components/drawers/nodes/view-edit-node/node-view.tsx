@@ -19,8 +19,8 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
   const { startOpenNode, finishOpenNode } = useGraph() ?? {};
 
   const groupedDataList = useMemo(
-    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
-    [selectedView?.edges]
+    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges.concat(selectedView.edges_in))) : []),
+    [selectedView]
   );
 
   return (
