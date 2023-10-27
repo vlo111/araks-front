@@ -240,7 +240,7 @@ export const ViewEditNodeDrawer = () => {
           setIsEdit={setIsEdit}
           isEdit={isEdit}
           id={nodeData?.id as string}
-          name={nodeData?.name ?? ''}
+          name={nodeData?.nodeType?.name ?? ''}
           onClose={onClose}
           canEdit={canEdit}
         />

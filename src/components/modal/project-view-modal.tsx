@@ -167,16 +167,13 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
   const navigate = useNavigate();
   const isPublicPage = useIsPublicPage();
 
-  const { data: projectData, isInitialLoading: projectDataLoading } = useGetProjectInfo(
-    { id: projectId },
-    { enabled: !!projectId }
-  );
+  const { data: projectData, isFetching } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
 
   useEffect(() => {
     if (
       projectData?.projectsNodeTypes &&
       !graph.graph &&
-      document.getElementById('juJSlsfk') &&
+      document.getElementById('project-overview') &&
       !document.querySelector('canvas')
     ) {
       setGraph(
@@ -243,7 +240,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
               openModal={openModal}
               isPublicPage={isPublicPage}
             />
-          ) : projectDataLoading ? (
+          ) : isFetching ? (
             <Skeleton.Input active block />
           ) : (
             ''
@@ -253,7 +250,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
           <FooterWrapper>
             <Row justify="center">
               <Col span={12}>
-                {projectDataLoading ? (
+                {isFetching ? (
                   <Skeleton.Button active block />
                 ) : (
                   <Button
@@ -279,8 +276,8 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
         placement="right"
         width="50vw"
       >
-        <Spin spinning={projectDataLoading}>
-          <StyledContainer className="project-content" id="juJSlsfk" />
+        <Spin spinning={isFetching}>
+          <StyledContainer className="project-content" id="project-overview" />
         </Spin>
       </ProjectWrapModal>
       <DeleteProjectModal

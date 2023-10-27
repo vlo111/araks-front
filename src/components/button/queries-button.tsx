@@ -23,6 +23,7 @@ import {
 } from '../../pages/project-visualisation/components/buttons/styles';
 import { useGetData } from '../../api/visualisation/use-get-data';
 import { graphRender } from '../layouts/components/visualisation/helpers/utils';
+import { PropertyTypes } from '../form/property/types';
 
 type Props = {
   isQueries?: boolean;
@@ -59,6 +60,13 @@ type FormQueryValues = {
         typeText: string;
       })
   )[];
+};
+
+export const getDate = (d: Date) => {
+  const year = d.getFullYear();
+  const month = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  const day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+  return `${year}-${month}-${day}`;
 };
 
 export const QueriesButton = ({ isQueries }: Props) => {
@@ -132,6 +140,8 @@ export const QueriesButton = ({ isQueries }: Props) => {
               ? dataToMap.reduce((acc, item, index) => {
                   if (item.depth === query.depth && item.labelValue === query.labelValue) {
                     delete dataToMap[index];
+                    // eslint-disable-next-line no-console
+                    console.log(item.ref_property_type_id);
                     return {
                       ...acc,
                       [item.name === 'node_icon' ? 'default_image' : item.name]: {
@@ -140,6 +150,15 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         multiple: item.multiple_type,
                         value: (item.type === QueryFilterTypes.BETWEEN
                           ? [item.betweenStart, item.betweenEnd]
+                          : item.ref_property_type_id === PropertyTypes.Date ||
+                            item.ref_property_type_id === PropertyTypes.DateTime
+                          ? Array.isArray(item.typeText)
+                            ? item.typeText.map((t: Date) =>
+                                item.ref_property_type_id === PropertyTypes.Date ? getDate(t as Date) : t.toISOString()
+                              )
+                            : item.ref_property_type_id === PropertyTypes.Date
+                            ? getDate(item.typeText as Date)
+                            : item.typeText.toISOString()
                           : item.typeText
                         )?.toString(),
                       },
@@ -167,6 +186,15 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   multiple: query.multiple_type,
                   value: (query.type === QueryFilterTypes.BETWEEN
                     ? [query.betweenStart, query.betweenEnd]
+                    : query.ref_property_type_id === PropertyTypes.Date ||
+                      query.ref_property_type_id === PropertyTypes.DateTime
+                    ? Array.isArray(query.typeText)
+                      ? query.typeText.map((t: Date) =>
+                          query.ref_property_type_id === PropertyTypes.Date ? getDate(t as Date) : t.toISOString()
+                        )
+                      : query.ref_property_type_id === PropertyTypes.Date
+                      ? getDate(query.typeText as Date)
+                      : query.typeText.toISOString()
                     : query.typeText
                   )?.toString(),
                 },

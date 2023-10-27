@@ -15,7 +15,7 @@ export const useSignIn = () => {
     },
     onSuccess: (data) => {
       login({
-        user: data.user,
+        user: { ...data.user, avatar: `${process.env.REACT_APP_AWS_URL}${data.user.avatar}` },
         access_token: data.access_token,
       });
     },
