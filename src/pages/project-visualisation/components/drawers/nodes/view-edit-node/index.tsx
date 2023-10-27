@@ -237,8 +237,6 @@ export const ViewEditNodeDrawer = () => {
     return () => form.resetFields();
   }, [form, nodeData, setFormValue]);
 
-  // eslint-disable-next-line no-console
-  console.log(nodeData, 'data');
   return (
     <Drawer
       headerStyle={{

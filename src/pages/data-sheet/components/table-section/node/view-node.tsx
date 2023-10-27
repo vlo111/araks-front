@@ -12,8 +12,8 @@ import { ReactComponent as Connection } from 'components/icons/connection.svg';
 export const VIewNode = () => {
   const { state: selectedView, dispatch } = useViewDatasheet();
   const groupedDataList = useMemo(
-    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
-    [selectedView?.edges]
+    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges.concat(selectedView.edges_in))) : []),
+    [selectedView]
   );
 
   return (
