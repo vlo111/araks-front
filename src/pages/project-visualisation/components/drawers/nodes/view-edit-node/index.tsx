@@ -77,20 +77,27 @@ export const ViewEditNodeDrawer = () => {
           [item.nodeTypeProperty.name]: getValue(item),
         } as NodePropertiesValues;
       }, initialAcc);
-      const groupList = groupedData(data?.edges ?? []);
 
-      const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
-        return {
-          ...acc,
-          [key]: item.map((row) => ({
-            rowId: row.id,
-            id: row.edgeTypes.id,
-            name: row.nodes.name,
-            target_id: row.target_id,
-            target_type_id: row.target_type_id,
-          })),
-        };
-      }, {});
+      const groupListEdges = groupedData(data?.edges ?? []);
+
+      const groupListEdgesIn = groupedData(data?.edges_in ?? []);
+
+      const connectionFieldsData = Object.entries(groupListEdges)
+        .concat(Object.entries(groupListEdgesIn))
+        .reduce((acc, [key, item]) => {
+          return {
+            ...acc,
+            [key]: item.map((row) => ({
+              rowId: row.id,
+              id: row.edgeTypes.id,
+              name: row.nodes.name,
+              source_id: row.source_id,
+              source_type_id: row.source_type_id,
+              target_id: row.target_id,
+              target_type_id: row.target_type_id,
+            })),
+          };
+        }, {});
 
       form.setFieldsValue({
         ...fieldsData,
@@ -180,6 +187,8 @@ export const ViewEditNodeDrawer = () => {
           return item.ref_property_type_id === PropertyTypes.Connection
             ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
                 id: itemConn.rowId,
+                source_id: itemConn.source_id,
+                source_type_id: itemConn.source_type_id,
                 target_id: itemConn.target_id,
                 target_type_id: itemConn.target_type_id,
                 project_edge_type_id: itemConn.id,
@@ -228,6 +237,8 @@ export const ViewEditNodeDrawer = () => {
     return () => form.resetFields();
   }, [form, nodeData, setFormValue]);
 
+  // eslint-disable-next-line no-console
+  console.log(nodeData, 'data');
   return (
     <Drawer
       headerStyle={{
@@ -259,9 +270,10 @@ export const ViewEditNodeDrawer = () => {
         >
           <AddNodeForm
             nodeId={openNode?.id}
+            nodeTypeId={nodeData?.project_type_id}
             data={properties as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
-            edges={nodeData?.edges}
+            edges={nodeData?.edges.concat(nodeData?.edges_in)}
           />
         </Form>
       ) : isInitialLoading ? (

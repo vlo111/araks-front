@@ -15,6 +15,8 @@ import { groupedData } from 'pages/data-sheet/components/table-section/node/util
 
 type Props = {
   data: ProjectTypePropertyReturnData;
+  nodeTypeId?: string;
+  nodeId?: string;
   edges?: NodeEdges[] | undefined;
 };
 
@@ -40,7 +42,7 @@ const StyledFormItem = styled(FormItem)`
 
 export const getConnectionFormName = (name: string, id: string) => `${name}-${id}`;
 
-export const ConnectionType = ({ data, edges }: Props) => {
+export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
   const form = useFormInstance();
   const formName = getConnectionFormName(data.name, data.id);
 
@@ -66,6 +68,8 @@ export const ConnectionType = ({ data, edges }: Props) => {
             rowId: row.id,
             id: row.edgeTypes.id,
             name: row.nodes.name,
+            source_id: row.source_id,
+            source_type_id: row.source_type_id,
             target_id: row.target_id,
             target_type_id: row.target_type_id,
           })),
@@ -76,11 +80,15 @@ export const ConnectionType = ({ data, edges }: Props) => {
         (c) => data.id === c.id && selectedRow.id === c.target_id && selectedRow.project_type_id === c.target_type_id
       );
 
+      const isSource = nodeTypeId !== data.source_id;
+
       form.setFieldValue(formName, [
         ...(form.getFieldValue(formName) || []),
         {
-          target_type_id: selectedRow.project_type_id,
-          target_id: selectedRow.id,
+          source_id: isSource ? selectedRow.id : nodeId,
+          source_type_id: isSource ? data.target_id : data.source_id,
+          target_id: isSource ? nodeId : selectedRow.id,
+          target_type_id: isSource ? data.source_id : data.target_id,
           name: selectedRow.name,
           id: data.id,
           rowId: item?.rowId,
@@ -98,9 +106,11 @@ export const ConnectionType = ({ data, edges }: Props) => {
         </Space>
       </Col>
       <Col>
-        <WrapperConnection backgroundColor={data?.target?.color}>
+        <WrapperConnection backgroundColor={nodeTypeId !== data.source_id ? data?.source?.color : data?.target?.color}>
           <Connection />
-          <Text color={COLORS.PRIMARY.WHITE}>{data?.target?.name}</Text>
+          <Text color={COLORS.PRIMARY.WHITE}>
+            {nodeTypeId !== data.source_id ? data?.source?.name : data?.target?.name}
+          </Text>
         </WrapperConnection>
       </Col>
     </Row>
@@ -115,9 +125,16 @@ export const ConnectionType = ({ data, edges }: Props) => {
           required={data.required_type}
           style={{ marginBottom: '0' }}
         >
-          <ConnectionAutocomplete targetId={data.target_id || ''} handleSelect={handleSelect} />
+          <ConnectionAutocomplete
+            targetId={nodeTypeId !== data.source_id ? data.source_id ?? '' : data.target_id ?? ''}
+            handleSelect={handleSelect}
+          />
         </StyledFormItem>
-        <SelectConnectionFormItem formName={formName} color={data.source?.color} isRequired={data.required_type} />
+        <SelectConnectionFormItem
+          formName={formName}
+          color={nodeTypeId !== data.source_id ? data.source?.color : data.target?.color}
+          isRequired={data.required_type}
+        />
       </VerticalSpace>
     </div>
   );

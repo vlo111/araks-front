@@ -25,9 +25,10 @@ type Props = {
   setStopSubmit?: Dispatch<SetStateAction<boolean>>;
   edges?: NodeEdges[] | undefined;
   nodeId?: string;
+  nodeTypeId?: string;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, edges }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nodeTypeId, edges }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -61,7 +62,9 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, edg
                 case PropertyTypes.Document:
                   return <DocumentType nodeId={nodeId} key={item.id} data={item} setStopSubmit={setStopSubmit} />;
                 case PropertyTypes.Connection:
-                  return <ConnectionType key={item.id} data={item} edges={edges} />;
+                  return (
+                    <ConnectionType key={item.id} nodeId={nodeId} nodeTypeId={nodeTypeId} data={item} edges={edges} />
+                  );
                 default:
                   return <></>;
               }
