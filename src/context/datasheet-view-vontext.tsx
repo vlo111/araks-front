@@ -104,21 +104,27 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         } as NodePropertiesValues;
       }, {});
 
-      const groupList = groupedData(nodeData.edges);
+      const groupListEdges = groupedData(nodeData?.edges ?? []);
 
-      const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
-        return {
-          ...acc,
-          [key]: item.map((row) => ({
-            rowId: row.id,
-            id: row.edgeTypes.id,
-            name: row.nodes.name,
-            target_id: row.target_id,
-            target_type_id: row.target_type_id,
-          })),
-        };
-      }, {});
-      /** sets form values for edit */
+      const groupListEdgesIn = groupedData(nodeData?.edges_in ?? []);
+
+      const connectionFieldsData = Object.entries(groupListEdges)
+        .concat(Object.entries(groupListEdgesIn))
+        .reduce((acc, [key, item]) => {
+          return {
+            ...acc,
+            [key]: item.map((row) => ({
+              rowId: row.id,
+              id: row.edgeTypes.id,
+              name: row.nodes.name,
+              source_id: row.source_id,
+              source_type_id: row.source_type_id,
+              target_id: row.target_id,
+              target_type_id: row.target_type_id,
+            })),
+          };
+        }, {});
+
       form.setFieldsValue({
         ...fieldsData,
         name: [nodeData.name],
@@ -193,6 +199,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
               id: itemConn.rowId,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
               project_edge_type_id: itemConn.id,
             }))
           : null;
@@ -273,10 +281,11 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
               {isEdit ? (
                 <AddNodeForm
                   nodeId={nodeData?.id}
+                  nodeTypeId={nodeData?.project_type_id}
                   data={data as ProjectTypePropertyReturnData[]}
                   isInitialLoading={isInitialLoading}
                   setStopSubmit={setStopSubmit}
-                  edges={nodeData?.edges}
+                  edges={nodeData?.edges?.concat(nodeData?.edges_in ?? [])}
                 />
               ) : isInitialLoading ? (
                 <Skeleton />
