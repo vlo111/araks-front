@@ -14,8 +14,11 @@ export const useSignIn = () => {
       return client.post(url, values);
     },
     onSuccess: (data) => {
+      const avatar = data.user.avatar?.includes('gravatar')
+        ? data.user.avatar
+        : `${process.env.REACT_APP_AWS_URL}${data.user.avatar}`;
       login({
-        user: { ...data.user, avatar: `${process.env.REACT_APP_AWS_URL}${data.user.avatar}` },
+        user: { ...data.user, avatar },
         access_token: data.access_token,
       });
     },
