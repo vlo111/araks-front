@@ -19,7 +19,7 @@ import { DeleteProjectModal } from './delete-project-modal';
 import { Graph } from '@antv/g6';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useGetProjectInfo } from 'api/projects/use-get-project-info';
-import { PreviewChart } from 'pages/projects/components/preview/chart';
+import { initPreviewChartData, PreviewChart } from 'pages/projects/components/preview/chart';
 import { PreviewEdgeFormat } from 'pages/projects/components/preview/chart/data.format';
 
 type Props = {
@@ -30,6 +30,8 @@ type Props = {
   setGraph: Dispatch<React.SetStateAction<{ destroy: (() => void) | null; graph: Graph | null }>>;
   isPublic?: boolean;
 };
+
+type GraphRef = React.MutableRefObject<HTMLDivElement | null>;
 
 type TitleProps = ProjectButtonContent &
   ProjectStatisticsType & {
@@ -166,24 +168,25 @@ const Title = ({
 export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph, setGraph, isPublic }: Props) => {
   const navigate = useNavigate();
   const isPublicPage = useIsPublicPage();
+  const ref: GraphRef = React.useRef(null);
 
   const { data: projectData, isFetching } = useGetProjectInfo({ id: projectId }, { enabled: !!projectId });
 
   useEffect(() => {
-    if (
-      projectData?.projectsNodeTypes &&
-      !graph.graph &&
-      document.getElementById('project-overview') &&
-      !document.querySelector('canvas')
-    ) {
-      setGraph(
-        PreviewChart({
-          nodes: projectData?.projectsNodeTypes,
-          edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
-        })
-      );
+    if (!graph.graph && ref.current && !isFetching) {
+      setGraph(PreviewChart(ref.current as HTMLDivElement));
     }
-  }, [graph.graph, projectData?.projectsEdgeTypes, projectData?.projectsNodeTypes, setGraph]);
+  }, [graph.graph, isFetching, projectData, setGraph]);
+
+  useEffect(() => {
+    if (graph.graph && projectData?.projectsEdgeTypes) {
+      initPreviewChartData({
+        graph: graph.graph,
+        nodes: projectData?.projectsNodeTypes,
+        edges: PreviewEdgeFormat(projectData?.projectsEdgeTypes),
+      });
+    }
+  }, [graph, projectData]);
 
   const [isClicked, setClicked] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -277,7 +280,7 @@ export const ProjectViewModal = ({ isModalOpen, setIsModalOpen, projectId, graph
         width="50vw"
       >
         <Spin spinning={isFetching}>
-          <StyledContainer className="project-content" id="project-overview" />
+          <StyledContainer ref={ref} className="project-content" />
         </Spin>
       </ProjectWrapModal>
       <DeleteProjectModal
