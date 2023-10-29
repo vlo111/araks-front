@@ -90,7 +90,10 @@ export const UserListItem: Props = ({ id, index, user, visibleMetaData = true })
       ]}
     >
       {visibleMetaData && (
-        <ListMeta avatar={<Avatar src={user.avatar} />} description={<Text title={user.title}>{user.title}</Text>} />
+        <ListMeta
+          avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${user.avatar}`} />}
+          description={<Text title={user.title}>{user.title}</Text>}
+        />
       )}
     </List.Item>
   );
