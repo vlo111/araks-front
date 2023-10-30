@@ -87,52 +87,54 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
     enabled: !!selectedViewId,
     onSuccess: (nodeData) => {
-      /** use this to show data for view */
-      setSelectedView(nodeData);
+      if (nodeData) {
+        /** use this to show data for view */
+        setSelectedView(nodeData);
 
-      const fieldsData = nodeData.properties?.reduce((acc, item) => {
-        if (!item.nodes_data?.length) {
+        const fieldsData = nodeData.properties?.reduce((acc, item) => {
+          if (!item.nodes_data?.length) {
+            return {
+              ...acc,
+              [item.nodeTypeProperty.name]: undefined,
+            } as NodePropertiesValues;
+          }
+
           return {
             ...acc,
-            [item.nodeTypeProperty.name]: undefined,
+            [item.nodeTypeProperty.name]: getValue(item),
           } as NodePropertiesValues;
-        }
-
-        return {
-          ...acc,
-          [item.nodeTypeProperty.name]: getValue(item),
-        } as NodePropertiesValues;
-      }, {});
-
-      const groupListEdges = groupedData(nodeData?.edges ?? []);
-
-      const groupListEdgesIn = groupedData(nodeData?.edges_in ?? []);
-
-      const connectionFieldsData = Object.entries(groupListEdges)
-        .concat(Object.entries(groupListEdgesIn))
-        .reduce((acc, [key, item]) => {
-          return {
-            ...acc,
-            [key]: item.map((row) => ({
-              rowId: row.id,
-              id: row.edgeTypes.id,
-              name: row.nodes.name,
-              source_id: row.source_id,
-              source_type_id: row.source_type_id,
-              target_id: row.target_id,
-              target_type_id: row.target_type_id,
-            })),
-          };
         }, {});
 
-      form.setFieldsValue({
-        ...fieldsData,
-        name: [nodeData.name],
-        node_icon: nodeData.default_image
-          ? [setUploadFileStructure(nodeData.default_image, 'Default image')]
-          : undefined,
-        ...connectionFieldsData,
-      });
+        const groupListEdges = groupedData(nodeData?.edges ?? []);
+
+        const groupListEdgesIn = groupedData(nodeData?.edges_in ?? []);
+
+        const connectionFieldsData = Object.entries(groupListEdges)
+          .concat(Object.entries(groupListEdgesIn))
+          .reduce((acc, [key, item]) => {
+            return {
+              ...acc,
+              [key]: item.map((row) => ({
+                rowId: row.id,
+                id: row.edgeTypes.id,
+                name: row.nodes.name,
+                source_id: row.source_id,
+                source_type_id: row.source_type_id,
+                target_id: row.target_id,
+                target_type_id: row.target_type_id,
+              })),
+            };
+          }, {});
+
+        form.setFieldsValue({
+          ...fieldsData,
+          name: [nodeData.name],
+          node_icon: nodeData.default_image
+            ? [setUploadFileStructure(nodeData.default_image, 'Default image')]
+            : undefined,
+          ...connectionFieldsData,
+        });
+      }
     },
   });
 

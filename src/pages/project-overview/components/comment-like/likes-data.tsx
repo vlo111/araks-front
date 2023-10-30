@@ -44,7 +44,7 @@ export const LikesData = ({ setUserLikedProject }: Props) => {
           <>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar src={item.user.avatar} />}
+                avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${item.user.avatar}`} />}
                 title={
                   <VerticalSpace size={0}>
                     <Space>

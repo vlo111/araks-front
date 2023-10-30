@@ -85,10 +85,10 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
             style={{ paddingLeft: '16px' }}
             avatar={
               item.status === 'read' ? (
-                <Avatar src={item.user.avatar} />
+                <Avatar src={`${process.env.REACT_APP_AWS_URL}${item.user.avatar}`} />
               ) : (
                 <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
-                  <Avatar src={item.user.avatar} />
+                  <Avatar src={`${process.env.REACT_APP_AWS_URL}${item.user.avatar}`} />
                 </NotifyBadge>
               )
             }
