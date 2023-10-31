@@ -8,6 +8,7 @@ enum Paths {
   SharePerspective = 'helps/share-perspective.svg',
 }
 interface MenuItem {
+  title: string;
   content: JSX.Element;
   image?: JSX.Element;
 }
@@ -15,18 +16,9 @@ const { Title } = Typography;
 
 const menuItems: Record<string, MenuItem> = {
   'sub6-1': {
+    title: 'Add, Edit and Delete Perspective',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Perspective
-        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Click to the <b>+</b> button and Add New perspective
@@ -96,9 +88,16 @@ export const Perspective: React.FC<PerspectiveProps> = ({ activeMenuItem }) => {
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
         {menuItem.content}
-        {menuItem.image}
       </div>
     );
   }

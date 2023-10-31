@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
 const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 
+const { Title } = Typography;
+
 enum Paths {
   NewType = 'helps/new-type.svg',
   EditDeleteType = 'helps/edit-type.svg',
@@ -21,26 +23,18 @@ enum Paths {
 }
 
 interface MenuItem {
+  title: string;
   content: JSX.Element;
   image?: JSX.Element;
 }
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const menuItems: Record<string, MenuItem> = {
   'sub3-1': {
+    title: 'Create, Edit and Delete Type',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Create, Edit and Delete Type
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px', marginBottom: '30px' }}>
+        <Text strong style={{ fontSize: '16px', marginBottom: '30px' }}>
           1. Create a New Type
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -62,7 +56,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.NewType}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -86,19 +80,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-2': {
+    title: 'Add, Edit and Delete Property',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Property
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -122,8 +107,8 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.NewProperty}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Edit or Delete the Property{' '}
+        <Text strong style={{ fontSize: '16px' }}>
+          2. Edit or Delete the Property
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
@@ -150,19 +135,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-3': {
+    title: 'Create, Edit and Delete Connection',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Create, Edit and Delete Connection
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Create a New Connection (by selecting Data type - connection)
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -187,7 +163,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.NewConnection}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           2. Create a New Connection (create connection by clicking <b>+Connection Type</b> from taxonomy)
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -221,7 +197,7 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           3. Edit or Delete the Connection
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -251,19 +227,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-4': {
+    title: ' Add, Edit and Delete Connection Property',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Connection Property
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px', marginBottom: '30px' }}>
+        <Text strong style={{ fontSize: '16px', marginBottom: '30px' }}>
           1. Add a New Connection Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -279,8 +246,8 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteConnectionProperty}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Edit or Delete the Connection Property{' '}
+        <Text strong style={{ fontSize: '16px' }}>
+          2. Edit or Delete the Connection Property
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
@@ -306,20 +273,11 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-5': {
+    title: 'Add, Edit and Delete Node in Connection',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Node in Connection
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          1. Add a New Node in Connection{' '}
+        <Text strong style={{ fontSize: '16px' }}>
+          1. Add a New Node in Connection
         </Text>
         <ul style={{ color: '#808080' }}>
           <li>
@@ -337,8 +295,8 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.NodeInConnection}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Edit or Delete the nodes of connection{' '}
+        <Text strong style={{ fontSize: '16px' }}>
+          2. Edit or Delete the nodes of connection
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
@@ -367,18 +325,9 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-6': {
+    title: 'All data',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          All data
-        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Click to the <b>check box</b> of the taxonomy and the system will show the nodes of the selecting type
@@ -420,19 +369,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub3-7': {
+    title: 'Add, Edit and Delete Node',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Node
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Node
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -453,8 +393,8 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AddNode}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
-          2. Node View, Edit or Delete{' '}
+        <Text strong style={{ fontSize: '16px' }}>
+          2. Node View, Edit or Delete
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
@@ -494,9 +434,16 @@ export const DataSheetSection: React.FC<DataSheetSectionProps> = ({ activeMenuIt
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', marginTop: 0 }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
         {menuItem.content}
-        {menuItem.image}
       </div>
     );
   }

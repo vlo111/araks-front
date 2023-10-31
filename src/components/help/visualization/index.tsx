@@ -13,6 +13,7 @@ enum Paths {
   Expand = 'helps/expand.svg',
 }
 interface MenuItem {
+  title: string;
   content: JSX.Element;
   image?: JSX.Element;
 }
@@ -20,19 +21,10 @@ const { Title, Text } = Typography;
 
 const menuItems: Record<string, MenuItem> = {
   'sub5-1': {
+    title: 'Add, Edit and Delete Node',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Add, Edit and Delete Node
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Node
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -62,7 +54,7 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           2. Node View, Edit or Delete
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -93,19 +85,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub5-2': {
+    title: 'Filters',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Filters
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -125,18 +108,9 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub5-3': {
+    title: 'Queries',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Queries
-        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Click to the <b>+Add</b> button and start query
@@ -177,18 +151,9 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub5-4': {
+    title: 'Styling',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Styling
-        </Title>
         <ul style={{ color: '#808080' }}>
           <li>
             Styling can be applied to all data and can also include the use of time for filtering, querying, or
@@ -228,18 +193,9 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub5-5': {
+    title: 'Focus, Expand, Shortest path',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Focus, Expand, Shortest path
-        </Title>
         <ul style={{ color: '#808080' }}>
           <li>Right-click on the node and choose Function</li>
           <li>
@@ -290,9 +246,16 @@ export const VisualizationSection: React.FC<VisualizationSectionProps> = ({ acti
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
         {menuItem.content}
-        {menuItem.image}
       </div>
     );
   }

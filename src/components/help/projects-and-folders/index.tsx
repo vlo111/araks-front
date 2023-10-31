@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Image, Row, Space, Typography } from 'antd';
+import { Col, Image, Row, Typography } from 'antd';
 const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
   CreateAProjectImg = 'helps/create-a-project.svg',
@@ -11,25 +11,17 @@ enum Paths {
   DeleteFolder = 'helps/delete-folder.svg',
 }
 interface MenuItem {
+  title: string;
   content: JSX.Element;
   image?: JSX.Element;
 }
 const { Title, Text } = Typography;
 const menuItems: Record<string, MenuItem> = {
   'sub1-1': {
+    title: 'Create, Edit and Delete the Project',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Create, Edit and Delete the Project
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Create a Project
         </Text>
         <p style={{ marginLeft: '20px' }}>
@@ -57,7 +49,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateAProjectImg}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           2. Edit the Project
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -88,7 +80,7 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           3. Delete the Project
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -111,19 +103,10 @@ const menuItems: Record<string, MenuItem> = {
     ),
   },
   'sub1-2': {
+    title: 'Create, Edit and Delete the Folder',
     content: (
       <>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingLeft: '20px',
-            fontSize: '18px',
-            marginBottom: '30px',
-          }}
-        >
-          Create, Edit and Delete the Folder
-        </Title>
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           1. Create a Folder
         </Text>
         <p style={{ marginLeft: '20px' }}>
@@ -145,7 +128,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateFolder}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           2. Edit the Folder
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -165,7 +148,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditFolder}`}
         />
-        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
+        <Text strong style={{ fontSize: '16px' }}>
           3. Delete the Folder
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -198,12 +181,17 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
 
   if (menuItem) {
     return (
-      <Space>
-        <div style={{ fontSize: '16px' }}>
-          {menuItem.content}
-          {menuItem.image}
-        </div>
-      </Space>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
+        {menuItem.content}
+      </div>
     );
   }
 
