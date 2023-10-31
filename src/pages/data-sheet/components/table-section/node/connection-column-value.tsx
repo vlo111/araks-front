@@ -32,11 +32,11 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
                   type="text"
                   size="small"
                   key={connection.id}
-                  backgroundColor={connection.nodes.nodeType.color}
+                  backgroundColor={connection.source.nodeType.color}
                   block
                   icon={<Connection />}
                 >
-                  {connection.nodes.name}
+                  {connection.source.name}
                 </GridConnectionButton>
               ))}
             </VerticalSpace>
@@ -47,7 +47,7 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
         align={{ offset: [0, 0] }}
       >
         <GridConnectionButton backgroundColor={row.nodeType.color} block icon={<Connection />} size="small">
-          {`${filteredData[0].nodes.nodeType.name} (${filteredData.length})`}
+          {`${filteredData[0].source.nodeType.name} (${filteredData.length})`}
         </GridConnectionButton>
       </GridConnectionPopover>
     </div>

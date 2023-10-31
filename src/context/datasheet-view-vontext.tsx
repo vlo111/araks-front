@@ -117,7 +117,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
               [key]: item.map((row) => ({
                 rowId: row.id,
                 id: row.edgeTypes.id,
-                name: row.nodes.name,
+                name: nodeData?.id === row.source.id ? row.target.name : row.source.name,
                 source_id: row.source_id,
                 source_type_id: row.source_type_id,
                 target_id: row.target_id,

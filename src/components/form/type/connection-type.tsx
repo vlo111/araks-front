@@ -5,7 +5,7 @@ import { SecondaryText, Text } from 'components/typography';
 import { COLORS } from 'helpers/constants';
 import styled from 'styled-components';
 import { FormItem } from '../form-item';
-import { ReactComponent as Connection } from 'components/icons/connection.svg';
+import { ReactComponent as InComeConnection } from 'components/icons/in-come.svg';
 
 import { ConnectionSourcesSearchResult, NodeEdges } from 'types/node';
 import { ConnectionAutocomplete } from 'components/input/connection-autocomplete';
@@ -51,7 +51,10 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
 
     const existingData = form.getFieldValue(formName);
 
-    if (existingData?.length && existingData.find((data: NodeDataConnectionToSave) => data.target_id === value)) {
+    if (
+      existingData?.length &&
+      existingData.find((data: NodeDataConnectionToSave) => value === data.source_id || value === data.target_id)
+    ) {
       message.warning(`THe option is already selected`);
       return;
     }
@@ -67,7 +70,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
           [key]: item.map((row) => ({
             rowId: row.id,
             id: row.edgeTypes.id,
-            name: row.nodes.name,
+            name: nodeTypeId !== data.source_id ? row.source.name : row.target.name,
             source_id: row.source_id,
             source_type_id: row.source_type_id,
             target_id: row.target_id,
@@ -107,7 +110,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
       </Col>
       <Col>
         <WrapperConnection backgroundColor={nodeTypeId !== data.source_id ? data?.source?.color : data?.target?.color}>
-          <Connection />
+          <InComeConnection style={{ transform: `rotate(${nodeTypeId !== data.source_id ? 180 : 0}deg)` }} />
           <Text color={COLORS.PRIMARY.WHITE}>
             {nodeTypeId !== data.source_id ? data?.source?.name : data?.target?.name}
           </Text>
@@ -132,6 +135,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
         </StyledFormItem>
         <SelectConnectionFormItem
           formName={formName}
+          isSource={nodeTypeId !== data.source_id}
           color={nodeTypeId !== data.source_id ? data.source?.color : data.target?.color}
           isRequired={data.required_type}
         />
