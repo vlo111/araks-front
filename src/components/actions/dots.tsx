@@ -23,7 +23,7 @@ export const DotsWrapper = styled(({ fullWidth, ...props }) => <Button type="tex
     }
 
     circle {
-      fill: #f2f2f2;
+      fill: #2d356e75;
       font-size: 20px;
     }
   }

@@ -82,7 +82,16 @@ export type NodeEdges = {
   target_id: string;
   target_type_id: string;
   project_type_property_type: string;
-  nodes: {
+  source: {
+    created_at: string;
+    default_image: string;
+    id: string;
+    name: string;
+    project_type_id: string;
+    updated_at: string;
+    nodeType: EdgeType;
+  };
+  target: {
     created_at: string;
     default_image: string;
     id: string;

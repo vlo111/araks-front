@@ -90,7 +90,7 @@ export const ViewEditNodeDrawer = () => {
             [key]: item.map((row) => ({
               rowId: row.id,
               id: row.edgeTypes.id,
-              name: row.nodes.name,
+              name: row.source.id === openNode.id ? row.target.name : row.source.name,
               source_id: row.source_id,
               source_type_id: row.source_type_id,
               target_id: row.target_id,
@@ -106,7 +106,7 @@ export const ViewEditNodeDrawer = () => {
         ...connectionFieldsData,
       });
     },
-    [form]
+    [form, openNode?.id]
   );
 
   const { data: nodeData } = useGetNode(openNode?.id ?? '', {

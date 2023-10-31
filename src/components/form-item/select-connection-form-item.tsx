@@ -1,5 +1,5 @@
 import { Input } from 'components/input';
-import { ReactComponent as Connection } from 'components/icons/connection.svg';
+import { ReactComponent as InComeConnection } from 'components/icons/in-come.svg';
 import styled from 'styled-components';
 import { FormItem } from 'components/form/form-item';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
@@ -39,10 +39,11 @@ const ResultFormItem = styled(({ backgroundColor, ...props }) => <FormItem {...p
 type Props = {
   color: string | undefined;
   isRequired: boolean;
+  isSource: boolean;
   formName: string;
 };
 
-export const SelectConnectionFormItem = ({ color, isRequired = false, formName }: Props) => {
+export const SelectConnectionFormItem = ({ color, isRequired = false, formName, isSource }: Props) => {
   return (
     <Form.List name={formName}>
       {(fields, { add, remove }) => (
@@ -56,7 +57,11 @@ export const SelectConnectionFormItem = ({ color, isRequired = false, formName }
                 name={[field.name, 'name']}
                 rules={[{ required: isRequired, message: VALIDATE_MESSAGES.required }]}
               >
-                <Input prefix={<Connection />} disabled suffix={<CloseOutlined onClick={() => remove(field.name)} />} />
+                <Input
+                  prefix={<InComeConnection style={{ transform: `rotate(${isSource ? 180 : 0}deg)` }} />}
+                  disabled
+                  suffix={<CloseOutlined onClick={() => remove(field.name)} />}
+                />
               </ResultFormItem>
             ))}
           </VerticalSpace>
