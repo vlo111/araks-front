@@ -60,7 +60,7 @@ export const TableSection = () => {
             node_icon: showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`),
           } as DataType
         ),
-        ...row.edges?.reduce((curr: DataType, item) => {
+        ...row.edges.concat(row.edges_in)?.reduce((curr: DataType, item) => {
           return {
             ...curr,
             [item.edgeTypes.name + item.edgeTypes.id]: (

@@ -16,9 +16,9 @@ const getPopupContainer = (triggerNode: HTMLElement) => {
 };
 
 export const ConnectionColumnValue = ({ itemName, row }: Props) => {
-  const filteredData = row.edges.filter(
-    (edge) => getConnectionFormName(edge.edgeTypes.name, edge.edgeTypes.id) === itemName
-  );
+  const filteredData = row.edges
+    .concat(row.edges_in)
+    .filter((edge) => getConnectionFormName(edge.edgeTypes.name, edge.edgeTypes.id) === itemName);
 
   return (
     <div id="custom-popup-container">
@@ -32,11 +32,15 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
                   type="text"
                   size="small"
                   key={connection.id}
-                  backgroundColor={connection.source.nodeType.color}
+                  backgroundColor={
+                    row.id === connection.source.id
+                      ? connection.target.nodeType.color
+                      : connection.source.nodeType.color
+                  }
                   block
                   icon={<Connection />}
                 >
-                  {connection.source.name}
+                  {row.id === connection.source.id ? connection.target.name : connection.source.name}
                 </GridConnectionButton>
               ))}
             </VerticalSpace>
@@ -46,9 +50,17 @@ export const ConnectionColumnValue = ({ itemName, row }: Props) => {
         getPopupContainer={getPopupContainer}
         align={{ offset: [0, 0] }}
       >
-        <GridConnectionButton backgroundColor={row.nodeType.color} block icon={<Connection />} size="small">
-          {`${filteredData[0].source.nodeType.name} (${filteredData.length})`}
-        </GridConnectionButton>
+        {filteredData.length ? (
+          <GridConnectionButton backgroundColor={row.nodeType.color} block icon={<Connection />} size="small">
+            {`${
+              row.id === filteredData[0].source.id
+                ? filteredData[0].target.nodeType.name
+                : filteredData[0].source.nodeType.name
+            }`}
+          </GridConnectionButton>
+        ) : (
+          <></>
+        )}
       </GridConnectionPopover>
     </div>
   );
