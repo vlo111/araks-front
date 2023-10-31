@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Typography } from 'antd';
+import { Image } from 'antd';
 const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 enum Paths {
   ProjectName = 'helps/project-name.svg',
@@ -11,7 +11,6 @@ interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
 }
-const { Title } = Typography;
 const menuItems: Record<string, MenuItem> = {
   'sub4-1': {
     title: 'Project name and Privacy',
@@ -102,21 +101,15 @@ interface OverviewSectionProps {
 
 export const OverviewSection: React.FC<OverviewSectionProps> = ({ activeMenuItem }) => {
   const menuItem = menuItems[activeMenuItem];
+
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', padding: '0 20px' }}>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingBottom: '15px',
-            fontSize: '18px',
-          }}
-        >
-          {menuItem.title}
-        </Title>
+      <div style={{ fontSize: '16px', marginTop: 0 }}>
         {menuItem.content}
+        {menuItem.image}
       </div>
     );
   }
+
   return null;
 };

@@ -20,6 +20,7 @@ const menuItems: Record<string, MenuItem> = {
         <Title
           style={{
             marginTop: 0,
+            paddingLeft: '20px',
             fontSize: '18px',
             marginBottom: '30px',
           }}
@@ -95,7 +96,7 @@ export const Perspective: React.FC<PerspectiveProps> = ({ activeMenuItem }) => {
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', padding: '0 20px' }}>
+      <div style={{ fontSize: '16px' }}>
         {menuItem.content}
         {menuItem.image}
       </div>

@@ -25,7 +25,7 @@ interface MenuItem {
   content: JSX.Element;
   image?: JSX.Element;
 }
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const menuItems: Record<string, MenuItem> = {
   'sub3-1': {
@@ -432,17 +432,9 @@ export const DataSheetSection: React.FC<DataSheetSectionProps> = ({ activeMenuIt
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', marginTop: 0, padding: '0 20px' }}>
-        <Title
-          style={{
-            marginTop: 0,
-            paddingBottom: '20px',
-            fontSize: '18px',
-          }}
-        >
-          {menuItem.title}
-        </Title>
+      <div style={{ fontSize: '16px', marginTop: 0 }}>
         {menuItem.content}
+        {menuItem.image}
       </div>
     );
   }
