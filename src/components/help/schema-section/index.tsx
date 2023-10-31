@@ -27,7 +27,7 @@ const sections: Record<
     title: 'Create, Edit and Delete Type',
     content: (
       <div style={{ marginTop: '30px' }}>
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Type
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -45,12 +45,13 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
+
         <Image
           rootClassName="help-image"
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateNewType}`}
         />
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Type
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -77,7 +78,7 @@ const sections: Record<
     title: 'Add, Edit and Delete Property',
     content: (
       <div style={{ marginTop: '30px' }}>
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -101,7 +102,7 @@ const sections: Record<
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AddNewProperty}`}
         />
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Property
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -132,7 +133,7 @@ const sections: Record<
     title: 'Create, Edit and Delete Connection',
     content: (
       <div style={{ marginTop: '30px' }}>
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Create a New Connection
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -153,7 +154,7 @@ const sections: Record<
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateConnection}`}
         />
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -186,7 +187,7 @@ const sections: Record<
     title: 'Add, Edit and Delete Connection Property',
     content: (
       <div style={{ marginTop: '30px' }}>
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           1. Add a New Connection Property
         </Text>
         <ul style={{ color: '#808080' }}>
@@ -206,7 +207,7 @@ const sections: Record<
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AddConnectionProperty}`}
         />
-        <Text strong style={{ fontSize: '16px' }}>
+        <Text strong style={{ marginLeft: '20px', fontSize: '16px' }}>
           2. Edit or Delete the Connection Property
         </Text>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
@@ -272,10 +273,11 @@ export const SchemaSection: React.FC<SchemaSectionProps> = ({ activeMenuItem }) 
 
   if (section) {
     return (
-      <div style={{ fontSize: '16px', padding: '0 20px' }}>
+      <div style={{ fontSize: '16px' }}>
         <Title
           style={{
             marginTop: 0,
+            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
