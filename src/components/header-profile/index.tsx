@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Dropdown } from 'antd';
 import { useAuth } from 'context/auth-context';
@@ -26,6 +26,12 @@ const Wrapper = styled.div`
 export const HeaderProfile = () => {
   const { user, logout } = useAuth();
 
+  const [avatar, setAvatar] = useState(user?.avatar);
+
+  useEffect(() => {
+    setAvatar(user?.avatar);
+  }, [user?.avatar]);
+
   const items: ItemType[] = useMemo(
     () => [
       {
@@ -51,7 +57,7 @@ export const HeaderProfile = () => {
   return (
     <Wrapper>
       <Dropdown overlayClassName="profile-settings" menu={{ items }} trigger={['click']}>
-        <Button icon={<img src={user?.avatar} alt={user?.first_name} />} />
+        <Button icon={<img src={avatar} alt={user?.first_name} />} />
       </Dropdown>
     </Wrapper>
   );
