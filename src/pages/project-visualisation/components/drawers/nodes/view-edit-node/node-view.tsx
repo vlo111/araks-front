@@ -87,7 +87,7 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
                   onClick={() => {
                     finishOpenNode();
                     startOpenNode({
-                      id: row.target_id,
+                      id: selectedView?.id !== row.source.id ? row.source_id : row.target_id,
                     });
                   }}
                 >
