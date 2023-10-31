@@ -20,7 +20,7 @@ const menuItems: Record<string, MenuItem> = {
   'sub1-1': {
     title: 'Create, Edit and Delete the Project',
     content: (
-      <>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a Project
         </Text>
@@ -99,13 +99,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteProject}`}
         />
-      </>
+      </div>
     ),
   },
   'sub1-2': {
     title: 'Create, Edit and Delete the Folder',
     content: (
-      <>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a Folder
         </Text>
@@ -167,7 +167,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteFolder}`}
         />
-      </>
+      </div>
     ),
   },
 };
