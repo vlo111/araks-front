@@ -16,7 +16,7 @@ const { Title } = Typography;
 const menuItems: Record<string, MenuItem> = {
   'sub6-1': {
     content: (
-      <div>
+      <>
         <Title
           style={{
             marginTop: 0,
@@ -81,7 +81,7 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-      </div>
+      </>
     ),
   },
 };

@@ -23,7 +23,7 @@ const menuItems: Record<string, MenuItem> = {
   'sub5-1': {
     title: 'Add, Edit and Delete Node',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Node
         </Text>
@@ -81,13 +81,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.VisualizationEdit}`}
         />
-      </div>
+      </>
     ),
   },
   'sub5-2': {
     title: 'Filters',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Property
         </Text>
@@ -104,13 +104,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.Filters}`}
         />
-      </div>
+      </>
     ),
   },
   'sub5-3': {
     title: 'Queries',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080' }}>
           <li>
             Click to the <b>+Add</b> button and start query
@@ -147,13 +147,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.Queries}`}
         />
-      </div>
+      </>
     ),
   },
   'sub5-4': {
     title: 'Styling',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080' }}>
           <li>
             Styling can be applied to all data and can also include the use of time for filtering, querying, or
@@ -189,13 +189,13 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-      </div>
+      </>
     ),
   },
   'sub5-5': {
     title: 'Focus, Expand, Shortest path',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080' }}>
           <li>Right-click on the node and choose Function</li>
           <li>
@@ -232,7 +232,7 @@ const menuItems: Record<string, MenuItem> = {
             />
           </Col>
         </Row>
-      </div>
+      </>
     ),
   },
 };

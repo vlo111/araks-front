@@ -31,7 +31,7 @@ const menuItems: Record<string, MenuItem> = {
   'sub3-1': {
     title: 'Create, Edit and Delete Type',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px', marginBottom: '30px' }}>
           1. Create a New Type
         </Text>
@@ -74,13 +74,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteType}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-2': {
     title: 'Add, Edit and Delete Property',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Property
         </Text>
@@ -129,13 +129,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditProperty}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-3': {
     title: 'Create, Edit and Delete Connection',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a New Connection (by selecting Data type - connection)
         </Text>
@@ -221,13 +221,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditConnection}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-4': {
     title: ' Add, Edit and Delete Connection Property',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px', marginBottom: '30px' }}>
           1. Add a New Connection Property
         </Text>
@@ -267,13 +267,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditConnectionProperty}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-5': {
     title: 'Add, Edit and Delete Node in Connection',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Node in Connection
         </Text>
@@ -319,13 +319,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.EditNodes}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-6': {
     title: 'All data',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080' }}>
           <li>
             Click to the <b>check box</b> of the taxonomy and the system will show the nodes of the selecting type
@@ -363,13 +363,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AllData}`}
         />
-      </div>
+      </>
     ),
   },
   'sub3-7': {
     title: 'Add, Edit and Delete Node',
     content: (
-      <div>
+      <>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Node
         </Text>
@@ -418,7 +418,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.ViewNode}`}
         />
-      </div>
+      </>
     ),
   },
 };

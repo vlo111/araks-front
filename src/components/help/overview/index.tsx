@@ -16,7 +16,7 @@ const menuItems: Record<string, MenuItem> = {
   'sub4-1': {
     title: 'Project name and Privacy',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>Click to the Edit icon and change:</li>
           <ul>
@@ -42,13 +42,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.ProjectName}`}
         />
-      </div>
+      </>
     ),
   },
   'sub4-2': {
     title: 'See all members',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>
             Click <b>See all members</b> and navigate to the all members page
@@ -71,13 +71,13 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.AllMembers}`}
         />
-      </div>
+      </>
     ),
   },
   'sub4-3': {
     title: 'Comments and Likes',
     content: (
-      <div>
+      <>
         <ul style={{ color: '#808080', fontSize: '16px' }}>
           <li>Write comment and click submit</li>
           <li>
@@ -92,7 +92,7 @@ const menuItems: Record<string, MenuItem> = {
           wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
           src={`${helpUrl}${Paths.Comments}`}
         />
-      </div>
+      </>
     ),
   },
 };
