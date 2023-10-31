@@ -148,7 +148,9 @@ export const Help: React.FC = () => {
     .filter(Boolean);
   const [isSearching, setIsSearching] = useState(false);
   const handleMenuItemClick = (key: string) => {
-    setActiveMenuItem(key === activeMenuItem ? '' : key);
+    if (key !== activeMenuItem) {
+      setActiveMenuItem(key);
+    }
   };
   return (
     <Space>

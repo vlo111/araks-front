@@ -8,86 +8,92 @@ enum Paths {
 }
 interface MenuItem {
   title: string;
-  content: JSX.Element[];
+  content: JSX.Element;
   image?: JSX.Element;
 }
 const { Title } = Typography;
 const menuItems: Record<string, MenuItem> = {
   'sub4-1': {
     title: 'Project name and Privacy',
-    content: [
-      <ul style={{ color: '#808080', fontSize: '16px' }}>
-        <li>Click to the Edit icon and change:</li>
-        <ul>
-          <li>Project name</li>
-          <li>Project Image icon </li>
-          <li>Project Image color</li>
-          <li>Project Privacy</li>
+    content: (
+      <>
+        <ul style={{ color: '#808080', fontSize: '16px' }}>
+          <li>Click to the Edit icon and change:</li>
           <ul>
-            <li>Private - the project can see only owner</li>
-            <li>Public - the project can see all Users (view permission)</li>
+            <li>Project name</li>
+            <li>Project Image icon </li>
+            <li>Project Image color</li>
+            <li>Project Privacy</li>
+            <ul>
+              <li>Private - the project can see only owner</li>
+              <li>Public - the project can see all Users (view permission)</li>
+            </ul>
+          </ul>
+          <li>Share section</li>
+          <ul>
+            <li>Click the Dropdown and choose the Perspective </li>
+            <li>Write User email </li>
+            <li>Choose the role </li>
+            <li>Click the Send Invite button.</li>
           </ul>
         </ul>
-        <li>Share section</li>
-        <ul>
-          <li>Click the Dropdown and choose the Perspective </li>
-          <li>Write User email </li>
-          <li>Choose the role </li>
-          <li>Click the Send Invite button.</li>
-        </ul>
-      </ul>,
-      <Image
-        rootClassName="help-image"
-        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-        src={`${helpUrl}${Paths.ProjectName}`}
-      />,
-    ],
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.ProjectName}`}
+        />
+      </>
+    ),
   },
   'sub4-2': {
     title: 'See all members',
-    content: [
-      <ul style={{ color: '#808080', fontSize: '16px' }}>
-        <li>
-          Click <b>See all members</b> and navigate to the all members page
-        </li>
-        <li>Click the Dropdown and choose the Perspective </li>
-        <li>Write User email</li>
-        <li>Choose the role</li>
-        <li>
-          Click the <b>Send Invite</b> button
-        </li>
-        <li>
-          Change <b>Role</b> Edit or View
-        </li>
-        <li>
-          Click <b>Delete</b> Icon (The shared perspective will be deleted)
-        </li>
-      </ul>,
-      <Image
-        rootClassName="help-image"
-        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-        src={`${helpUrl}${Paths.AllMembers}`}
-      />,
-    ],
+    content: (
+      <>
+        <ul style={{ color: '#808080', fontSize: '16px' }}>
+          <li>
+            Click <b>See all members</b> and navigate to the all members page
+          </li>
+          <li>Click the Dropdown and choose the Perspective </li>
+          <li>Write User email</li>
+          <li>Choose the role</li>
+          <li>
+            Click the <b>Send Invite</b> button
+          </li>
+          <li>
+            Change <b>Role</b> Edit or View
+          </li>
+          <li>
+            Click <b>Delete</b> Icon (The shared perspective will be deleted)
+          </li>
+        </ul>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.AllMembers}`}
+        />
+      </>
+    ),
   },
   'sub4-3': {
     title: 'Comments and Likes',
-    content: [
-      <ul style={{ color: '#808080', fontSize: '16px' }}>
-        <li>Write comment and click submit</li>
-        <li>
-          Write <b>@Member email</b> and click submit (the mentioned User will get notification)
-        </li>
-        <li>
-          Click <b>Like</b> or <b>Unlike</b> the project
-        </li>
-      </ul>,
-      <Image
-        rootClassName="help-image"
-        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
-        src={`${helpUrl}${Paths.Comments}`}
-      />,
-    ],
+    content: (
+      <>
+        <ul style={{ color: '#808080', fontSize: '16px' }}>
+          <li>Write comment and click submit</li>
+          <li>
+            Write <b>@Member email</b> and click submit (the mentioned User will get notification)
+          </li>
+          <li>
+            Click <b>Like</b> or <b>Unlike</b> the project
+          </li>
+        </ul>
+        <Image
+          rootClassName="help-image"
+          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          src={`${helpUrl}${Paths.Comments}`}
+        />
+      </>
+    ),
   },
 };
 interface OverviewSectionProps {
