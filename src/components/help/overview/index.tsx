@@ -9,25 +9,14 @@ enum Paths {
 interface MenuItem {
   title: string;
   content: JSX.Element[];
-  image: JSX.Element;
+  image?: JSX.Element;
 }
 const { Title } = Typography;
 const menuItems: Record<string, MenuItem> = {
   'sub4-1': {
     title: 'Project name and Privacy',
     content: [
-      <Title
-        style={{
-          marginTop: 0,
-          paddingLeft: '20px',
-          fontSize: '18px',
-          marginBottom: '30px',
-        }}
-        key="1"
-      >
-        Project name and Privacy
-      </Title>,
-      <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
+      <ul style={{ color: '#808080', fontSize: '16px' }}>
         <li>Click to the Edit icon and change:</li>
         <ul>
           <li>Project name</li>
@@ -47,25 +36,17 @@ const menuItems: Record<string, MenuItem> = {
           <li>Click the Send Invite button.</li>
         </ul>
       </ul>,
+      <Image
+        rootClassName="help-image"
+        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+        src={`${helpUrl}${Paths.ProjectName}`}
+      />,
     ],
-
-    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.ProjectName}`} />,
   },
   'sub4-2': {
     title: 'See all members',
     content: [
-      <Title
-        style={{
-          marginTop: 0,
-          paddingLeft: '20px',
-          fontSize: '18px',
-          marginBottom: '30px',
-        }}
-        key="1"
-      >
-        See all members
-      </Title>,
-      <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
+      <ul style={{ color: '#808080', fontSize: '16px' }}>
         <li>
           Click <b>See all members</b> and navigate to the all members page
         </li>
@@ -82,24 +63,17 @@ const menuItems: Record<string, MenuItem> = {
           Click <b>Delete</b> Icon (The shared perspective will be deleted)
         </li>
       </ul>,
+      <Image
+        rootClassName="help-image"
+        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+        src={`${helpUrl}${Paths.AllMembers}`}
+      />,
     ],
-    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.AllMembers}`} />,
   },
   'sub4-3': {
     title: 'Comments and Likes',
     content: [
-      <Title
-        style={{
-          marginTop: 0,
-          paddingLeft: '20px',
-          fontSize: '18px',
-          marginBottom: '30px',
-        }}
-        key="1"
-      >
-        Comments and Likes
-      </Title>,
-      <ul key="2" style={{ color: '#808080', fontSize: '16px' }}>
+      <ul style={{ color: '#808080', fontSize: '16px' }}>
         <li>Write comment and click submit</li>
         <li>
           Write <b>@Member email</b> and click submit (the mentioned User will get notification)
@@ -108,8 +82,12 @@ const menuItems: Record<string, MenuItem> = {
           Click <b>Like</b> or <b>Unlike</b> the project
         </li>
       </ul>,
+      <Image
+        rootClassName="help-image"
+        wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+        src={`${helpUrl}${Paths.Comments}`}
+      />,
     ],
-    image: <Image rootClassName="help-image" key="3" src={`${helpUrl}${Paths.Comments}`} />,
   },
 };
 interface OverviewSectionProps {
@@ -120,11 +98,17 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ activeMenuItem
   const menuItem = menuItems[activeMenuItem];
   if (menuItem) {
     return (
-      <div>
-        {menuItem.content.map((element, index) => (
-          <React.Fragment key={index}>{element}</React.Fragment>
-        ))}
-        {menuItem.image}
+      <div style={{ fontSize: '16px', padding: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            paddingBottom: '15px',
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
+        {menuItem.content}
       </div>
     );
   }

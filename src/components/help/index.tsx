@@ -168,7 +168,7 @@ export const Help: React.FC = () => {
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
-                    setIsSearching(e.target.value.length >= 3);
+                    setIsSearching(e.target.value.length >= 2);
                   }}
                   placeholder="Search"
                   style={{ height: '25px', borderColor: '#C3C3C3', fontSize: '15px' }}
