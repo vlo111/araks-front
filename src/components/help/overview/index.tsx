@@ -1,6 +1,9 @@
 import React from 'react';
-import { Image } from 'antd';
+import { Image, Typography } from 'antd';
 const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
+
+const { Title } = Typography;
+
 enum Paths {
   ProjectName = 'helps/project-name.svg',
   AllMembers = 'helps/all-members.svg',
@@ -104,9 +107,16 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ activeMenuItem
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', marginTop: 0 }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
         {menuItem.content}
-        {menuItem.image}
       </div>
     );
   }

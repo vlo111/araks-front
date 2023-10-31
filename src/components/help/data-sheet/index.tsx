@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Image, Row, Typography } from 'antd';
 const helpUrl = `${process.env.REACT_APP_AWS_URL}`;
 
+const { Title } = Typography;
+
 enum Paths {
   NewType = 'helps/new-type.svg',
   EditDeleteType = 'helps/edit-type.svg',
@@ -432,9 +434,16 @@ export const DataSheetSection: React.FC<DataSheetSectionProps> = ({ activeMenuIt
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px', marginTop: 0 }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
+        <Title
+          style={{
+            marginTop: 0,
+            fontSize: '18px',
+          }}
+        >
+          {menuItem.title}
+        </Title>
         {menuItem.content}
-        {menuItem.image}
       </div>
     );
   }

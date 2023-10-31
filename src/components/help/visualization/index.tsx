@@ -246,11 +246,10 @@ export const VisualizationSection: React.FC<VisualizationSectionProps> = ({ acti
 
   if (menuItem) {
     return (
-      <div style={{ fontSize: '16px' }}>
+      <div style={{ fontSize: '16px', margin: '0 20px' }}>
         <Title
           style={{
             marginTop: 0,
-            paddingLeft: '20px',
             fontSize: '18px',
           }}
         >
