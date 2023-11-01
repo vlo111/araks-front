@@ -1,4 +1,4 @@
-import { Col, message, Row, Space } from 'antd';
+import { Col, Form, message, Row, Space } from 'antd';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
@@ -18,6 +18,17 @@ type Props = {
   nodeTypeId?: string;
   nodeId?: string;
   edges?: NodeEdges[] | undefined;
+};
+
+export type ConnectionFields = {
+  [p: string]: {
+    target_type_id: string;
+    name: string;
+    target_id: string;
+    id: string;
+    rowId: string;
+    source_id: string;
+  }[];
 };
 
 const WrapperConnection = styled(({ backgroundColor, ...props }) => <Space {...props} />)`
@@ -44,6 +55,9 @@ export const getConnectionFormName = (name: string, id: string) => `${name}-${id
 
 export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
   const form = useFormInstance();
+
+  const destroyedEdgesIds = Form.useWatch('destroyedEdgesIds', { preserve: true });
+
   const formName = getConnectionFormName(data.name, data.id);
 
   const handleSelect = (value: string, options: ConnectionSourcesSearchResult[]) => {
@@ -62,9 +76,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
     if (selectedRow) {
       const groupList = groupedData(edges ?? []);
 
-      const connectionFieldsData: {
-        [p: string]: { target_type_id: string; name: string; target_id: string; id: string; rowId: string }[];
-      } = Object.entries(groupList).reduce((acc, [key, item]) => {
+      const connectionFieldsData: ConnectionFields = Object.entries(groupList).reduce((acc, [key, item]) => {
         return {
           ...acc,
           [key]: item.map((row) => ({
@@ -97,6 +109,16 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
           rowId: item?.rowId,
         },
       ]);
+
+      if (item?.rowId) {
+        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== item?.rowId)]);
+      } else {
+        const rowId = connectionFieldsData[formName]?.find((c) =>
+          isSource ? c.source_id === selectedRow.id : c.target_id === selectedRow.id
+        )?.rowId;
+
+        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== rowId)]);
+      }
     }
   };
 

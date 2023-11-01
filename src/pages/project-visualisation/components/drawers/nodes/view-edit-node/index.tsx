@@ -204,11 +204,12 @@ export const ViewEditNodeDrawer = () => {
           edges: dataToSubmitEdges?.flat() || [],
           project_type_id: nodeData?.project_type_id || '',
           nodeId: nodeData.id,
+          destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
         } as NodeDataSubmit);
         onClose();
       }
     },
-    [mutate, nodeData, onClose, properties]
+    [form, mutate, nodeData, onClose, properties]
   );
 
   const footer = useMemo(

@@ -29,6 +29,7 @@ export type NodeDataSubmit = {
   nodeId?: string;
   name: string;
   default_image: string;
+  destroyedEdgesIds?: string[];
 };
 
 export type ResponseLocationType = {

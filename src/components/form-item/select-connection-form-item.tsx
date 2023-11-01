@@ -43,7 +43,26 @@ type Props = {
   formName: string;
 };
 
+type DeleteEdgesHandle = (remove: (index: number | number[]) => void, name: number) => void;
+
 export const SelectConnectionFormItem = ({ color, isRequired = false, formName, isSource }: Props) => {
+  const form = Form.useFormInstance();
+
+  const destroyedEdgesIds = Form.useWatch('destroyedEdgesIds', { preserve: true });
+
+  const edgeList = Form.useWatch(formName, { preserve: true });
+
+  const deleteEdgesHandle: DeleteEdgesHandle = (remove, name) => {
+    if (destroyedEdgesIds) {
+      if (edgeList[name].rowId) {
+        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds, edgeList[name].rowId]);
+      }
+    } else {
+      form.setFieldValue('destroyedEdgesIds', [edgeList[name].rowId]);
+    }
+    remove(name);
+  };
+
   return (
     <Form.List name={formName}>
       {(fields, { add, remove }) => (
@@ -60,7 +79,7 @@ export const SelectConnectionFormItem = ({ color, isRequired = false, formName, 
                 <Input
                   prefix={<InComeConnection style={{ transform: `rotate(${isSource ? 180 : 0}deg)` }} />}
                   disabled
-                  suffix={<CloseOutlined onClick={() => remove(field.name)} />}
+                  suffix={<CloseOutlined onClick={() => deleteEdgesHandle(remove, field.name)} />}
                 />
               </ResultFormItem>
             ))}
