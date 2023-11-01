@@ -74,7 +74,11 @@ export const VIewNode = () => {
               }}
             >
               {item.map((row) => (
-                <Button type="text" key={row.id} onClick={() => dispatch(row.target_id)}>
+                <Button
+                  type="text"
+                  key={row.id}
+                  onClick={() => dispatch(selectedView?.id !== row.source.id ? row.source_id : row.target_id)}
+                >
                   <Text underline color={COLORS.PRIMARY.GRAY_DARK}>
                     {selectedView?.id !== row.source.id ? row.source.name : row.target.name}
                   </Text>
