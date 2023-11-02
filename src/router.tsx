@@ -19,6 +19,8 @@ import { ProjectVisualisation } from './pages/project-visualisation';
 import { Shared } from 'pages/shared';
 import { ForgotPassword } from './pages/forgot-password';
 import { ResetPassword } from './pages/reset-password';
+import { ErrorServer } from 'pages/error/servererror';
+import { ErrorNotFound } from 'pages/error/error403';
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +69,14 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PROFILE,
             element: <Profile />,
+          },
+          {
+            path: '/errorserver',
+            element: <ErrorServer />,
+          },
+          {
+            path: '/error',
+            element: <ErrorNotFound />,
           },
         ],
       },

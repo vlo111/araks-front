@@ -41,7 +41,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.ProjectName}`}
         />
       </>
@@ -70,7 +70,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.AllMembers}`}
         />
       </>
@@ -91,7 +91,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.Comments}`}
         />
       </>
@@ -111,6 +111,7 @@ export const OverviewSection: React.FC<OverviewSectionProps> = ({ activeMenuItem
         <Title
           style={{
             marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >

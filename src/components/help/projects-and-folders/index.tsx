@@ -24,7 +24,7 @@ const menuItems: Record<string, MenuItem> = {
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a Project
         </Text>
-        <p style={{ marginLeft: '20px' }}>
+        <p>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -46,7 +46,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateAProjectImg}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -68,14 +68,14 @@ const menuItems: Record<string, MenuItem> = {
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.EditProject}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.EditProjects}`}
             />
           </Col>
@@ -96,7 +96,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteProject}`}
         />
       </>
@@ -109,7 +109,7 @@ const menuItems: Record<string, MenuItem> = {
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a Folder
         </Text>
-        <p style={{ marginLeft: '20px' }}>
+        <p>
           In the <b>Home</b> page of your account
         </p>
         <ul style={{ color: '#808080' }}>
@@ -125,7 +125,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateFolder}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -145,7 +145,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditFolder}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -164,7 +164,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteFolder}`}
         />
       </>
@@ -184,7 +184,7 @@ export const ProjectsFolders: React.FC<ProjectsFoldersProps> = ({ activeMenuItem
       <div style={{ fontSize: '16px', margin: '0 20px' }}>
         <Title
           style={{
-            marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >
