@@ -31,7 +31,10 @@ export const useImportNodes = (options?: UseQueryOptions) => {
 
       options?.onSuccess?.(data.data);
     },
-    onError: errorMessage,
+    onError: (er) => {
+      errorMessage(er);
+      options?.onError?.(er);
+    },
   });
   return mutation;
 };

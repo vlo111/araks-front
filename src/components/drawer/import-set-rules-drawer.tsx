@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Drawer, Modal, notification, Row } from 'antd';
-import { ImportNodesResponse } from 'api/import/types';
 import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
@@ -9,14 +9,21 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { ImportActionType, useImport } from '../../context/import-context';
 import { ProgressBar } from 'components/progress-bar';
+import { ImportNodesResponse } from 'api/import/types';
 
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
   const [api, contextHolder] = notification.useNotification();
 
+  const [data, setData] = useState<unknown>();
+  const [stopProgress, setStopProgress] = useState<boolean>(false);
+
   const { mutate, isLoading } = useImportNodes({
     onSuccess: (data) => {
-      dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
+      setData(data);
+    },
+    onError: () => {
+      setStopProgress(true);
     },
   });
 
@@ -25,6 +32,10 @@ export const ImportSetRulesDrawer = () => {
       title: 'Are you sure you want to cancel current import process? All data will be cleared.',
       onOk: () => dispatch({ type: ImportActionType.IMPORT_CLOSE, payload: {} }),
     });
+  };
+
+  const handleFinishProgress = () => {
+    dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
   };
 
   return (
@@ -74,7 +85,7 @@ export const ImportSetRulesDrawer = () => {
       }}
       mask={false}
     >
-      <ProgressBar isLoading={isLoading} />
+      {!stopProgress && <ProgressBar isLoading={isLoading} isFinished={handleFinishProgress} />}
       <VerticalSpace size="large">
         <div style={{ textAlign: 'center' }}>
           <InfoCircleOutlined />
