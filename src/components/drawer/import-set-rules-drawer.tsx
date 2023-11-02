@@ -1,5 +1,5 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Col, Drawer, Modal, notification, Row, Spin } from 'antd';
+import { Col, Drawer, Modal, notification, Row } from 'antd';
 import { ImportNodesResponse } from 'api/import/types';
 import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
@@ -7,8 +7,8 @@ import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SetRules } from 'components/form/import/set-rules';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
-
-import { ImportActionType, useImport } from 'context/import-context';
+import { ImportActionType, useImport } from '../../context/import-context';
+import { ProgressBar } from 'components/progress-bar';
 
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
@@ -74,30 +74,29 @@ export const ImportSetRulesDrawer = () => {
       }}
       mask={false}
     >
-      <Spin spinning={isLoading}>
-        <VerticalSpace size="large">
-          <div style={{ textAlign: 'center' }}>
-            <InfoCircleOutlined />
-          </div>
-          <VerticalSpace size={0}>
-            <Text>
-              You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
-            </Text>
-            <ol>
-              <li>
-                &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
-                model.
-              </li>
-              <li>
-                &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows
-                in the import.
-              </li>
-            </ol>
-          </VerticalSpace>
-          {contextHolder}
-          <SetRules />
+      <ProgressBar isLoading={isLoading} />
+      <VerticalSpace size="large">
+        <div style={{ textAlign: 'center' }}>
+          <InfoCircleOutlined />
+        </div>
+        <VerticalSpace size={0}>
+          <Text>
+            You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
+          </Text>
+          <ol>
+            <li>
+              &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
+              model.
+            </li>
+            <li>
+              &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows in
+              the import.
+            </li>
+          </ol>
         </VerticalSpace>
-      </Spin>
+        {contextHolder}
+        <SetRules />
+      </VerticalSpace>
     </Drawer>
   );
 };

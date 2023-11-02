@@ -212,6 +212,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         edges: dataToSubmitEdges?.flat() || [],
         project_type_id: nodeTypeId || '',
         nodeId: nodeData.id,
+        destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
       } as NodeDataSubmit);
       onClose();
     }
