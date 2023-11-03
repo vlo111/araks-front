@@ -82,7 +82,6 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
       nodes: dataToSubmit,
       edges: dataToSubmitEdges?.flat() || [],
       project_type_id: nodeTypeId || '',
-      destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
     } as NodeDataSubmit);
     onClose();
   };

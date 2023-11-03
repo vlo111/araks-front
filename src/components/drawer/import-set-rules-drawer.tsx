@@ -1,22 +1,29 @@
+import { useState } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Col, Drawer, Modal, notification, Row, Spin } from 'antd';
-import { ImportNodesResponse } from 'api/import/types';
+import { Col, Drawer, Modal, notification, Row } from 'antd';
 import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SetRules } from 'components/form/import/set-rules';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
-
-import { ImportActionType, useImport } from 'context/import-context';
+import { ImportActionType, useImport } from '../../context/import-context';
+import { ProgressBar } from 'components/progress-bar';
+import { ImportNodesResponse } from 'api/import/types';
 
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
   const [api, contextHolder] = notification.useNotification();
 
+  const [data, setData] = useState<unknown>();
+  const [stopProgress, setStopProgress] = useState<boolean>(false);
+
   const { mutate, isLoading } = useImportNodes({
     onSuccess: (data) => {
-      dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
+      setData(data);
+    },
+    onError: () => {
+      setStopProgress(true);
     },
   });
 
@@ -25,6 +32,10 @@ export const ImportSetRulesDrawer = () => {
       title: 'Are you sure you want to cancel current import process? All data will be cleared.',
       onOk: () => dispatch({ type: ImportActionType.IMPORT_CLOSE, payload: {} }),
     });
+  };
+
+  const handleFinishProgress = () => {
+    dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
   };
 
   return (
@@ -74,30 +85,29 @@ export const ImportSetRulesDrawer = () => {
       }}
       mask={false}
     >
-      <Spin spinning={isLoading}>
-        <VerticalSpace size="large">
-          <div style={{ textAlign: 'center' }}>
-            <InfoCircleOutlined />
-          </div>
-          <VerticalSpace size={0}>
-            <Text>
-              You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
-            </Text>
-            <ol>
-              <li>
-                &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
-                model.
-              </li>
-              <li>
-                &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows
-                in the import.
-              </li>
-            </ol>
-          </VerticalSpace>
-          {contextHolder}
-          <SetRules />
+      {!stopProgress && <ProgressBar isLoading={isLoading} isFinished={handleFinishProgress} />}
+      <VerticalSpace size="large">
+        <div style={{ textAlign: 'center' }}>
+          <InfoCircleOutlined />
+        </div>
+        <VerticalSpace size={0}>
+          <Text>
+            You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
+          </Text>
+          <ol>
+            <li>
+              &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
+              model.
+            </li>
+            <li>
+              &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows in
+              the import.
+            </li>
+          </ol>
         </VerticalSpace>
-      </Spin>
+        {contextHolder}
+        <SetRules />
+      </VerticalSpace>
     </Drawer>
   );
 };

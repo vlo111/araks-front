@@ -78,26 +78,22 @@ export const ViewEditNodeDrawer = () => {
         } as NodePropertiesValues;
       }, initialAcc);
 
-      const groupListEdges = groupedData(data?.edges ?? []);
+      const groupListEdges = groupedData((data?.edges ?? []).concat(data?.edges_in ?? []));
 
-      const groupListEdgesIn = groupedData(data?.edges_in ?? []);
-
-      const connectionFieldsData = Object.entries(groupListEdges)
-        .concat(Object.entries(groupListEdgesIn))
-        .reduce((acc, [key, item]) => {
-          return {
-            ...acc,
-            [key]: item.map((row) => ({
-              rowId: row.id,
-              id: row.edgeTypes.id,
-              name: row.source.id === openNode.id ? row.target.name : row.source.name,
-              source_id: row.source_id,
-              source_type_id: row.source_type_id,
-              target_id: row.target_id,
-              target_type_id: row.target_type_id,
-            })),
-          };
-        }, {});
+      const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
+        return {
+          ...acc,
+          [key]: item.map((row) => ({
+            rowId: row.id,
+            id: row.edgeTypes.id,
+            name: row.source.id === openNode.id ? row.target.name : row.source.name,
+            source_id: row.source_id,
+            source_type_id: row.source_type_id,
+            target_id: row.target_id,
+            target_type_id: row.target_type_id,
+          })),
+        };
+      }, {});
 
       form.setFieldsValue({
         ...fieldsData,
