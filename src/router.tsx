@@ -31,11 +31,11 @@ export const router = createBrowserRouter([
         element: <ErrorNotFound />,
       },
       {
-        path: PATHS.ERRORNORFOUND,
+        path: PATHS.ERROR_NOT_FOUND,
         element: <ErrorNotFound />,
       },
       {
-        path: PATHS.ERRORSERVER,
+        path: PATHS.ERROR_SERVER,
         element: <ErrorServer />,
       },
     ],

@@ -28,9 +28,9 @@ client.interceptors.response.use(
       localStorage.removeItem(AUTH_KEYS.TOKEN);
       window.location.href = PATHS.SIGN_IN;
     } else if(error.response.ststus === 500) {
-      window.location.href = '/server/error'
+      window.location.href = PATHS.ERROR_SERVER
     } else if(error.response.ststus === 404) {
-      window.location.href = '/not-found'
+      window.location.href = PATHS.ERROR_NOT_FOUND
     }
 
     return Promise.reject(error);
