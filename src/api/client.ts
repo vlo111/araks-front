@@ -34,9 +34,7 @@ client.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  } 
-  
-
+  }
 );
 
 // eslint-disable-next-line import/no-default-export

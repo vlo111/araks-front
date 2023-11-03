@@ -140,10 +140,6 @@ export const router = createBrowserRouter([
             path: PATHS.NODE_OVERVIEW,
             element: <DataSheet />,
           },
-          // {
-          //   path: "*",
-          //   element: <ErrorNotFound />,
-          // },
         ],
       },
     ],
