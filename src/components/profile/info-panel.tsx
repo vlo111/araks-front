@@ -13,8 +13,11 @@ import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useUpdateUserAvatar } from '../../api/user/use-update-avatar';
+import { ProjectCountData } from 'api/projects/use-get-project-count';
 
-type Prop = FC<{ count: number }>;
+type Prop = FC<{
+  info: ProjectCountData | undefined;
+}>;
 
 const Wrapper = styled(Col)`
   background: #f7f7f7;
@@ -97,7 +100,7 @@ const Footer = styled(Row)`
   }
 `;
 
-export const InfoPanel: Prop = ({ count }) => {
+export const InfoPanel: Prop = ({ info }) => {
   const { user, addUser } = useAuth();
   const { mutate } = useUpdateUserAvatar();
   const { mutateAsync } = useAvatarUpload();
@@ -213,11 +216,11 @@ export const InfoPanel: Prop = ({ count }) => {
       </Description>
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
-          <Title level={1}>{`${count}`}</Title>
+          <Title level={1}>{`${info?.projects}`}</Title>
           <StyledLink to={PATHS.ROOT}>Projects</StyledLink>
         </Col>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
-          <Title level={1}>{`${0}`}</Title>
+          <Title level={1}>{`${info?.shared}`}</Title>
           <StyledLink to={PATHS.SHARED}>Shared Projects</StyledLink>
         </Col>
       </Footer>
