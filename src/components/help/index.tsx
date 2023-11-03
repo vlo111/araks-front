@@ -160,7 +160,7 @@ export const Help: React.FC = () => {
           <Col span={8} style={{ padding: 0 }}>
             <Row style={{ marginBottom: '15px' }}>
               <Col span={5}>
-                <Text strong style={{ margin: 0, color: '#232F6A' }}>
+                <Text strong style={{ margin: 0, color: '#232F6A', cursor: 'pointer' }}>
                   Help
                 </Text>
               </Col>

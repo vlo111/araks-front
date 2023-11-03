@@ -42,14 +42,14 @@ const menuItems: Record<string, MenuItem> = {
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.VisualizationAddNode}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.VisualizationAddNodes}`}
             />
           </Col>
@@ -78,7 +78,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.VisualizationEdit}`}
         />
       </>
@@ -101,7 +101,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.Filters}`}
         />
       </>
@@ -144,7 +144,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.Queries}`}
         />
       </>
@@ -177,14 +177,14 @@ const menuItems: Record<string, MenuItem> = {
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.Styling}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.Style}`}
             />
           </Col>
@@ -220,14 +220,14 @@ const menuItems: Record<string, MenuItem> = {
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.Focus}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.Expand}`}
             />
           </Col>
@@ -250,6 +250,7 @@ export const VisualizationSection: React.FC<VisualizationSectionProps> = ({ acti
         <Title
           style={{
             marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >

@@ -92,6 +92,7 @@ export const Perspective: React.FC<PerspectiveProps> = ({ activeMenuItem }) => {
         <Title
           style={{
             marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >

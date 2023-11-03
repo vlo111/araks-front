@@ -26,7 +26,7 @@ const sections: Record<
   'sub2-1': {
     title: 'Create, Edit and Delete Type',
     content: (
-      <div style={{ marginTop: '30px' }}>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a New Type
         </Text>
@@ -45,10 +45,9 @@ const sections: Record<
             Click <b>Save</b> button
           </li>
         </ul>
-
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateNewType}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -68,7 +67,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteType}`}
         />
       </div>
@@ -77,7 +76,7 @@ const sections: Record<
   'sub2-2': {
     title: 'Add, Edit and Delete Property',
     content: (
-      <div style={{ marginTop: '30px' }}>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Property
         </Text>
@@ -99,7 +98,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.AddNewProperty}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -123,7 +122,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteProperty}`}
         />
       </div>
@@ -132,7 +131,7 @@ const sections: Record<
   'sub2-3': {
     title: 'Create, Edit and Delete Connection',
     content: (
-      <div style={{ marginTop: '30px' }}>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Create a New Connection
         </Text>
@@ -151,7 +150,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.CreateConnection}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -177,7 +176,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteConnection}`}
         />
       </div>
@@ -186,7 +185,7 @@ const sections: Record<
   'sub2-4': {
     title: 'Add, Edit and Delete Connection Property',
     content: (
-      <div style={{ marginTop: '30px' }}>
+      <div>
         <Text strong style={{ fontSize: '16px' }}>
           1. Add a New Connection Property
         </Text>
@@ -204,7 +203,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.AddConnectionProperty}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -227,7 +226,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteConnectionProperty}`}
         />
       </div>
@@ -238,7 +237,7 @@ const sections: Record<
     content: (
       <>
         <ul style={{ color: '#808080', marginTop: '30px' }}>
-          <li style={{ marginTop: '30px' }}>
+          <li>
             Click <b>Search</b> and the system will open the search input
           </li>
           <li>Type in the search and the result can be:</li>
@@ -256,7 +255,7 @@ const sections: Record<
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.SearchInSchema}`}
         />
       </>
@@ -277,6 +276,7 @@ export const SchemaSection: React.FC<SchemaSectionProps> = ({ activeMenuItem }) 
         <Title
           style={{
             marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >

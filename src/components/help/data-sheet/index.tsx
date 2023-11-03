@@ -53,7 +53,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.NewType}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -73,7 +73,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditDeleteType}`}
         />
       </>
@@ -104,7 +104,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.NewProperty}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -128,7 +128,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditProperty}`}
         />
       </>
@@ -160,7 +160,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.NewConnection}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -185,14 +185,14 @@ const menuItems: Record<string, MenuItem> = {
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.ConnectionType}`}
             />
           </Col>
           <Col span={12}>
             <Image
               rootClassName="help-image"
-              wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+              wrapperStyle={{ display: 'block', marginBottom: '20px' }}
               src={`${helpUrl}${Paths.ConnectionTypes}`}
             />
           </Col>
@@ -220,7 +220,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditConnection}`}
         />
       </>
@@ -243,7 +243,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.DeleteConnectionProperty}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -266,7 +266,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditConnectionProperty}`}
         />
       </>
@@ -292,7 +292,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.NodeInConnection}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -318,7 +318,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.EditNodes}`}
         />
       </>
@@ -362,7 +362,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.AllData}`}
         />
       </>
@@ -390,7 +390,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.AddNode}`}
         />
         <Text strong style={{ fontSize: '16px' }}>
@@ -417,7 +417,7 @@ const menuItems: Record<string, MenuItem> = {
         </ul>
         <Image
           rootClassName="help-image"
-          wrapperStyle={{ display: 'block', paddingBottom: '20px' }}
+          wrapperStyle={{ display: 'block', marginBottom: '20px' }}
           src={`${helpUrl}${Paths.ViewNode}`}
         />
       </>
@@ -438,6 +438,7 @@ export const DataSheetSection: React.FC<DataSheetSectionProps> = ({ activeMenuIt
         <Title
           style={{
             marginTop: 0,
+            margin: '0 0 30px 0',
             fontSize: '18px',
           }}
         >
