@@ -1,4 +1,4 @@
-import { useMutation, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 
 import client from '../client';
 import { errorMessage } from 'helpers/utils';
@@ -14,6 +14,8 @@ type Response = {
 };
 
 export const useAvatarUpload = (options?: Options) => {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation<Response, unknown, string | RcFile | Blob>(
     async (file) => {
       const formData = new FormData();
@@ -23,6 +25,7 @@ export const useAvatarUpload = (options?: Options) => {
     {
       onSuccess: (data) => {
         options?.onSuccess?.(data);
+        queryClient.invalidateQueries([`${AVATAR_UPLOAD_URL}?_=${Date.now()}`]);
       },
       onError: errorMessage,
     }
