@@ -1,24 +1,16 @@
 import { Spin } from 'antd';
 import { InfoPanel } from 'components/profile/info-panel';
 import { EditWrapper } from 'components/profile/edit/wrapper';
-import { useGetProjects } from 'api/projects/use-get-projects';
 import { Wrapper } from './wrapper';
+import { useGetProject } from 'api/projects/use-get-project-count';
 
 export const Profile = () => {
-  const {
-    data: { data: projects },
-    isInitialLoading: loading,
-  } = useGetProjects({
-    page: 1,
-    size: 1,
-    sortField: 'updated_at',
-    sortOrder: 'DESC',
-  });
+  const { data } = useGetProject();
 
   return (
     <Wrapper>
-      <Spin spinning={loading}>
-        <InfoPanel count={projects?.count} />
+      <Spin spinning={false}>
+        <InfoPanel info={data} />
         <EditWrapper />
       </Spin>
     </Wrapper>
