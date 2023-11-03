@@ -9,6 +9,8 @@ export enum QueryFilterTypes {
   IS_NOT_NULL = 'Is not Null',
   IS_NULL = 'Is Null',
   BETWEEN = 'Between',
+  BEFORE = 'Before',
+  AFTER = 'After',
   IS = 'Is',
   IS_NOT = 'Is not',
   EQUAL_TO = 'Equal to',
@@ -31,6 +33,10 @@ export const getQueryFilterType = (type: QueryFilterTypes): string => {
       return 'BETWEEN';
     case QueryFilterTypes.BETWEEN:
       return 'BETWEEN';
+    case QueryFilterTypes.BEFORE:
+      return '<';
+    case QueryFilterTypes.AFTER:
+      return '>';
     case QueryFilterTypes.IS_NULL:
       return 'IS_NULL';
     case QueryFilterTypes.IS_NOT_NULL:
@@ -77,7 +83,13 @@ const getOptions = (
         { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
       ];
       if (isMultiple) return dateProperties;
-      else return [...dateProperties, { name: QueryFilterTypes.RANGE, value: QueryFilterTypes.RANGE }];
+      else
+        return [
+          ...dateProperties,
+          { name: QueryFilterTypes.RANGE, value: QueryFilterTypes.RANGE },
+          { name: QueryFilterTypes.BEFORE, value: QueryFilterTypes.BEFORE },
+          { name: QueryFilterTypes.AFTER, value: QueryFilterTypes.AFTER },
+        ];
     }
     case propertyType === PropertyTypes.Text && isVisualisation:
       return [
