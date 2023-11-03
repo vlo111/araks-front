@@ -1,11 +1,9 @@
 import { Col, Layout as LayoutComponent, Row } from 'antd';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { PATHS } from 'helpers/constants';
 import { Logo } from 'components/logo';
-import { useAuth } from 'context/auth-context';
-import { HelpVisualization } from '../../pages/sign-in/components/help-visualization';
+import { HelpVisualization } from 'pages/sign-in/components/help-visualization';
 
 const Layout = styled(LayoutComponent)`
   background: #fdfdfd;
@@ -29,11 +27,6 @@ const Content = styled(ContentComponent)`
 `;
 
 export const PublicRoutes = () => {
-  const { user } = useAuth();
-
-  if (user) {
-    return <Navigate to={PATHS.PROJECTS} />;
-  }
 
   return (
     <Layout>

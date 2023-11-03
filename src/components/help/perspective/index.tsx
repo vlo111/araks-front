@@ -66,13 +66,6 @@ const menuItems: Record<string, MenuItem> = {
               src={`${helpUrl}${Paths.NewPerspective}`}
             />
           </Col>
-          <Col span={12}>
-            <Image
-              rootClassName="help-image"
-              wrapperStyle={{ display: 'block' }}
-              src={`${helpUrl}${Paths.SharePerspective}`}
-            />
-          </Col>
         </Row>
       </>
     ),

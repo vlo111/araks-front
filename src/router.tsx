@@ -7,7 +7,7 @@ import { ProjectCreate } from 'pages/project-overview/create';
 import { ProjectUpdate } from 'pages/project-overview/update';
 import { ProjectScheme } from 'pages/project-scheme';
 import { Public } from 'pages/public';
-import { createBrowserRouter } from 'react-router-dom';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
 import { ProjectHome } from './components/layouts/project-home';
 import { PublicRoutes } from './components/routes/public-route';
 import { PATHS } from './helpers/constants';
@@ -19,10 +19,27 @@ import { ProjectVisualisation } from './pages/project-visualisation';
 import { Shared } from 'pages/shared';
 import { ForgotPassword } from './pages/forgot-password';
 import { ResetPassword } from './pages/reset-password';
-import { ErrorServer } from 'pages/error/servererror';
-import { ErrorNotFound } from 'pages/error/error403';
+import { ErrorServer } from 'pages/error/errorServer';
+import { ErrorNotFound } from 'pages/error/errorNotFound';
 
 export const router = createBrowserRouter([
+  {
+    element: <Outlet />,
+    children: [
+      {
+        path: '*',
+        element: <ErrorNotFound />,
+      },
+      {
+        path: PATHS.ERROR_NOT_FOUND,
+        element: <ErrorNotFound />,
+      },
+      {
+        path: PATHS.ERROR_SERVER,
+        element: <ErrorServer />,
+      },
+    ],
+  },
   {
     element: <PublicRoutes />,
     children: [
@@ -69,14 +86,6 @@ export const router = createBrowserRouter([
           {
             path: PATHS.PROFILE,
             element: <Profile />,
-          },
-          {
-            path: '/errorserver',
-            element: <ErrorServer />,
-          },
-          {
-            path: '/error',
-            element: <ErrorNotFound />,
           },
         ],
       },
