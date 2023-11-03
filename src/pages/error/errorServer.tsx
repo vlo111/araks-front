@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Result } from 'antd';
 import { ReactComponent as ErrorServerimg } from './servererror.svg';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { PATHS } from 'helpers/constants';
 
 const Container = styled(Result)`
   &.ant-result .ant-result-icon {
@@ -19,9 +21,10 @@ export const ErrorServer: React.FC = () => (
     extra={
       <>
         <ErrorServerimg style={{ width: '80%', paddingRight: '20%' }} />
+        <Link to={PATHS.ROOT}>
         <Button type="primary" style={{ fontWeight: '700', fontSize: '20px', width: '40%' }}>
           Back to homepage
-        </Button>
+        </Button></Link>
       </>
     }
   ></Container>
