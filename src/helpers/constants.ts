@@ -19,6 +19,8 @@ export const PATHS = {
   FOLDER: '/folder/:id',
   ERROR_403: 'no-access',
   PUBLIC_PREFIX: '/public',
+  ERRORSERVER: '/server/error',
+  ERRORNORFOUND: '/error',
 };
 
 export const COLORS = {

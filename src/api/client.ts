@@ -27,10 +27,16 @@ client.interceptors.response.use(
       localStorage.removeItem(AUTH_KEYS.USER);
       localStorage.removeItem(AUTH_KEYS.TOKEN);
       window.location.href = PATHS.SIGN_IN;
+    } else if(error.response.ststus === 500) {
+      window.location.href = '/server/error'
+    } else if(error.response.ststus === 404) {
+      window.location.href = '/not-found'
     }
 
     return Promise.reject(error);
-  }
+  } 
+  
+
 );
 
 // eslint-disable-next-line import/no-default-export
