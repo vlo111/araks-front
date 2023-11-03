@@ -136,29 +136,37 @@ export const QueriesButton = ({ isQueries }: Props) => {
               ? dataToMap.reduce((acc, item, index) => {
                   if (item.depth === query.depth && item.labelValue === query.labelValue) {
                     delete dataToMap[index];
-                    // eslint-disable-next-line no-console
-                    console.log(item.ref_property_type_id);
+
                     return {
                       ...acc,
                       [item.name === 'node_icon' ? 'default_image' : item.name]: {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
-                        value: (item.type === QueryFilterTypes.BETWEEN
-                          ? [item.betweenStart, item.betweenEnd]
-                          : item.ref_property_type_id === PropertyTypes.Date ||
+                        value: (() => {
+                          if (item.type === QueryFilterTypes.BEFORE || item.type === QueryFilterTypes.AFTER) {
+                            const isBefore = item.type === QueryFilterTypes.BEFORE;
+                            return item[isBefore ? '<' : '>'].toISOString();
+                          } else if (item.type === QueryFilterTypes.BETWEEN) {
+                            return [item.betweenStart, item.betweenEnd].toString();
+                          } else if (
+                            item.ref_property_type_id === PropertyTypes.Date ||
                             item.ref_property_type_id === PropertyTypes.DateTime
-                          ? Array.isArray(item.typeText)
-                            ? item.typeText.map((t: Date) =>
-                                item.ref_property_type_id === PropertyTypes.Date
-                                  ? getDate(t as unknown as Dayjs)
-                                  : t.toISOString()
-                              )
-                            : item.ref_property_type_id === PropertyTypes.Date
-                            ? getDate(item.typeText as unknown as Dayjs)
-                            : item.typeText.toISOString()
-                          : item.typeText
-                        )?.toString(),
+                          ) {
+                            const convertToDateString = (date: Date) =>
+                              item.ref_property_type_id === PropertyTypes.Date
+                                ? getDate(date as unknown as Dayjs).toString()
+                                : date.toISOString();
+
+                            if (Array.isArray(item.typeText)) {
+                              return item.typeText.map(convertToDateString).toString();
+                            } else {
+                              return convertToDateString(item.typeText);
+                            }
+                          } else {
+                            return item.typeText.toString();
+                          }
+                        })(),
                       },
                     };
                   }

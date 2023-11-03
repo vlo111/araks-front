@@ -155,6 +155,24 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
           <RangePicker format={dateFormat} style={{ width: '100%' }} />
         </Form.Item>
       )}
+      {type === QueryFilterTypes.BEFORE && (
+        <Form.Item name={[fieldName, '<']}>
+          <Datepicker
+            format={'DD/MM/YYYY HH:mm'}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
+        </Form.Item>
+      )}
+      {type === QueryFilterTypes.AFTER && (
+        <Form.Item name={[fieldName, '>']}>
+          <Datepicker
+            format={'DD/MM/YYYY HH:mm'}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
+        </Form.Item>
+      )}
       {type === QueryFilterTypes.EQUAL_TO && (
         <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
           <InputNumber addonBefore="=" style={{ width: '100%' }} />
