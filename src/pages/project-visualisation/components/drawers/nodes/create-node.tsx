@@ -163,33 +163,33 @@ export const NodeCreateDrawer: React.FC = () => {
     [finishOpenNodeCreate, properties, mutate, parent_id]
   );
 
-  // const treeSelect = useMemo(
-  //   () => (
-  //     <>
-  //       <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
-  //         <TreeSelect
-  //           showSearch={true}
-  //           onSearch={onSearch}
-  //           className={'node-type-select'}
-  //           popupClassName={'node-type-popup-select'}
-  //           treeData={filteredData}
-  //           style={{ width: '100%' }}
-  //           dropdownStyle={{
-  //             maxHeight: 400,
-  //             overflow: 'auto',
-  //             minWidth: '24rem',
-  //             padding: '1rem 0',
-  //           }}
-  //           rootClassName="node-type-select-dropdown"
-  //           placeholder="Select Type"
-  //           treeDefaultExpandAll
-  //           fieldNames={{ value: 'key' }}
-  //         ></TreeSelect>
-  //       </Form.Item>
-  //     </>
-  //   ),
-  //   [filteredData, onSearch]
-  // );
+  const treeSelect = useMemo(
+    () => (
+      <>
+        <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
+          <TreeSelect
+            showSearch={true}
+            onSearch={onSearch}
+            className={'node-type-select'}
+            popupClassName={'node-type-popup-select'}
+            treeData={filteredData}
+            style={{ width: '100%' }}
+            dropdownStyle={{
+              maxHeight: 400,
+              overflow: 'auto',
+              minWidth: '24rem',
+              padding: '1rem 0',
+            }}
+            rootClassName="node-type-select-dropdown"
+            placeholder="Select Type"
+            treeDefaultExpandAll
+            fieldNames={{ value: 'key' }}
+          ></TreeSelect>
+        </Form.Item>
+      </>
+    ),
+    [filteredData, onSearch]
+  );
   const footer = useMemo(
     () =>
       parent_id && (
@@ -208,8 +208,6 @@ export const NodeCreateDrawer: React.FC = () => {
       ),
     [parent_id, form, finishOpenNodeCreate]
   );
-  // eslint-disable-next-line no-console
-  console.log(filteredData.length, 'filteredData');
 
   return (
     <Form
@@ -227,28 +225,7 @@ export const NodeCreateDrawer: React.FC = () => {
         }}
         onClose={finishOpenNodeCreate}
         closable={false}
-        title={
-          <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
-            <TreeSelect
-              showSearch={true}
-              onSearch={onSearch}
-              className={'node-type-select'}
-              popupClassName={'node-type-popup-select'}
-              treeData={filteredData}
-              style={{ width: '100%' }}
-              dropdownStyle={{
-                maxHeight: 400,
-                overflow: 'auto',
-                minWidth: '24rem',
-                padding: '1rem 0',
-              }}
-              rootClassName="node-type-select-dropdown"
-              placeholder="Select Type"
-              treeDefaultExpandAll
-              fieldNames={{ value: 'key' }}
-            ></TreeSelect>
-          </Form.Item>
-        }
+        title={treeSelect}
         footer={footer}
         open={openNodeCreate?.isOpened}
       >
