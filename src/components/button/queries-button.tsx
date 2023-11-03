@@ -190,21 +190,24 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
-                  value: (query.type === QueryFilterTypes.BETWEEN
-                    ? [query.betweenStart, query.betweenEnd]
-                    : query.ref_property_type_id === PropertyTypes.Date ||
-                      query.ref_property_type_id === PropertyTypes.DateTime
-                    ? Array.isArray(query.typeText)
-                      ? query.typeText.map((t: Date) =>
-                          query.ref_property_type_id === PropertyTypes.Date
-                            ? getDate(t as unknown as Dayjs)
-                            : t.toISOString()
-                        )
-                      : query.ref_property_type_id === PropertyTypes.Date
-                      ? getDate(query.typeText as unknown as Dayjs)
-                      : query.typeText.toISOString()
-                    : query.typeText
-                  )?.toString(),
+                  value:
+                    query.type === QueryFilterTypes.BEFORE || query.type === QueryFilterTypes.AFTER
+                      ? query[query.type === QueryFilterTypes.BEFORE ? '<' : '>'].toISOString()
+                      : (query.type === QueryFilterTypes.BETWEEN
+                          ? [query.betweenStart, query.betweenEnd]
+                          : query.ref_property_type_id === PropertyTypes.Date ||
+                            query.ref_property_type_id === PropertyTypes.DateTime
+                          ? Array.isArray(query.typeText)
+                            ? query.typeText.map((t: Date) =>
+                                query.ref_property_type_id === PropertyTypes.Date
+                                  ? getDate(t as unknown as Dayjs)
+                                  : t.toISOString()
+                              )
+                            : query.ref_property_type_id === PropertyTypes.Date
+                            ? getDate(query.typeText as unknown as Dayjs)
+                            : query.typeText.toISOString()
+                          : query.typeText
+                        )?.toString(),
                 },
               }
             : {},
