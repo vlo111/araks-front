@@ -39,8 +39,8 @@ export const createNodesTree = (
       ) : (
         <StyledBadge color={node.color} text={<Text>{node.name}</Text>} defaultProprtyId={defaultPropertyId} />
       ),
-      label: node.name,
-      value: node.id,
+      label: node.id,
+      value: node.name,
       key: node.id,
       ...node,
     };

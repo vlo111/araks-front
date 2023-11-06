@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Col, Form, Row, TreeSelect, UploadFile } from 'antd';
 import { useParams } from 'react-router-dom';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
@@ -17,6 +17,9 @@ import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node
 import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 import './add-node-select.css';
 import { nodeLabelCfgStyle } from 'components/layouts/components/visualisation/helpers/constants';
+import { TreeNodeType } from '../../../../data-sheet/types';
+import debounce from 'lodash.debounce';
+import { filterTreeData } from '../../../../data-sheet/utils';
 
 export const NodeCreateDrawer: React.FC = () => {
   const [form] = Form.useForm();
@@ -34,6 +37,28 @@ export const NodeCreateDrawer: React.FC = () => {
   });
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
+
+  const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
+
+  useEffect(() => {
+    if (nodes && nodes.length) {
+      setFilteredData(createNodesTree(nodes ?? []));
+    } else {
+      setFilteredData([]);
+    }
+  }, [nodes]);
+
+  const onSearch = useCallback(
+    (value: string) => {
+      const searchText = value.trim().toLowerCase();
+
+      debounce(() => {
+        const filteredData = filterTreeData(createNodesTree(nodes ?? []), searchText);
+        setFilteredData(filteredData);
+      }, 500)();
+    },
+    [nodes]
+  );
 
   const createNode = useCallback(
     (data: NodePropertiesValues, edgeCount: number) => {
@@ -140,22 +165,31 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const treeSelect = useMemo(
     () => (
-      <Form.Item name="parent_id" style={{ margin: 0 }}>
-        <TreeSelect
-          className={'node-type-select'}
-          popupClassName={'node-type-popup-select'}
-          treeData={createNodesTree(nodes ?? [])}
-          style={{ width: '100%' }}
-          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          placeholder="Select Type"
-          treeDefaultExpandAll
-          fieldNames={{ value: 'key' }}
-        />
-      </Form.Item>
+      <>
+        <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
+          <TreeSelect
+            showSearch={true}
+            onSearch={onSearch}
+            className={'node-type-select'}
+            popupClassName={'node-type-popup-select'}
+            treeData={filteredData}
+            style={{ width: '100%' }}
+            dropdownStyle={{
+              maxHeight: 400,
+              overflow: 'auto',
+              minWidth: '24rem',
+              padding: '1rem 0',
+            }}
+            rootClassName="node-type-select-dropdown"
+            placeholder="Select Type"
+            treeDefaultExpandAll
+            fieldNames={{ value: 'key' }}
+          ></TreeSelect>
+        </Form.Item>
+      </>
     ),
-    [nodes]
+    [filteredData, onSearch]
   );
-
   const footer = useMemo(
     () =>
       parent_id && (
@@ -187,6 +221,7 @@ export const NodeCreateDrawer: React.FC = () => {
       <Drawer
         headerStyle={{
           borderTop: `6px solid ${parent_id ? nodes?.find((n) => n.id === parent_id)?.color : '#CDCDCD'}`,
+          padding: '14px 24px 14px 0',
         }}
         onClose={finishOpenNodeCreate}
         closable={false}
