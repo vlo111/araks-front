@@ -94,9 +94,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
         };
       }, {});
 
-      const item = connectionFieldsData[formName]?.find(
-        (c) => data.id === c.id && selectedRow.id === c.target_id && selectedRow.project_type_id === c.target_type_id
-      );
+      const item = connectionFieldsData[formName]?.find((c) => data.id === c.id);
 
       const isSource = nodeTypeId !== data.source_id;
 
