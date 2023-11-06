@@ -123,6 +123,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           <AddNodeForm
             data={data as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
+            nodeTypeId={nodeTypeId}
             setStopSubmit={setStopSubmit}
           />
         </Form>
