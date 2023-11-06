@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Result } from 'antd';
 import { ReactComponent as ErrorPageimg } from './error.svg';
+import { Link } from 'react-router-dom';
+import { PATHS } from 'helpers/constants';
 
 export const ErrorNotFound: React.FC = () => (
   <Result
@@ -12,9 +14,10 @@ export const ErrorNotFound: React.FC = () => (
       </span>
     }
     extra={
+      <Link to={PATHS.ROOT}>
       <Button type="primary" style={{ fontWeight: '700', fontSize: '20px', width: '40%'}}>
         Back to homepage
-      </Button>
+      </Button></Link>
     }
   ></Result>
 );
