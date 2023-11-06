@@ -168,7 +168,7 @@ export const NodeCreateDrawer: React.FC = () => {
       <>
         <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
           <TreeSelect
-            showSearch={true}
+            showSearch
             onSearch={onSearch}
             className={'node-type-select'}
             popupClassName={'node-type-popup-select'}
@@ -229,7 +229,11 @@ export const NodeCreateDrawer: React.FC = () => {
         footer={footer}
         open={openNodeCreate?.isOpened}
       >
-        <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+        <AddNodeForm
+          data={properties as ProjectTypePropertyReturnData[]}
+          isInitialLoading={isInitialLoading}
+          nodeTypeId={parent_id}
+        />
       </Drawer>
     </Form>
   );
