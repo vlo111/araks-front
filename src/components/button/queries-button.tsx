@@ -164,7 +164,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                               return convertToDateString(item.typeText);
                             }
                           } else {
-                            return item.typeText.toString();
+                            return item.typeText?.toString();
                           }
                         })(),
                       },
