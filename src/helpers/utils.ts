@@ -160,7 +160,7 @@ export const getQueryValue = (item: ItemType) => {
     };
 
     const typeTextArray = Array.isArray(typeText) ? typeText : [typeText];
-    return typeTextArray.map(convertToDateString).join(', ');
+    return typeTextArray.map(convertToDateString).join(',');
   }
 
   return typeText?.toString() || '';
