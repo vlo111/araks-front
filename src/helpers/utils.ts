@@ -160,7 +160,9 @@ export const getQueryValue = (item: ItemType) => {
     };
 
     const typeTextArray = Array.isArray(typeText) ? typeText : [typeText];
-    return typeTextArray.map(convertToDateString).join(', ');
+
+    // Range type need to be the format - 2023-11-10,2023-11-20
+    return typeTextArray.map(convertToDateString).join(',');
   }
 
   return typeText?.toString() || '';

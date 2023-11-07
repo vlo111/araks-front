@@ -130,6 +130,11 @@ const getOptions = (
         { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
         { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
       ];
+    case propertyType === PropertyTypes.RichText:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+      ];
     default:
       return Object.values(QueryFilterTypes).map((item) => ({ name: item, value: item }));
   }
