@@ -151,23 +151,35 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.RANGE && (
-        <Form.Item name={[fieldName, 'typeText']}>
+        <Form.Item
+          name={[fieldName, 'typeText']}
+          rules={[
+            ({ getFieldValue }) => ({
+              async validator(_, value) {
+                if (!value) {
+                  return Promise.reject(new Error('The fields are required'));
+                }
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
           <RangePicker format={dateFormat} style={{ width: '100%' }} />
         </Form.Item>
       )}
       {type === QueryFilterTypes.BEFORE && (
-        <Form.Item name={[fieldName, '<']}>
+        <Form.Item name={[fieldName, '<']} rules={[{ required: true, message: 'Field is required' }]}>
           <Datepicker
-            format={'DD/MM/YYYY HH:mm'}
+            format={`DD/MM/YYYY ${propertyType === PropertyTypes.DateTime ? 'HH:mm' : ''}`}
             style={{ width: '100%' }}
             showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
           />
         </Form.Item>
       )}
       {type === QueryFilterTypes.AFTER && (
-        <Form.Item name={[fieldName, '>']}>
+        <Form.Item name={[fieldName, '>']} rules={[{ required: true, message: 'Field is required' }]}>
           <Datepicker
-            format={'DD/MM/YYYY HH:mm'}
+            format={`DD/MM/YYYY ${propertyType === PropertyTypes.DateTime ? 'HH:mm' : ''}`}
             style={{ width: '100%' }}
             showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
           />
