@@ -130,9 +130,6 @@ type ItemType =
 export const getQueryValue = (item: ItemType) => {
   const { type, betweenStart, betweenEnd, typeText } = item;
 
-  // eslint-disable-next-line no-debugger
-  debugger;
-
   const isBeforeAfter = (item: ItemType) => {
     return [QueryFilterTypes.BEFORE, QueryFilterTypes.AFTER].includes(item.type);
   };
