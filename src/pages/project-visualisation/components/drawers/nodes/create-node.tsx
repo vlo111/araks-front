@@ -91,7 +91,7 @@ export const NodeCreateDrawer: React.FC = () => {
     [graph, openNodeCreate]
   );
 
-  const { mutate } = useManageNodesGraph({
+  const { mutate, isLoading } = useManageNodesGraph({
     onSuccess: ({ data }) => {
       const nodePropertyValues = data as NodePropertiesValues;
 
@@ -111,12 +111,14 @@ export const NodeCreateDrawer: React.FC = () => {
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
       });
+
+      finishOpenNodeCreate();
+      setFilteredData(createNodesTree(nodes ?? []));
     },
   });
 
   const onFinish = useCallback(
     (values: NodeBody) => {
-      finishOpenNodeCreate();
       const mainData = { name: '', default_image: '' };
       const dataToSubmit = properties
         ?.map((item) => {
@@ -160,7 +162,7 @@ export const NodeCreateDrawer: React.FC = () => {
         project_type_id: parent_id || '',
       } as NodeDataSubmit);
     },
-    [finishOpenNodeCreate, properties, mutate, parent_id]
+    [properties, mutate, parent_id]
   );
 
   const treeSelect = useMemo(
@@ -180,6 +182,10 @@ export const NodeCreateDrawer: React.FC = () => {
               minWidth: '24rem',
               padding: '1rem 0',
             }}
+            allowClear
+            onClear={() => {
+              setFilteredData(createNodesTree(nodes ?? []));
+            }}
             rootClassName="node-type-select-dropdown"
             placeholder="Select Type"
             treeDefaultExpandAll
@@ -188,25 +194,32 @@ export const NodeCreateDrawer: React.FC = () => {
         </Form.Item>
       </>
     ),
-    [filteredData, onSearch]
+    [filteredData, nodes, onSearch]
   );
   const footer = useMemo(
     () =>
       parent_id && (
         <Row gutter={16} justify="center">
           <Col span={4}>
-            <Button style={{ marginRight: 8 }} onClick={finishOpenNodeCreate} block>
+            <Button
+              style={{ marginRight: 8 }}
+              onClick={() => {
+                setFilteredData(createNodesTree(nodes ?? []));
+                finishOpenNodeCreate();
+              }}
+              block
+            >
               Cancel
             </Button>
           </Col>
           <Col span={4}>
-            <Button type="primary" onClick={() => form.submit()} block>
+            <Button type="primary" disabled={isLoading} loading={isLoading} onClick={() => form.submit()} block>
               Save
             </Button>
           </Col>
         </Row>
       ),
-    [parent_id, form, finishOpenNodeCreate]
+    [parent_id, isLoading, nodes, finishOpenNodeCreate, form]
   );
 
   return (
