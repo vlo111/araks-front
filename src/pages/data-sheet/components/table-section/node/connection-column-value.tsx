@@ -16,9 +16,9 @@ const getPopupContainer = (triggerNode: HTMLElement) => {
 };
 
 export const ConnectionColumnValue = ({ itemName, row }: Props) => {
-  const filteredData = row.edges
-    .concat(row.edges_in)
-    .filter((edge) => getConnectionFormName(edge.edgeTypes.name, edge.edgeTypes.id) === itemName);
+  const filteredData = row.edges.filter(
+    (edge) => getConnectionFormName(edge.edgeTypes.name, edge.edgeTypes.id) === itemName
+  );
 
   return (
     <div id="custom-popup-container">
