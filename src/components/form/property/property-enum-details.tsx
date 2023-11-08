@@ -33,7 +33,6 @@ const Wrapper = styled.div`
 
 export const PropertyEnumDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
-  // const form = Form.useFormInstance();
 
   return (
     <>
