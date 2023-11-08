@@ -14,6 +14,7 @@ import { useSchema } from 'components/layouts/components/schema/wrapper';
 import { useGetProjectEdgeTypeProperty } from 'api/node-edge-type/use-get-project-edge-type-property';
 import { useDeleteProjectEdgeTypeProperty } from 'api/node-edge-type/use-delete-project-edge-type-property';
 import styled from 'styled-components';
+import { Spinning } from 'components/spinning';
 
 type Props = {
   isEdit?: boolean;
@@ -32,7 +33,7 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCan
 
   const id = useMemo(() => open as string, [open]);
 
-  const { mutate: deleteEdgeProperty } = useDeleteProjectEdgeTypeProperty(id, edge_port?.id || '');
+  const { mutate: deleteEdgeProperty, isLoading } = useDeleteProjectEdgeTypeProperty(id, edge_port?.id || '');
 
   const { mutate } = useManageProjectNodeTypeProperty();
 
@@ -75,6 +76,7 @@ export const AddSchemaEdgePropertyForm: React.FC<Props> = ({ isEdit, open, onCan
 
   return (
     <Wrapper>
+      {isLoading && <Spinning />}
       <Form form={form} onFinish={onFinish} autoComplete="off" layout="vertical" requiredMark={false}>
         <Space size={8}>
           <Text>{isEdit ? 'Edit connection property' : 'Add property for connection type'}</Text>
