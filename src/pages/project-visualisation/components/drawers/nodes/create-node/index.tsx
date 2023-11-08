@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { Col, Form, Row, TreeSelect, UploadFile } from 'antd';
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { Form, UploadFile } from 'antd';
 import { useParams } from 'react-router-dom';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
@@ -7,7 +7,6 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
-import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetTypes } from 'api/schema/type/use-get-types';
@@ -15,13 +14,14 @@ import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
 import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
-import './add-node-select.css';
 import { nodeLabelCfgStyle } from 'components/layouts/components/visualisation/helpers/constants';
-import { TreeNodeType } from '../../../../data-sheet/types';
+import { TreeNodeType } from '../../../../../data-sheet/types';
 import debounce from 'lodash.debounce';
-import { filterTreeData } from '../../../../data-sheet/utils';
+import { filterTreeData } from '../../../../../data-sheet/utils';
+import { NodeCreateDrawerFooter } from './footer';
+import { NodeCreateDrawerHeader } from './header';
 
-export const NodeCreateDrawer: React.FC = () => {
+export const NodeCreateDrawer = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, finishOpenNodeCreate, graphInfo, setGraphInfo } = useGraph() ?? {};
   const { id } = useParams();
@@ -43,10 +43,11 @@ export const NodeCreateDrawer: React.FC = () => {
   useEffect(() => {
     if (nodes && nodes.length) {
       setFilteredData(createNodesTree(nodes ?? []));
+      form.setFieldValue('parent_id', nodes[0].id);
     } else {
       setFilteredData([]);
     }
-  }, [nodes]);
+  }, [form, nodes]);
 
   const onSearch = useCallback(
     (value: string) => {
@@ -106,6 +107,8 @@ export const NodeCreateDrawer: React.FC = () => {
       updateConnector(graph);
 
       form.resetFields();
+
+      form.setFieldValue('parent_id', parent_id || nodes[0].id);
 
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
@@ -170,60 +173,38 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const treeSelect = useMemo(
     () => (
-      <>
-        <Form.Item name="parent_id" style={{ margin: 0, padding: '0 5px' }}>
-          <TreeSelect
-            showSearch
-            onSearch={onSearch}
-            className={'node-type-select'}
-            popupClassName={'node-type-popup-select'}
-            treeData={filteredData}
-            style={{ width: '100%' }}
-            dropdownStyle={{
-              maxHeight: 400,
-              overflow: 'auto',
-              minWidth: '24rem',
-              padding: '1rem 0',
-            }}
-            allowClear
-            onClear={() => {
-              setFilteredData(createNodesTree(nodes ?? []));
-            }}
-            rootClassName="node-type-select-dropdown"
-            placeholder="Select Type"
-            treeDefaultExpandAll
-            fieldNames={{ value: 'key' }}
-          ></TreeSelect>
-        </Form.Item>
-      </>
+      <NodeCreateDrawerHeader
+        onSearch={onSearch}
+        filteredData={filteredData}
+        onClear={() => {
+          setFilteredData(createNodesTree(nodes ?? []));
+        }}
+      />
     ),
     [filteredData, nodes, onSearch]
   );
+
   const footer = useMemo(
     () =>
       parent_id && (
-        <Row gutter={16} justify="center">
-          <Col span={4}>
-            <Button
-              style={{ marginRight: 8 }}
-              onClick={() => {
-                setFilteredData(createNodesTree(nodes ?? []));
-                finishOpenNodeCreate();
-              }}
-              block
-            >
-              Cancel
-            </Button>
-          </Col>
-          <Col span={4}>
-            <Button type="primary" disabled={isLoading} loading={isLoading} onClick={() => form.submit()} block>
-              Save
-            </Button>
-          </Col>
-        </Row>
+        <NodeCreateDrawerFooter
+          onCancel={() => {
+            setFilteredData(createNodesTree(nodes ?? []));
+            finishOpenNodeCreate();
+          }}
+          isLoading={isLoading}
+          onSave={() => form.submit()}
+        />
       ),
     [parent_id, isLoading, nodes, finishOpenNodeCreate, form]
   );
+
+  const onClose = () => {
+    finishOpenNodeCreate();
+    setTimeout(() => {
+      form.setFieldValue('parent_id', parent_id || nodes[0].id);
+    }, 100);
+  };
 
   return (
     <Form
@@ -239,7 +220,7 @@ export const NodeCreateDrawer: React.FC = () => {
           borderTop: `6px solid ${parent_id ? nodes?.find((n) => n.id === parent_id)?.color : '#CDCDCD'}`,
           padding: '14px 24px 14px 0',
         }}
-        onClose={finishOpenNodeCreate}
+        onClose={onClose}
         closable={false}
         title={treeSelect}
         footer={footer}
