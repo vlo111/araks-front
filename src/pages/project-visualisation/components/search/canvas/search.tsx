@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
 import { AutoComplete } from './auto-complete';
 import { SearchVisualization } from '../wrapper';
-import { Spin } from 'antd';
-import styled from 'styled-components';
-
-const Spinning = styled(Spin)`
-  position: fixed;
-  left: 0;
-  top: 150px;
-  width: 100% !important;
-  height: calc(100% - 150px) !important;
-  backdrop-filter: blur(6px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { Spinning } from 'components/spinning';
 
 export const Search: React.FC<{ collapsed?: boolean }> = ({ collapsed }) => {
   const [stretchSearch, setStretchSearch] = useState(false);
@@ -30,7 +17,7 @@ export const Search: React.FC<{ collapsed?: boolean }> = ({ collapsed }) => {
 
   return (
     <>
-      {!!isEnterSearch && <Spinning spinning={true} />}
+      {!!isEnterSearch && <Spinning />}
       <SearchVisualization className={`${stretchSearch ? 'stretch' : ''}`} handleSearch={handleSearch}>
         {stretchSearch && (
           <AutoComplete
