@@ -16,6 +16,7 @@ export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button 
   @media (min-width: ${screenSize.xxl}) {
     height: 64px;
   }
+  margin-top: 0.3%;
   height: 40px;
   z-index: 4;
   position: absolute;
