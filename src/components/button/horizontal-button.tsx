@@ -12,35 +12,16 @@ type WrapperProps = ButtonProps & {
 };
 
 export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button {...props} />)`
-  width: 100%;
   @media (min-width: ${screenSize.xxl}) {
     height: 64px;
   }
   height: 40px;
-  z-index: 4;
-  position: absolute;
-  top: ${(props) => `${props.position}px`};
-  background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);
-  backdrop-filter: blur(2px);
+  width: 158px;
+  background: #ced2de;
   border: none;
-  border-radius: 0;
   display: flex;
-  flex-direction: row;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
-
-  .property-text {
-    display: none;
-  }
-
-  &:hover {
-    background: linear-gradient(179.75deg, #bec4db 0%, rgba(192, 198, 219, 0.3) 99.91%);
-
-    .property-text {
-      display: inline;
-    }
-  }
 `;
 
 type Props = {

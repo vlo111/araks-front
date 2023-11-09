@@ -17,7 +17,7 @@ type Props = {
   tableHeight: undefined | number;
 };
 
-export const ManageNode = ({ tableHead, tableHeight }: Props) => {
+export const ManageNode = ({ tableHead }: Props) => {
   const [stopSubmit, setStopSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
@@ -90,13 +90,12 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
     <Spin spinning={isLoading}>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
       <Drawer
-        title={`Node / ${titleText}`}
+        title={`Add New Node / ${titleText}`}
         placement="top"
         closable={false}
         onClose={onClose}
         open={open}
-        getContainer={false}
-        contentWrapperStyle={{ marginRight: '135px', marginLeft: '135px', height: `${tableHeight}px` }}
+        contentWrapperStyle={{ margin: '0 20%', height: '100%' }}
         footer={
           <Row gutter={16} justify="center">
             <Col span={4}>
