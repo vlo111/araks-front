@@ -5,7 +5,6 @@ import { DataType } from './types';
 import { useActions } from './table-actions';
 import { getTableHeight } from './constants';
 import { VerticalButton } from 'components/button/vertical-button';
-import { ManageNode } from './node/manage-node';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePropertiesValues } from 'types/node';
@@ -33,7 +32,7 @@ const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_
 export const TableSection = () => {
   const [pageData, setPageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
-  const [tableHead, setTableHead] = useState(0);
+  const [, setTableHead] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
@@ -120,7 +119,6 @@ export const TableSection = () => {
     <div style={{ position: 'relative' }}>
       {!isPublicPage && (
         <>
-          <ManageNode tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
           <ImportDrawer />
           <ImportStepsDrawer />
         </>
