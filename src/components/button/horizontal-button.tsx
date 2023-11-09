@@ -16,9 +16,8 @@ export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button 
   @media (min-width: ${screenSize.xxl}) {
     height: 64px;
   }
-  /* margin-top: 0.3%; */
   height: 40px;
-  z-index: 0;
+  z-index: 4;
   position: absolute;
   top: ${(props) => `${props.position}px`};
   background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);

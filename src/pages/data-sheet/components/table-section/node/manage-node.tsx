@@ -90,7 +90,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
     <Spin spinning={isLoading}>
       <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
       <Drawer
-        title={`Add New Node / ${titleText}`}
+        title={`Node / ${titleText}`}
         placement="top"
         closable={false}
         onClose={onClose}
