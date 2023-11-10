@@ -1,17 +1,13 @@
 import { Space } from 'antd';
 import { UserProjectRole } from 'api/types';
-import { DownloadAction, UploadAction } from 'components/actions';
+import { AddNode, DownloadAction, UploadAction } from 'components/actions';
 import { EditType, EditTypeProps } from 'components/button/edit-type';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useProject } from 'context/project-context';
 import { COLORS } from 'helpers/constants';
-import { ManageNode } from './table-section/node/manage-node';
-import { useRef, useState } from 'react';
 
 export const HeaderActions = () => {
   const { projectInfo } = useProject();
-  const [tableHead] = useState(0);
-  const tableRef = useRef<HTMLDivElement>(null);
   const { startEditType, finishEditType, editTypeisOpened, nodeTypeId, isConnectionType, nodesList } =
     useDataSheetWrapper();
   const iconProps = nodeTypeId ? { style: { color: COLORS.PRIMARY.GRAY_DARK } } : {};
@@ -33,7 +29,8 @@ export const HeaderActions = () => {
         <>
           {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
             <>
-              {!isConnectionType && <ManageNode tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />}
+              {/* {!isConnectionType && <ManageNode tableHeight={undefined} tableHead={0} />} */}
+              {!isConnectionType && <AddNode />}
               {!isConnectionType && <DownloadAction icon={iconProps} />}
               {!isConnectionType && <UploadAction icon={iconProps} />}
             </>

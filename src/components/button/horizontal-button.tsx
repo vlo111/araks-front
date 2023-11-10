@@ -3,7 +3,7 @@ import { Button, ButtonProps } from 'antd';
 import { useCallback } from 'react';
 import { PlusAction } from 'components/actions/plus';
 import { Text } from 'components/typography';
-import { COLORS } from 'helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 import { useProject } from 'context/project-context';
 import { UserProjectRole } from 'api/types';
 
@@ -12,13 +12,18 @@ type WrapperProps = ButtonProps & {
 };
 
 export const Wrapper = styled(({ position, ...props }: WrapperProps) => <Button {...props} />)`
+  @media (min-width: ${screenSize.xxl}) {
+    height: 64px;
+  }
   height: 40px;
-  width: 158px;
   background: #ced2de;
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  top: ${(props) => `${props.position}px`};
+  background: linear-gradient(179.75deg, rgba(213, 215, 223, 0.9) 0%, rgba(213, 215, 223, 0.3) 99.91%);
 `;
 
 type Props = {
