@@ -27,7 +27,7 @@ export const NodeDeleteModal = () => {
       const selectCombo = graph.findById('combo-select');
       if (selectCombo) graph.uncombo(selectCombo.getID());
 
-      graph.addBehaviors('drag-node', 'default');
+      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
     },
   });
 
