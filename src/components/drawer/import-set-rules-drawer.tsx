@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Col, Drawer, Modal, notification, Row } from 'antd';
 import { useImportNodes } from 'api/import/use-import-nodes';
@@ -8,34 +8,52 @@ import { SetRules } from 'components/form/import/set-rules';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { ImportActionType, useImport } from '../../context/import-context';
-import { ProgressBar } from 'components/progress-bar';
 import { ImportNodesResponse } from 'api/import/types';
 
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
   const [api, contextHolder] = notification.useNotification();
 
-  const [data, setData] = useState<unknown>();
-  const [stopProgress, setStopProgress] = useState<boolean>(false);
-
   const { mutate, isLoading } = useImportNodes({
     onSuccess: (data) => {
-      setData(data);
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: false,
+        },
+      });
+
+      dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
     },
     onError: () => {
-      setStopProgress(true);
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: true,
+        },
+      });
     },
   });
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: true,
+          progressStop: false,
+        },
+      });
+    }
+  }, [dispatch, isLoading]);
 
   const handleCancel = () => {
     Modal.confirm({
       title: 'Are you sure you want to cancel current import process? All data will be cleared.',
       onOk: () => dispatch({ type: ImportActionType.IMPORT_CLOSE, payload: {} }),
     });
-  };
-
-  const handleFinishProgress = () => {
-    dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
   };
 
   return (
@@ -85,7 +103,6 @@ export const ImportSetRulesDrawer = () => {
       }}
       mask={false}
     >
-      {!stopProgress && <ProgressBar isLoading={isLoading} isFinished={handleFinishProgress} />}
       <VerticalSpace size="large">
         <div style={{ textAlign: 'center' }}>
           <InfoCircleOutlined />

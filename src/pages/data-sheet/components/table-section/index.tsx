@@ -20,6 +20,8 @@ import { getConnectionFormName } from 'components/form/type/connection-type';
 import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { ProgressBar } from 'components/progress-bar';
+import { useImport } from 'context/import-context';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -36,6 +38,9 @@ export const TableSection = () => {
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
+  const {
+    state: { progressStart, progressStop },
+  } = useImport();
 
   const { nodeTypeId } = useDataSheetWrapper();
   const {
@@ -163,6 +168,7 @@ export const TableSection = () => {
         ) : (
           <></>
         )}
+        <ProgressBar start={!!progressStart} stop={!!progressStop} />
       </VerticalSpace>
     </div>
   );

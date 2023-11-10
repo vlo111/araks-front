@@ -1,12 +1,13 @@
 import { Spin, SpinProps } from 'antd';
 import styled from 'styled-components';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export const SpinningWrapper = styled(Spin)`
   position: fixed;
   left: 0;
-  top: 150px;
+  top: 0px;
   width: 100% !important;
-  height: calc(100% - 150px) !important;
+  height: 100vh !important;
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -14,4 +15,6 @@ export const SpinningWrapper = styled(Spin)`
   z-index: 10;
 `;
 
-export const Spinning = (params: SpinProps) => <SpinningWrapper spinning={true} {...params} />;
+export const Spinning = (params: SpinProps) => (
+  <SpinningWrapper indicator={<LoadingOutlined style={{ fontSize: 120 }} />} spinning={true} {...params} />
+);

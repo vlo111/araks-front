@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Progress } from 'antd';
 import { useProgressBar } from './use-progress-bar';
+import { Progress } from 'antd';
 
 const conicColors = { '0%': '#303030', '50%': '#808080', '100%': '#59CFDF' };
 
@@ -10,10 +10,10 @@ const ProgressBarWrapper = styled(Progress)`
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
-  z-index: 1;
+  z-index: 2000;
   background: rgba(35, 47, 106, 0.2);
   backdrop-filter: blur(8px);
+  height: 100vh;
 
   .ant-progress-inner {
     left: 45%;
@@ -21,19 +21,15 @@ const ProgressBarWrapper = styled(Progress)`
   }
 `;
 
-interface ProgressBarProps {
-  isLoading: boolean;
-  isFinished: VoidFunction;
+interface ProgressComponentProps {
+  start: boolean;
+  stop: boolean;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ isLoading, isFinished }) => {
-  const { showProgress, isLoadingChanges, percent } = useProgressBar(isLoading, isFinished);
+export const ProgressBar: React.FC<ProgressComponentProps> = ({ start, stop }) => {
+  const { percent, close } = useProgressBar(start, stop);
 
-  return (
-    <div>
-      {showProgress && isLoadingChanges === 0 ? null : (
-        <ProgressBarWrapper type="circle" percent={percent} strokeColor={percent < 100 ? conicColors : undefined} />
-      )}
-    </div>
-  );
+  if (close) return null;
+
+  return <ProgressBarWrapper type="circle" percent={percent} strokeColor={percent < 100 ? conicColors : undefined} />;
 };

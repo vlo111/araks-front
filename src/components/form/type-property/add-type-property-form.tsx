@@ -19,6 +19,7 @@ import { useCreateNodeEdgeType } from 'api/node-edge-type/use-create-node-edge-t
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { useQueryClient } from '@tanstack/react-query';
 import { URL_NODES_LIST } from 'api/node/constants';
+import { ImportActionType, useImport } from '../../../context/import-context';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -42,6 +43,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   const [form] = Form.useForm();
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const { dispatch: dispatchImport } = useImport();
 
   const { mutate: mutateCreateConnection } = useCreateNodeEdgeType(undefined, {
     onSuccess: ({ data }) => {
@@ -84,7 +86,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
   );
 
   // connect connection property
-  const { mutate: mutateConnection } = useUpdateProjectEdgeType(propertyId, {
+  const { mutate: mutateConnection, isLoading } = useUpdateProjectEdgeType(propertyId, {
     onSuccess: () => {
       hide?.();
       form.resetFields();
@@ -93,6 +95,23 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_id', id || '').replace(':project_type_id', nodeTypeId || ''),
       ]);
+
+      dispatchImport({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: false,
+        },
+      });
+    },
+    onError: () => {
+      dispatchImport({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: true,
+        },
+      });
     },
   });
 
@@ -120,7 +139,6 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         target_attribute_id,
       });
     } else {
-      hide?.();
       const { ref_property_type_id, ...values } = value as ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit;
 
       if (ref_property_type_id === PropertyTypes.Connection) {
@@ -169,6 +187,18 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
       form.setFieldValue('ref_property_type_id', PropertyTypes.Connection);
     }
   }, [form, isConnectionType]);
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatchImport({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: true,
+          progressStop: false,
+        },
+      });
+    }
+  }, [dispatchImport, isLoading]);
 
   return (
     <Wrapper onClick={handlePopoverClick}>

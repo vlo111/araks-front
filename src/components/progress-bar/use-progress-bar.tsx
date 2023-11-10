@@ -1,65 +1,59 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 
-export const useProgressBar = (isLoading: boolean, isFinished: VoidFunction) => {
-  const [percent, setPercent] = useState<number>(0);
-  const [intervalTime, setIntervalTime] = useState<number>(1000);
-  const [isLoadingChanges, setIsLoadingChanges] = useState<number>(0);
-  const [showProgress, setShowProgress] = useState<boolean>(true);
+export const useProgressBar = (start: boolean, stop: boolean) => {
+  const [percent, setPercent] = useState(0);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const [intervalContinue, setIntervalContinue] = useState<NodeJS.Timeout | null>(null);
+
+  const startInterval = (time: number) =>
+    setInterval(() => {
+      setPercent((prev) => prev + 1);
+    }, time);
+
+  const clearAndRestartInterval = (time: number) => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(startInterval(time));
+    }
+  };
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
-
-    const determineIntervalTime = (count: number) => {
-      const intervals = [500, 200, 400, 800, 1000, 2000];
-      return intervals[Math.min(Math.floor(count / 10), intervals.length - 1)];
-    };
-
-    if (isLoading) {
-      setIsLoadingChanges(1);
-      intervalId = setInterval(() => {
-        setPercent((prevCount) => {
-          const nextCount = prevCount + 1;
-          const newIntervalTime = determineIntervalTime(nextCount);
-
-          if (newIntervalTime !== intervalTime) {
-            if (intervalId) clearInterval(intervalId);
-            setIntervalTime(newIntervalTime);
-          }
-
-          return nextCount;
-        });
-      }, intervalTime);
-    } else if (isLoadingChanges === 1) {
-      intervalId = setInterval(() => {
-        setPercent((prevCount) => {
-          const nextCount = prevCount + 1;
-          const newIntervalTime = 40;
-
-          if (newIntervalTime !== intervalTime) {
-            if (intervalId) clearInterval(intervalId);
-            setIntervalTime(newIntervalTime);
-          }
-
-          return nextCount;
-        });
-      }, intervalTime);
-    }
-
-    return () => {
+    if (start) {
+      setIntervalId(startInterval(1000));
+    } else {
       if (intervalId) {
         clearInterval(intervalId);
+        setIntervalContinue(startInterval(20));
       }
-    };
-  }, [isLoading, intervalTime, isLoadingChanges]);
+    }
+  }, [start]);
 
   useEffect(() => {
-    if (percent >= 100) {
-      setTimeout(() => {
-        setShowProgress(false);
-        isFinished();
-      }, 1000);
+    if (intervalId) {
+      if (percent === 1) document.body.style.overflow = 'hidden';
+      if (percent === 10) clearAndRestartInterval(500);
+      if (percent === 20) clearAndRestartInterval(1000);
+      if (percent === 80) clearAndRestartInterval(5000);
+      if (percent === 90) clearAndRestartInterval(15000);
+      if (percent === 95) clearAndRestartInterval(90000);
     }
-  }, [percent, isFinished]);
 
-  return { showProgress, isLoadingChanges, percent };
+    if (percent === 150) {
+      intervalContinue && clearInterval(intervalContinue);
+      setPercent(0);
+      document.body.style.overflow = 'auto';
+    }
+  }, [percent]);
+
+  useEffect(() => {
+    if (stop) {
+      intervalId && clearInterval(intervalId);
+      intervalContinue && clearInterval(intervalContinue);
+
+      document.body.style.overflow = 'auto';
+    }
+  }, [stop]);
+
+  return { percent, close: stop || percent === 149 || percent === 0 };
 };
