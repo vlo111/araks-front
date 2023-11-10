@@ -1,6 +1,6 @@
 import { Space } from 'antd';
 import { UserProjectRole } from 'api/types';
-import { AddNode, DownloadAction, UploadAction } from 'components/actions';
+import { AddNodeAction, DownloadAction, UploadAction } from 'components/actions';
 import { EditType, EditTypeProps } from 'components/button/edit-type';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useProject } from 'context/project-context';
@@ -29,8 +29,7 @@ export const HeaderActions = () => {
         <>
           {projectInfo && projectInfo?.role !== UserProjectRole.Viewer && (
             <>
-              {/* {!isConnectionType && <ManageNode tableHeight={undefined} tableHead={0} />} */}
-              {!isConnectionType && <AddNode />}
+              {!isConnectionType && <AddNodeAction />}
               {!isConnectionType && <DownloadAction icon={iconProps} />}
               {!isConnectionType && <UploadAction icon={iconProps} />}
             </>

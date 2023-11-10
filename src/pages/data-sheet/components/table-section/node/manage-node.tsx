@@ -10,6 +10,18 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
 import { setNodeDataValue } from './utils';
+import styled from 'styled-components';
+
+const AddNodeButton = styled(Button)`
+  background: #ced2de;
+  color: #232f6a;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  border: none;
+  justify-content: 'center';
+`;
 
 export const ManageNode = () => {
   const [stopSubmit, setStopSubmit] = useState(false);
@@ -82,22 +94,9 @@ export const ManageNode = () => {
 
   return (
     <Spin spinning={isLoading}>
-      <Button
-        onClick={onOpen}
-        type='primary'
-        style={{
-          background: '#ced2de',
-          color: '#232f6a',
-          fontWeight: '700',
-          fontSize: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          border: 'none',
-          justifyContent: 'center'
-        }}
-      >
+      <AddNodeButton onClick={onOpen} type="primary">
         + Add Node
-      </Button>
+      </AddNodeButton>
       <Drawer
         title={`Add New Node / ${titleText}`}
         placement="top"
