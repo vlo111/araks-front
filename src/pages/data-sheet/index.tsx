@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { LeftSection } from './components/left-section';
 import { RightSection } from './components/right-section';
 import { TypePropertyProvider } from './components/table-section/table-context';
+import { ImportProvider } from 'context/import-context';
 
 const Row = styled((props) => <RowComponent {...props} />)`
   &.overview {
@@ -28,21 +29,24 @@ export const DataSheet = () => {
 
   return (
     <TypePropertyProvider>
-      <Row className="overview">
-        {/* zIndex greated than table on right side and lower than header has */}
-        <Col
-          xs={hideLeftSection ? 0 : 6}
-          xxl={hideLeftSection ? 0 : 6}
-          className="overview__section project-save"
-          id="datasheet-tree-list"
-          style={{ zIndex: 3 }}
-        >
-          <LeftSection />
-        </Col>
-        <Col span={!hideLeftSection ? 18 : 24} className="overview__section project-share" id="datasheet-data">
-          <RightSection />
-        </Col>
-      </Row>
+      <ImportProvider>
+        <Row className="overview">
+          {/* zIndex greated than table on right side and lower than header has */}
+
+          <Col
+            xs={hideLeftSection ? 0 : 6}
+            xxl={hideLeftSection ? 0 : 6}
+            className="overview__section project-save"
+            id="datasheet-tree-list"
+            style={{ zIndex: 3 }}
+          >
+            <LeftSection />
+          </Col>
+          <Col span={!hideLeftSection ? 18 : 24} className="overview__section project-share" id="datasheet-data">
+            <RightSection />
+          </Col>
+        </Row>
+      </ImportProvider>
     </TypePropertyProvider>
   );
 };
