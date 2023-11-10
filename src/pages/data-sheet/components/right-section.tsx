@@ -6,7 +6,6 @@ import { ALL_DATA_SORT_BY } from 'components/dropdown/constants';
 import { EmptyList } from 'components/empty';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { ViewDatasheetEdgeProvider } from 'context/datasheet-edge-view-vontext';
-import { ImportProvider } from 'context/import-context';
 import { useProject } from 'context/project-context';
 import { SortProvider } from 'context/sort-context';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
@@ -43,7 +42,7 @@ export const RightSection = () => {
   }
 
   return (
-    <ImportProvider>
+    <>
       <ColorFill color={color} />
       {projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
         <AddType
@@ -70,6 +69,6 @@ export const RightSection = () => {
           )}
         </>
       )}
-    </ImportProvider>
+    </>
   );
 };
