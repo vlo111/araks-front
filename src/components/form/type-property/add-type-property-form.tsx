@@ -138,6 +138,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         source_attribute_id,
         target_attribute_id,
       });
+      hide?.();
     } else {
       const { ref_property_type_id, ...values } = value as ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit;
 
@@ -164,6 +165,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
               ?.find((listItem) => listItem.id === (values as NodeEdgeTypesSubmit)?.source_id)
               ?.properties?.find((property) => property.default_property === true)?.id,
           } as NodeEdgeTypesSubmit);
+          hide?.();
         }
       } else {
         mutate({
@@ -172,6 +174,7 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
           propertyId: propertyId,
           project_type_id: nodeTypeId,
         } as ProjectNodeTypePropertySubmit);
+        hide?.();
       }
     }
   };
