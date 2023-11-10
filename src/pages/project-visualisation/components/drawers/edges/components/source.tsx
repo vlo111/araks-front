@@ -25,6 +25,10 @@ const StyledCustomColumn = styled.div`
     color: #666666;
     font-style: italic;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 170px;
   }
 `;
 
@@ -41,7 +45,9 @@ export const SourceView = ({ sourceData, nodeName }: Props) => {
       <VerticalSpace className="left">
         <div style={{ height: '9px', backgroundColor: sourceData.color }}></div>
         <div className="text">{sourceData.name}</div>
-        <div className="text node-name">{nodeName}</div>
+        <div className="text node-name" title={nodeName}>
+          {nodeName}
+        </div>
       </VerticalSpace>
     </StyledCustomColumn>
   );

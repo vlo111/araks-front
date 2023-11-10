@@ -15,6 +15,7 @@ import { useViewDatasheet } from 'context/datasheet-view-vontext';
 import { useProject } from 'context/project-context';
 import { useParams } from 'react-router-dom';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 type TypeInfoProps = {
   color?: string;
@@ -70,6 +71,7 @@ export const AllDataListNode = ({
   const { dispatch } = useViewDatasheet();
   const { projectInfo } = useProject();
   const isXXl = useIsXXlScreen();
+  const isPublicPage = useIsPublicPage();
 
   const handleItemClick = useCallback(
     (item: AllDataResponse) => {
@@ -104,7 +106,7 @@ export const AllDataListNode = ({
 
   return (
     <Spin spinning={isInitialLoading}>
-      {projectInfo?.role !== UserProjectRole.Viewer && (
+      {projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
         <div style={{ margin: '1rem 1.5rem', position: 'absolute', top: -60 }}>
           <Checkbox
             id="allCheck"
@@ -135,7 +137,7 @@ export const AllDataListNode = ({
         renderItem={(item, index) => {
           return (
             <StyledListItem key={item.id} color={item.nodeType?.color}>
-              {projectInfo?.role !== UserProjectRole.Viewer && (
+              {projectInfo?.role !== UserProjectRole.Viewer && !isPublicPage && (
                 <Checkbox
                   className="all-data-checkbox"
                   style={{ marginRight: '16px' }}
