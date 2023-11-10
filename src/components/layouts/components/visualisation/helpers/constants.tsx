@@ -93,7 +93,16 @@ export const options = {
   animate: true,
   modes: {
     default: [
-      'create-edge',
+      {
+        type: 'create-edge',
+        shouldEnd: function (e: unknown) {
+          const source = (this as unknown as { source: string }).source;
+
+          if (source === (e as { item: { getID: () => string } }).item.getID()) return false;
+
+          return true;
+        },
+      },
       'drag-canvas',
       'drag-node',
       'drag-combo',
