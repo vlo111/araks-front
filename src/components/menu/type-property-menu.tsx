@@ -13,6 +13,8 @@ import { PropertyMenu } from './property-menu';
 import { AddNodeTypePopover } from 'components/popover';
 import { AddTypePropertyForm } from 'components/form/type-property/add-type-property-form';
 import { useState } from 'react';
+import { ProgressBar } from '../progress-bar';
+import { useImport } from '../../context/import-context';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -53,6 +55,9 @@ type Props = {
 export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeManageNodes }: Props) => {
   const { dispatch } = useTypeProperty();
   const [isEditOpened, setEditOpened] = useState(false);
+  const {
+    state: { progressStart, progressStop },
+  } = useImport();
 
   const { nodeTypeId } = useDataSheetWrapper();
   const { mutate } = useSetPropertyDefault();
@@ -91,6 +96,7 @@ export const TypePropertyMenu = ({ propertyId, isDefault, canSetDefault, closeMa
           return open;
         }}
       />
+      <ProgressBar start={!!progressStart} stop={!!progressStop} />
     </>
   );
 };
