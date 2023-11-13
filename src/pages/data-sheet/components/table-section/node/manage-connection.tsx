@@ -3,23 +3,25 @@ import { useManageEdge } from 'api/edges/use-manage-edge';
 import { EdgeTypePropertiesResponse } from 'api/node-edge-type/types';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { Button } from 'components/button';
-import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddConnectionNodeForm } from 'components/form/add-connection-node-form';
 import { PropertyTypes } from 'components/form/property/types';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { useState } from 'react';
 import { EdgesCreate, EdgesCreateProperties, EdgeSourceData, EdgeTargetData } from 'types/edges';
 import { NodeBody } from 'types/node';
+import styled from 'styled-components';
 
-type Props = {
-  tableHead: number;
-  tableHeight: undefined | number;
-};
-
-export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
+const AddConnectionButton = styled(Button)`
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  border: none;
+  justify-content: 'center';
+`;
+export const ManageConnection = () => {
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
-
   const { isInitialLoading, data } = useGetProjectsEdgeTypeProperties(nodeTypeId, {
     enabled: !!(nodeTypeId && isConnectionType === true),
   });
@@ -72,20 +74,14 @@ export const ManageConnection = ({ tableHead, tableHeight }: Props) => {
 
   return (
     <Spin spinning={isLoading}>
-      <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
+      <AddConnectionButton onClick={onOpen} type='primary'>+ Add Connection </AddConnectionButton>
       <Drawer
-        title={`Add New Node / ${titleText}`}
-        placement="top"
+        title={`Add / ${titleText}`}
         closable={false}
         onClose={onClose}
         open={open}
-        getContainer={false}
-        contentWrapperStyle={{
-          marginRight: '135px',
-          marginLeft: '135px',
-          height: `${tableHeight}px`,
-        }}
-        bodyStyle={{ backgroundColor: '#F2F2F2', padding: '40px 0' }}
+        placement="top"
+        contentWrapperStyle={{ margin: '0 20%', height: '100%' }}
         footer={
           <Row gutter={16} justify="center">
             <Col span={4}>
