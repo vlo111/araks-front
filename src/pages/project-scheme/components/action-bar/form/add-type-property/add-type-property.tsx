@@ -50,9 +50,11 @@ export const AddSchemaTypePropertyForm = () => {
       required_type,
       multiple_type,
       unique_type,
+      enums_data,
     }) => {
       form.setFieldsValue({
         name,
+        enums_data,
         ref_property_type_id,
         required_type,
         multiple_type,
@@ -62,20 +64,9 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty(
-    {
-      onSuccess: () => {
-        form.resetFields();
-      },
-    },
-    isUpdate ? portId : undefined
-  );
+  const { mutate } = useCreateTypeProperty({}, isUpdate ? portId : undefined);
 
-  const { mutate: mutateConnection } = useCreateEdge(undefined, {
-    onSuccess: ({ data }) => {
-      form.resetFields();
-    },
-  });
+  const { mutate: mutateConnection } = useCreateEdge(undefined);
 
   // get node type edit data
   const { data, isInitialLoading } = useGetProjectNodeTypeProperty(portId, {

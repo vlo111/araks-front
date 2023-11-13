@@ -26,13 +26,13 @@ export const useCreateTypeProperty = (options: Options, nodeTypePropertyId?: str
       const url = values.propertyId
         ? URL_PROJECT_NODE_TYPE_PROPERTY_UPDATE.replace(':id', values.propertyId || '')
         : URL_PROJECT_NODE_TYPE_PROPERTY_CREATE;
-
       const { propertyId, ...data } = values;
 
       const body = {
         ...data,
         project_id: params.id,
       };
+
       return client[type](url, body);
     },
     onSuccess: (data, variables, context) => {
