@@ -10,7 +10,6 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { DataType } from '../table-section/types';
 import { NodePagination } from 'components/pagination';
-// import { ManageConnection } from '../table-section/node/manage-connection';
 import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
 import { VerticalSpace } from 'components/space/vertical-space';
@@ -87,7 +86,6 @@ export const ConnectionTableSection = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      {/* {!isPublicPage && <ManageConnection tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />} */}
       <VerticalSpace size="large">
         <div
           id="container"
