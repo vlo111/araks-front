@@ -13,8 +13,6 @@ import { setNodeDataValue } from './utils';
 import styled from 'styled-components';
 
 const AddNodeButton = styled(Button)`
-  background: #ced2de;
-  color: #232f6a;
   font-weight: 700;
   font-size: 20px;
   display: flex;
