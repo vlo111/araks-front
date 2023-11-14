@@ -78,7 +78,7 @@ export const ViewEditNodeDrawer = () => {
         } as NodePropertiesValues;
       }, initialAcc);
 
-      const groupListEdges = groupedData((data?.edges ?? []).concat(data?.edges_in ?? []));
+      const groupListEdges = groupedData(data?.edges ?? []);
 
       const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
         return {
