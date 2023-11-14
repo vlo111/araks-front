@@ -20,6 +20,7 @@ import { getConnectionFormName } from 'components/form/type/connection-type';
 import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -36,6 +37,7 @@ export const TableSection = () => {
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
+  const isXXl = useIsXXlScreen();
 
   const { nodeTypeId } = useDataSheetWrapper();
   const {
@@ -141,9 +143,10 @@ export const TableSection = () => {
                 columns={[...columns, ...actions]}
                 pagination={false}
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
+                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 230}px)` }}
               />
             </ViewDatasheetProvider>
-          </Spin>
+          </Spin> 
         </div>
         {pageCount ? (
           <NodePagination
