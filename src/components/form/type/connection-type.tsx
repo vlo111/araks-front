@@ -151,6 +151,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
           style={{ marginBottom: '0' }}
         >
           <ConnectionAutocomplete
+            nodeId={nodeId}
             targetId={nodeTypeId !== data.source_id ? data.source_id ?? '' : data.target_id ?? ''}
             handleSelect={handleSelect}
           />
