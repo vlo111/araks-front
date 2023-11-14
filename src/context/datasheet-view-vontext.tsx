@@ -105,7 +105,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
           } as NodePropertiesValues;
         }, {});
 
-        const groupListEdges = groupedData((nodeData?.edges ?? []).concat(nodeData?.edges_in ?? []));
+        const groupListEdges = groupedData(nodeData?.edges ?? []);
 
         const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
           return {
