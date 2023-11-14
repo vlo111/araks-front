@@ -1,6 +1,5 @@
 import { useColumns } from './use-columns';
 import { useEffect, useRef, useState } from 'react';
-import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
 import { useActions } from './table-actions';
 import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
@@ -15,6 +14,7 @@ import { EdgesCreateProperties } from 'types/edges';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { convertByType } from 'helpers/utils';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -31,6 +31,7 @@ export const ConnectionTableSection = () => {
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
+  const isXXl = useIsXXlScreen();
 
   const { nodeTypeId } = useDataSheetWrapper();
 
@@ -89,7 +90,12 @@ export const ConnectionTableSection = () => {
       <VerticalSpace size="large">
         <div
           id="container"
-          style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
+          style={{
+            overflow: 'auto',
+            width: '100%',
+            height: `calc(100vh - ${(isXXl ? 152 : 130) + 230}px)`,
+            position: 'relative',
+          }}
           ref={tableRef}
         >
           {!isPublicPage && <VerticalConnectionButton columnWidth={columnWidth} />}
