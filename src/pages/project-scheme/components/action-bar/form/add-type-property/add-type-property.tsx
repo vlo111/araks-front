@@ -22,6 +22,8 @@ import { Rule } from 'antd/es/form';
 import { EditNodePropertyTypeInfoModal } from 'components/modal/edit-node-property-type-info-modal';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { PropertyDataTypeSelectSchema } from './property-data-type-select';
+import { PropertyEnumDetails } from 'components/form/property/property-enum-details';
+import { Spinning } from 'components/spinning';
 
 type InitEditForm = (attrs: PortAttributes) => void;
 
@@ -48,9 +50,11 @@ export const AddSchemaTypePropertyForm = () => {
       required_type,
       multiple_type,
       unique_type,
+      enums_data,
     }) => {
       form.setFieldsValue({
         name,
+        enums_data,
         ref_property_type_id,
         required_type,
         multiple_type,
@@ -60,20 +64,9 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty(
-    {
-      onSuccess: () => {
-        form.resetFields();
-      },
-    },
-    isUpdate ? portId : undefined
-  );
+  const { mutate } = useCreateTypeProperty({}, isUpdate ? portId : undefined);
 
-  const { mutate: mutateConnection } = useCreateEdge(undefined, {
-    onSuccess: ({ data }) => {
-      form.resetFields();
-    },
-  });
+  const { mutate: mutateConnection } = useCreateEdge(undefined);
 
   // get node type edit data
   const { data, isInitialLoading } = useGetProjectNodeTypeProperty(portId, {
@@ -85,7 +78,7 @@ export const AddSchemaTypePropertyForm = () => {
     },
   });
 
-  const { mutate: mutateDelete } = useDeleteTypeProperty(portId, {
+  const { mutate: mutateDelete, isLoading: isDeleteLoading } = useDeleteTypeProperty(portId, {
     onSuccess: () => {
       finishTypePort();
     },
@@ -137,6 +130,7 @@ export const AddSchemaTypePropertyForm = () => {
 
   return (
     <Skeleton loading={isInitialLoading}>
+      {isDeleteLoading && <Spinning />}
       <Wrapper>
         <Form
           name="project-node-type-property-schema"
@@ -189,6 +183,7 @@ export const AddSchemaTypePropertyForm = () => {
               isEdit={isUpdate}
             />
           </FormItem>
+          <PropertyEnumDetails />
           <PropertyBasicDetails />
           <PropertyConnectionDetailsSchema typeId={type.id} />
           <FormItem>

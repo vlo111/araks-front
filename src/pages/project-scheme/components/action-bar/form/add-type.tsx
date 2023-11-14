@@ -15,6 +15,7 @@ import { SelectColor } from '../components/select-color';
 import { useDeleteType } from 'api/schema/type/use-delete-type';
 import { createNodesTree } from 'components/layouts/components/data-sheet/utils';
 import { PATH } from 'components/layouts/components/schema/helpers/constants';
+import { Spinning } from 'components/spinning';
 
 const Wrapper = styled.div`
   padding: 24px 24px 8px;
@@ -43,7 +44,7 @@ export const AddSchemaTypeForm = () => {
     isEdit ? selected.node?.id : undefined
   );
 
-  const { mutate: mutateDelete } = useDeleteType({});
+  const { mutate: mutateDelete, isLoading: isDeleteLoading } = useDeleteType({});
 
   const onHandleDelete = () => {
     mutateDelete(selected?.node?.id || '');
@@ -74,6 +75,7 @@ export const AddSchemaTypeForm = () => {
 
   return (
     <Wrapper>
+      {isDeleteLoading && <Spinning />}
       <Form
         name="project-node-type"
         form={form}

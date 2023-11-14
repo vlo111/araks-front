@@ -117,7 +117,7 @@ export const ViewEditNodeDrawer = () => {
     enabled: !!nodeData?.project_type_id,
   });
 
-  const { mutate } = useManageNodesGraph({
+  const { mutate, isLoading } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
       const { nodeId } = variables;
       if (graph.getNodes().find((n) => n.getID() === nodeId)) {
@@ -130,6 +130,8 @@ export const ViewEditNodeDrawer = () => {
         addEdges(graph, nodeId ?? '', createdEdges);
 
         updateConnector(graph);
+
+        onClose();
       }
     },
   });
@@ -202,10 +204,9 @@ export const ViewEditNodeDrawer = () => {
           nodeId: nodeData.id,
           destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
         } as NodeDataSubmit);
-        onClose();
       }
     },
-    [form, mutate, nodeData, onClose, properties]
+    [form, mutate, nodeData, properties]
   );
 
   const footer = useMemo(
@@ -218,13 +219,13 @@ export const ViewEditNodeDrawer = () => {
             </Button>
           </Col>
           <Col span={4}>
-            <Button type="primary" onClick={() => form.submit()} block>
+            <Button type="primary" onClick={() => form.submit()} loading={isLoading} disabled={isLoading} block>
               Save
             </Button>
           </Col>
         </Row>
       ),
-    [isEdit, form]
+    [isEdit, isLoading, form]
   );
 
   const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;

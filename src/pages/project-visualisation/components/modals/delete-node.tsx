@@ -4,12 +4,13 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
-import { useDeleteAllDataChecked } from '../../../../api/all-data/use-delete-all-data-checked';
+import { useDeleteAllDataChecked } from 'api/all-data/use-delete-all-data-checked';
+import { Spinning } from 'components/spinning';
 
 export const NodeDeleteModal = () => {
   const { graph, deleteNode, finishDeleteNode, finishOpenNode, graphInfo, setGraphInfo } = useGraph() ?? {};
 
-  const { mutate: multipleDelete } = useDeleteAllDataChecked(deleteNode?.ids ?? [], {
+  const { mutate: multipleDelete, isLoading: isLoadingNodes } = useDeleteAllDataChecked(deleteNode?.ids ?? [], {
     enabled: !!deleteNode?.ids,
     onSuccess: () => {
       deleteNode?.ids?.forEach((n) => {
@@ -26,11 +27,11 @@ export const NodeDeleteModal = () => {
       const selectCombo = graph.findById('combo-select');
       if (selectCombo) graph.uncombo(selectCombo.getID());
 
-      graph.addBehaviors('drag-node', 'default');
+      graph.addBehaviors(['drag-node', 'create-edge'], 'default');
     },
   });
 
-  const { mutate } = useDeleteNode(deleteNode?.id ?? '', {
+  const { mutate, isLoading: isLoadingNode } = useDeleteNode(deleteNode?.id ?? '', {
     onSuccess: () => {
       graph.removeItem(deleteNode?.id ?? '');
 
@@ -50,6 +51,7 @@ export const NodeDeleteModal = () => {
 
   return (
     <>
+      {(isLoadingNode || isLoadingNodes) && <Spinning />}
       <Modal
         title={
           <Text style={{ textAlign: 'center' }}>{`Are you sure you wish to permanently remove this node(s) ?`}</Text>

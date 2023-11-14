@@ -23,8 +23,8 @@ import {
 } from '../../pages/project-visualisation/components/buttons/styles';
 import { useGetData } from '../../api/visualisation/use-get-data';
 import { graphRender } from '../layouts/components/visualisation/helpers/utils';
-import { PropertyTypes } from '../form/property/types';
 import { Dayjs } from 'dayjs';
+import { getQueryValue } from 'helpers/utils';
 
 type Props = {
   isQueries?: boolean;
@@ -143,30 +143,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                         type: item.ref_property_type_id,
                         action: getQueryFilterType(item.type),
                         multiple: item.multiple_type,
-                        value: (() => {
-                          if (item.type === QueryFilterTypes.BEFORE || item.type === QueryFilterTypes.AFTER) {
-                            const isBefore = item.type === QueryFilterTypes.BEFORE;
-                            return item[isBefore ? '<' : '>'].toISOString();
-                          } else if (item.type === QueryFilterTypes.BETWEEN) {
-                            return [item.betweenStart, item.betweenEnd].toString();
-                          } else if (
-                            item.ref_property_type_id === PropertyTypes.Date ||
-                            item.ref_property_type_id === PropertyTypes.DateTime
-                          ) {
-                            const convertToDateString = (date: Date) =>
-                              item.ref_property_type_id === PropertyTypes.Date
-                                ? getDate(date as unknown as Dayjs).toString()
-                                : date.toISOString();
-
-                            if (Array.isArray(item.typeText)) {
-                              return item.typeText.map(convertToDateString).toString();
-                            } else {
-                              return convertToDateString(item.typeText);
-                            }
-                          } else {
-                            return item.typeText.toString();
-                          }
-                        })(),
+                        value: getQueryValue(item),
                       },
                     };
                   }
@@ -190,24 +167,7 @@ export const QueriesButton = ({ isQueries }: Props) => {
                   type: query.ref_property_type_id,
                   action: getQueryFilterType(query.type),
                   multiple: query.multiple_type,
-                  value:
-                    query.type === QueryFilterTypes.BEFORE || query.type === QueryFilterTypes.AFTER
-                      ? query[query.type === QueryFilterTypes.BEFORE ? '<' : '>'].toISOString()
-                      : (query.type === QueryFilterTypes.BETWEEN
-                          ? [query.betweenStart, query.betweenEnd]
-                          : query.ref_property_type_id === PropertyTypes.Date ||
-                            query.ref_property_type_id === PropertyTypes.DateTime
-                          ? Array.isArray(query.typeText)
-                            ? query.typeText.map((t: Date) =>
-                                query.ref_property_type_id === PropertyTypes.Date
-                                  ? getDate(t as unknown as Dayjs)
-                                  : t.toISOString()
-                              )
-                            : query.ref_property_type_id === PropertyTypes.Date
-                            ? getDate(query.typeText as unknown as Dayjs)
-                            : query.typeText.toISOString()
-                          : query.typeText
-                        )?.toString(),
+                  value: getQueryValue(query),
                 },
               }
             : {},

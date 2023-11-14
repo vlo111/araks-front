@@ -25,6 +25,8 @@ export type NodeDataSubmit = {
     project_edge_type_id: string;
     target_id: string;
     target_type_id: string;
+    source_id: string;
+    source_type_id: string;
   }[];
   nodeId?: string;
   name: string;

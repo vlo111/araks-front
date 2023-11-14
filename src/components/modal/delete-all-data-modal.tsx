@@ -5,6 +5,7 @@ import { Modal } from 'components/modal';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { useState } from 'react';
+import { Spinning } from 'components/spinning';
 
 type Props = {
   checkedItems: string[];
@@ -14,7 +15,7 @@ type Props = {
 
 export const DeleteAllDataModal = ({ checkedItems, setCheckedItems, onSubmit }: Props) => {
   const [isDeleteStart, setDeleteStart] = useState(false);
-  const { mutate } = useDeleteAllDataChecked(checkedItems);
+  const { mutate, isLoading } = useDeleteAllDataChecked(checkedItems);
 
   const handleDelete = async () => {
     await mutate();
@@ -25,6 +26,7 @@ export const DeleteAllDataModal = ({ checkedItems, setCheckedItems, onSubmit }: 
 
   return (
     <>
+      {isLoading && <Spinning />}
       <Modal
         title={<Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this data?</Text>}
         open={isDeleteStart}

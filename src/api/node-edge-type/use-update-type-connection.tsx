@@ -32,7 +32,10 @@ export const useUpdateProjectEdgeType = (propertyId?: string, options?: Options)
     onSuccess: (data, variables, context) => {
       options?.onSuccess?.(data);
     },
-    onError: errorMessage,
+    onError: (er) => {
+      errorMessage(er);
+      options?.onError?.(er as Error);
+    },
   });
   return mutation;
 };

@@ -21,6 +21,8 @@ import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { ProgressBar } from 'components/progress-bar';
+import { useImport } from 'context/import-context';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -38,6 +40,9 @@ export const TableSection = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
   const isXXl = useIsXXlScreen();
+  const {
+    state: { progressStart, progressStop },
+  } = useImport();
 
   const { nodeTypeId } = useDataSheetWrapper();
   const {
@@ -61,7 +66,7 @@ export const TableSection = () => {
             node_icon: showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`),
           } as DataType
         ),
-        ...row.edges.concat(row.edges_in)?.reduce((curr: DataType, item) => {
+        ...row.edges?.reduce((curr: DataType, item) => {
           return {
             ...curr,
             [item.edgeTypes.name + item.edgeTypes.id]: (
@@ -166,6 +171,7 @@ export const TableSection = () => {
         ) : (
           <></>
         )}
+        <ProgressBar start={!!progressStart} stop={!!progressStop} />
       </VerticalSpace>
     </div>
   );

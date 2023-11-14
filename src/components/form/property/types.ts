@@ -11,6 +11,7 @@ export enum PropertyTypes {
   Text = 'text',
   URL = 'url',
   IMAGE_URL = 'image_url',
+  ENUM = 'enum',
 }
 
 export enum ConnectionPropertyTypes {

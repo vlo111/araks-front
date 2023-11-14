@@ -47,11 +47,17 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
   const handleSelectAction = (value: string) => {
     handleSelect(value, options);
     setSearchValue('');
-    initalRequest && setStartInitialRequest(false);
+    setStartInitialRequest(true);
+  };
+
+  const cleanOptions = (length: number) => {
+    if (length === 0) setStartInitialRequest(true);
   };
 
   return (
     <AutoComplete
+      onFocus={() => cleanOptions(searchValue.length)}
+      onChange={(value) => cleanOptions(value.length)}
       options={options?.map((row) => ({ value: row.id, label: row.name }))}
       onSearch={handleSearch}
       value={searchValue}

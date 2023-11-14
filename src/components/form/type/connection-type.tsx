@@ -66,9 +66,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
     const existingData = form.getFieldValue(formName);
 
     const getExistedData = existingData?.find(
-      (data: NodeDataConnectionToSave) =>
-        (value === data.source_id && data.source_type_id === selectedRow?.project_type_id) ||
-        (value === data.target_id && data.source_type_id === selectedRow?.project_type_id)
+      (data: NodeDataConnectionToSave) => selectedRow?.id === data.source_id || selectedRow?.id === data.target_id
     );
 
     if (getExistedData) {
@@ -94,9 +92,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
         };
       }, {});
 
-      const item = connectionFieldsData[formName]?.find(
-        (c) => data.id === c.id && selectedRow.id === c.target_id && selectedRow.project_type_id === c.target_type_id
-      );
+      const item = connectionFieldsData[formName]?.find((c) => data.id === c.id);
 
       const isSource = nodeTypeId !== data.source_id;
 
@@ -120,7 +116,8 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
           isSource ? c.source_id === selectedRow.id : c.target_id === selectedRow.id
         )?.rowId;
 
-        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== rowId)]);
+        if (destroyedEdgesIds)
+          form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== rowId)]);
       }
     }
   };

@@ -73,6 +73,8 @@ export const ManageNode = () => {
         const formName = getConnectionFormName(item.name, item.id);
         return item.ref_property_type_id === PropertyTypes.Connection
           ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,
@@ -128,6 +130,7 @@ export const ManageNode = () => {
           <AddNodeForm
             data={data as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
+            nodeTypeId={nodeTypeId}
             setStopSubmit={setStopSubmit}
           />
         </Form>
