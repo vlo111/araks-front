@@ -18,6 +18,7 @@ import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
 import { NodeEdges } from 'types/node';
+import { EnumType } from './type/enum-type';
 
 type Props = {
   data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
@@ -42,6 +43,8 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nod
               switch (item.ref_property_type_id) {
                 case PropertyTypes.Text:
                   return <TextType key={item.id} data={item} />;
+                case PropertyTypes.ENUM:
+                  return <EnumType key={item.id} data={item} />;
                 case PropertyTypes.Location:
                   return <LocationType key={item.id} data={item} />;
                 case PropertyTypes.URL:

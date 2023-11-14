@@ -2,11 +2,12 @@ import { Form } from 'antd';
 import { FormItem } from '../form-item';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { TypeWrapper } from '../type/type-wrapper';
-import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { Input } from 'components/input';
 import styled from 'styled-components';
 import { Button } from 'components/button';
 import { SecondaryText } from 'components/typography';
+import { Rule } from 'antd/es/form';
 
 const StyledButton = styled(Button)`
   padding: 0;
@@ -37,7 +38,7 @@ export const PropertyEnumDetails = () => {
   return (
     <>
       {dataType === 'enum' && (
-        <Form.List name={'enum'} initialValue={['123', '456']}>
+        <Form.List name={'enums_data'} initialValue={[null]}>
           {(fields, { add, remove }) => (
             <>
               <Wrapper>
@@ -52,9 +53,26 @@ export const PropertyEnumDetails = () => {
                       >
                         <FormItem
                           style={{ marginBottom: 0 }}
-                          name={[field.name]}
+                          name={[field.name, 'name']}
                           key={field.key}
-                          rules={[{ required: dataType, message: VALIDATE_MESSAGES.required }]}
+                          rules={[
+                            { required: true, message: 'Enum name is required' },
+                            { min: 3, message: 'The minimum length for this field is 3 characters' },
+                            { max: 30, message: 'The maximum length for this field is 30 characters' },
+                            {
+                              validator: async (_: Rule, value: string | undefined) => {
+                                if (value !== undefined) {
+                                  const regex = /^[a-z0-9 ]+$/;
+                                  if (!regex.test(value)) {
+                                    return Promise.reject(
+                                      'Name must only contain lowercase letters, numbers and underscores'
+                                    );
+                                  }
+                                }
+                                return Promise.resolve();
+                              },
+                            },
+                          ]}
                         >
                           <Input />
                         </FormItem>
