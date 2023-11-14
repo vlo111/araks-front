@@ -135,6 +135,13 @@ const getOptions = (
         { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
         { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
       ];
+    case propertyType === PropertyTypes.ENUM:
+      return [
+        { name: QueryFilterTypes.IS_NULL, value: QueryFilterTypes.IS_NULL },
+        { name: QueryFilterTypes.IS_NOT_NULL, value: QueryFilterTypes.IS_NOT_NULL },
+        { name: QueryFilterTypes.IS, value: QueryFilterTypes.IS },
+        { name: QueryFilterTypes.IS_NOT, value: QueryFilterTypes.IS_NOT },
+      ];
     default:
       return Object.values(QueryFilterTypes).map((item) => ({ name: item, value: item }));
   }
