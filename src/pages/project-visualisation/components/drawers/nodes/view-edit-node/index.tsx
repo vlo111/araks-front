@@ -270,6 +270,7 @@ export const ViewEditNodeDrawer = () => {
             data={properties as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
             edges={nodeData?.edges.concat(nodeData?.edges_in)}
+            property={nodeData?.properties?.find((p) => p.node_id === openNode.id)}
           />
         </Form>
       ) : isInitialLoading ? (
