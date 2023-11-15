@@ -25,6 +25,7 @@ const editPropertyList = {
     PropertyTypes.Boolean,
     PropertyTypes.Location,
     PropertyTypes.Connection,
+    PropertyTypes.ENUM,
   ],
   [PropertyTypes.Date]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],
   [PropertyTypes.DateTime]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],
