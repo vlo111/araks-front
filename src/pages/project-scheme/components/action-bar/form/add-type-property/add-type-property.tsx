@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Node } from '@antv/x6';
 import { Form, Skeleton, Space } from 'antd';
-import { FormInput } from 'components/input';
 import { Text } from 'components/typography';
 import { FormItem } from 'components/form/form-item';
 import { Button } from 'components/button';
@@ -18,12 +17,12 @@ import { PropertyTypes } from 'components/form/property/types';
 import { useCreateEdge } from 'api/schema/edge/use-create-edge';
 import { SELECTORS } from 'components/layouts/components/schema/helpers/constants';
 import { UsefulInformationTooltip } from 'components/tool-tip/useful-information-tooltip';
-import { Rule } from 'antd/es/form';
 import { EditNodePropertyTypeInfoModal } from 'components/modal/edit-node-property-type-info-modal';
 import { useGetProjectNodeTypeProperty } from 'api/project-node-type-property/use-get-project-node-type-property';
 import { PropertyDataTypeSelectSchema } from './property-data-type-select';
 import { PropertyEnumDetails } from 'components/form/property/property-enum-details';
 import { Spinning } from 'components/spinning';
+import { AddSchemaTypePropertyTitle } from './type-title-item';
 
 type InitEditForm = (attrs: PortAttributes) => void;
 
@@ -128,6 +127,11 @@ export const AddSchemaTypePropertyForm = () => {
     };
   }, [form, initEditForm, type, isUpdate, portId]);
 
+  const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
+
+  // eslint-disable-next-line no-console
+  console.log(dataType === PropertyTypes.Connection);
+
   return (
     <Skeleton loading={isInitialLoading}>
       {isDeleteLoading && <Spinning />}
@@ -144,33 +148,7 @@ export const AddSchemaTypePropertyForm = () => {
             <Text>{isUpdate ? 'Edit Property' : 'Add property for type'}</Text>
             <UsefulInformationTooltip infoText="Inherit parent options" />
           </Space>
-          {!data?.default_property && (
-            <FormItem
-              name="name"
-              label="Property name"
-              rules={[
-                {
-                  required: true,
-                  message: 'Property name is required',
-                },
-                { min: 3, message: 'The minimum length for this field is 3 characters' },
-                { max: 30, message: 'The maximum length for this field is 30 characters' },
-                {
-                  validator: async (_: Rule, value: string | undefined) => {
-                    if (value !== undefined) {
-                      const regex = /^[a-z0-9_]+$/;
-                      if (!regex.test(value)) {
-                        return Promise.reject('Name must only contain lowercase letters, numbers and underscores');
-                      }
-                    }
-                    return Promise.resolve();
-                  },
-                },
-              ]}
-            >
-              <FormInput placeholder="Property name" />
-            </FormItem>
-          )}
+          {!data?.default_property && <AddSchemaTypePropertyTitle />}
           <FormItem
             name="ref_property_type_id"
             label="Data type"
