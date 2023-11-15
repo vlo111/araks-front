@@ -78,7 +78,7 @@ export const ViewEditNodeDrawer = () => {
         } as NodePropertiesValues;
       }, initialAcc);
 
-      const groupListEdges = groupedData((data?.edges ?? []).concat(data?.edges_in ?? []));
+      const groupListEdges = groupedData(data?.edges ?? []);
 
       const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
         return {
@@ -270,6 +270,7 @@ export const ViewEditNodeDrawer = () => {
             data={properties as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
             edges={nodeData?.edges.concat(nodeData?.edges_in)}
+            property={nodeData?.properties?.find((p) => p.node_id === openNode.id)}
           />
         </Form>
       ) : isInitialLoading ? (

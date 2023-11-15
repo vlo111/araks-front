@@ -65,6 +65,7 @@ export type NodePropertiesValues = {
     default_image: boolean;
     default_property: boolean;
     multiple_type: boolean;
+    enums_data: { id: string; name: string }[];
   };
   project_type_id: string;
   user_id: string;

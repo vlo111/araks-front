@@ -34,6 +34,7 @@ const Wrapper = styled.div`
 
 export const PropertyEnumDetails = () => {
   const dataType = Form.useWatch('ref_property_type_id');
+  const enums: { id: string; name: string }[] = Form.useWatch('enums_data');
 
   return (
     <>
@@ -69,6 +70,13 @@ export const PropertyEnumDetails = () => {
                                     );
                                   }
                                 }
+
+                                const existed = enums.some((e, index) =>
+                                  (_ as { field: string }).field.includes(index.toString()) ? false : e.name === value
+                                );
+
+                                if (existed) return Promise.reject('The variant already exist');
+
                                 return Promise.resolve();
                               },
                             },

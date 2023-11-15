@@ -1,18 +1,22 @@
 import { Form, Space } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
 import { AddNewFieldButton } from 'components/button/add-new-field-button';
-import { Input } from 'components/input';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { SecondaryText, Text } from 'components/typography';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
 import { FormItem } from '../form-item';
 import { TypeWrapper } from './type-wrapper';
+import { NodePropertiesValues } from 'types/node';
+import { CaretDownFilled } from '@ant-design/icons';
+import { SelectEnumItems } from '../../select/enum-select';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
+  property?: NodePropertiesValues | undefined;
 };
 
-export const EnumType = ({ data }: Props) => {
+export const EnumType = ({ data, property }: Props) => {
+  const options = property?.nodeTypeProperty.enums_data;
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
@@ -48,7 +52,13 @@ export const EnumType = ({ data }: Props) => {
                         { validator: validateMaxLength },
                       ]}
                     >
-                      <Input />
+                      <SelectEnumItems
+                        name="role"
+                        popupClassName="enum-dropdown"
+                        suffixIcon={<CaretDownFilled />}
+                        fieldNames={{ value: 'id', label: 'name' }}
+                        options={options}
+                      />
                     </FormItem>
                   </TypeWrapper>
                 ))}

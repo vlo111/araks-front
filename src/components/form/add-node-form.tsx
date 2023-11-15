@@ -17,7 +17,7 @@ import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
-import { NodeEdges } from 'types/node';
+import { NodeEdges, NodePropertiesValues } from 'types/node';
 import { EnumType } from './type/enum-type';
 
 type Props = {
@@ -27,9 +27,10 @@ type Props = {
   edges?: NodeEdges[] | undefined;
   nodeId?: string;
   nodeTypeId?: string;
+  property?: NodePropertiesValues | undefined;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nodeTypeId, edges }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nodeTypeId, edges, property }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -44,7 +45,7 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nod
                 case PropertyTypes.Text:
                   return <TextType key={item.id} data={item} />;
                 case PropertyTypes.ENUM:
-                  return <EnumType key={item.id} data={item} />;
+                  return <EnumType key={item.id} data={item} property={property} />;
                 case PropertyTypes.Location:
                   return <LocationType key={item.id} data={item} />;
                 case PropertyTypes.URL:
