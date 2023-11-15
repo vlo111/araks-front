@@ -226,18 +226,6 @@ export const createQueriesConnectionTree = (dataList: NodeEdgeTypesReturnData[])
           source: { name: item.source.name, color: item.source.color },
           target: { name: item.target.name, color: item.target.color },
           parentName: item.name,
-          children: item.properties?.map((itemChild) => ({
-            label: <Text>{`${item.name}.${itemChild.name}`}</Text>,
-            title: (
-              <>
-                <Text color={COLORS.PRIMARY.GRAY}>{item.name}</Text>
-                <Text color={COLORS.PRIMARY.BLUE}>.{itemChild.name}</Text>
-              </>
-            ),
-            ...itemChild,
-            value: itemChild.id,
-            key: itemChild.id,
-          })),
         },
       ],
       ...item,
