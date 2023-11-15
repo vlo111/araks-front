@@ -127,11 +127,6 @@ export const AddSchemaTypePropertyForm = () => {
     };
   }, [form, initEditForm, type, isUpdate, portId]);
 
-  const dataType = Form.useWatch('ref_property_type_id', { preserve: true });
-
-  // eslint-disable-next-line no-console
-  console.log(dataType === PropertyTypes.Connection);
-
   return (
     <Skeleton loading={isInitialLoading}>
       {isDeleteLoading && <Spinning />}
