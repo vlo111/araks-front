@@ -53,13 +53,15 @@ export const SelectConnectionFormItem = ({ color, isRequired = false, formName, 
   const edgeList = Form.useWatch(formName, { preserve: true });
 
   const deleteEdgesHandle: DeleteEdgesHandle = (remove, name) => {
-    if (destroyedEdgesIds) {
-      if (edgeList[name].rowId) {
-        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds, edgeList[name].rowId]);
-      }
-    } else {
-      form.setFieldValue('destroyedEdgesIds', [edgeList[name].rowId]);
+    if (edgeList[name].rowId) {
+      const edges =
+        destroyedEdgesIds && destroyedEdgesIds.length
+          ? [...destroyedEdgesIds, edgeList[name].rowId]
+          : [edgeList[name].rowId];
+
+      form.setFieldValue('destroyedEdgesIds', edges);
     }
+
     remove(name);
   };
 
