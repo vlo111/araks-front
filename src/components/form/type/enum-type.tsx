@@ -53,7 +53,7 @@ export const EnumType = ({ data, property }: Props) => {
                       ]}
                     >
                       <SelectEnumItems
-                        name="role"
+                        name="enum-dropdown"
                         popupClassName="enum-dropdown"
                         suffixIcon={<CaretDownFilled />}
                         fieldNames={{ value: 'id', label: 'name' }}

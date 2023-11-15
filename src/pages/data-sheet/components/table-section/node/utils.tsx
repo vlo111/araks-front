@@ -417,16 +417,18 @@ export const getRowData = (item: NodePropertiesValues) => {
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
       );
     case PropertyTypes.ENUM:
-      return isMultiple ? (
-        <Row gutter={[10, 10]}>
-          {item.nodes_data.map((data, index) => (
-            <Col xs={12} lg={6} key={index}>
-              {dataByType(data, PropertyTypes.Text)}
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
+      const {
+        nodes_data,
+        nodeTypeProperty: { enums_data },
+      } = item;
+
+      return (
+        <Text color={COLORS.PRIMARY.GRAY_DARK}>
+          {enums_data
+            .filter((d) => nodes_data?.includes(d.id))
+            .map((a) => a.name)
+            .join(', ')}
+        </Text>
       );
     default:
       return getSingleData(item.nodes_data);
