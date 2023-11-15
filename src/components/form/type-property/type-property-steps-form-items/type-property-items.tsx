@@ -17,6 +17,7 @@ import { PropertyDataTypeSelect } from '../../../select/property-data-type-selec
 import { PropertyTypes } from '../../property/types';
 import { ConnectionPropertyFormItems } from './connection-property-items';
 import { SetCreateConnection } from '../add-type-property-form';
+import { PropertyEnumDetails } from '../../property/property-enum-details';
 
 type Props = {
   isEdit?: boolean;
@@ -121,6 +122,7 @@ export const TypePropertyFormItems = ({
             </FormItem>
           )}
           {dataSelectItem}
+          <PropertyEnumDetails />
           <PropertyBasicDetails />
           <PropertyConnectionDetails isConnectionType={isConnectionType} />
           <FormItem>

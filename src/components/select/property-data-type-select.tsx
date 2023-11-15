@@ -36,7 +36,7 @@ const editPropertyList = {
   [PropertyTypes.Connection]: [PropertyTypes.Text, PropertyTypes.Connection],
   [PropertyTypes.IMAGE_URL]: [PropertyTypes.IMAGE_URL],
   [PropertyTypes.Document]: [PropertyTypes.Document],
-  [PropertyTypes.ENUM]: [PropertyTypes.ENUM],
+  [PropertyTypes.ENUM]: [PropertyTypes.ENUM, PropertyTypes.Text, PropertyTypes.RichText],
   [PropertyTypes.RichText]: [
     PropertyTypes.RichText,
     // PropertyTypes.Text,

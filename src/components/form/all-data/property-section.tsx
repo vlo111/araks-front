@@ -48,11 +48,13 @@ const StyledQuerySelectWrapper = styled.div`
 `;
 
 export const QueriesContent = ({ fieldName, propertyType, id }: ContentType) => {
+  const type = Form.useWatch(['queries', fieldName, 'type']);
+
   const { data } = useGetEnum(id ?? '', {
-    enabled: !!id,
+    enabled:
+      !!id && (type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && propertyType === PropertyTypes.ENUM,
   });
 
-  const type = Form.useWatch(['queries', fieldName, 'type']);
   // const formItemLayout = {
   //   labelCol: {
   //     xs: { span: 24 },
