@@ -131,7 +131,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
                 required: true,
                 message: 'Connection name is required',
               },
-              { min: 3, message: 'The minimum length for this field is 3 characters' },
+              { min: 2, message: 'The minimum length for this field is 2 characters' },
               { max: 30, message: 'The maximum length for this field is 30 characters' },
               {
                 validator: async (_: Rule, value: string | undefined) => {
