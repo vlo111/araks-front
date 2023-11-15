@@ -76,7 +76,7 @@ export const ManageConnection = () => {
     <Spin spinning={isLoading}>
       <AddConnectionButton onClick={onOpen} type='primary'>+ Add Connection </AddConnectionButton>
       <Drawer
-        title={`Add / ${titleText}`}
+        title={`Add Connection / ${titleText}`}
         closable={false}
         onClose={onClose}
         open={open}
