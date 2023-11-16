@@ -79,7 +79,7 @@ export const SelectConnectionFormItem = ({ color, isRequired = false, formName, 
                 rules={[{ required: isRequired, message: VALIDATE_MESSAGES.required }]}
               >
                 <Input
-                  prefix={<InComeConnection style={{ transform: `rotate(${isSource ? 180 : 0}deg)` }} />}
+                  prefix={<InComeConnection />}
                   disabled
                   suffix={<CloseOutlined onClick={() => deleteEdgesHandle(remove, field.name)} />}
                 />
