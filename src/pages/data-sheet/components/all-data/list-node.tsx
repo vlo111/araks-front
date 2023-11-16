@@ -131,7 +131,7 @@ export const AllDataListNode = ({
         </div>
       )}
       <List
-        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 232}px)` }}
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)` }}
         pagination={false}
         dataSource={rowsData}
         renderItem={(item, index) => {

@@ -70,7 +70,7 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
       <List
         pagination={false}
         dataSource={rowsData}
-        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 232}px)` }}
+        style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)` }}
         renderItem={(item, index) => {
           return (
             <StyledListItem key={item.node_id} color={item.color}>
