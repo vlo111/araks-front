@@ -91,6 +91,21 @@ export function showAvatar(imageUrl: string) {
 /** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
   switch (true) {
+    case item.project_type_property_type === PropertyTypes.ENUM: {
+      const {
+        nodeTypeProperty: { enums_data },
+      } = item;
+
+      return (
+        <ManageNodeTypePopover
+          trigger="hover"
+          content={enums_data
+            .filter((d) => item.nodes_data?.includes(d.id))
+            .map((a) => a.name)
+            .join(', ')}
+        >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
+      );
+    }
     case item.nodes_data && item.nodes_data.length > 1:
       return (
         <ManageNodeTypePopover

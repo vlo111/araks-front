@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const EnumType = ({ data, property }: Props) => {
-  const options = property?.nodeTypeProperty.enums_data;
+  const options = data.enums_data || property?.nodeTypeProperty.enums_data;
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
