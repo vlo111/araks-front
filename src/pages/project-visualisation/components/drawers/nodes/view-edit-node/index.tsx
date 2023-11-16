@@ -141,7 +141,7 @@ export const ViewEditNodeDrawer = () => {
       graph.updateItem(variable.nodeId ?? '', {
         label: variable.name,
         type: variable.default_image ? 'image' : 'circle',
-        img: `${process.env.REACT_APP_AWS_URL}${variable.default_image}`,
+        img: variable.default_image ? `${process.env.REACT_APP_AWS_URL}${variable.default_image}` : undefined,
         style: {
           fill: variable.default_image ? '#00000000' : 'white',
         },
