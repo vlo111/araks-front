@@ -151,7 +151,7 @@ export const TableSection = () => {
                 style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 230}px)` }}
               />
             </ViewDatasheetProvider>
-          </Spin> 
+          </Spin>
         </div>
         {pageCount ? (
           <NodePagination

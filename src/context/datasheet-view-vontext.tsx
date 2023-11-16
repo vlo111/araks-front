@@ -282,6 +282,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
                   nodeId={nodeData?.id}
                   nodeTypeId={nodeData?.project_type_id}
                   data={data as ProjectTypePropertyReturnData[]}
+                  property={nodeData?.properties?.find((p) => p.node_id === selectedViewId)}
                   isInitialLoading={isInitialLoading}
                   setStopSubmit={setStopSubmit}
                   edges={nodeData?.edges?.concat(nodeData?.edges_in ?? [])}
