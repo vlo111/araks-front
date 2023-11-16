@@ -31,7 +31,7 @@ export const EnumType = ({ data, property }: Props) => {
     }
 
     if (selectedEnums.filter((s: string) => s === value).length > 1) {
-      return Promise.reject(`You has already selected the item`);
+      return Promise.reject(`You have already selected the item`);
     }
 
     return Promise.resolve();

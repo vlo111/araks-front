@@ -75,7 +75,9 @@ export const AllDataListDocument = ({ filterValue, setFilterValue, checkedItems,
           return (
             <StyledListItem key={item.node_id} color={item.color}>
               <List.Item.Meta
-                avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${item.default_image}`} />}
+                avatar={
+                  <Avatar src={item.default_image ? `${process.env.REACT_APP_AWS_URL}${item.default_image}` : ''} />
+                }
                 title={
                   <Row align="top" gutter={10}>
                     <Col xs={7} xxl={5} style={{ textAlign: 'left' }}>
