@@ -62,6 +62,8 @@ export const PropertyEnumDetails = () => {
                             { max: 30, message: 'The maximum length for this field is 30 characters' },
                             {
                               validator: async (_: Rule, value: string | undefined) => {
+                                if (!value) return Promise.resolve();
+
                                 if (value !== undefined) {
                                   const regex = /^[a-z0-9 ]+$/;
                                   if (!regex.test(value)) {
@@ -71,8 +73,9 @@ export const PropertyEnumDetails = () => {
                                   }
                                 }
 
-                                const existed = enums.some((e, index) =>
-                                  (_ as { field: string }).field.includes(index.toString()) ? false : e.name === value
+                                const existed = enums.some(
+                                  (e, index) =>
+                                    !(_ as { field: string }).field.includes(index.toString()) && e?.name === value
                                 );
 
                                 if (existed) return Promise.reject('The variant already exist');
@@ -90,8 +93,10 @@ export const PropertyEnumDetails = () => {
                 </FormItem>
               </Wrapper>
 
-              <StyledButton type="link" onClick={() => add(null)}>
-                <SecondaryText color={COLORS.PRIMARY.BLUE}>+ Add Variant</SecondaryText>
+              <StyledButton type="link" onClick={() => add(null)} disabled={fields.length > 14}>
+                <SecondaryText color={fields.length > 14 ? COLORS.PRIMARY.SILVER : COLORS.PRIMARY.BLUE}>
+                  + Add Variant
+                </SecondaryText>
               </StyledButton>
             </>
           )}
