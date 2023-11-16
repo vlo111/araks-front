@@ -18,7 +18,7 @@ const StyledButton = styled(Button)`
 export const AddNewFieldButton = (props: ButtonProps) => {
   return (
     <StyledButton type="link" {...props}>
-      <SecondaryText color={COLORS.PRIMARY.BLUE}>+ Add</SecondaryText>
+      <SecondaryText color={props.disabled ? COLORS.PRIMARY.SILVER : COLORS.PRIMARY.BLUE}>+ Add</SecondaryText>
     </StyledButton>
   );
 };

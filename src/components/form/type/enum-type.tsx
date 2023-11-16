@@ -71,7 +71,9 @@ export const EnumType = ({ data, property }: Props) => {
                 ))}
               </VerticalSpace>
             </FormItem>
-            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+            {data.multiple_type === true && (
+              <AddNewFieldButton onClick={() => add(null)} disabled={fields.length > 4} />
+            )}
           </>
         )}
       </Form.List>
