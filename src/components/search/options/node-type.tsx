@@ -1,8 +1,9 @@
 import { StyledBadge, TypeItem, StyledProjectName } from './styles';
 
-export const renderTypes = (id: string, title: string, color: string, node_type_name: string) => {
+export const renderTypes = (id: string, node_type_id: string, title: string, color: string, node_type_name: string) => {
   return {
-    id: id,
+    key: `node-type${id}${node_type_id}`,
+    id,
     mode: 'nodeType',
     value: id,
     label: (
