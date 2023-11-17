@@ -11,6 +11,13 @@ export const useProgressBar = (start: boolean, stop: boolean) => {
       setPercent((prev) => prev + 1);
     }, time);
 
+  const stopInterval = () => {
+    intervalId && clearInterval(intervalId);
+    intervalContinue && clearInterval(intervalContinue);
+
+    document.body.style.overflow = 'auto';
+  };
+
   const clearAndRestartInterval = (time: number) => {
     if (intervalId) {
       clearInterval(intervalId);
@@ -30,7 +37,7 @@ export const useProgressBar = (start: boolean, stop: boolean) => {
   }, [start]);
 
   useEffect(() => {
-    if (intervalId) {
+    if (intervalId && !stop) {
       if (percent === 1) document.body.style.overflow = 'hidden';
       if (percent === 10) clearAndRestartInterval(500);
       if (percent === 20) clearAndRestartInterval(1000);
@@ -40,19 +47,13 @@ export const useProgressBar = (start: boolean, stop: boolean) => {
     }
 
     if (percent === 150) {
-      intervalContinue && clearInterval(intervalContinue);
+      stopInterval();
       setPercent(0);
-      document.body.style.overflow = 'auto';
     }
   }, [percent]);
 
   useEffect(() => {
-    if (stop) {
-      intervalId && clearInterval(intervalId);
-      intervalContinue && clearInterval(intervalContinue);
-
-      document.body.style.overflow = 'auto';
-    }
+    if (stop) stopInterval();
   }, [stop]);
 
   return { percent, close: stop || percent === 149 || percent === 0 };
