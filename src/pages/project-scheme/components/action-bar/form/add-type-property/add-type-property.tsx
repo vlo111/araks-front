@@ -118,10 +118,6 @@ export const AddSchemaTypePropertyForm = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-debugger
-    debugger;
-    // eslint-disable-next-line no-console
-    console.log(portId, 'aaaaaaaaaaaaaaaaa');
     if (isUpdate) initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
   }, [form, initEditForm, type, isUpdate, portId]);
 
