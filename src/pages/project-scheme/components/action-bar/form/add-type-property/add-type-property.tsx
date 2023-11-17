@@ -49,11 +49,9 @@ export const AddSchemaTypePropertyForm = () => {
       required_type,
       multiple_type,
       unique_type,
-      enums_data,
     }) => {
       form.setFieldsValue({
         name,
-        enums_data,
         ref_property_type_id,
         required_type,
         multiple_type,
@@ -120,11 +118,11 @@ export const AddSchemaTypePropertyForm = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    // eslint-disable-next-line no-console
+    console.log(portId, 'aaaaaaaaaaaaaaaaa');
     if (isUpdate) initEditForm(type.portProp(portId ?? '').attrs as PortAttributes);
-
-    return () => {
-      form.resetFields();
-    };
   }, [form, initEditForm, type, isUpdate, portId]);
 
   return (
