@@ -32,8 +32,8 @@ export const EditType = ({ onClick, icon, ...props }: EditTypeProps) => {
       trigger="click"
       {...props}
     >
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {isConnectionType && <ManageConnection  />}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {isConnectionType && <ManageConnection />}
         <SettingsAction icon={icon} button={{ onClick }} />
       </div>
     </AddNodeTypePopover>

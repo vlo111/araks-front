@@ -105,7 +105,7 @@ export const ConnectionTableSection = () => {
             columns={[...columns, ...actions]}
             pagination={false}
             scroll={{ x: 'max-content' }}
-            style={{ height: `calc(100vh - ${(isXXl ? 152 : 130) + 230}px)`, overflow: 'auto' }}
+            style={{ height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)`, overflow: 'auto' }}
           />
         </div>
         {pageCount ? (

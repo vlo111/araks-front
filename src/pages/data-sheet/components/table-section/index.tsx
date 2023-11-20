@@ -150,7 +150,7 @@ export const TableSection = () => {
                 columns={[...columns, ...actions]}
                 pagination={false}
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
-                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 230}px)` }}
+                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)` }}
               />
             </ViewDatasheetProvider>
           </Spin>
