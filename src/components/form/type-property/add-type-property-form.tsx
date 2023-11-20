@@ -138,7 +138,6 @@ export const AddTypePropertyForm = ({ isEdit = false, hide, propertyId, isConnec
         source_attribute_id,
         target_attribute_id,
       });
-      hide?.();
     } else {
       const { ref_property_type_id, ...values } = value as ProjectNodeTypePropertySubmit | NodeEdgeTypesSubmit;
 
