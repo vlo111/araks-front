@@ -171,3 +171,5 @@ export const getQueryValue = (item: ItemType) => {
 
   return typeText?.toString() || '';
 };
+export const getAvatarPath = (avatar: string | undefined) =>
+  avatar ? (avatar?.includes('gravatar') ? avatar : `${process.env.REACT_APP_AWS_URL}${avatar}`) : undefined;
