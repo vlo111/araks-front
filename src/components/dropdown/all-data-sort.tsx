@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
 import { Text } from '../typography';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 
 import './sort.css';
 import { useState } from 'react';

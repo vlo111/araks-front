@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps, Space } from 'antd';
 import { Text } from 'components/typography';
 import styled, { css } from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { ReactComponent as FolderFilled } from '../icons/folder-filled.svg';
 import { ProjectActionPopover } from 'components/popover';
 import { FolderActionMenu } from 'components/menu';

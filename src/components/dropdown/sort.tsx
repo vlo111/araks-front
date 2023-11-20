@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { ReactComponent as SortIcon } from '../icons/sort.svg';
 import { ReactComponent as Polygon } from '../icons/polygon.svg';
 import { Text } from '../typography';
-import { COLORS, screenSize } from '../../helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 import { useSort } from '../../context/sort-context';
 
 import './sort.css';

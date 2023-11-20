@@ -1,6 +1,6 @@
 import { Button as ComponentButton } from 'antd';
 import styled from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 
 export const ButtonWithIcon = styled(ComponentButton)`
   &.ant-btn-default {
