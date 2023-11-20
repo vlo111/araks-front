@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { UserListItem } from 'pages/project-perspectives/components/section/share/user-list-item';
 import './user-list.css';
 import styled from 'styled-components';
-import { getAvatarPath } from '../../../../helpers/utils';
+import { getAvatarPath } from 'helpers/utils';
 
 const UserTable = styled(Table)`
   background: #f2f2f2;

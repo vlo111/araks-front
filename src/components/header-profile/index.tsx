@@ -7,7 +7,7 @@ import { ReactComponent as UserProfileSvg } from './icon/user-profile.svg';
 import { ReactComponent as SignOutSvg } from './icon/sign-out.svg';
 import { Link } from 'react-router-dom';
 import './profile.css';
-import { PATHS } from '../../helpers/constants';
+import { PATHS } from 'helpers/constants';
 
 const Wrapper = styled.div`
   display: flex;

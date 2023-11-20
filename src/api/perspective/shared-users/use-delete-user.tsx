@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '../../client';
 import { USE_GET_ALL_MEMBERS } from './use-get-all-members';
-import { errorMessage } from '../../../helpers/utils';
+import { errorMessage } from 'helpers/utils';
 import { message } from 'antd';
 import { useParams } from 'react-router-dom';
 

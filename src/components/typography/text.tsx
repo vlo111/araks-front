@@ -2,7 +2,7 @@ import { Typography } from 'antd';
 import { TextProps } from 'antd/es/typography/Text';
 import { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
-import { COLORS, screenSize } from '../../helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 
 const { Text: TextComponent } = Typography;
 

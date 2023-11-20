@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps } from 'antd';
 import styled from 'styled-components';
 
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { ReactComponent as Settings } from '../icons/settings.svg';
 import { useHover } from '../../hooks/use-hover';
 import { VerticalSpace } from 'components/space/vertical-space';

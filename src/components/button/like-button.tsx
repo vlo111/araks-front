@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps } from 'antd';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { COLORS, screenSize } from '../../helpers/constants';
+import { COLORS, screenSize } from 'helpers/constants';
 
 type Props = ButtonProps & {
   text?: 'LIKE' | 'UNLIKE';

@@ -4,7 +4,7 @@ import client from '../client';
 import { VISUALIZATION_URL } from './constants';
 import { VisualizationSubmitType } from './types';
 import { Edges, Nodes } from '../visualisation/use-get-data';
-import { errorMessage } from '../../helpers/utils';
+import { errorMessage } from 'helpers/utils';
 
 type ProjectEdgeResponse = {
   count: number;

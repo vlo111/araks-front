@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps } from 'antd';
 import { textSizeMedia } from 'components/typography/text';
 import styled, { css } from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { ReactComponent as AddFolder } from '../icons/add-folder.svg';
 
 type Props = ButtonProps & {
