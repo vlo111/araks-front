@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { UserListItem } from 'pages/project-perspectives/components/section/share/user-list-item';
 import './user-list.css';
 import styled from 'styled-components';
+import { getAvatarPath } from '../../../../helpers/utils';
 
 const UserTable = styled(Table)`
   background: #f2f2f2;
@@ -70,7 +71,7 @@ export const UsersTable: React.FC<{ search: string }> = ({ search }) => {
               id: d.perspective_users.id,
               title: `${d.perspective_users?.first_name} ${d.perspective_users?.last_name}`,
               value: d.role,
-              avatar: d.perspective_users.avatar,
+              avatar: getAvatarPath(d.perspective_users.avatar),
             }}
             visibleMetaData={false}
           />
