@@ -152,7 +152,7 @@ export const TableSection = () => {
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
                 sticky
                 style={{
-                  height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)`,
+                  height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)`,
                 }}
               />
             </ViewDatasheetProvider>
