@@ -8,6 +8,7 @@ import { useProject } from 'context/project-context';
 import { PATHS } from 'helpers/constants';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { useLocation } from 'react-router-dom';
+import { getAvatarPath } from 'helpers/utils';
 
 export const SharedWith = () => {
   const { projectInfo } = useProject();
@@ -36,7 +37,10 @@ export const SharedWith = () => {
             ),
           ]}
         >
-          <List.Item.Meta avatar={<Avatar src={item.avatar} />} description={<Text>{item.title}</Text>} />
+          <List.Item.Meta
+            avatar={<Avatar src={getAvatarPath(item.avatar)} />}
+            description={<Text>{item.title}</Text>}
+          />
         </List.Item>
       )}
     />

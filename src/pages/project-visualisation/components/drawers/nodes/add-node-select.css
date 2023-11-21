@@ -15,3 +15,7 @@
   position: relative !important;
   margin-top: 0;
 }
+
+.node-type-select-dropdown > .ant-select-selector{
+  padding: 0 1rem !important;
+}

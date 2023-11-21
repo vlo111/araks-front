@@ -87,46 +87,50 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
   const { data: nodeData, isInitialLoading } = useGetNode(selectedViewId as string, {
     enabled: !!selectedViewId,
     onSuccess: (nodeData) => {
-      /** use this to show data for view */
-      setSelectedView(nodeData);
+      if (nodeData) {
+        /** use this to show data for view */
+        setSelectedView(nodeData);
 
-      const fieldsData = nodeData.properties?.reduce((acc, item) => {
-        if (!item.nodes_data?.length) {
+        const fieldsData = nodeData.properties?.reduce((acc, item) => {
+          if (!item.nodes_data?.length) {
+            return {
+              ...acc,
+              [item.nodeTypeProperty.name]: undefined,
+            } as NodePropertiesValues;
+          }
+
           return {
             ...acc,
-            [item.nodeTypeProperty.name]: undefined,
+            [item.nodeTypeProperty.name]: getValue(item),
           } as NodePropertiesValues;
-        }
+        }, {});
 
-        return {
-          ...acc,
-          [item.nodeTypeProperty.name]: getValue(item),
-        } as NodePropertiesValues;
-      }, {});
+        const groupListEdges = groupedData(nodeData?.edges ?? []);
 
-      const groupList = groupedData(nodeData.edges);
+        const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
+          return {
+            ...acc,
+            [key]: item.map((row) => ({
+              rowId: row.id,
+              id: row.edgeTypes.id,
+              name: nodeData?.id === row.source.id ? row.target.name : row.source.name,
+              source_id: row.source_id,
+              source_type_id: row.source_type_id,
+              target_id: row.target_id,
+              target_type_id: row.target_type_id,
+            })),
+          };
+        }, {});
 
-      const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
-        return {
-          ...acc,
-          [key]: item.map((row) => ({
-            rowId: row.id,
-            id: row.edgeTypes.id,
-            name: row.nodes.name,
-            target_id: row.target_id,
-            target_type_id: row.target_type_id,
-          })),
-        };
-      }, {});
-      /** sets form values for edit */
-      form.setFieldsValue({
-        ...fieldsData,
-        name: [nodeData.name],
-        node_icon: nodeData.default_image
-          ? [setUploadFileStructure(nodeData.default_image, 'Default image')]
-          : undefined,
-        ...connectionFieldsData,
-      });
+        form.setFieldsValue({
+          ...fieldsData,
+          name: [nodeData.name],
+          node_icon: nodeData.default_image
+            ? [setUploadFileStructure(nodeData.default_image, 'Default image')]
+            : undefined,
+          ...connectionFieldsData,
+        });
+      }
     },
   });
 
@@ -193,6 +197,8 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
               id: itemConn.rowId,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
               project_edge_type_id: itemConn.id,
             }))
           : null;
@@ -206,6 +212,7 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
         edges: dataToSubmitEdges?.flat() || [],
         project_type_id: nodeTypeId || '',
         nodeId: nodeData.id,
+        destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
       } as NodeDataSubmit);
       onClose();
     }
@@ -216,9 +223,6 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
       {children}
       <Drawer
         className="datasheet-view-drawer"
-        style={{
-          minHeight: 'calc(100vh - 130px)',
-        }}
         title={
           <ViewNodeTitle
             setIsEdit={setIsEdit}
@@ -275,9 +279,13 @@ function ViewDatasheetProvider({ children }: ViewDatasheetProviderProps) {
             >
               {isEdit ? (
                 <AddNodeForm
+                  nodeId={nodeData?.id}
+                  nodeTypeId={nodeData?.project_type_id}
                   data={data as ProjectTypePropertyReturnData[]}
+                  property={nodeData?.properties?.find((p) => p.node_id === selectedViewId)}
                   isInitialLoading={isInitialLoading}
                   setStopSubmit={setStopSubmit}
+                  edges={nodeData?.edges?.concat(nodeData?.edges_in ?? [])}
                 />
               ) : isInitialLoading ? (
                 <Skeleton />

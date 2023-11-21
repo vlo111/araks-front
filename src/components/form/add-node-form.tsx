@@ -17,14 +17,20 @@ import { NumericType } from './type/numeric-type';
 import { RichTextType } from './type/rich-text-type';
 import { TextType } from './type/text-type';
 import { UrlType } from './type/url-type';
+import { NodeEdges, NodePropertiesValues } from 'types/node';
+import { EnumType } from './type/enum-type';
 
 type Props = {
   data: ProjectTypePropertyReturnData[] | (ProjectTypePropertyReturnData[] | undefined);
   isInitialLoading: boolean;
   setStopSubmit?: Dispatch<SetStateAction<boolean>>;
+  edges?: NodeEdges[] | undefined;
+  nodeId?: string;
+  nodeTypeId?: string;
+  property?: NodePropertiesValues | undefined;
 };
 
-export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) => {
+export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit, nodeId, nodeTypeId, edges, property }: Props) => {
   if (isInitialLoading) {
     return <Skeleton />;
   }
@@ -38,12 +44,14 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) =>
               switch (item.ref_property_type_id) {
                 case PropertyTypes.Text:
                   return <TextType key={item.id} data={item} />;
+                case PropertyTypes.ENUM:
+                  return <EnumType key={item.id} data={item} property={property} />;
                 case PropertyTypes.Location:
                   return <LocationType key={item.id} data={item} />;
                 case PropertyTypes.URL:
                   return <UrlType key={item.id} data={item} />;
                 case PropertyTypes.IMAGE_URL:
-                  return <ImageType key={item.id} data={item} />;
+                  return <ImageType nodeId={nodeId} key={item.id} data={item} />;
                 case PropertyTypes.Integer:
                 case PropertyTypes.Decimal:
                   return <NumericType key={item.id} data={item} />;
@@ -56,9 +64,11 @@ export const AddNodeForm = ({ data, isInitialLoading, setStopSubmit }: Props) =>
                 case PropertyTypes.RichText:
                   return <RichTextType key={item.id} data={item} />;
                 case PropertyTypes.Document:
-                  return <DocumentType key={item.id} data={item} setStopSubmit={setStopSubmit} />;
+                  return <DocumentType nodeId={nodeId} key={item.id} data={item} setStopSubmit={setStopSubmit} />;
                 case PropertyTypes.Connection:
-                  return <ConnectionType key={item.id} data={item} />;
+                  return (
+                    <ConnectionType key={item.id} nodeId={nodeId} nodeTypeId={nodeTypeId} data={item} edges={edges} />
+                  );
                 default:
                   return <></>;
               }

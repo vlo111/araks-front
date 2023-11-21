@@ -5,7 +5,6 @@ import { DataType } from './types';
 import { useActions } from './table-actions';
 import { getTableHeight } from './constants';
 import { VerticalButton } from 'components/button/vertical-button';
-import { ManageNode } from './node/manage-node';
 import { useGetTypeNodes } from 'api/node/use-get-type-nodes';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { NodePropertiesValues } from 'types/node';
@@ -16,11 +15,28 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { PageParameters } from 'api/types';
 import { NodeViewButton } from './node/node-view-button';
 import { ConnectionColumnValue } from './node/connection-column-value';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
+import { ProgressBar } from 'components/progress-bar';
+import { useImport } from 'context/import-context';
+import { ReactComponent as DefaultIconSvg } from 'components/icons/default-image.svg';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  position: relative;
+
+  tr {
+    .node-property-column:first-child {
+      display: flex;
+      align-items: center;
+      height: 73px;
+      width: 73px;
+    }
+  }
+`;
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -33,10 +49,14 @@ const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_
 export const TableSection = () => {
   const [pageData, setPageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
-  const [tableHead, setTableHead] = useState(0);
+  const [, setTableHead] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
+  const isXXl = useIsXXlScreen();
+  const {
+    state: { progressStart, progressStop },
+  } = useImport();
 
   const { nodeTypeId } = useDataSheetWrapper();
   const {
@@ -57,7 +77,11 @@ export const TableSection = () => {
           {
             key: row.id,
             name: <NodeViewButton text={row.name} rowData={row} />,
-            node_icon: showAvatar(row.default_image),
+            node_icon: row.default_image ? (
+              showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`)
+            ) : (
+              <DefaultIconSvg style={{ marginLeft: '5px' }} />
+            ),
           } as DataType
         ),
         ...row.edges?.reduce((curr: DataType, item) => {
@@ -117,15 +141,13 @@ export const TableSection = () => {
   }, [columns, data.length, rowData]);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Wrapper>
       {!isPublicPage && (
         <>
-          <ManageNode tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />
           <ImportDrawer />
           <ImportStepsDrawer />
         </>
       )}
-      <VerticalSpace size="large">
         <div
           id="container"
           className="content-datasheet"
@@ -143,6 +165,10 @@ export const TableSection = () => {
                 columns={[...columns, ...actions]}
                 pagination={false}
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
+                sticky
+                style={{
+                  height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)`,
+                }}
               />
             </ViewDatasheetProvider>
           </Spin>
@@ -165,7 +191,7 @@ export const TableSection = () => {
         ) : (
           <></>
         )}
-      </VerticalSpace>
-    </div>
+        <ProgressBar start={!!progressStart} stop={!!progressStop} />
+    </Wrapper>
   );
 };

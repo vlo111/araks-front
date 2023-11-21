@@ -30,9 +30,11 @@ export const useCreateEdge = (id?: string, options?: Options) => {
       if (!id) body.project_id = params.id;
       return client[type](url, body);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries([GET_TYPES.replace(':project_id', params.id || '')]);
       queryClient.invalidateQueries([GET_EDGES.replace(':project_id', params.id || '')]);
+
+      options?.onSuccess?.(data);
     },
     onError: errorMessage,
   });

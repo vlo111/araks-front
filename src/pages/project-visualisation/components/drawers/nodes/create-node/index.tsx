@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback } from 'react';
-import { Col, Form, Row, TreeSelect, UploadFile } from 'antd';
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { Form, UploadFile } from 'antd';
 import { useParams } from 'react-router-dom';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
@@ -7,16 +7,21 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { useManageNodesGraph } from 'api/visualisation/use-manage-node';
-import { Button } from 'components/button';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { useGetTypes } from 'api/schema/type/use-get-types';
 import { NodeBody, NodeDataSubmit, NodePropertiesValues } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
-import { setNodeDataValue } from '../../../../data-sheet/components/table-section/node/utils';
-import './add-node-select.css';
+import { setNodeDataValue } from 'pages/data-sheet/components/table-section/node/utils';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
+import { nodeLabelCfgStyle } from 'components/layouts/components/visualisation/helpers/constants';
+import { TreeNodeType } from '../../../../../data-sheet/types';
+import debounce from 'lodash.debounce';
+import { filterTreeData } from '../../../../../data-sheet/utils';
+import { NodeCreateDrawerFooter } from './footer';
+import { NodeCreateDrawerHeader } from './header';
 
-export const NodeCreateDrawer: React.FC = () => {
+export const NodeCreateDrawer = () => {
   const [form] = Form.useForm();
   const { graph, openNodeCreate, finishOpenNodeCreate, graphInfo, setGraphInfo } = useGraph() ?? {};
   const { id } = useParams();
@@ -33,24 +38,31 @@ export const NodeCreateDrawer: React.FC = () => {
 
   const { nodes } = useGetTypes({ projectId: id ?? '' });
 
-  const createEdge = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      variables?.edges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
+  const [filteredData, setFilteredData] = useState<TreeNodeType[]>([]);
+
+  useEffect(() => {
+    if (nodes && nodes.length) {
+      setFilteredData(createNodesTree(nodes ?? []));
+      form.setFieldValue('parent_id', nodes[0].id);
+    } else {
+      setFilteredData([]);
+    }
+  }, [form, nodes]);
+
+  const onSearch = useCallback(
+    (value: string) => {
+      const searchText = value.trim().toLowerCase();
+
+      debounce(() => {
+        const filteredData = filterTreeData(createNodesTree(nodes ?? []), searchText);
+        setFilteredData(filteredData);
+      }, 500)();
     },
-    [graph, properties]
+    [nodes]
   );
 
   const createNode = useCallback(
-    (data: NodePropertiesValues) => {
+    (data: NodePropertiesValues, edgeCount: number) => {
       const nodeData = data as NodePropertiesValues & {
         nodeType: { color: string; id: string; name: string };
         default_image: string;
@@ -59,38 +71,57 @@ export const NodeCreateDrawer: React.FC = () => {
       const node = {
         id: nodeData.id,
         label: nodeData.name as unknown as string,
-        img: nodeData.default_image,
+        img: nodeData.default_image ? `${process.env.REACT_APP_AWS_URL}${nodeData.default_image}` : undefined,
         type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,
         nodeType: nodeData.nodeType.id,
         nodeTypeName: nodeData.nodeType.name,
-        edgeCount: 0,
+        edgeCount,
         style: {
           stroke: nodeData.nodeType?.color ?? '',
         },
+        labelCfg: nodeLabelCfgStyle,
       };
 
-      graph.addItem('node', node);
+      graph.addItem('node', {
+        ...node,
+        labelCfg: nodeLabelCfgStyle,
+      });
     },
     [graph, openNodeCreate]
   );
 
-  const { mutate } = useManageNodesGraph({
-    onSuccess: ({ data, variables }) => {
-      createNode(data);
-      createEdge(data, variables);
+  const { mutate, isLoading } = useManageNodesGraph({
+    onSuccess: ({ data }) => {
+      const nodePropertyValues = data as NodePropertiesValues;
+
+      const edgeCount = nodePropertyValues.createdEdges?.length ?? 0;
+
+      createNode(nodePropertyValues, edgeCount);
+
+      const { id, createdEdges = [] } = nodePropertyValues;
+
+      addEdges(graph, id, createdEdges);
+
+      updateConnector(graph);
+
       form.resetFields();
+
+      form.setFieldValue('parent_id', parent_id || nodes[0].id);
+
       setGraphInfo({
         nodeCount: (graphInfo?.nodeCount ?? 0) + 1,
         nodeCountAPI: (graphInfo?.nodeCountAPI ?? 0) + 1,
       });
+
+      finishOpenNodeCreate();
+      setFilteredData(createNodesTree(nodes ?? []));
     },
   });
 
   const onFinish = useCallback(
     (values: NodeBody) => {
-      finishOpenNodeCreate();
       const mainData = { name: '', default_image: '' };
       const dataToSubmit = properties
         ?.map((item) => {
@@ -114,11 +145,14 @@ export const NodeCreateDrawer: React.FC = () => {
             : null;
         })
         .filter(Boolean);
+
       const dataToSubmitEdges = properties
         ?.map((item) => {
           const formName = getConnectionFormName(item.name, item.id);
           return item.ref_property_type_id === PropertyTypes.Connection
             ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+                source_id: itemConn.source_id,
+                source_type_id: itemConn.source_type_id,
                 target_id: itemConn.target_id,
                 target_type_id: itemConn.target_type_id,
                 project_edge_type_id: itemConn.id,
@@ -134,45 +168,43 @@ export const NodeCreateDrawer: React.FC = () => {
         project_type_id: parent_id || '',
       } as NodeDataSubmit);
     },
-    [finishOpenNodeCreate, properties, mutate, parent_id]
+    [properties, mutate, parent_id]
   );
 
   const treeSelect = useMemo(
     () => (
-      <Form.Item name="parent_id" style={{ margin: 0 }}>
-        <TreeSelect
-          className={'node-type-select'}
-          popupClassName={'node-type-popup-select'}
-          treeData={createNodesTree(nodes ?? [])}
-          style={{ width: '100%' }}
-          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          placeholder="Select Type"
-          treeDefaultExpandAll
-          fieldNames={{ value: 'key' }}
-        />
-      </Form.Item>
+      <NodeCreateDrawerHeader
+        onSearch={onSearch}
+        filteredData={filteredData}
+        onClear={() => {
+          setFilteredData(createNodesTree(nodes ?? []));
+        }}
+      />
     ),
-    [nodes]
+    [filteredData, nodes, onSearch]
   );
 
   const footer = useMemo(
     () =>
       parent_id && (
-        <Row gutter={16} justify="center">
-          <Col span={4}>
-            <Button style={{ marginRight: 8 }} onClick={finishOpenNodeCreate} block>
-              Cancel
-            </Button>
-          </Col>
-          <Col span={4}>
-            <Button type="primary" onClick={() => form.submit()} block>
-              Save
-            </Button>
-          </Col>
-        </Row>
+        <NodeCreateDrawerFooter
+          onCancel={() => {
+            setFilteredData(createNodesTree(nodes ?? []));
+            finishOpenNodeCreate();
+          }}
+          isLoading={isLoading}
+          onSave={() => form.submit()}
+        />
       ),
-    [parent_id, form, finishOpenNodeCreate]
+    [parent_id, isLoading, nodes, finishOpenNodeCreate, form]
   );
+
+  const onClose = () => {
+    finishOpenNodeCreate();
+    setTimeout(() => {
+      form.setFieldValue('parent_id', parent_id || nodes[0].id);
+    }, 100);
+  };
 
   return (
     <Form
@@ -186,14 +218,19 @@ export const NodeCreateDrawer: React.FC = () => {
       <Drawer
         headerStyle={{
           borderTop: `6px solid ${parent_id ? nodes?.find((n) => n.id === parent_id)?.color : '#CDCDCD'}`,
+          padding: '14px 24px 14px 0',
         }}
-        onClose={finishOpenNodeCreate}
+        onClose={onClose}
         closable={false}
         title={treeSelect}
         footer={footer}
         open={openNodeCreate?.isOpened}
       >
-        <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+        <AddNodeForm
+          data={properties as ProjectTypePropertyReturnData[]}
+          isInitialLoading={isInitialLoading}
+          nodeTypeId={parent_id}
+        />
       </Drawer>
     </Form>
   );

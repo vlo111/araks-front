@@ -1,14 +1,14 @@
+import { useEffect } from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Col, Drawer, Modal, notification, Row, Spin } from 'antd';
-import { ImportNodesResponse } from 'api/import/types';
+import { Col, Drawer, Modal, notification, Row } from 'antd';
 import { useImportNodes } from 'api/import/use-import-nodes';
 import { Button } from 'components/button';
 import { ImportCancelButton } from 'components/button/import-cancel-button';
 import { SetRules } from 'components/form/import/set-rules';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
-
-import { ImportActionType, useImport } from 'context/import-context';
+import { ImportActionType, useImport } from '../../context/import-context';
+import { ImportNodesResponse } from 'api/import/types';
 
 export const ImportSetRulesDrawer = () => {
   const { state, dispatch } = useImport();
@@ -16,9 +16,38 @@ export const ImportSetRulesDrawer = () => {
 
   const { mutate, isLoading } = useImportNodes({
     onSuccess: (data) => {
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: false,
+        },
+      });
+
       dispatch({ type: ImportActionType.IMPORT_MERGE, payload: { mergedData: data as ImportNodesResponse } });
     },
+    onError: () => {
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: false,
+          progressStop: true,
+        },
+      });
+    },
   });
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch({
+        type: ImportActionType.IMPORT_PROGRESS_START,
+        payload: {
+          progressStart: true,
+          progressStop: false,
+        },
+      });
+    }
+  }, [dispatch, isLoading]);
 
   const handleCancel = () => {
     Modal.confirm({
@@ -42,7 +71,14 @@ export const ImportSetRulesDrawer = () => {
               disabled={isLoading}
               block
               type="primary"
-              onClick={() =>
+              onClick={() => {
+                state.dataToSave?.forEach((data) => {
+                  const saveData = data as unknown as { value: string | null }[];
+
+                  saveData.forEach((d) => {
+                    d.value = d.value === '' ? null : d.value;
+                  });
+                });
                 !state.setRulesSkipOverwrite || !state.dataToSave
                   ? api.warning({
                       message: 'Please set rule at first!',
@@ -50,8 +86,8 @@ export const ImportSetRulesDrawer = () => {
                   : mutate({
                       rule: state.setRulesSkipOverwrite,
                       datas: state.dataToSave,
-                    })
-              }
+                    });
+              }}
             >
               Import
             </Button>
@@ -67,30 +103,28 @@ export const ImportSetRulesDrawer = () => {
       }}
       mask={false}
     >
-      <Spin spinning={isLoading}>
-        <VerticalSpace size="large">
-          <div style={{ textAlign: 'center' }}>
-            <InfoCircleOutlined />
-          </div>
-          <VerticalSpace size={0}>
-            <Text>
-              You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
-            </Text>
-            <ol>
-              <li>
-                &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
-                model.
-              </li>
-              <li>
-                &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows
-                in the import.
-              </li>
-            </ol>
-          </VerticalSpace>
-          {contextHolder}
-          <SetRules />
+      <VerticalSpace size="large">
+        <div style={{ textAlign: 'center' }}>
+          <InfoCircleOutlined />
+        </div>
+        <VerticalSpace size={0}>
+          <Text>
+            You&apos;ll need to choose a merging rule for rows that match all unique properties in your data model:
+          </Text>
+          <ol>
+            <li>
+              &apos;Skip&apos; will ignore these rows during the import process, preserving the existing data in your
+              model.
+            </li>
+            <li>
+              &apos;Overwrite&apos; will replace the existing data in your model with the data from the matching rows in
+              the import.
+            </li>
+          </ol>
         </VerticalSpace>
-      </Spin>
+        {contextHolder}
+        <SetRules />
+      </VerticalSpace>
     </Drawer>
   );
 };

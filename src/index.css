@@ -39,3 +39,8 @@ code {
   padding: 5px;
   width: 12px;
 }
+
+.help-image.ant-image-preview-root .ant-image-preview-img{
+  max-height: 95%;
+  width: 95%;
+}

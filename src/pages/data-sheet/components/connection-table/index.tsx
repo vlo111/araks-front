@@ -1,6 +1,5 @@
 import { useColumns } from './use-columns';
 import { useEffect, useRef, useState } from 'react';
-import { getTableHeight } from '../table-section/constants';
 import { ConnectionTable } from 'components/table/connection-table';
 import { useActions } from './table-actions';
 import { VerticalConnectionButton } from 'components/button/vertical-connection-button';
@@ -10,12 +9,11 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { DataType } from '../table-section/types';
 import { NodePagination } from 'components/pagination';
-import { ManageConnection } from '../table-section/node/manage-connection';
 import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { convertByType } from 'helpers/utils';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { useIsXXlScreen } from 'hooks/use-breakpoint';
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -28,10 +26,11 @@ const initPageData: PageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_
 export const ConnectionTableSection = () => {
   const [pageData, setPageData] = useState(initPageData);
   const [columnWidth, setColumnWidth] = useState(0);
-  const [tableHead, setTableHead] = useState(0);
+  const [, setTableHead] = useState(0);
   const [rowData, setRowData] = useState<DataType[]>(dataSource(0, DEFAULT_PAGE_SIZE));
   const tableRef = useRef<HTMLDivElement>(null);
   const isPublicPage = useIsPublicPage();
+  const isXXl = useIsXXlScreen();
 
   const { nodeTypeId } = useDataSheetWrapper();
 
@@ -87,11 +86,13 @@ export const ConnectionTableSection = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      {!isPublicPage && <ManageConnection tableHead={tableHead} tableHeight={tableRef.current?.offsetHeight} />}
-      <VerticalSpace size="large">
         <div
           id="container"
-          style={{ overflow: 'auto', width: '100%', height: getTableHeight, position: 'relative' }}
+          style={{
+            overflow: 'auto',
+            width: '100%',
+            position: 'relative',
+          }}
           ref={tableRef}
         >
           {!isPublicPage && <VerticalConnectionButton columnWidth={columnWidth} />}
@@ -102,6 +103,7 @@ export const ConnectionTableSection = () => {
             columns={[...columns, ...actions]}
             pagination={false}
             scroll={{ x: 'max-content' }}
+            style={{ height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)`, overflow: 'auto' }}
           />
         </div>
         {pageCount ? (
@@ -122,7 +124,6 @@ export const ConnectionTableSection = () => {
         ) : (
           <></>
         )}
-      </VerticalSpace>
     </div>
   );
 };

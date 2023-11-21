@@ -5,6 +5,8 @@ import { COLORS } from 'helpers/constants';
 import { OpenEditModal } from '../types/property';
 import { useGetProjectsEdgeTypeProperties } from 'api/node-edge-type/use-get-projects-edge-type-properties';
 import { useSchema } from 'components/layouts/components/schema/wrapper';
+import { useProject } from 'context/project-context';
+import { UserProjectRole } from 'api/types';
 
 type EdgePropertyProps = React.FC<{
   openEditModal: OpenEditModal;
@@ -47,6 +49,8 @@ const Section = styled.div`
 export const EdgePropertyList: EdgePropertyProps = ({ openEditModal }) => {
   const { edge_port } = useSchema() || {};
 
+  const { projectInfo } = useProject();
+
   const { data, isInitialLoading: loading } = useGetProjectsEdgeTypeProperties(edge_port?.id, {
     enabled: !!edge_port?.id,
   });
@@ -55,7 +59,12 @@ export const EdgePropertyList: EdgePropertyProps = ({ openEditModal }) => {
     <Spin spinning={loading}>
       <PropertyList>
         {data?.properties?.map((p) => (
-          <Section key={p.id} onClick={() => openEditModal(p.id)}>
+          <Section
+            key={p.id}
+            onClick={() => {
+              if (projectInfo?.role === UserProjectRole.Owner) openEditModal(p.id);
+            }}
+          >
             <Text className="property-name" title={p.name}>
               {p.name}
             </Text>

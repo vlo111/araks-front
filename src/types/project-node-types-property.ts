@@ -1,4 +1,5 @@
 export type ProjectNodeTypePropertySubmit = {
+  enums_data: string[] | { name: string }[];
   project_id?: string;
   project_type_id?: string;
   name: string;

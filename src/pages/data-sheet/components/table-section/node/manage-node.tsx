@@ -3,7 +3,6 @@ import { useManageNodes } from 'api/node/use-manage-node';
 import { useGetProjectNodeTypeProperties } from 'api/project-node-type-property/use-get-project-node-type-properties';
 import { NodeDataConnectionToSave, ProjectTypePropertyReturnData } from 'api/types';
 import { Button } from 'components/button';
-import { HorizontalButton } from 'components/button/horizontal-button';
 import { AddNodeForm } from 'components/form/add-node-form';
 import { PropertyTypes } from 'components/form/property/types';
 import { getConnectionFormName } from 'components/form/type/connection-type';
@@ -11,13 +10,18 @@ import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wr
 import { useState } from 'react';
 import { NodeBody, NodeDataSubmit } from 'types/node';
 import { setNodeDataValue } from './utils';
+import styled from 'styled-components';
 
-type Props = {
-  tableHead: number;
-  tableHeight: undefined | number;
-};
+const AddNodeButton = styled(Button)`
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  border: none;
+  justify-content: 'center';
+`;
 
-export const ManageNode = ({ tableHead, tableHeight }: Props) => {
+export const ManageNode = () => {
   const [stopSubmit, setStopSubmit] = useState(false);
   const [open, setOpen] = useState(false);
   const { titleText, nodeTypeId, isConnectionType } = useDataSheetWrapper();
@@ -69,6 +73,8 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
         const formName = getConnectionFormName(item.name, item.id);
         return item.ref_property_type_id === PropertyTypes.Connection
           ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
+              source_id: itemConn.source_id,
+              source_type_id: itemConn.source_type_id,
               target_id: itemConn.target_id,
               target_type_id: itemConn.target_type_id,
               project_edge_type_id: itemConn.id,
@@ -88,15 +94,16 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
 
   return (
     <Spin spinning={isLoading}>
-      <HorizontalButton tableHead={tableHead} openForm={onOpen} formIsOpened={open} />
+      <AddNodeButton onClick={onOpen} type="primary">
+        + Add Node
+      </AddNodeButton>
       <Drawer
         title={`Add New Node / ${titleText}`}
         placement="top"
         closable={false}
         onClose={onClose}
         open={open}
-        getContainer={false}
-        contentWrapperStyle={{ marginRight: '135px', marginLeft: '135px', height: `${tableHeight}px` }}
+        contentWrapperStyle={{ margin: '0 20%', height: '100%' }}
         footer={
           <Row gutter={16} justify="center">
             <Col span={4}>
@@ -123,6 +130,7 @@ export const ManageNode = ({ tableHead, tableHeight }: Props) => {
           <AddNodeForm
             data={data as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
+            nodeTypeId={nodeTypeId}
             setStopSubmit={setStopSubmit}
           />
         </Form>

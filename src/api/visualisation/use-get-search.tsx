@@ -2,6 +2,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import client from 'api/client';
 import { errorMessage } from 'helpers/utils';
 import { useParams } from 'react-router-dom';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
 
 export type NodeProperty = {
   id: string;
@@ -48,6 +49,8 @@ type ProjectResponse = {
 
 export const GET_SEARCH_DATA = '/neo4j/autocomplete/:project_id';
 
+export const GET_SEARCH_PUBLIC_DATA = '/public/neo4j/autocomplete/:project_id';
+
 type GetProjectParam = {
   id?: string;
   projectId: string;
@@ -72,11 +75,15 @@ type Result = {
 export const useGetSearchData = (options: Options = { enabled: false }, search: string): Result => {
   const params = useParams();
 
-  const urlNodes = GET_SEARCH_DATA.replace(':project_id', params?.id || '');
+  const isPublicPage = useIsPublicPage();
+
+  const urlSearch = isPublicPage ? GET_SEARCH_PUBLIC_DATA : GET_SEARCH_DATA;
+
+  const url = urlSearch.replace(':project_id', params?.id || '');
 
   const result = useQuery({
-    queryKey: [urlNodes, search],
-    queryFn: () => client.get(urlNodes, { params: { search } }),
+    queryKey: [url, search],
+    queryFn: () => client.get(url, { params: { search } }),
     ...options,
     onError: errorMessage,
   });

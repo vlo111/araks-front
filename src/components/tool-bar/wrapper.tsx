@@ -8,9 +8,12 @@ enum POSITION {
 export const ToolbarWrapper = styled.div<{ position: string }>`
   ${(props) =>
     props.position === POSITION.LEFT
-      ? css`left: 32px;`
-      : css`right: 32px;`
-}
+      ? css`
+          left: 32px;
+        `
+      : css`
+          right: 32px;
+        `}
   position: fixed;
   flex-direction: column;
   z-index: 1;
@@ -37,13 +40,14 @@ export const ToolbarWrapper = styled.div<{ position: string }>`
 
   .box {
     background: rgba(219, 219, 219, 0.5);
-    border: 1px solid rgba(111, 111, 111, 0.16);
-    box-shadow: 0 10px 10px rgba(141, 143, 166, 0.2);
     backdrop-filter: blur(7px);
     border-radius: 4px;
     display: flex;
     align-items: center;
     cursor: pointer;
+    border: 0.1px solid rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+    box-shadow: rgba(141, 143, 166, 0.2) 0px 10px 10px 0px;
   }
 
   .zoom {

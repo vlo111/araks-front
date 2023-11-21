@@ -1,7 +1,7 @@
 import { Button as Component, ButtonProps } from 'antd';
 import styled from 'styled-components';
 
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { ReactComponent as AzureSignUp } from '../icons/azure-sign-up.svg';
 
 type ReturnTypeData = {

@@ -1,7 +1,7 @@
 import { PaperClipOutlined } from '@ant-design/icons';
 import { Form, message, Space, Upload } from 'antd';
 import { ProjectTypePropertyReturnData } from 'api/types';
-import { FILE_UPLOAD_URL } from 'api/upload/constants';
+import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import { Button } from 'components/button';
 import { AddNewFieldButton } from 'components/button/add-new-field-button';
 import { SecondaryText, Text } from 'components/typography';
@@ -12,6 +12,7 @@ import { FormItem } from '../form-item';
 
 type Props = {
   data: ProjectTypePropertyReturnData;
+  nodeId?: string;
 };
 
 const StyledButton = styled(Button)`
@@ -40,7 +41,7 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-export const ImageType = ({ data }: Props) => {
+export const ImageType = ({ nodeId, data }: Props) => {
   const token = useLocalStorageGet<string>(AUTH_KEYS.TOKEN, '');
   const imagesUploaded = Form.useWatch(data.name);
 
@@ -62,7 +63,13 @@ export const ImageType = ({ data }: Props) => {
         getValueFromEvent={normFile}
       >
         <StyledUpload
-          action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+          data={{
+            property_id: data.id,
+            project_id: data.project_id,
+            project_node_type_id: data.project_type_id,
+            node_id: nodeId,
+          }}
+          action={`${process.env.REACT_APP_BASE_URL}${IMAGE_UPLOAD_URL}`}
           name="file"
           multiple={data.multiple_type}
           headers={{

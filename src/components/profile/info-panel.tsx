@@ -8,13 +8,16 @@ import { RcFile, UploadChangeParam } from 'antd/es/upload';
 import { UploadProps } from 'antd/es/upload/interface';
 import { Link } from 'react-router-dom';
 import { CloseCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { useImageUpload } from 'api/upload/use-image-upload';
-import { FILE_UPLOAD_URL } from 'api/upload/constants';
+import { useAvatarUpload } from 'api/upload/use-image-upload';
+import { IMAGE_UPLOAD_URL } from 'api/upload/constants';
 import ImgCrop from 'antd-img-crop';
 import type { UploadRequestOption } from 'rc-upload/lib/interface';
 import { useUpdateUserAvatar } from '../../api/user/use-update-avatar';
+import { ProjectCountData } from 'api/projects/use-get-project-count';
 
-type Prop = FC<{ count: number }>;
+type Prop = FC<{
+  info: ProjectCountData | undefined;
+}>;
 
 const Wrapper = styled(Col)`
   background: #f7f7f7;
@@ -97,10 +100,10 @@ const Footer = styled(Row)`
   }
 `;
 
-export const InfoPanel: Prop = ({ count }) => {
+export const InfoPanel: Prop = ({ info }) => {
   const { user, addUser } = useAuth();
   const { mutate } = useUpdateUserAvatar();
-  const { mutateAsync } = useImageUpload();
+  const { mutateAsync } = useAvatarUpload();
 
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(user?.avatar);
@@ -121,11 +124,12 @@ export const InfoPanel: Prop = ({ count }) => {
     if (!isJpgOrPng) {
       message.error('You can only upload JPG/PNG file!');
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
+    const isLt2M = file.size / 1024 / 1024 > 0.5;
+    if (isLt2M) {
+      message.error('Image must smaller than 5MB!');
+      return false;
     }
-    return isJpgOrPng && isLt2M;
+    return isJpgOrPng;
   };
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
@@ -143,15 +147,14 @@ export const InfoPanel: Prop = ({ count }) => {
 
   const handleRemove = () => {
     setImageUrl('');
-    mutate({
-      avatar: null,
-    });
-    if (user) {
-      addUser({
-        ...user,
-        avatar: undefined,
-      });
-    }
+    mutate(
+      { avatar: null },
+      {
+        onSuccess: ({ data }) => {
+          if (data) addUser(data);
+        },
+      }
+    );
   };
 
   const customRequest: (options: UploadRequestOption) => void = async (options) => {
@@ -159,11 +162,13 @@ export const InfoPanel: Prop = ({ count }) => {
     const { data } = await mutateAsync(file);
 
     onSuccess && onSuccess(data);
+
     mutate({ avatar: data.uploadPath });
+
     if (user) {
       addUser({
         ...user,
-        avatar: data.uploadPath,
+        avatar: `${process.env.REACT_APP_AWS_URL}${data.uploadPath}`,
       });
     }
   };
@@ -183,7 +188,7 @@ export const InfoPanel: Prop = ({ count }) => {
         ) : (
           <ImgCrop rotationSlider>
             <Upload
-              action={`${process.env.REACT_APP_BASE_URL}${FILE_UPLOAD_URL}`}
+              action={`${process.env.REACT_APP_AWS_URL}${IMAGE_UPLOAD_URL}`}
               name="file"
               listType="picture-card"
               className="avatar-uploader"
@@ -211,11 +216,11 @@ export const InfoPanel: Prop = ({ count }) => {
       </Description>
       <Footer>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
-          <Title level={1}>{`${count}`}</Title>
+          <Title level={1}>{`${info?.projects}`}</Title>
           <StyledLink to={PATHS.ROOT}>Projects</StyledLink>
         </Col>
         <Col span={12} xs={24} sm={24} md={24} xl={12}>
-          <Title level={1}>{`${0}`}</Title>
+          <Title level={1}>{`${info?.shared}`}</Title>
           <StyledLink to={PATHS.SHARED}>Shared Projects</StyledLink>
         </Col>
       </Footer>

@@ -12,6 +12,7 @@ import { COLORS } from 'helpers/constants';
 import { DeleteComment } from './delete-comment';
 
 import './index.css';
+import { getAvatarPath } from 'helpers/utils';
 
 interface CommentListProps {
   data: CommentData[];
@@ -35,7 +36,7 @@ const CommentList = ({ data, level, rowsData, nodeId }: CommentListProps) => {
             <VerticalSpace size={0}>
               <List.Item style={{ paddingLeft: level * 30 }}>
                 <List.Item.Meta
-                  avatar={<Avatar src={item.user.avatar} />}
+                  avatar={<Avatar src={getAvatarPath(item.user.avatar)} />}
                   title={
                     <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <VerticalSpace size={0}>

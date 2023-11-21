@@ -11,6 +11,7 @@ type Props = {
   handleSelect: (value: string, options: ConnectionSourcesSearchResult[]) => void;
   targetId: string;
   placeholder?: string;
+  nodeId?: string;
 };
 
 const initPageData: SearchPageParameters = { page: DEFAULT_PAGE_NUMBER, size: DEFAULT_PAGE_SIZE };
@@ -20,7 +21,7 @@ const customDropdownStyle = {
   overflow: 'auto',
 };
 
-export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = 'Search' }: Props) => {
+export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = 'Search', nodeId }: Props) => {
   const [pageData] = useState(initPageData);
   const [initalRequest, setStartInitialRequest] = useState(false);
 
@@ -39,7 +40,7 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
     {
       enabled: !!(debouncedSearchValue && debouncedSearchValue.length > 2) || initalRequest,
       onSuccess: (data) => {
-        setOptions(data.rows);
+        setOptions(data.rows.filter((a) => a.id !== nodeId));
       },
     }
   );
@@ -47,11 +48,17 @@ export const ConnectionAutocomplete = ({ handleSelect, targetId, placeholder = '
   const handleSelectAction = (value: string) => {
     handleSelect(value, options);
     setSearchValue('');
-    initalRequest && setStartInitialRequest(false);
+    setStartInitialRequest(true);
+  };
+
+  const cleanOptions = (length: number) => {
+    if (length === 0) setStartInitialRequest(true);
   };
 
   return (
     <AutoComplete
+      onFocus={() => cleanOptions(searchValue.length)}
+      onChange={(value) => cleanOptions(value.length)}
       options={options?.map((row) => ({ value: row.id, label: row.name }))}
       onSearch={handleSearch}
       value={searchValue}

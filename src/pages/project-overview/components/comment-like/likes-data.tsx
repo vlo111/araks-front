@@ -6,7 +6,7 @@ import { SecondaryText, Title } from 'components/typography';
 import { useAuth } from 'context/auth-context';
 import { COLORS } from 'helpers/constants';
 import { Dispatch, SetStateAction } from 'react';
-import { formatTimeDifference } from './../../../../helpers/utils';
+import { formatTimeDifference, getAvatarPath } from 'helpers/utils';
 
 type Props = {
   setUserLikedProject: Dispatch<SetStateAction<undefined | boolean>>;
@@ -44,7 +44,7 @@ export const LikesData = ({ setUserLikedProject }: Props) => {
           <>
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar src={item.user.avatar} />}
+                avatar={<Avatar src={getAvatarPath(item.user.avatar)} />}
                 title={
                   <VerticalSpace size={0}>
                     <Space>

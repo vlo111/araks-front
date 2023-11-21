@@ -1,6 +1,7 @@
 import { Graph, IEdge } from '@antv/g6';
 import { IOpenNodeCreate, IOpenIdState, IOpenEdgeState } from './reducer/types';
 import { ContextTypeProject } from '../schema/types';
+import { ICreateEdge } from 'types/node';
 
 export type VisualisationReducerSetState = {
   setGraph: (graph: Graph) => void;
@@ -65,6 +66,8 @@ export type Edge = {
   target: string;
   label: string;
   project_edge_type_id?: string;
+  curvePosition?: number;
+  curveOffset?: number;
 };
 
 export type GraphData = {
@@ -109,3 +112,7 @@ export type CalcExpandList = (
   result: GroupedData[];
   grandTotal: number;
 };
+
+export type UpdateEdges = (graph: Graph, nodeId: string) => void;
+
+export type AddEdges = (graph: Graph, nodeId: string, edges: ICreateEdge[]) => void;

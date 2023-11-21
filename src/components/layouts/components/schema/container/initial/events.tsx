@@ -60,7 +60,7 @@ export const initSchemaEvents: InitEvents = (
 
   if (projectInfo?.role === UserProjectRole.Owner) {
     graph.on('node:port:click', ({ node, port, view: { container } }) => {
-      if (port === 'connector') return;
+      if (port === 'connector' || port === 'connector_select') return;
 
       const isEdge = node.getPortProp(port || '', PATH.PROPERTY_REF_TYPE) === 'connection';
 

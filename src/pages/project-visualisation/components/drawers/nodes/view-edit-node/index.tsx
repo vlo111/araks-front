@@ -1,5 +1,5 @@
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
-import { groupedData, setNodeDataUpdateValue } from '../../../../../data-sheet/components/table-section/node/utils';
+import { groupedData, setNodeDataUpdateValue } from 'pages/data-sheet/components/table-section/node/utils';
 import { Drawer } from 'components/drawer/node-drawer/view-node-drawer';
 import { Col, Form, Row, Skeleton, UploadFile } from 'antd';
 import { NodeViewTitle } from './node-view-title';
@@ -14,6 +14,7 @@ import {
   NodeDataSubmit,
   NodePropertiesValues,
   ResponseLocationType,
+  UpdateNodeEdges,
   UploadedFileType,
 } from 'types/node';
 import { PropertyTypes } from 'components/form/property/types';
@@ -25,6 +26,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { setUploadFileStructure } from 'pages/data-sheet/utils';
 import { ViewNode } from './node-view';
 import { useProject } from 'context/project-context';
+import { addEdges, updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 export type VIewDataType = NodeDataResponse | undefined;
 
 const getValue = (item: NodePropertiesValues) => {
@@ -75,15 +77,18 @@ export const ViewEditNodeDrawer = () => {
           [item.nodeTypeProperty.name]: getValue(item),
         } as NodePropertiesValues;
       }, initialAcc);
-      const groupList = groupedData(data?.edges ?? []);
 
-      const connectionFieldsData = Object.entries(groupList).reduce((acc, [key, item]) => {
+      const groupListEdges = groupedData(data?.edges ?? []);
+
+      const connectionFieldsData = Object.entries(groupListEdges).reduce((acc, [key, item]) => {
         return {
           ...acc,
           [key]: item.map((row) => ({
             rowId: row.id,
             id: row.edgeTypes.id,
-            name: row.nodes.name,
+            name: row.source.id === openNode.id ? row.target.name : row.source.name,
+            source_id: row.source_id,
+            source_type_id: row.source_type_id,
             target_id: row.target_id,
             target_type_id: row.target_type_id,
           })),
@@ -97,7 +102,7 @@ export const ViewEditNodeDrawer = () => {
         ...connectionFieldsData,
       });
     },
-    [form]
+    [form, openNode?.id]
   );
 
   const { data: nodeData } = useGetNode(openNode?.id ?? '', {
@@ -112,51 +117,35 @@ export const ViewEditNodeDrawer = () => {
     enabled: !!nodeData?.project_type_id,
   });
 
-  const { mutate } = useManageNodesGraph({
+  const { mutate, isLoading } = useManageNodesGraph({
     onSuccess: ({ data, variables }) => {
-      if (graph.getNodes().find((n) => n.getID() === variables.nodeId)) {
+      const { nodeId } = variables;
+      if (graph.getNodes().find((n) => n.getID() === nodeId)) {
+        const { destroyedEdges, createdEdges } = data as UpdateNodeEdges;
+
         updateNode(variables);
-        updateEdges(data, variables);
+
+        destroyedEdges?.forEach((e) => graph.removeItem(e.id));
+
+        addEdges(graph, nodeId ?? '', createdEdges);
+
+        updateConnector(graph);
+
+        onClose();
       }
     },
   });
-
-  const updateEdges = useCallback(
-    (data: NodePropertiesValues, variables: NodeDataSubmit) => {
-      /* Update deleted edges  */
-      const deleteEdges = variables?.edges?.filter(
-        (edges1) => !variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-
-      deleteEdges?.forEach((e) => graph.removeItem(e.id));
-
-      /* Update created edges  */
-      const createEdges = variables?.edges?.filter((edges1) =>
-        variables?.edges?.some((edges2) => edges1.id === edges2.id)
-      );
-      createEdges?.forEach((edge) => {
-        const type = properties?.find((p) => p.id === edge.project_edge_type_id);
-        graph.addItem('edge', {
-          id: edge.id,
-          label: type?.name,
-          source: data.id,
-          target: edge.target_id,
-          project_edge_type_id: edge.project_edge_type_id,
-        });
-      });
-    },
-    [graph, properties]
-  );
 
   const updateNode = useCallback(
     (variable: NodeDataSubmit) => {
       graph.updateItem(variable.nodeId ?? '', {
         label: variable.name,
         type: variable.default_image ? 'image' : 'circle',
-        img: variable.default_image,
+        img: variable.default_image ? `${process.env.REACT_APP_AWS_URL}${variable.default_image}` : undefined,
         style: {
           fill: variable.default_image ? '#00000000' : 'white',
         },
+        edgeCount: variable.edges?.length,
       });
     },
     [graph]
@@ -196,6 +185,8 @@ export const ViewEditNodeDrawer = () => {
           return item.ref_property_type_id === PropertyTypes.Connection
             ? (values[formName] as NodeDataConnectionToSave[])?.map((itemConn) => ({
                 id: itemConn.rowId,
+                source_id: itemConn.source_id,
+                source_type_id: itemConn.source_type_id,
                 target_id: itemConn.target_id,
                 target_type_id: itemConn.target_type_id,
                 project_edge_type_id: itemConn.id,
@@ -211,11 +202,11 @@ export const ViewEditNodeDrawer = () => {
           edges: dataToSubmitEdges?.flat() || [],
           project_type_id: nodeData?.project_type_id || '',
           nodeId: nodeData.id,
+          destroyedEdgesIds: form.getFieldValue('destroyedEdgesIds'),
         } as NodeDataSubmit);
-        onClose();
       }
     },
-    [mutate, nodeData, onClose, properties]
+    [form, mutate, nodeData, properties]
   );
 
   const footer = useMemo(
@@ -228,13 +219,13 @@ export const ViewEditNodeDrawer = () => {
             </Button>
           </Col>
           <Col span={4}>
-            <Button type="primary" onClick={() => form.submit()} block>
+            <Button type="primary" onClick={() => form.submit()} loading={isLoading} disabled={isLoading} block>
               Save
             </Button>
           </Col>
         </Row>
       ),
-    [isEdit, form]
+    [isEdit, isLoading, form]
   );
 
   const canEdit = projectInfo?.role === UserProjectRole.Owner || projectInfo?.role === UserProjectRole.Editor;
@@ -256,7 +247,7 @@ export const ViewEditNodeDrawer = () => {
           setIsEdit={setIsEdit}
           isEdit={isEdit}
           id={nodeData?.id as string}
-          name={nodeData?.name ?? ''}
+          name={nodeData?.nodeType?.name ?? ''}
           onClose={onClose}
           canEdit={canEdit}
         />
@@ -273,7 +264,14 @@ export const ViewEditNodeDrawer = () => {
           requiredMark={false}
           onFinish={onFinish}
         >
-          <AddNodeForm data={properties as ProjectTypePropertyReturnData[]} isInitialLoading={isInitialLoading} />
+          <AddNodeForm
+            nodeId={openNode?.id}
+            nodeTypeId={nodeData?.project_type_id}
+            data={properties as ProjectTypePropertyReturnData[]}
+            isInitialLoading={isInitialLoading}
+            edges={nodeData?.edges?.concat(nodeData?.edges_in)}
+            property={nodeData?.properties?.find((p) => p.node_id === openNode.id)}
+          />
         </Form>
       ) : isInitialLoading ? (
         <Skeleton />

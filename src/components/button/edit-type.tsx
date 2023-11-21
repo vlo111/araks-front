@@ -7,6 +7,7 @@ import { AddTypeForm } from 'components/form/add-type-form';
 import { EditConnectionTypePropertyForm } from 'components/form/edit-connection-type-property-form';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { AddNodeTypePopover } from 'components/popover';
+import { ManageConnection } from 'pages/data-sheet/components/table-section/node/manage-connection';
 import { useMemo } from 'react';
 
 export type EditTypeProps = PopoverProps & {
@@ -31,7 +32,10 @@ export const EditType = ({ onClick, icon, ...props }: EditTypeProps) => {
       trigger="click"
       {...props}
     >
-      <SettingsAction icon={icon} button={{ onClick }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {isConnectionType && <ManageConnection />}
+        <SettingsAction icon={icon} button={{ onClick }} />
+      </div>
     </AddNodeTypePopover>
   );
 };

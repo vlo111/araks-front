@@ -5,27 +5,36 @@ import { ExpandableInput, SearchText } from 'components/input/expandable-input';
 import { DeleteAllDataModal } from 'components/modal/delete-all-data-modal';
 import { useSort } from 'context/sort-context';
 import { DEFAULT_PAGE_NUMBER } from 'helpers/constants';
-import { useCallback, useEffect } from 'react';
+import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { defaultAllDataFilter } from '../right-section-all-data';
 
 type Props = {
   checkedItems: string[];
   setCheckedItems: (checkedItems: string[]) => void;
+  setIsAllCheck: Dispatch<SetStateAction<boolean>>;
   setFilterValue: (
     filter: typeof defaultAllDataFilter | ((prevVar: typeof defaultAllDataFilter) => typeof defaultAllDataFilter)
   ) => void;
 };
 
-export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems }: Props) => {
+export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedItems, setIsAllCheck }: Props) => {
   // const { setHideLeftSection, hideLeftSection } = useOverview();
 
   const { state: sortState } = useSort();
+  const isPublicPage = useIsPublicPage();
 
   const setSearchText = useCallback(
     ({ text, type }: SearchText) => {
-      setFilterValue((prevValue) => ({ ...prevValue, search: text, type, page: DEFAULT_PAGE_NUMBER }));
+      setFilterValue((prevValue) => ({
+        ...prevValue,
+        search: text,
+        type,
+        page: DEFAULT_PAGE_NUMBER,
+        ...(isPublicPage && type === 'document' ? { isPublic: true } : {}),
+      }));
     },
-    [setFilterValue]
+    [isPublicPage, setFilterValue]
   );
 
   useEffect(() => {
@@ -55,7 +64,13 @@ export const AllDataFilterSection = ({ setFilterValue, checkedItems, setCheckedI
       <Col span={8}>
         <Row justify="end">
           <Col>
-            <DeleteAllDataModal checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+            <DeleteAllDataModal
+              checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+              onSubmit={() => {
+                setIsAllCheck(false);
+              }}
+            />
           </Col>
         </Row>
       </Col>

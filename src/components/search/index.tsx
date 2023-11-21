@@ -47,7 +47,10 @@ export const Search = () => {
   );
 
   const nodeTypes = useMemo(
-    () => data.types?.map(({ id, title, color, node_type_name }) => renderTypes(id, title, color, node_type_name)),
+    () =>
+      data.types?.map(({ id, node_type_id, title, color, node_type_name }) =>
+        renderTypes(id, node_type_id, title, color, node_type_name)
+      ),
     [data.types]
   );
 

@@ -1,7 +1,7 @@
 import { Edge, InitNodes } from '../../types';
 import G6 from '@antv/g6';
 
-const initConnector: (edges: Edge[]) => void = (edges) => {
+export const initConnector: (edges: Edge[]) => void = (edges) => {
   const offsetDiff = 40;
   const multiEdgeType = 'quadratic';
   const singleEdgeType = 'line';

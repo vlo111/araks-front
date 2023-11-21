@@ -7,6 +7,12 @@ export const Checkbox = styled(CheckboxComponent)`
     .ant-checkbox-inner {
       width: 24px;
       height: 24px;
+
+      &:after {
+        width: 8px;
+        height: 13px;
+        top: 45%;
+      }
     }
   }
 `;

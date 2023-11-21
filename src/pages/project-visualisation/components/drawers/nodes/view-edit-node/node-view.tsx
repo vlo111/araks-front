@@ -7,7 +7,7 @@ import React, { useMemo } from 'react';
 import { NodePropertiesValues } from 'types/node';
 import { Button, GridConnectionButton } from 'components/button';
 import { VIewDataType } from './index';
-import { ReactComponent as Connection } from 'components/icons/connection.svg';
+import { ReactComponent as InComeConnection } from 'components/icons/in-come.svg';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 
 interface IProps {
@@ -19,15 +19,15 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
   const { startOpenNode, finishOpenNode } = useGraph() ?? {};
 
   const groupedDataList = useMemo(
-    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
-    [selectedView?.edges]
+    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges.concat(selectedView.edges_in))) : []),
+    [selectedView]
   );
 
   return (
     <VerticalSpace>
       {selectedView?.default_image && (
         <Image
-          src={selectedView?.default_image}
+          src={`${process.env.REACT_APP_AWS_URL}${selectedView?.default_image}`}
           width={161}
           height={127}
           style={{ borderRadius: '4px', ...centerImageStyle }}
@@ -59,11 +59,17 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
               <GridConnectionButton
                 type="text"
                 size="small"
-                backgroundColor={item[0].nodes.nodeType.color}
+                backgroundColor={
+                  selectedView?.id !== item[0].source.id ? item[0].source.nodeType.color : item[0].target.nodeType.color
+                }
                 block
-                icon={<Connection />}
+                icon={
+                  <InComeConnection
+                    style={{ transform: `rotate(${selectedView?.id !== item[0].source.id ? 180 : 0}deg)` }}
+                  />
+                }
               >
-                {item[0].nodes.nodeType.name}
+                {selectedView?.id !== item[0].source.id ? item[0].source.nodeType.name : item[0].target.nodeType.name}
               </GridConnectionButton>
             </Col>
             <Col
@@ -81,12 +87,12 @@ export const ViewNode: React.FC<IProps> = ({ selectedView, properties }) => {
                   onClick={() => {
                     finishOpenNode();
                     startOpenNode({
-                      id: row.target_id,
+                      id: selectedView?.id !== row.source.id ? row.source_id : row.target_id,
                     });
                   }}
                 >
                   <Text underline color={COLORS.PRIMARY.GRAY_DARK}>
-                    {row.nodes.name}
+                    {selectedView?.id !== row.source.id ? row.source.name : row.target.name}
                   </Text>
                 </Button>
               ))}

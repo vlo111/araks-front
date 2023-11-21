@@ -1,5 +1,5 @@
 import { Input } from 'components/input';
-import { ReactComponent as Connection } from 'components/icons/connection.svg';
+import { ReactComponent as InComeConnection } from 'components/icons/in-come.svg';
 import styled from 'styled-components';
 import { FormItem } from 'components/form/form-item';
 import { COLORS, VALIDATE_MESSAGES } from 'helpers/constants';
@@ -39,10 +39,32 @@ const ResultFormItem = styled(({ backgroundColor, ...props }) => <FormItem {...p
 type Props = {
   color: string | undefined;
   isRequired: boolean;
+  isSource: boolean;
   formName: string;
 };
 
-export const SelectConnectionFormItem = ({ color, isRequired = false, formName }: Props) => {
+type DeleteEdgesHandle = (remove: (index: number | number[]) => void, name: number) => void;
+
+export const SelectConnectionFormItem = ({ color, isRequired = false, formName, isSource }: Props) => {
+  const form = Form.useFormInstance();
+
+  const destroyedEdgesIds = Form.useWatch('destroyedEdgesIds', { preserve: true });
+
+  const edgeList = Form.useWatch(formName, { preserve: true });
+
+  const deleteEdgesHandle: DeleteEdgesHandle = (remove, name) => {
+    if (edgeList[name].rowId) {
+      const edges =
+        destroyedEdgesIds && destroyedEdgesIds.length
+          ? [...destroyedEdgesIds, edgeList[name].rowId]
+          : [edgeList[name].rowId];
+
+      form.setFieldValue('destroyedEdgesIds', edges);
+    }
+
+    remove(name);
+  };
+
   return (
     <Form.List name={formName}>
       {(fields, { add, remove }) => (
@@ -56,7 +78,11 @@ export const SelectConnectionFormItem = ({ color, isRequired = false, formName }
                 name={[field.name, 'name']}
                 rules={[{ required: isRequired, message: VALIDATE_MESSAGES.required }]}
               >
-                <Input prefix={<Connection />} disabled suffix={<CloseOutlined onClick={() => remove(field.name)} />} />
+                <Input
+                  prefix={<InComeConnection />}
+                  disabled
+                  suffix={<CloseOutlined onClick={() => deleteEdgesHandle(remove, field.name)} />}
+                />
               </ResultFormItem>
             ))}
           </VerticalSpace>

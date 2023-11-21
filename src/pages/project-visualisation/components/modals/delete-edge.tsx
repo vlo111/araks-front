@@ -4,6 +4,7 @@ import { Text } from 'components/typography';
 import { useGraph } from 'components/layouts/components/visualisation/wrapper';
 import { Button } from 'components/button';
 import { useDeleteEdge } from 'api/edges/use-delete-edge';
+import { updateConnector } from 'components/layouts/components/visualisation/helpers/utils';
 
 export const EdgeDeleteModal = () => {
   const { graph, deleteEdge, finishDeleteEdge, finishOpenEdge } = useGraph() ?? {};
@@ -13,6 +14,8 @@ export const EdgeDeleteModal = () => {
       graph.removeItem(deleteEdge?.id ?? '');
       finishDeleteEdge();
       finishOpenEdge();
+
+      updateConnector(graph);
     },
   });
 

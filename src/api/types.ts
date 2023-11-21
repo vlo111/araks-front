@@ -118,7 +118,7 @@ export type ProjectTreeReturnData = {
   color: string;
   id: string;
   name: string;
-  parent_id: string;
+  parent_id: string | null;
   properties?: ProjectTreeProperties[];
 };
 
@@ -136,7 +136,7 @@ export interface IProjectType {
   color: string;
   id: string;
   name: string;
-  parent_id: string;
+  parent_id: string | null;
   fx: number;
   fy: number;
   x?: number;
@@ -170,11 +170,14 @@ export type ProjectTypePropertyReturnData = {
   source_id?: string;
   target_attribute_id?: string;
   target_id?: string;
+  enums_data?: { id: string; name: string }[];
 };
 
 export type NodeDataConnectionToSave = {
   target_id: string;
   target_type_id: string;
+  source_id: string;
+  source_type_id: string;
   name: string;
   id: string;
   rowId?: string; // used only for save, assign id to him then pass to packend

@@ -17,6 +17,7 @@ import { createNodesTree } from 'components/layouts/components/data-sheet/utils'
 import { TreeSelect } from 'components/select';
 import { Rule } from 'antd/es/form';
 import { InverseFormItem } from './inverse-form-item';
+import { Spinning } from 'components/spinning';
 
 const AddEdge = styled.div`
   padding: 24px 24px 8px;
@@ -36,7 +37,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
 
   const treeNodes = useMemo(() => createNodesTree(nodes), [nodes]);
 
-  const { mutate: mutateDelete } = useDeleteEdge({
+  const { mutate: mutateDelete, isLoading: isDeleteLoading } = useDeleteEdge({
     onSuccess: () => {
       finishEdgeType();
     },
@@ -106,6 +107,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
 
   return (
     <AddEdge>
+      {isDeleteLoading && <Spinning />}
       <Spin spinning={!isUpdate ? false : isInitialLoading}>
         <Form
           name="project-node-type"
@@ -129,7 +131,7 @@ export const AddSchemaEdgeForm: React.FC = () => {
                 required: true,
                 message: 'Connection name is required',
               },
-              { min: 3, message: 'The minimum length for this field is 3 characters' },
+              { min: 2, message: 'The minimum length for this field is 2 characters' },
               { max: 30, message: 'The maximum length for this field is 30 characters' },
               {
                 validator: async (_: Rule, value: string | undefined) => {

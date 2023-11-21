@@ -6,6 +6,7 @@ import { VerticalSpace } from 'components/space/vertical-space';
 import { Text } from 'components/typography';
 import { useTypeProperty } from 'pages/data-sheet/components/table-section/table-context';
 import { TypePropertyActionKind } from 'pages/data-sheet/components/table-section/types';
+import { Spinning } from 'components/spinning';
 
 type Props = {
   id: string;
@@ -17,7 +18,7 @@ export const DeleteTypePropertyModal = ({ id }: Props) => {
     state: { deleteTypeisOpened },
     dispatch,
   } = useTypeProperty();
-  const { mutate } = useDeleteProjectNodeTypeProperty(id, nodeTypeId || '');
+  const { mutate, isLoading } = useDeleteProjectNodeTypeProperty(id, nodeTypeId || '');
 
   const handleCancel = () => {
     dispatch({ type: TypePropertyActionKind.DELETE_TYPE_FINISH, payload: {} });
@@ -30,6 +31,7 @@ export const DeleteTypePropertyModal = ({ id }: Props) => {
 
   return (
     <>
+      {isLoading && <Spinning />}
       <Modal
         title={
           <Text style={{ textAlign: 'center' }}>Are you sure you wish to permanently remove this type property?</Text>

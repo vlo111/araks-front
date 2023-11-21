@@ -34,7 +34,7 @@ export const ViewNodeTitle = ({ id, isEdit, setIsEdit, onClose, drawerIsOpened }
 
   const { mutate } = useGetSelectedSearchData({
     onSuccess: (data) => {
-      navigate(PATHS.PROJECT_VISUALISATION.replace(':id', params?.id ?? ''), {
+      navigate(`${isPublicPage ? PATHS.PUBLIC : ''}${PATHS.PROJECT_VISUALISATION}`.replace(':id', params?.id ?? ''), {
         state: {
           data: data.data,
         },

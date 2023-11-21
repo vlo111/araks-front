@@ -1,4 +1,4 @@
-import { CloseOutlined, MinusOutlined } from '@ant-design/icons';
+import { CaretDownFilled, CloseOutlined, MinusOutlined } from '@ant-design/icons';
 import { Collapse, DatePicker, Form, Radio, Space } from 'antd';
 import { Icon } from 'components/icon';
 import { Input } from 'components/input';
@@ -18,6 +18,8 @@ import G6, { INode } from '@antv/g6';
 import { PropertyTypes } from 'components/form/property/types';
 import { Datepicker } from 'components/datepicker';
 import dayjs from 'dayjs';
+import { useGetEnum } from 'api/enum/use-get-enum';
+import { SelectEnumItems } from '../../select/enum-select';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -32,6 +34,7 @@ type Props = {
 type ContentType = {
   fieldName: number | string;
   propertyType: PropertyTypes;
+  id?: string | undefined;
 };
 
 const StyledCollapse = styled(Collapse)`
@@ -44,8 +47,14 @@ const StyledQuerySelectWrapper = styled.div`
   margin-top: 24px;
 `;
 
-export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
+export const QueriesContent = ({ fieldName, propertyType, id }: ContentType) => {
   const type = Form.useWatch(['queries', fieldName, 'type']);
+
+  const { data } = useGetEnum(id ?? '', {
+    enabled:
+      !!id && (type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && propertyType === PropertyTypes.ENUM,
+  });
+
   // const formItemLayout = {
   //   labelCol: {
   //     xs: { span: 24 },
@@ -64,8 +73,18 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
   //   },
   // };
 
-  const getColumnInput = (type: QueryFilterTypes, propertyType: PropertyTypes) => {
+  const getColumnInput = (id: string | undefined, type: QueryFilterTypes, propertyType: PropertyTypes) => {
     switch (true) {
+      case (type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && propertyType === PropertyTypes.ENUM:
+        return (
+          <SelectEnumItems
+            mode="multiple"
+            popupClassName="enum-dropdown"
+            suffixIcon={<CaretDownFilled />}
+            fieldNames={{ value: 'id', label: 'name' }}
+            options={data}
+          />
+        );
       case (type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) &&
         propertyType === PropertyTypes.Date:
         return (
@@ -100,7 +119,7 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
     <>
       {(type === QueryFilterTypes.CONTAINS || type === QueryFilterTypes.IS || type === QueryFilterTypes.IS_NOT) && (
         <Form.Item name={[fieldName, 'typeText']} rules={[{ required: true, message: 'Field is required' }]}>
-          {getColumnInput(type, propertyType)}
+          {getColumnInput(id, type, propertyType)}
         </Form.Item>
       )}
       {type === QueryFilterTypes.GREATHER_THAN && (
@@ -151,8 +170,38 @@ export const QueriesContent = ({ fieldName, propertyType }: ContentType) => {
         </Form.Item>
       )}
       {type === QueryFilterTypes.RANGE && (
-        <Form.Item name={[fieldName, 'typeText']}>
+        <Form.Item
+          name={[fieldName, 'typeText']}
+          rules={[
+            ({ getFieldValue }) => ({
+              async validator(_, value) {
+                if (!value) {
+                  return Promise.reject(new Error('The fields are required'));
+                }
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
           <RangePicker format={dateFormat} style={{ width: '100%' }} />
+        </Form.Item>
+      )}
+      {type === QueryFilterTypes.BEFORE && (
+        <Form.Item name={[fieldName, '<']} rules={[{ required: true, message: 'Field is required' }]}>
+          <Datepicker
+            format={`DD/MM/YYYY ${propertyType === PropertyTypes.DateTime ? 'HH:mm' : ''}`}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
+        </Form.Item>
+      )}
+      {type === QueryFilterTypes.AFTER && (
+        <Form.Item name={[fieldName, '>']} rules={[{ required: true, message: 'Field is required' }]}>
+          <Datepicker
+            format={`DD/MM/YYYY ${propertyType === PropertyTypes.DateTime ? 'HH:mm' : ''}`}
+            style={{ width: '100%' }}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm') }}
+          />
         </Form.Item>
       )}
       {type === QueryFilterTypes.EQUAL_TO && (
@@ -285,6 +334,7 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                                       isConnection={queriesList[fieldName].isConnectionType}
                                       isVisualisation={isVisualisation}
                                       propertyType={queriesList[fieldName]?.ref_property_type_id}
+                                      isMultiple={queriesList[fieldName]?.multiple_type}
                                     />
                                   </Form.Item>
                                   <QueriesContent
@@ -334,9 +384,14 @@ export const PropertySection = ({ remove, fieldName, isVisualisation }: Props) =
                         depth={queriesList[fieldName].depth}
                         isConnection={queriesList[fieldName].isConnectionType}
                         propertyType={queriesList[fieldName]?.ref_property_type_id}
+                        isMultiple={queriesList[fieldName]?.multiple_type}
                       />
                     </Form.Item>
-                    <QueriesContent fieldName={fieldName} propertyType={queriesList[fieldName].ref_property_type_id} />
+                    <QueriesContent
+                      id={queriesList[fieldName].id}
+                      fieldName={fieldName}
+                      propertyType={queriesList[fieldName].ref_property_type_id}
+                    />
                   </VerticalSpace>
                 )}
               </>

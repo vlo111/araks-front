@@ -7,7 +7,7 @@ import { NotificationsData } from 'api/types';
 import { Button } from 'components/button';
 import { SecondaryText } from 'components/typography';
 import { COLORS, PATHS } from 'helpers/constants';
-import { formatTimeDifference } from 'helpers/utils';
+import { formatTimeDifference, getAvatarPath } from 'helpers/utils';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { NotifyBadge } from '.';
@@ -85,10 +85,10 @@ export const NotificationItem = ({ item, setResult, setPage }: Props) => {
             style={{ paddingLeft: '16px' }}
             avatar={
               item.status === 'read' ? (
-                <Avatar src={item.user.avatar} />
+                <Avatar src={getAvatarPath(item.user.avatar)} />
               ) : (
                 <NotifyBadge color="#F97070" dot offset={[-5, 10]}>
-                  <Avatar src={item.user.avatar} />
+                  <Avatar src={getAvatarPath(item.user.avatar)} />
                 </NotifyBadge>
               )
             }

@@ -2,9 +2,13 @@ import { AUTH_KEYS, DEFAULT_ICON } from './constants';
 import { iconsList } from 'components/icon';
 import { AxiosError } from 'axios';
 import { Modal } from 'antd';
-import { CustomError } from 'api/types';
+import { CustomError, NodeEdgeTypesReturnData, ProjectTreeReturnData } from 'api/types';
 import { PropertyTypes } from 'components/form/property/types';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { TreeNodeType } from '../pages/data-sheet/types';
+import { DefaultOptionType } from 'antd/es/cascader';
+import { QueryFilterTypes } from '../components/select/queries-select';
+import { getDate } from '../components/button/queries-button';
 
 export const noop = () => {
   return;
@@ -110,3 +114,62 @@ export function formatTimeDifference(likedTime: string) {
     return `${years} years ago`;
   }
 }
+
+export const updateTypeParentId = (types: ProjectTreeReturnData[] | undefined) => {
+  types?.forEach((t) => {
+    if (!types?.some((n) => n.id === t.parent_id)) {
+      t.parent_id = null;
+    }
+  });
+};
+
+type ItemType =
+  | TreeNodeType
+  | (NodeEdgeTypesReturnData & DefaultOptionType & { type: QueryFilterTypes; typeText: string });
+
+export const getQueryValue = (item: ItemType) => {
+  const { type, betweenStart, betweenEnd, typeText, ref_property_type_id } = item;
+
+  if (ref_property_type_id === PropertyTypes.ENUM) {
+    return typeText;
+  }
+
+  const isBeforeAfter = (item: ItemType) => {
+    return [QueryFilterTypes.BEFORE, QueryFilterTypes.AFTER].includes(item.type);
+  };
+
+  const isBetween = (item: ItemType) => {
+    return item.type === QueryFilterTypes.BETWEEN;
+  };
+
+  const isDateOrTime = (item: ItemType) => {
+    return [PropertyTypes.Date, PropertyTypes.DateTime].includes(item.ref_property_type_id);
+  };
+
+  if (isBeforeAfter(item)) {
+    const date = item[type === QueryFilterTypes.BEFORE ? '<' : '>'];
+
+    return item.ref_property_type_id === PropertyTypes.Date ? getDate(date).toString() : date.toISOString();
+  }
+
+  if (isBetween(item)) {
+    return [betweenStart, betweenEnd].toString();
+  }
+
+  if (isDateOrTime(item)) {
+    if (!typeText) return undefined;
+
+    const convertToDateString = (date: Dayjs) => {
+      return item.ref_property_type_id === PropertyTypes.Date ? getDate(date).toString() : date.toISOString();
+    };
+
+    const typeTextArray = Array.isArray(typeText) ? typeText : [typeText];
+
+    // Range type need to be the format - 2023-11-10,2023-11-20
+    return typeTextArray.map(convertToDateString).join(',');
+  }
+
+  return typeText?.toString() || '';
+};
+export const getAvatarPath = (avatar: string | undefined) =>
+  avatar ? (avatar?.includes('gravatar') ? avatar : `${process.env.REACT_APP_AWS_URL}${avatar}`) : undefined;

@@ -27,6 +27,7 @@ enum ImportActionType {
   IMPORT_SET_RULE_ACTION = 'IMPORT_SET_RULE_ACTION', // Selecting one of options in set rules page
   IMPORT_MERGE = 'IMPORT_MERGE', // Merge step
   IMPORT_MERGE_RESULT = 'IMPORT_MERGE_RESULT', // Merge step
+  IMPORT_PROGRESS_START = 'IMPORT_PROGRESS_START', // IMPORT_PROGRESS_START
 }
 
 export interface ItemMapping {
@@ -88,7 +89,10 @@ export type ImportState = {
   type_id?: string;
   step?: number; //step number, start from 0 as first page
   setRulesSkipOverwrite?: SetImportRule;
+  progressStart?: boolean;
+  progressStop?: boolean;
 };
+
 type ImportAction = {
   type: ImportActionType;
   payload: ImportState;
@@ -111,6 +115,8 @@ const importInitialState = {
   showMapping: false,
   showMappingResult: false,
   setRulesSkipOverwrite: SetImportRule.Skip,
+  progressStart: false,
+  progressStop: false,
 };
 
 const createTableData = (data: Array<[string, string]>, columnsLenght = 1) => {
@@ -400,6 +406,11 @@ const importReducer = (state: ImportState, action: ImportAction) => {
         step: 4,
       };
     case ImportActionType.IMPORT_MERGE_RESULT:
+      return {
+        ...state,
+        ...payload,
+      };
+    case ImportActionType.IMPORT_PROGRESS_START:
       return {
         ...state,
         ...payload,

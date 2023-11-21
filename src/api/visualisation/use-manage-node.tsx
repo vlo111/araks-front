@@ -3,20 +3,21 @@ import { useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-qu
 import { useParams } from 'react-router-dom';
 
 import client from '../client';
-import { NodeDataSubmit, NodePropertiesValues } from 'types/node';
+import { ICreateEdge, NodeDataSubmit, NodePropertiesValues, UpdateNodeEdges } from 'types/node';
 import { errorMessage } from 'helpers/utils';
 import { useDataSheetWrapper } from 'components/layouts/components/data-sheet/wrapper';
 import { URL_CREATE_NODE, URL_NODES_LIST, URL_UPDATE_NODE } from '../node/constants';
 
-export type MoveProjectToAllFormData = {
-  projectId: string;
-};
-
 type ReturnData = {
-  data: NodePropertiesValues;
+  data: UpdateNodeEdges | (NodePropertiesValues & { createdEdges: ICreateEdge[] });
+  createdEdges?: ICreateEdge[];
 };
 
-type Options = UseQueryOptions<NodeDataSubmit, Error, { data: NodePropertiesValues; variables: NodeDataSubmit }>;
+type Options = UseQueryOptions<
+  NodeDataSubmit,
+  Error,
+  { data: UpdateNodeEdges | NodePropertiesValues; variables: NodeDataSubmit }
+>;
 
 export const useManageNodesGraph = (options?: Options) => {
   const { nodeTypeId } = useDataSheetWrapper();
@@ -38,6 +39,9 @@ export const useManageNodesGraph = (options?: Options) => {
       queryClient.invalidateQueries([
         URL_NODES_LIST.replace(':project_type_id', nodeTypeId || '').replace(':project_id', params.id || ''),
       ]);
+
+      if (!data.data.createdEdges) data.data.createdEdges = data.createdEdges as ICreateEdge[];
+
       options?.onSuccess?.({ data: data.data, variables });
     },
     onError: errorMessage,

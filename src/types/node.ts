@@ -25,10 +25,13 @@ export type NodeDataSubmit = {
     project_edge_type_id: string;
     target_id: string;
     target_type_id: string;
+    source_id: string;
+    source_type_id: string;
   }[];
   nodeId?: string;
   name: string;
   default_image: string;
+  destroyedEdgesIds?: string[];
 };
 
 export type ResponseLocationType = {
@@ -62,12 +65,14 @@ export type NodePropertiesValues = {
     default_image: boolean;
     default_property: boolean;
     multiple_type: boolean;
+    enums_data: { id: string; name: string }[];
   };
   project_type_id: string;
   user_id: string;
   project_id: string;
   created_at: string;
   updated_at: string;
+  createdEdges?: ICreateEdge[];
 };
 
 export type NodeEdges = {
@@ -81,7 +86,16 @@ export type NodeEdges = {
   target_id: string;
   target_type_id: string;
   project_type_property_type: string;
-  nodes: {
+  source: {
+    created_at: string;
+    default_image: string;
+    id: string;
+    name: string;
+    project_type_id: string;
+    updated_at: string;
+    nodeType: EdgeType;
+  };
+  target: {
     created_at: string;
     default_image: string;
     id: string;
@@ -103,6 +117,7 @@ export type NodeDataResponse = {
   updated_at: string;
   properties?: NodePropertiesValues[];
   edges: NodeEdges[];
+  edges_in: NodeEdges[];
   nodeType: EdgeType;
   project_type_id?: string;
 };
@@ -199,3 +214,16 @@ export type AllDataHelp = {
     updated_at: string;
   }[];
 };
+
+export type UpdateNodeEdges = {
+  createdEdges: ICreateEdge[];
+  destroyedEdges: ICreateEdge[];
+};
+
+export interface ICreateEdge {
+  id: string;
+  label: string;
+  source_id: string;
+  target_id: string;
+  project_edge_type_id: string;
+}

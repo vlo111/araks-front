@@ -7,20 +7,20 @@ import { centerImageStyle, COLORS } from 'helpers/constants';
 import { useMemo } from 'react';
 import { VerticalSpace } from 'components/space/vertical-space';
 import { getRowData, groupedData } from './utils';
-import { ReactComponent as Connection } from 'components/icons/connection.svg';
+import { ReactComponent as InComeConnection } from 'components/icons/in-come.svg';
 
 export const VIewNode = () => {
   const { state: selectedView, dispatch } = useViewDatasheet();
   const groupedDataList = useMemo(
-    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges)) : []),
-    [selectedView?.edges]
+    () => (selectedView?.edges ? Object.entries(groupedData(selectedView.edges.concat(selectedView.edges_in))) : []),
+    [selectedView]
   );
 
   return (
     <VerticalSpace>
       {selectedView?.default_image && (
         <Image
-          src={selectedView?.default_image}
+          src={`${process.env.REACT_APP_AWS_URL}${selectedView?.default_image}`}
           width={161}
           height={127}
           style={{ borderRadius: '4px', ...centerImageStyle }}
@@ -52,11 +52,17 @@ export const VIewNode = () => {
               <GridConnectionButton
                 type="text"
                 size="small"
-                backgroundColor={item[0].nodes.nodeType.color}
+                backgroundColor={
+                  selectedView?.id !== item[0].source.id ? item[0].source.nodeType.color : item[0].target.nodeType.color
+                }
                 block
-                icon={<Connection />}
+                icon={
+                  <InComeConnection
+                    style={{ transform: `rotate(${selectedView?.id !== item[0].source.id ? 180 : 0}deg)` }}
+                  />
+                }
               >
-                {item[0].nodes.nodeType.name}
+                {selectedView?.id !== item[0].source.id ? item[0].source.nodeType.name : item[0].target.nodeType.name}
               </GridConnectionButton>
             </Col>
             <Col
@@ -68,9 +74,13 @@ export const VIewNode = () => {
               }}
             >
               {item.map((row) => (
-                <Button type="text" key={row.id} onClick={() => dispatch(row.target_id)}>
+                <Button
+                  type="text"
+                  key={row.id}
+                  onClick={() => dispatch(selectedView?.id !== row.source.id ? row.source_id : row.target_id)}
+                >
                   <Text underline color={COLORS.PRIMARY.GRAY_DARK}>
-                    {row.nodes.name}
+                    {selectedView?.id !== row.source.id ? row.source.name : row.target.name}
                   </Text>
                 </Button>
               ))}
