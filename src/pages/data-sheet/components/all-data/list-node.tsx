@@ -16,6 +16,7 @@ import { useProject } from 'context/project-context';
 import { useParams } from 'react-router-dom';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
+import { ReactComponent as DefaultIconSvg } from 'components/icons/default-image.svg';
 
 type TypeInfoProps = {
   color?: string;
@@ -147,7 +148,11 @@ export const AllDataListNode = ({
               )}
               <List.Item.Meta
                 avatar={
-                  <Avatar src={item.default_image ? `${process.env.REACT_APP_AWS_URL}${item.default_image}` : ''} />
+                  item.default_image ? (
+                    <Avatar src={`${process.env.REACT_APP_AWS_URL}${item.default_image}`} />
+                  ) : (
+                    <DefaultIconSvg />
+                  )
                 }
                 title={
                   <Row align="middle">
