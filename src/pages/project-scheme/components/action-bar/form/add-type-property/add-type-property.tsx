@@ -61,9 +61,13 @@ export const AddSchemaTypePropertyForm = () => {
     [form]
   );
 
-  const { mutate } = useCreateTypeProperty({}, isUpdate ? portId : undefined);
+  const onSuccess = () => {
+    form.resetFields();
+  };
 
-  const { mutate: mutateConnection } = useCreateEdge(undefined);
+  const { mutate } = useCreateTypeProperty({ onSuccess }, isUpdate ? portId : undefined);
+
+  const { mutate: mutateConnection } = useCreateEdge(undefined, { onSuccess });
 
   // get node type edit data
   const { data, isInitialLoading } = useGetProjectNodeTypeProperty(portId, {
