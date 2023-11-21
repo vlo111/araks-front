@@ -165,7 +165,10 @@ export const TableSection = () => {
                 columns={[...columns, ...actions]}
                 pagination={false}
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
-                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)` }}
+                sticky
+                style={{
+                  height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)`,
+                }}
               />
             </ViewDatasheetProvider>
           </Spin>
