@@ -25,7 +25,6 @@ const editPropertyList = {
     PropertyTypes.Boolean,
     PropertyTypes.Location,
     PropertyTypes.Connection,
-    PropertyTypes.ENUM,
   ],
   [PropertyTypes.Date]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],
   [PropertyTypes.DateTime]: [PropertyTypes.Text, PropertyTypes.Date, PropertyTypes.DateTime],
@@ -37,7 +36,7 @@ const editPropertyList = {
   [PropertyTypes.Connection]: [PropertyTypes.Text, PropertyTypes.Connection],
   [PropertyTypes.IMAGE_URL]: [PropertyTypes.IMAGE_URL],
   [PropertyTypes.Document]: [PropertyTypes.Document],
-  [PropertyTypes.ENUM]: [PropertyTypes.ENUM, PropertyTypes.Text, PropertyTypes.RichText],
+  [PropertyTypes.ENUM]: [PropertyTypes.ENUM],
   [PropertyTypes.RichText]: [
     PropertyTypes.RichText,
     // PropertyTypes.Text,
