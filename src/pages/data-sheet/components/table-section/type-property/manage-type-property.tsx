@@ -30,7 +30,7 @@ export const ManageTypeProperty = React.memo(({ children, propertyId, isDefault,
             />
           }
           open={isManageOpened}
-          trigger="click"
+          trigger="click" 
           onOpenChange={(open: boolean) => {
             !open && setManageOpened(false);
             return open;
