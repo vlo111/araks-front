@@ -15,7 +15,6 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { PageParameters } from 'api/types';
 import { NodeViewButton } from './node/node-view-button';
 import { ConnectionColumnValue } from './node/connection-column-value';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
@@ -149,7 +148,6 @@ export const TableSection = () => {
           <ImportStepsDrawer />
         </>
       )}
-      <VerticalSpace size="large">
         <div
           id="container"
           className="content-datasheet"
@@ -167,7 +165,7 @@ export const TableSection = () => {
                 columns={[...columns, ...actions]}
                 pagination={false}
                 scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
-                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)` }}
+                style={{ overflow: 'auto', height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)` }}
               />
             </ViewDatasheetProvider>
           </Spin>
@@ -191,7 +189,6 @@ export const TableSection = () => {
           <></>
         )}
         <ProgressBar start={!!progressStart} stop={!!progressStop} />
-      </VerticalSpace>
     </Wrapper>
   );
 };

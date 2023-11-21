@@ -11,7 +11,6 @@ import { DataType } from '../table-section/types';
 import { NodePagination } from 'components/pagination';
 import { EdgeViewButton } from './components/edge-view-button';
 import { EdgesCreateProperties } from 'types/edges';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { convertByType } from 'helpers/utils';
 import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
@@ -87,7 +86,6 @@ export const ConnectionTableSection = () => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <VerticalSpace size="large">
         <div
           id="container"
           style={{
@@ -105,7 +103,7 @@ export const ConnectionTableSection = () => {
             columns={[...columns, ...actions]}
             pagination={false}
             scroll={{ x: 'max-content' }}
-            style={{ height: `calc(100vh - ${(isXXl ? 152 : 130) + 200}px)`, overflow: 'auto' }}
+            style={{ height: `calc(100vh - ${(isXXl ? 152 : 130) + 161}px)`, overflow: 'auto' }}
           />
         </div>
         {pageCount ? (
@@ -126,7 +124,6 @@ export const ConnectionTableSection = () => {
         ) : (
           <></>
         )}
-      </VerticalSpace>
     </div>
   );
 };
