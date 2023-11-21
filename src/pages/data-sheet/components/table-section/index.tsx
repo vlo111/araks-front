@@ -15,7 +15,6 @@ import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from 'helpers/constants';
 import { PageParameters } from 'api/types';
 import { NodeViewButton } from './node/node-view-button';
 import { ConnectionColumnValue } from './node/connection-column-value';
-import { VerticalSpace } from 'components/space/vertical-space';
 import { getConnectionFormName } from 'components/form/type/connection-type';
 import { ImportDrawer } from 'components/drawer/import-drawer';
 import { ImportStepsDrawer } from 'components/drawer/import-steps-drawer';
@@ -23,6 +22,21 @@ import { useIsPublicPage } from 'hooks/use-is-public-page';
 import { useIsXXlScreen } from 'hooks/use-breakpoint';
 import { ProgressBar } from 'components/progress-bar';
 import { useImport } from 'context/import-context';
+import { ReactComponent as DefaultIconSvg } from 'components/icons/default-image.svg';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  position: relative;
+
+  tr {
+    .node-property-column:first-child {
+      display: flex;
+      align-items: center;
+      height: 73px;
+      width: 73px;
+    }
+  }
+`;
 
 const dataSource = (length: number, pageSize: number): DataType[] =>
   [...Array(pageSize - length)].map((_, i) => ({
@@ -63,9 +77,11 @@ export const TableSection = () => {
           {
             key: row.id,
             name: <NodeViewButton text={row.name} rowData={row} />,
-            node_icon: row.default_image
-              ? showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`)
-              : undefined,
+            node_icon: row.default_image ? (
+              showAvatar(`${process.env.REACT_APP_AWS_URL}${row.default_image}`)
+            ) : (
+              <DefaultIconSvg style={{ marginLeft: '5px' }} />
+            ),
           } as DataType
         ),
         ...row.edges?.reduce((curr: DataType, item) => {
@@ -125,14 +141,13 @@ export const TableSection = () => {
   }, [columns, data.length, rowData]);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <Wrapper>
       {!isPublicPage && (
         <>
           <ImportDrawer />
           <ImportStepsDrawer />
         </>
       )}
-      <VerticalSpace size="large">
         <div
           id="container"
           className="content-datasheet"
@@ -177,7 +192,6 @@ export const TableSection = () => {
           <></>
         )}
         <ProgressBar start={!!progressStart} stop={!!progressStop} />
-      </VerticalSpace>
-    </div>
+    </Wrapper>
   );
 };
