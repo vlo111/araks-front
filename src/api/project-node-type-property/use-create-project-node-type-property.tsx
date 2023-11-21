@@ -6,6 +6,7 @@ import client from '../client';
 import { GET_PROJECT_NODE_TYPE_PROPERTIES_LIST } from './use-get-project-node-type-properties';
 import { ProjectNodeTypePropertySubmit } from 'types/project-node-types-property';
 import { errorMessage } from 'helpers/utils';
+import { URL_NODES_LIST } from '../node/constants';
 
 export type MoveProjectToAllFormData = {
   projectId: string;
@@ -39,6 +40,12 @@ export const useCreateProjectNodeTypeProperty = (options: Options, nodeTypePrope
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries([
         GET_PROJECT_NODE_TYPE_PROPERTIES_LIST.replace(':node_type_id', data.data.project_type_id || ''),
+      ]);
+      queryClient.invalidateQueries([
+        URL_NODES_LIST.replace(':project_id', params.id || '').replace(
+          ':project_type_id',
+          data.data.project_type_id || ''
+        ),
       ]);
       options?.onSuccess?.(data);
     },

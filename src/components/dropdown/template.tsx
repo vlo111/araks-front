@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as TemplateIcon } from '../icons/template.svg';
 import { Text } from '../typography';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 
 const DropdownButton = styled(Button)`
   width: 232px;

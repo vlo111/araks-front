@@ -17,6 +17,7 @@ import { PropertyDataTypeSelect } from '../../../select/property-data-type-selec
 import { PropertyTypes } from '../../property/types';
 import { ConnectionPropertyFormItems } from './connection-property-items';
 import { SetCreateConnection } from '../add-type-property-form';
+import { PropertyEnumDetails } from '../../property/property-enum-details';
 
 type Props = {
   isEdit?: boolean;
@@ -95,7 +96,12 @@ export const TypePropertyFormItems = ({
                   required: true,
                   message: isConnectionType ? 'Connection name is required' : 'Property name is required',
                 },
-                { min: 3, message: 'The minimum length for this field is 3 characters' },
+                {
+                  min: dataType === PropertyTypes.Connection ? 2 : 3,
+                  message: `The minimum length for this field is ${
+                    dataType === PropertyTypes.Connection ? 2 : 3
+                  } characters`,
+                },
                 { max: 30, message: 'The maximum length for this field is 30 characters' },
                 {
                   validator: async (_: Rule, value: string | undefined) => {
@@ -116,6 +122,7 @@ export const TypePropertyFormItems = ({
             </FormItem>
           )}
           {dataSelectItem}
+          <PropertyEnumDetails />
           <PropertyBasicDetails />
           <PropertyConnectionDetails isConnectionType={isConnectionType} />
           <FormItem>

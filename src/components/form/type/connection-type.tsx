@@ -92,8 +92,6 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
         };
       }, {});
 
-      const item = connectionFieldsData[formName]?.find((c) => data.id === c.id);
-
       const isSource = nodeTypeId !== data.source_id;
 
       form.setFieldValue(formName, [
@@ -105,19 +103,18 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
           target_type_id: isSource ? data.source_id : data.target_id,
           name: selectedRow.name,
           id: data.id,
-          rowId: item?.rowId,
+          rowId: connectionFieldsData[formName]?.find(
+            (d) => d.source_id === selectedRow.id || d.target_id === selectedRow.id
+          )?.rowId,
         },
       ]);
 
-      if (item?.rowId) {
-        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== item?.rowId)]);
-      } else {
-        const rowId = connectionFieldsData[formName]?.find((c) =>
-          isSource ? c.source_id === selectedRow.id : c.target_id === selectedRow.id
-        )?.rowId;
+      const rowId = connectionFieldsData[formName]?.find((c) =>
+        isSource ? c.source_id === selectedRow.id : c.target_id === selectedRow.id
+      )?.rowId;
 
-        if (destroyedEdgesIds)
-          form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== rowId)]);
+      if (rowId) {
+        form.setFieldValue('destroyedEdgesIds', [...destroyedEdgesIds.filter((e: string) => e !== rowId)]);
       }
     }
   };
@@ -158,7 +155,7 @@ export const ConnectionType = ({ nodeId, nodeTypeId, data, edges }: Props) => {
         </StyledFormItem>
         <SelectConnectionFormItem
           formName={formName}
-          isSource={nodeTypeId !== data.source_id}
+          isSource={!!edges?.find((e) => e.source_id === nodeId && e.source_type_id === nodeTypeId)}
           color={nodeTypeId !== data.source_id ? data.source?.color : data.target?.color}
           isRequired={data.required_type}
         />

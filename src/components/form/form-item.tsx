@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import styled from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { SecondaryText } from '../typography';
 
 const { Item } = Form;

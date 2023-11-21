@@ -16,7 +16,9 @@ type Props = {
 };
 
 export const EnumType = ({ data, property }: Props) => {
-  const options = property?.nodeTypeProperty.enums_data;
+  const selectedEnums = Form.useWatch(data.name, { preserve: true });
+
+  const options = data.enums_data || property?.nodeTypeProperty.enums_data;
   const label = (
     <Space>
       <Text color={COLORS.PRIMARY.BLUE}>{`${data.name}`}</Text>
@@ -27,6 +29,11 @@ export const EnumType = ({ data, property }: Props) => {
     if (value && value.length > (data.default_property ? 30 : 80)) {
       return Promise.reject(`Max length exceeded (max ${data.default_property ? 30 : 80} characters)`);
     }
+
+    if (selectedEnums.filter((s: string) => s === value).length > 1) {
+      return Promise.reject(`You have already selected the item`);
+    }
+
     return Promise.resolve();
   };
 
@@ -53,7 +60,7 @@ export const EnumType = ({ data, property }: Props) => {
                       ]}
                     >
                       <SelectEnumItems
-                        name="role"
+                        name="enum-dropdown"
                         popupClassName="enum-dropdown"
                         suffixIcon={<CaretDownFilled />}
                         fieldNames={{ value: 'id', label: 'name' }}
@@ -64,7 +71,9 @@ export const EnumType = ({ data, property }: Props) => {
                 ))}
               </VerticalSpace>
             </FormItem>
-            {data.multiple_type === true && <AddNewFieldButton onClick={() => add(null)} />}
+            {data.multiple_type === true && (
+              <AddNewFieldButton onClick={() => add(null)} disabled={fields.length > 4} />
+            )}
           </>
         )}
       </Form.List>

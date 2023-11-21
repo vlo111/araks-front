@@ -2,7 +2,7 @@ import { Button as Component, ButtonProps } from 'antd';
 import { VerticalSpace } from 'components/space/vertical-space';
 import styled, { css } from 'styled-components';
 
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 import { ReactComponent as PlusDashed } from '../icons/plus-dashed.svg';
 import { Text } from '../typography';
 

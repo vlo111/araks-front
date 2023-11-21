@@ -5,7 +5,8 @@ import { Icon } from '../../icon';
 
 export const renderProjects = (id: string, title: string, color: string, icon: string, privacy: string) => {
   return {
-    id: id,
+    key: `project${id}`,
+    id,
     mode: 'nodeType',
     value: id,
     privacy,

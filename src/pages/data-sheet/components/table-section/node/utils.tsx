@@ -91,6 +91,21 @@ export function showAvatar(imageUrl: string) {
 /** Get grid column value for non connection type */
 export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse) {
   switch (true) {
+    case item.project_type_property_type === PropertyTypes.ENUM: {
+      const {
+        nodeTypeProperty: { enums_data },
+      } = item;
+
+      return (
+        <ManageNodeTypePopover
+          trigger="hover"
+          content={enums_data
+            .filter((d) => item.nodes_data?.includes(d.id))
+            .map((a) => a.name)
+            .join(', ')}
+        >{`${item.nodes_data?.length} records`}</ManageNodeTypePopover>
+      );
+    }
     case item.nodes_data && item.nodes_data.length > 1:
       return (
         <ManageNodeTypePopover
@@ -117,7 +132,11 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
             ) : item.project_type_property_type === PropertyTypes.IMAGE_URL ? (
               <Space>
                 {item.nodes_data?.map((node) => {
-                  return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
+                  return node ? (
+                    <Avatar src={node ? `${process.env.REACT_APP_AWS_URL}${node}` : ''} key={node as string} />
+                  ) : (
+                    ''
+                  );
                 })}
               </Space>
             ) : (
@@ -138,7 +157,11 @@ export function getColumnValue(item: NodePropertiesValues, row: NodeDataResponse
       return (
         <Space>
           {item.nodes_data?.map((node) => {
-            return node ? <Avatar src={`${process.env.REACT_APP_AWS_URL}${node}`} key={node as string} /> : '';
+            return node ? (
+              <Avatar src={node ? `${process.env.REACT_APP_AWS_URL}${node}` : ''} key={node as string} />
+            ) : (
+              ''
+            );
           })}
         </Space>
       );
@@ -417,16 +440,18 @@ export const getRowData = (item: NodePropertiesValues) => {
         dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
       );
     case PropertyTypes.ENUM:
-      return isMultiple ? (
-        <Row gutter={[10, 10]}>
-          {item.nodes_data.map((data, index) => (
-            <Col xs={12} lg={6} key={index}>
-              {dataByType(data, PropertyTypes.Text)}
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        dataByType(getSingleData(item.nodes_data), PropertyTypes.Text)
+      const {
+        nodes_data,
+        nodeTypeProperty: { enums_data },
+      } = item;
+
+      return (
+        <Text color={COLORS.PRIMARY.GRAY_DARK}>
+          {enums_data
+            .filter((d) => nodes_data?.includes(d.id))
+            .map((a) => a.name)
+            .join(', ')}
+        </Text>
       );
     default:
       return getSingleData(item.nodes_data);

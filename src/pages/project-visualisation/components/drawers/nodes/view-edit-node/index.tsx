@@ -141,7 +141,7 @@ export const ViewEditNodeDrawer = () => {
       graph.updateItem(variable.nodeId ?? '', {
         label: variable.name,
         type: variable.default_image ? 'image' : 'circle',
-        img: `${process.env.REACT_APP_AWS_URL}${variable.default_image}`,
+        img: variable.default_image ? `${process.env.REACT_APP_AWS_URL}${variable.default_image}` : undefined,
         style: {
           fill: variable.default_image ? '#00000000' : 'white',
         },
@@ -269,7 +269,7 @@ export const ViewEditNodeDrawer = () => {
             nodeTypeId={nodeData?.project_type_id}
             data={properties as ProjectTypePropertyReturnData[]}
             isInitialLoading={isInitialLoading}
-            edges={nodeData?.edges.concat(nodeData?.edges_in)}
+            edges={nodeData?.edges?.concat(nodeData?.edges_in)}
             property={nodeData?.properties?.find((p) => p.node_id === openNode.id)}
           />
         </Form>

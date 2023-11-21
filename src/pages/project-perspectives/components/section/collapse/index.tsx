@@ -35,31 +35,35 @@ export const Collapse = ({ panels }: { panels: IResponsePerspectiveData[] }) => 
   useGetPerspective(activeKey, {
     enabled: !!activeKey,
     onSuccess: (data) => {
-      if (!graph) return;
+      setTimeout(() => {
+        if (!graph) return;
 
-      const nodes = graph.getNodes();
-      const typesLength = mainId === activeKey ? nodes.length : data.nodeType.length;
+        const nodes = graph.getNodes();
+        const typesLength = mainId === activeKey ? nodes.length : data.nodeType.length;
 
-      const propertiesLength =
-        mainId === activeKey
-          ? nodes.flatMap((n) => n.ports.items).filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length
-          : nodes
-              .flatMap((n) => (data.nodeType.some(({ project_node_type_id: id }) => id === n.id) ? n.ports.items : []))
-              .filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length;
+        const propertiesLength =
+          mainId === activeKey
+            ? nodes.flatMap((n) => n.ports.items).filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length
+            : nodes
+                .flatMap((n) =>
+                  data.nodeType.some(({ project_node_type_id: id }) => id === n.id) ? n.ports.items : []
+                )
+                .filter((p) => p.attrs?.portTypeLabel.text !== 'connection').length;
 
-      nodes.forEach((node) => {
-        const hasType = mainId === activeKey || data.nodeType.some(({ project_node_type_id: id }) => id === node.id);
-        switchTypePermission(node, !hasType);
-      });
+        nodes.forEach((node) => {
+          const hasType = mainId === activeKey || data.nodeType.some(({ project_node_type_id: id }) => id === node.id);
+          switchTypePermission(node, !hasType);
+        });
 
-      setPerspectiveInfo({ typesLength, propertiesLength });
+        setPerspectiveInfo({ typesLength, propertiesLength });
 
-      if (mainId !== activeKey) {
-        setPerspectiveData({ perspectiveId: data.id, project_id: params.id || '' });
-        attachClickEvent();
-      } else {
-        detachClickEvent();
-      }
+        if (mainId !== activeKey) {
+          setPerspectiveData({ perspectiveId: data.id, project_id: params.id || '' });
+          attachClickEvent();
+        } else {
+          detachClickEvent();
+        }
+      }, 300);
     },
   });
 

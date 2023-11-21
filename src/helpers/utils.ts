@@ -128,7 +128,11 @@ type ItemType =
   | (NodeEdgeTypesReturnData & DefaultOptionType & { type: QueryFilterTypes; typeText: string });
 
 export const getQueryValue = (item: ItemType) => {
-  const { type, betweenStart, betweenEnd, typeText } = item;
+  const { type, betweenStart, betweenEnd, typeText, ref_property_type_id } = item;
+
+  if (ref_property_type_id === PropertyTypes.ENUM) {
+    return typeText;
+  }
 
   const isBeforeAfter = (item: ItemType) => {
     return [QueryFilterTypes.BEFORE, QueryFilterTypes.AFTER].includes(item.type);
@@ -167,3 +171,5 @@ export const getQueryValue = (item: ItemType) => {
 
   return typeText?.toString() || '';
 };
+export const getAvatarPath = (avatar: string | undefined) =>
+  avatar ? (avatar?.includes('gravatar') ? avatar : `${process.env.REACT_APP_AWS_URL}${avatar}`) : undefined;

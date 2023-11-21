@@ -2,7 +2,7 @@ import { Button as ButtonComponent } from 'antd';
 import { textSizeMedia } from 'components/typography/text';
 import { changeHeight } from 'helpers/styles';
 import styled, { css } from 'styled-components';
-import { COLORS } from '../../helpers/constants';
+import { COLORS } from 'helpers/constants';
 
 export const Button = styled(ButtonComponent)`
   ${(props) =>

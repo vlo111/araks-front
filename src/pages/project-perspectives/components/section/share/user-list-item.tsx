@@ -7,12 +7,13 @@ import styled from 'styled-components';
 import { useCreatePerspectiveUser } from 'api/perspective/shared-users/use-create-perspective-user';
 import { UserProjectRole } from 'api/types';
 import { useProject } from 'context/project-context';
+import { getAvatarPath } from 'helpers/utils';
 
 type Props = React.FC<{
   id: string;
   index: number;
   visibleMetaData?: boolean;
-  user: { id: string; title: string; value: string; avatar: string };
+  user: { id: string; title: string; value: string; avatar: string | undefined };
 }>;
 
 const BUILT_IN_PLACEMENTS = {
@@ -91,7 +92,7 @@ export const UserListItem: Props = ({ id, index, user, visibleMetaData = true })
     >
       {visibleMetaData && (
         <ListMeta
-          avatar={<Avatar src={`${process.env.REACT_APP_AWS_URL}${user.avatar}`} />}
+          avatar={<Avatar src={getAvatarPath(user.avatar)} />}
           description={<Text title={user.title}>{user.title}</Text>}
         />
       )}

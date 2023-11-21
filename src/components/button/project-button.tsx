@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Button as Component, ButtonProps, Space } from 'antd';
 import styled, { css } from 'styled-components';
 
-import { COLORS, screenSize, VARIABLES } from '../../helpers/constants';
+import { COLORS, screenSize, VARIABLES } from 'helpers/constants';
 import { ReactComponent as DotsVertical } from 'components/icons/dots-vertical.svg';
 
 import { LongTitle, MenuText, Text } from '../typography';

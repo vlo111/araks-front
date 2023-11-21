@@ -71,7 +71,7 @@ export const NodeCreateDrawer = () => {
       const node = {
         id: nodeData.id,
         label: nodeData.name as unknown as string,
-        img: `${process.env.REACT_APP_AWS_URL}${nodeData.default_image}`,
+        img: nodeData.default_image ? `${process.env.REACT_APP_AWS_URL}${nodeData.default_image}` : undefined,
         type: nodeData.default_image ? 'image' : 'circle',
         x: openNodeCreate.x,
         y: openNodeCreate.y,

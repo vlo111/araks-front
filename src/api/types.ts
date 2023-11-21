@@ -170,6 +170,7 @@ export type ProjectTypePropertyReturnData = {
   source_id?: string;
   target_attribute_id?: string;
   target_id?: string;
+  enums_data?: { id: string; name: string }[];
 };
 
 export type NodeDataConnectionToSave = {

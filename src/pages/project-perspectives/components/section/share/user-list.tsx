@@ -6,6 +6,7 @@ import { Icon } from 'components/icon';
 import { Text } from 'components/typography';
 import { useGetPerspectiveUsers } from 'api/perspective/shared-users/use-get-perspecive-users';
 import { UserListItem } from './user-list-item';
+import { getAvatarPath } from 'helpers/utils';
 
 export const UserList = ({ perspectiveId }: { perspectiveId?: string }) => {
   const { perspective: { id } = { id: '' } } = useSchema() || {};
@@ -18,7 +19,7 @@ export const UserList = ({ perspectiveId }: { perspectiveId?: string }) => {
         id: user.id,
         title: user.email,
         value: role,
-        avatar: user.avatar,
+        avatar: getAvatarPath(user.avatar),
       })),
     [shared]
   );
