@@ -1,4 +1,3 @@
-import { Graph } from './components/graph';
 import { LeftSection } from './left-section';
 import { NodeCreateDrawer } from './components/drawers/nodes/create-node';
 import { Settings } from './components/settings';
@@ -12,13 +11,14 @@ import { SearchData } from './components/search/canvas';
 import { ShortestPathModal } from './components/modals/shortest-path';
 import { GraphInfo } from './components/info';
 import { useState } from 'react';
+import { Graph3D } from './3d';
 
 export const ProjectVisualisation = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div style={{ overflow: 'hidden' }}>
-      <Graph />
+      <Graph3D />
       <SearchData collapsed={collapsed} />
       <ToolbarVisualization />
       <LeftSection collapsed={collapsed} setCollapsed={setCollapsed} />

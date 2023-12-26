@@ -1,11 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as BABYLON from 'babylonjs';
 
 function BabylonScene() {
+  const canvasRef = useRef(null);
+  const engineRef = useRef(null);
+  const sceneRef = useRef(null);
+  const sphereMeshesRef = useRef([]);
+  const tubeMeshesRef = useRef([]);
+
   useEffect(() => {
     const canvas: HTMLElement | null = document.getElementById('renderCanvas');
     const engine = new BABYLON.Engine(canvas as HTMLCanvasElement, true);
     const scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color3(0, 0, 0); // Set background color to black
     const camera = new BABYLON.ArcRotateCamera(
       'camera',
       Math.PI / 2,
@@ -16,76 +23,48 @@ function BabylonScene() {
     );
     camera.attachControl(canvas, true);
 
-    const spherePositions = [];
-    const numConcentricCircles = 10; // Number of concentric circles of spheres TRY 14
-    const numSpheresPerCircle = 50; // Number of spheres in each circle  TRY 80
-    const radiusIncrement = 50; // Increment between circles TRY 100
-
-    for (let circle = 0; circle < numConcentricCircles; circle++) {
-      const circleRadius = circle * radiusIncrement;
-      for (let i = 0; i < numSpheresPerCircle; i++) {
-        const angle = (i / numSpheresPerCircle) * Math.PI * 2;
-        const x = circleRadius * Math.cos(angle);
-        const z = circleRadius * Math.sin(angle);
+    const generateRandomLayout = () => {
+      const spherePositions = [];
+      for (let i = 0; i < 500; i++) {
+        const x = (Math.random() - 0.5) * 50;
+        const y = (Math.random() - 0.5) * 50;
+        const z = (Math.random() - 0.5) * 50;
         const sphere = BABYLON.MeshBuilder.CreateSphere('sphere' + i, { diameter: 2, segments: 32 }, scene);
-        sphere.position = new BABYLON.Vector3(x, 0, z);
+        sphere.position = new BABYLON.Vector3(x, y, z);
 
         const material = new BABYLON.StandardMaterial('material' + i, scene);
         material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
         sphere.material = material;
-        spherePositions.push(new BABYLON.Vector3(x, 0, z));
+        spherePositions.push(new BABYLON.Vector3(x, y, z));
       }
-    }
 
-    for (let i = 0; i < spherePositions.length; i++) {
-      const sphere = BABYLON.MeshBuilder.CreateSphere('sphere' + i, { diameter: 2, segments: 32 }, scene);
-      sphere.position = spherePositions[i];
+      sphereMeshesRef.current = scene.meshes.filter((mesh) => mesh.name.startsWith('sphere'));
 
-      const material = new BABYLON.StandardMaterial('material' + i, scene);
-      material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
-      sphere.material = material;
-    }
+      // Create connecting lines (tubes)
+      for (let i = 0; i < spherePositions.length - 1; i++) {
+        const points = [spherePositions[i], spherePositions[i + 1]];
 
-    for (let i = 0; i < spherePositions.length - 1; i++) {
-      const points = [spherePositions[i], spherePositions[i + 1]];
+        const tube = BABYLON.Mesh.CreateTube(
+          'line' + i,
+          points,
+          0.05,
+          10,
+          (i: number, distance: number) => 0.05,
+          BABYLON.Mesh.CAP_ALL,
+          scene
+        );
 
-      const line = BABYLON.Mesh.CreateTube(
-        'line' + i,
-        points, // Array of points to create the tube between
-        0.05, // Diameter of the tube (adjust this value for thickness)
-        10, // Tesselation (adjust as needed)
-        (i: number, distance: number) => 0.05,
-        BABYLON.Mesh.CAP_ALL,
-        scene
-      );
+        const material = new BABYLON.StandardMaterial('lineMaterial' + i, scene);
+        material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+        tube.material = material;
+        tubeMeshesRef.current.push(tube);
+      }
+    };
 
-      const material = new BABYLON.StandardMaterial('lineMaterial' + i, scene);
-      material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
-      line.material = material;
+    generateRandomLayout();
 
-      // Calculate the center of the line
-      const center = BABYLON.Vector3.Center(points[0], points[1]);
-
-      // Create a text label over the line
-      const textPlane = BABYLON.Mesh.CreatePlane('textPlane' + i, 2, scene);
-      textPlane.position = center;
-
-      const textTexture = new BABYLON.DynamicTexture('textTexture', 256, scene);
-      const textureContext = textTexture.getContext();
-      textureContext.fillStyle = 'white';
-      textureContext.font = '36px Tahoma';
-      textureContext.fillText('Working For', 40, 128); // Adjust the text position
-
-      textTexture.hasAlpha = true;
-      textTexture.update();
-
-      const textMaterial = new BABYLON.StandardMaterial('textMaterial' + i, scene);
-      textMaterial.diffuseTexture = textTexture;
-      textMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-      textMaterial.backFaceCulling = false;
-
-      textPlane.material = textMaterial;
-    }
+    sceneRef.current = scene;
+    engineRef.current = engine;
 
     new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
     engine.runRenderLoop(() => {
@@ -101,10 +80,65 @@ function BabylonScene() {
     };
   }, []);
 
+  const transitionToConcentricLayout = () => {
+    // Clear existing nodes and edges
+    sphereMeshesRef.current.forEach((sphere) => sphere.dispose());
+    tubeMeshesRef.current.forEach((tube) => tube.dispose());
+
+    // Clear references
+    sphereMeshesRef.current = [];
+    tubeMeshesRef.current = [];
+
+    // Generate concentric layout
+    const numConcentricCircles = 10;
+    const numSpheresPerCircle = 50;
+    const radiusIncrement = 5;
+
+    for (let circle = 0; circle < numConcentricCircles; circle++) {
+      const circleRadius = circle * radiusIncrement;
+      for (let i = 0; i < numSpheresPerCircle; i++) {
+        const angle = (i / numSpheresPerCircle) * Math.PI * 2;
+        const x = circleRadius * Math.cos(angle);
+        const y = 0;
+        const z = circleRadius * Math.sin(angle);
+        const sphere = BABYLON.MeshBuilder.CreateSphere('sphere' + i, { diameter: 2, segments: 32 }, sceneRef.current);
+        sphere.position = new BABYLON.Vector3(x, y, z);
+
+        const material = new BABYLON.StandardMaterial('material' + i, sceneRef.current);
+        material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+        sphere.material = material;
+        sphereMeshesRef.current.push(sphere);
+      }
+    }
+
+    // Create connecting lines (tubes) for concentric layout
+    for (let i = 0; i < sphereMeshesRef.current.length - 1; i++) {
+      const points = [sphereMeshesRef.current[i].position, sphereMeshesRef.current[i + 1].position];
+
+      const tube = BABYLON.Mesh.CreateTube(
+        'line' + i,
+        points,
+        0.05,
+        10,
+        (i: number, distance: number) => 0.05,
+        BABYLON.Mesh.CAP_ALL,
+        sceneRef.current
+      );
+
+      const material = new BABYLON.StandardMaterial('lineMaterial' + i, sceneRef.current);
+      material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
+      tube.material = material;
+      tubeMeshesRef.current.push(tube);
+    }
+  };
+
   return (
-    <canvas id="renderCanvas" style={{ width: '100%', height: window.innerHeight - 160 }}>
-      Your browser does not support the HTML5 canvas element.
-    </canvas>
+    <div>
+      <canvas id="renderCanvas" ref={canvasRef} style={{ width: '100%', height: window.innerHeight - 160 }}>
+        Your browser does not support the HTML5 canvas element.
+      </canvas>
+      <button onClick={transitionToConcentricLayout}>Transition to Concentric Layout</button>
+    </div>
   );
 }
 
